@@ -21,31 +21,29 @@ public final class Driver {
 
         System.out.println("this is a test class, use this only to test network classes");
 
-        System.out.println("enter mode: \n\t'C'lient\n\t'S'erver");
+        System.out.println("enter mode: \n\t'C'lient\n\t'S'erver\n\tconso'L'e");
 
         String in = scanner.nextLine();
 
-        if (in.toLowerCase(Locale.ROOT).equals("c")) {
-            System.out.println("Client mode");
-            System.out.println("enter target address");
-            in = scanner.nextLine();
-            String ip = in.equals("") ? "localhost" : in;
-            System.out.println("enter target port");
-            in = scanner.nextLine();
-            int port = in.equals("") ? 21033 : Integer.parseInt(in);
+        switch (in.toLowerCase(Locale.ROOT)) {
+            case "c" -> {
+                System.out.println("Client mode");
+                NetworkPlayer player = new NetworkPlayer(Mode.CLIENT);
 
-            System.out.println("Starting client with " + ip + ":" + port);
-            NetworkPlayer player = new NetworkPlayer(Mode.CLIENT, "localhost");
+                break;
+            }
+            case "s" -> {
+                System.out.println("Server mode");
+                NetworkPlayer player = new NetworkPlayer(Mode.SERVER);
 
-        } else if (in.toLowerCase(Locale.ROOT).equals("s")) {
-            System.out.println("Server mode");
-            System.out.println("enter port");
-            in = scanner.nextLine();
-            int port = in.equals("") ? 21033 : Integer.parseInt(in);
+                break;
+            }
+            case "l" -> {
+                System.out.println("Console mode");
 
-            System.out.println("Starting server with port " + port);
-            NetworkPlayer player = new NetworkPlayer(Mode.SERVER, null);
-
+                ConsolePlayer player = new ConsolePlayer();
+                break;
+            }
         }
     }
 }

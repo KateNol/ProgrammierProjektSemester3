@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static network.internal.Util.log_stdio;
+
 
 /**
  *
@@ -24,7 +26,9 @@ public final class Server {
      */
     public static Contact getContact(int port) throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            log_stdio("Server starting to listen on port " + port);
             Socket clientSocket = serverSocket.accept();
+            log_stdio("Server accepted client");
 
             return new Contact(clientSocket, Mode.SERVER);
         }

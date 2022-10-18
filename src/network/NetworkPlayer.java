@@ -7,8 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import static network.internal.Util.defaultAddress;
-import static network.internal.Util.defaultPort;
+import static network.internal.Util.*;
 
 public final class NetworkPlayer {
     private Contact contact;
@@ -21,15 +20,15 @@ public final class NetworkPlayer {
     public NetworkPlayer(@NotNull Mode mode, String address, int port) throws IOException {
         switch (mode) {
             case SERVER -> {
-                System.out.println("server");
+                log_stdio("server");
                 this.contact = Server.getContact(port);
             }
             case CLIENT -> {
-                System.out.println("client");
+                log_stdio("client");
                 this.contact = Client.getContact(address, port);
             }
             default -> {
-                System.err.println("invalid network mode");
+                log_stderr("invalid network mode");
                 System.exit(1);
             }
         }
