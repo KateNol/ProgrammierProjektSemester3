@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * represents a 2DPoint with x and y coordinate
+ * very basic and low functionality
+ */
 public class Point {
     public int x;
     public int y;
