@@ -10,6 +10,22 @@ public final class Util {
 
     private static final String logPrefix = "Network: ";
 
+    public static final Character messageDelimiter = ';';
+
+    public static String constructMessage(String command, String[] args) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(command);
+        builder.append(messageDelimiter);
+
+        for (String arg : args) {
+            builder.append(arg);
+            builder.append(messageDelimiter);
+        }
+
+        return builder.toString();
+    }
+
     public static void log_stdio(String msg) {
         System.out.println(logPrefix + msg);
     }

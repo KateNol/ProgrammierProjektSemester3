@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static network.internal.Util.*;
 
-public final class NetworkPlayer {
+public abstract class NetworkPlayer {
     private Contact contact;
 
     /**
@@ -46,4 +46,8 @@ public final class NetworkPlayer {
         this(mode, defaultAddress, defaultPort);
     }
 
+
+    public void sendMessage(String msg) {
+        contact.sendMessage(msg);
+    }
 }
