@@ -1,7 +1,7 @@
 package network.internal;
 
 
-import network.Mode;
+import network.NetworkMode;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -30,7 +30,7 @@ public final class Server {
             Socket clientSocket = serverSocket.accept();
             log_stdio("Server accepted client");
 
-            return new Contact(clientSocket, Mode.SERVER);
+            return new Contact(clientSocket, NetworkMode.SERVER);
         }
     }
 }

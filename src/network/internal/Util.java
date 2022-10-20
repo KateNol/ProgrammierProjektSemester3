@@ -29,5 +29,5 @@ public final class Util {
         System.err.println(logPrefix + msg);
     }
 
-    public static final int implementedProtocolVersion = 1;
+    public static int implementedProtocolVersion = 1;
 }

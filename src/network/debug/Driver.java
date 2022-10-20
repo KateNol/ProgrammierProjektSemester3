@@ -1,7 +1,8 @@
 package network.debug;
 
-import network.Mode;
+import network.NetworkMode;
 import network.NetworkPlayer;
+import network.internal.Util;
 
 
 import java.io.IOException;
@@ -29,11 +30,12 @@ public final class Driver {
         switch (in.toLowerCase(Locale.ROOT)) {
             case "c" -> {
                 System.out.println("Client mode");
-                NetworkPlayer player = new ConsolePlayer(Mode.CLIENT);
+                Util.implementedProtocolVersion = 3;
+                NetworkPlayer player = new ConsolePlayer(NetworkMode.CLIENT);
             }
             case "s" -> {
                 System.out.println("Server mode");
-                NetworkPlayer player = new ConsolePlayer(Mode.SERVER);
+                NetworkPlayer player = new ConsolePlayer(NetworkMode.SERVER);
             }
         }
     }
