@@ -7,22 +7,22 @@ until 28.10
 finish defining communication interfaces on how to communicate between modules/teams
 
 until 04.11
-- all teams: 	build one proof of concept prototype together, limited features but able to create games with 2 players (human/ai/network), simple limited features gui, not yet "playable"
-- logic:		support basic game loop communication (shoot, answer, repeat) 
+- all teams: 	build one proof of concept prototype together, limited features but able to create games with 2 players (human vs. human/ai/network), simple limited features gui, not yet "playable"
+- logic:		support basic game loop communication (shoot, answer, repeat), being able to set ships, but without basic rules (being one field apart other ships)
 - ai: 		random agent, no intelligence, only able to take part in game
 - network:	provide all needed communication for basic game
 - gui:		1 gui frame able to display gamestate (2 matrices, turn, input (not yet working))
 
 
 until 11.11
-- logic:		add basic rules
+- logic:	add basic rules, add levelselect
 - gui:		working gui frame for main game input and display
 - network:	finish v1 protocol
 
 until 18.11
 - all teams:	build first working prototype, playable game with all parties (human/ai/network)
 support semester functions
-- logic:		support all rules
+- logic:		support all rules / being able to save and load savestate
 - gui:		add gui to create/join etc
 - ai:			pseudo random agent, "hunts" hit ships
 
