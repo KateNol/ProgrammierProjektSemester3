@@ -124,6 +124,13 @@ public final class Contact {
                 outWriter.println(constructMessage("VERSION_SEND", new String[]{String.valueOf(implementedProtocolVersion)}));
             }
             case RECEIVE -> {
+                // if this is the first time receiving this message, calc protocol version and send ack
+                // if protocol version was already negotiated before, return without action
+                // TODO: decide whether to allow re-negotiation
+                if (protocolVersionNegotiated) {
+                    log_stderr("Peer trying to re-negotiate protocol version, no action taken");
+                    return;
+                }
                 this.protocolVersion = Math.min(implementedProtocolVersion, protocolVersion);
                 VERSION_ACK(SEND, this.protocolVersion);
             }
@@ -153,6 +160,13 @@ public final class Contact {
                 outWriter.println(constructMessage("SEMESTER_SEND", new String[]{String.valueOf(semester)}));
             }
             case RECEIVE -> {
+                // if this is the first time receiving this message, calc common semester and send ack
+                // if semester was already negotiated before, return without action
+                // TODO: decide whether to allow re-negotiation
+                if (semesterNegotiated) {
+                    log_stderr("Peer trying to re-negotiate semester, no action taken");
+                    return;
+                }
                 this.semester = Math.min(this.semester, semester);
                 SEMESTER_ACK(SEND, this.semester);
             }
