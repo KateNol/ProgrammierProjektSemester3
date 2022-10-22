@@ -1,6 +1,6 @@
 package logic;
 
-public enum MapStates {
+public enum MapState {
     WATER,
     SHIP,
     HIT,

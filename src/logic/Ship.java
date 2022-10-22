@@ -42,20 +42,20 @@ public class Ship {
                     //TODO check boardSize
                     //TODO check if touching
                     //TODO check if every coordinate is valid
-                    pos[i].row = pivot.row;
-                    pos[i].col = pivot.col - i;
+                    pos[i].setRow(pivot.getRow());
+                    pos[i].setRow(pivot.getRow()-i);
                     break;
                 case VERT_DOWN:
-                    pos[i].row = pivot.row;
-                    pos[i].col = pivot.col + i;
+                    pos[i].setRow(pivot.getRow());
+                    pos[i].setRow(pivot.getRow()+i);
                     break;
                 case HOR_RIGHT:
-                    pos[i].row = pivot.row + i;
-                    pos[i].col = pivot.col;
+                    pos[i].setRow(pivot.getRow()+i);
+                    pos[i].setRow(pivot.getRow());
                     break;
                 case HOR_LEFT:
-                    pos[i].row = pivot.row - i;
-                    pos[i].col = pivot.col;
+                    pos[i].setRow(pivot.getRow()-i);
+                    pos[i].setRow(pivot.getRow());
                     break;
                 default:
                     return false;
@@ -93,7 +93,16 @@ public class Ship {
         return null;
     }
 
-    public int gotHit() {
+    public boolean gotHit(Coordinate c) {
+        for(Coordinate p: pos) {
+            if(c.isEqual(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int decreaseHealth() {
         return --this.health;
     }
 }

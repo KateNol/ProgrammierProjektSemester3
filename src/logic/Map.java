@@ -1,14 +1,14 @@
 package logic;
 
 public class Map {
-    public MapStates[][] map = null;
+    public MapState[][] map = null;
     private int N = 14;
 
     public Map() {
-        map = new MapStates[N][N];
+        map = new MapState[N][N];
         for (int row = 0; row < N; row++) {
             for (int col = 0; col < N; col++) {
-                map[row][col] = WATER;
+                map[row][col] = MapState.WATER;
             }
         }
     }
@@ -18,14 +18,14 @@ public class Map {
      * @param c Coordinate where the state should be returned
      * @return
      */
-    public MapStates getState(Coordinate c) {return map[c.getRow()][c.getCol()];}
+    public MapState getState(Coordinate c) {return map[c.getRow()][c.getCol()];}
 
     /**
      *
      * @param c
      * @param s
      */
-    public void setState(Coordinate c, MapStates s) {
+    public void setState(Coordinate c, MapState s) {
         if(c.getRow() < N && c.getRow() >= 0 && c.getCol() < N && c.getCol() >= 0) {
             map[c.getRow()][c.getCol()] = s;
         } else {

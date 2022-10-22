@@ -1,8 +1,10 @@
 package logic;
+
 public class Player {
     int maxLevel = 1;
     String name = null;
-    Ship[] ships = null;
+    Ship[] ships = null; //TODO change to ArrayList
+    Map map = new Map();
 
     /**
      * Initialize player with name and empty ships for level 1 in an array
@@ -30,5 +32,30 @@ public class Player {
         }
     }
 
-    public MapStates getShot()
+    public MapState getShot(Coordinate c) {
+        switch (map.getState(c)) {
+            case WATER:
+                map.setState(c, MapState.MISS);
+                break;
+            case SHIP:
+                map.setState(c, MapState.HIT);
+                hitShip(c);
+                break;
+            default:
+                break;
+        }
+        return MapState.WATER;
+    }
+
+    private void hitShip(Coordinate c) {
+        for(Ship s: ships) {
+            int shipHealth = -1;
+            if(s.gotHit(c)) {
+                shipHealth = s.decreaseHealth();
+            }
+            if(shipHealth == 0) {
+                //TODO delete ship from shiparray
+            }
+        }
+    }
 }
