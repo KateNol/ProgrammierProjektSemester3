@@ -5,7 +5,7 @@ package logic;
  */
 public class Ship {
     private int size; //shipsize, usually between 2 and 7
-    private Point pos[]; //individual coordinates of ship
+    private Coordinate pos[]; //individual coordinates of ship
     private int health; //health, max. health equals size
 
     /**
@@ -14,7 +14,7 @@ public class Ship {
      * @param pivot pivot of ship, works only with alignment
      * @param align alignment, can be HOR_LEFT, HOR_RIGHT, VERT_UP, VERT_DOWN
      */
-    public Ship(int size, Point pivot, Alignment align) {
+    public Ship(int size, Coordinate pivot, Alignment align) {
         initShip(size);
         setPos(pivot, align);
     }
@@ -26,7 +26,7 @@ public class Ship {
     private void initShip(int size) {
         this.size = size;
         this.health = this.size;
-        this.pos = new Point[size];
+        this.pos = new Coordinate[size];
     }
 
     /**
@@ -35,27 +35,27 @@ public class Ship {
      * @param align alignment, can be HOR_LEFT, HOR_RIGHT, VERT_UP, VERT_DOWN
      * @return returns true, if set successfull false, if not
      */
-    public boolean setPos(Point pivot, Alignment align) {
+    public boolean setPos(Coordinate pivot, Alignment align) {
         for(int i = 0; i < this.size; i++) {
             switch (align) {
                 case VERT_UP:
                     //TODO check boardSize
                     //TODO check if touching
                     //TODO check if every coordinate is valid
-                    pos[i].x = pivot.x;
-                    pos[i].y = pivot.y - i;
+                    pos[i].row = pivot.row;
+                    pos[i].col = pivot.col - i;
                     break;
                 case VERT_DOWN:
-                    pos[i].x = pivot.x;
-                    pos[i].y = pivot.y + i;
+                    pos[i].row = pivot.row;
+                    pos[i].col = pivot.col + i;
                     break;
                 case HOR_RIGHT:
-                    pos[i].x = pivot.x + i;
-                    pos[i].y = pivot.y;
+                    pos[i].row = pivot.row + i;
+                    pos[i].col = pivot.col;
                     break;
                 case HOR_LEFT:
-                    pos[i].x = pivot.x - i;
-                    pos[i].y = pivot.y;
+                    pos[i].row = pivot.row - i;
+                    pos[i].col = pivot.col;
                     break;
                 default:
                     return false;
@@ -74,18 +74,18 @@ public class Ship {
 
     /**
      *
-     * @return position as Point-Array
+     * @return position as Coordinate-Array
      */
-    public Point[] getPos() {
+    public Coordinate[] getPos() {
         return this.pos;
     }
 
     /**
      *
      * @param p index starting from pivot, min 0, max size of ship-1
-     * @return coordinate of point as Point, if parameter is invalid it returns null
+     * @return coordinate of point as Coordinate, if parameter is invalid it returns null
      */
-    public Point getPoint(int p) {
+    public Coordinate getPoint(int p) {
         //TODO throw exception if p is invalid
         if(p >= 0 && p < this.size) {
             return pos[p];
