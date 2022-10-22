@@ -4,6 +4,10 @@ public class Player {
     String name = null;
     Ship[] ships = null;
 
+    /**
+     * Initialize player with name and empty ships for level 1 in an array
+     * @param name Name of the player
+     */
     public Player(String name) {
         this.name = name;
         //Initialize shipsizes for Level 1 fixed
@@ -13,9 +17,18 @@ public class Player {
         }
     }
 
+    /**
+     *
+     * @param shipNumber index of the ship in the ships array
+     * @param c coordinate of the pivotpoint
+     * @param a alignment of the ship
+     * @see Alignment
+     */
     public void setShip(int shipNumber, Coordinate c, Alignment a) {
         if(shipNumber < 6 && shipNumber >= 0) {
-            ships[shipNumber].setPos(c,a);
+            ships[shipNumber].setPos(c, a);
         }
     }
+
+    public MapStates getShot()
 }
