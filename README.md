@@ -17,8 +17,8 @@ Links
 - [ ] Vollständiges und pünktliches Einhalten von Terminen
 
 ### Anforderungen an die Gruppe
-- [ ] vollständig erfasste Anwendungsfälle+GUI-Prototyp (abgenommen durch Betreuer!)
-- [ ] Schichtenarchitektur (min. 2 Schichten; GUI und Logik getrennt!)
+- [ ] vollständig erfasste Anwendungsfälle+gui.GUIMain-Prototyp (abgenommen durch Betreuer!)
+- [ ] Schichtenarchitektur (min. 2 Schichten; gui.GUIMain und Logik getrennt!)
 - [ ] Sechs Semester (Spielstufen/Level)
 - [ ] Sound!
 - [ ] Eine „Überraschung” im Spiel
