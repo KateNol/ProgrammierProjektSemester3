@@ -19,6 +19,10 @@ import network.debug.ConsolePlayer;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
+/**
+ * main gui entry point
+ * also creates the logic/player instances
+ */
 public class GUIMain extends Application {
     public static void main(String[] args) {
         launch(args);
@@ -45,6 +49,18 @@ public class GUIMain extends Application {
         this.stage.show();
     }
 
+    /**
+     * this method gets called when the user presses "start" in the first gui
+     * here we now all necessary info to create logic/player instances
+     *
+     * @param playerMode
+     * @param networkMode
+     * @param serverMode
+     * @param localEnemyMode
+     * @param address
+     * @param port
+     * @throws IOException
+     */
     public void changeSceneToGame(PlayerMode playerMode, NetworkMode networkMode, ServerMode serverMode, LocalEnemyMode localEnemyMode, String address, String port) throws IOException {
         root = FXMLLoader.load(getClass().getResource("fxml/game.fxml"));
         scene = new Scene(root);

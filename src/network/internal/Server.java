@@ -20,6 +20,12 @@ public final class Server {
     }
 
     /**
+     * this class creates a server and waits for a connection,
+     * then it returns a contact.
+     * an exception is made for local play. the server cant block the main thread
+     * because then the gui would freeze. because of that we use a thread and only
+     * setup the contact with a real socket after a connection has been established
+     *
      * @param port port on which to listen
      * @return a Contact to a connected network target
      * @throws IOException if an I/O error occurs when waiting for a connection.

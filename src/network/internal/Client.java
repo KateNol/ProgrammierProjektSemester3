@@ -10,7 +10,8 @@ import static network.internal.Util.log_stdio;
 
 
 /**
- *
+ * client class
+ * assumes a server is present, fails otherwise
  */
 public final class Client {
     private Client() {

@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 /**
  * driver class for testing purposes only
+ * only used as main entry point when debugging networking
  */
 public final class Driver {
     public static final Scanner scanner = new Scanner(System.in);

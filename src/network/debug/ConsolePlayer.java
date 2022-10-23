@@ -10,6 +10,8 @@ import static network.debug.Driver.scanner;
 
 /**
  * console player class for testing purposes only
+ * implements a player that gets all input/output from/to stdio
+ * input is non-blocking
  */
 public final class ConsolePlayer extends NetworkPlayer {
 

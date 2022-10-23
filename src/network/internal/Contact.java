@@ -16,7 +16,10 @@ import static network.internal.Util.*;
 
 /**
  * this class communicates with the other player via a socket
- * network protocol methods are named in CAPS
+ * contains a thread which is permanently listening for new messages
+ * this class is not to be used by anyone outside the network package
+ * player classes will use this class to send info to the other player
+ * network protocol methods are named in CAPSLOCK
  */
 public final class Contact {
     private Socket socket;

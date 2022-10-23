@@ -19,6 +19,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * controller class for "choose game parameters" gui
+ * javafx controller class, reacts to gui input
+ */
 public class Gamemode {
     @FXML
     Button playerModeHuman;
