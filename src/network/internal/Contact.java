@@ -41,21 +41,30 @@ public final class Contact {
         this.username = username;
         this.semester = semester;
 
-        this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
-        this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        if (this.socket != null) {
+            this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
+            this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        }
 
         // fallback as per spec
         this.protocolVersion = 1;
 
-        new Thread(this::receiveLoop).start();
+        if (this.socket != null) {
+            new Thread(this::receiveLoop).start();
+            HELLO(SEND, this.username);
+            VERSION_SEND(SEND, implementedProtocolVersion);
+            SEMESTER_SEND(SEND, semester);
+        }
+        System.out.println("Contact CTOR end");
 
-        HELLO(SEND, this.username);
-        VERSION_SEND(SEND, implementedProtocolVersion);
-        SEMESTER_SEND(SEND, semester);
     }
 
     Contact(Socket socket, NetworkMode networkMode) throws IOException {
         this(socket, networkMode, "undefined", 1);
+    }
+
+    Contact(NetworkMode networkMode) throws IOException {
+        this(null, networkMode);
     }
 
     private void receiveLoop() {
@@ -256,5 +265,18 @@ public final class Contact {
 
     public void sendMessage(String msg) {
         outWriter.println(msg);
+    }
+
+    public void setSocket(Socket clientSocket) throws IOException {
+        this.socket = clientSocket;
+
+        this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
+        this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+        new Thread(this::receiveLoop).start();
+        HELLO(SEND, this.username);
+        VERSION_SEND(SEND, implementedProtocolVersion);
+        SEMESTER_SEND(SEND, semester);
+
     }
 }

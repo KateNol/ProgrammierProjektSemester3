@@ -11,7 +11,7 @@ import static network.debug.Driver.scanner;
 /**
  * console player class for testing purposes only
  */
-final class ConsolePlayer extends NetworkPlayer {
+public final class ConsolePlayer extends NetworkPlayer {
 
     public ConsolePlayer(NetworkMode networkMode) throws IOException {
         super(networkMode);
@@ -20,10 +20,13 @@ final class ConsolePlayer extends NetworkPlayer {
     }
 
     private void inputLoop() {
-        String input;
-        while (true) {
-            input = scanner.nextLine();
-            sendMessage(input);
-        }
+        new Thread(() -> {
+            while (true) {
+                String input;
+
+                input = scanner.nextLine();
+                sendMessage(input);
+            }
+        }).start();
     }
 }

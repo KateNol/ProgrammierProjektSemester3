@@ -1,5 +1,6 @@
 package network;
 
+import logic.Player;
 import network.internal.Client;
 import network.internal.Contact;
 import network.internal.Server;
@@ -9,7 +10,7 @@ import java.io.IOException;
 
 import static network.internal.Util.*;
 
-public abstract class NetworkPlayer {
+public abstract class NetworkPlayer extends Player {
     private Contact contact;
 
     /**
@@ -32,6 +33,7 @@ public abstract class NetworkPlayer {
                 System.exit(1);
             }
         }
+        System.out.println("NetworkPlayer CTOR end");
     }
 
     public NetworkPlayer(NetworkMode networkMode, String address) throws IOException {

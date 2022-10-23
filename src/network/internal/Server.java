@@ -25,12 +25,19 @@ public final class Server {
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
     public static Contact getContact(int port) throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            log_stdio("Server starting to listen on port " + port);
-            Socket clientSocket = serverSocket.accept();
-            log_stdio("Server accepted client");
+        Contact contact = new Contact(NetworkMode.SERVER);
 
-            return new Contact(clientSocket, NetworkMode.SERVER);
-        }
+        new Thread(() -> {
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
+                log_stdio("Server starting to listen on port " + port);
+                Socket clientSocket = serverSocket.accept();
+                log_stdio("Server accepted client");
+
+                contact.setSocket(clientSocket);
+            } catch (IOException ignored) {
+
+            }
+        }).start();
+        return contact;
     }
 }
