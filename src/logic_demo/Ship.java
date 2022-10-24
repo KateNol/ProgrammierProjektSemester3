@@ -1,4 +1,4 @@
-package logic;
+package logic_demo;
 
 /**
  * implements ships with size, exact positions and health

@@ -1,4 +1,4 @@
-package logic;
+package logic_demo;
 
 public class Player {
     int maxLevel = 1;
