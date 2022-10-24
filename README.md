@@ -26,8 +26,7 @@ Links
 - [ ] Sorgfältige Dokumentation
 - [ ] fehlerfrei laufendes, absturz- und anwendungssicheres Spiel!
 - [ ] Lauffähig im Fenster (JFrame)
-- [ ] Das Spiel muss gegen die Spiele der anderen Projektgruppen
-- [ ] spielbar sein
+- [ ] Das Spiel muss gegen die Spiele der anderen Projektgruppen spielbar sein
 - [ ] Binaries als JAR-Datei (ggfs. mit Startskript für Linux (spiel.sh) und Windows (spiel.bat))
 
 ### Anforderungen an die zu erstellende Software
@@ -44,6 +43,11 @@ Links
         - Mensch gegen Mensch,
         - Mensch gegen Computer
         - oder Computer gegen Computer
+
+### Organisatorische Anforderungen
+- [ ] Alle erstellten Dokumente, Diagramme, Pläne, Sourcen und das lauffähige Programm müssen bis zum Projekt-Ende in dem dazugehörigen Git-Repository liegen
+
+
 
 ## Spielregeln
 
@@ -80,9 +84,9 @@ Links
 Semester/Schiffe
     8 - Anzahl_der_Credits_pro_Vorlesung
 
-    1.  2, 2, 2, 2, 4, 6
-    2.  2, 2, 2, 2, 2,
-    3.  2, 2, 2, 2, 4, 6
-    4.  2, 2, 2, 2, 4, 6
-    5.  2, 2, 2, 3, 6
-    6.  2, 2, 6, -7
+    1. 2, 2, 2, 2, 4, 6
+    2. 2, 2, 2, 2, 2,
+    3. 2, 2, 2, 2, 4, 6
+    3. 2, 2, 2, 2, 4, 6
+    4. 2, 2, 2, 3, 3, 6
+    5. 2, 1, 1, 1, 6
