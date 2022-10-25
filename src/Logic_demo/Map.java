@@ -1,4 +1,4 @@
-package logic_demo;
+package Logic_demo;
 
 public class Map {
     public MapState[][] map = null;

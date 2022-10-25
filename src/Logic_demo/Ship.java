@@ -1,4 +1,4 @@
-package logic_demo;
+package Logic_demo;
 
 /**
  * implements ships with size, exact positions and health
@@ -93,7 +93,7 @@ public class Ship {
         return null;
     }
 
-    public boolean gotHit(Coordinate c) {
+    public boolean checkIfHit(Coordinate c) {
         for(Coordinate p: pos) {
             if(c.isEqual(p)) {
                 return true;

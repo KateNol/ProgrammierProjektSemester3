@@ -1,9 +1,10 @@
-package logic_demo;
+package Logic_demo;
 
 public enum MapState {
     WATER,
     SHIP,
     HIT,
-    MISS
+    MISS,
+    SUNK
 }
 
