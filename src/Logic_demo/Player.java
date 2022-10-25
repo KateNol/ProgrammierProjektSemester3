@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Player extends NetworkPlayer {
 
-    private Logic logic;
+    private Logic logic = null;
 
     public int maxLevel = 1;
     public String name;
@@ -32,7 +32,9 @@ public class Player extends NetworkPlayer {
 
     @Override
     public void setLogic(Logic logic) {
-        this.logic = logic;
+        if(this.logic == null) {
+            this.logic = logic;
+        }
     }
 
     /**
@@ -67,16 +69,18 @@ public class Player extends NetworkPlayer {
         return MapState.WATER;
     }
 
-    private void hitShip(Coordinate c) {
+    private MapState hitShip(Coordinate c) {
         for(Ship s: ships) {
             int shipHealth = -1;
             if(s.checkIfHit(c)) {
                 shipHealth = s.decreaseHealth();
             }
             if(shipHealth == 0) {
-                //TODO delete ship from shiparray
+                ships.remove(s);
+                return MapState.SUNK;
             }
         }
+        return MapState.HIT;
     }
 
     public String getName() {
@@ -94,17 +98,12 @@ public class Player extends NetworkPlayer {
                 myMap.setState(c, MapState.MISS);
                 break;
             case SHIP:
-                myMap.setState(c, MapState.HIT);
-                // if shot hit a ship decrease its health
-                for(Ship s: ships) {
-                    if(s.checkIfHit(c)) {
-                        int health = s.decreaseHealth();
-                        if (health == 0) { ships.remove(s); return MapState.SUNK;}// if health is zero -> delete ship, return SUNK
-                    }
-                }
+                myMap.setState(c, hitShip(c));
                 break;
             default: break;
         }
+        if(ships.isEmpty()) {logic.gameOver(this);}
+
         return myMap.getState(c);
     }
 

@@ -19,10 +19,18 @@ public class Ship {
         setPos(pivot, align);
     }
 
-    public Ship(int Size) {
+    /**
+     * initialize an empty ship, can be positioned later
+     * @param size int
+     */
+    public Ship(int size) {
         initShip(size);
     }
 
+    /**
+     * initialises the basic shipattributes without the position
+     * @param size int
+     */
     private void initShip(int size) {
         this.size = size;
         this.health = this.size;
@@ -43,19 +51,19 @@ public class Ship {
                     //TODO check if touching
                     //TODO check if every coordinate is valid
                     pos[i].setRow(pivot.getRow());
-                    pos[i].setRow(pivot.getRow()-i);
+                    pos[i].setCol(pivot.getCol()-i);
                     break;
                 case VERT_DOWN:
                     pos[i].setRow(pivot.getRow());
-                    pos[i].setRow(pivot.getRow()+i);
+                    pos[i].setCol(pivot.getCol()+i);
                     break;
                 case HOR_RIGHT:
                     pos[i].setRow(pivot.getRow()+i);
-                    pos[i].setRow(pivot.getRow());
+                    pos[i].setCol(pivot.getCol());
                     break;
                 case HOR_LEFT:
                     pos[i].setRow(pivot.getRow()-i);
-                    pos[i].setRow(pivot.getRow());
+                    pos[i].setCol(pivot.getCol());
                     break;
                 default:
                     return false;
@@ -85,14 +93,19 @@ public class Ship {
      * @param p index starting from pivot, min 0, max size of ship-1
      * @return coordinate of point as Coordinate, if parameter is invalid it returns null
      */
-    public Coordinate getPoint(int p) {
-        //TODO throw exception if p is invalid
-        if(p >= 0 && p < this.size) {
-            return pos[p];
+    public Coordinate getPoint(int p) throws IllegalArgumentException {
+
+        if(p < 0 && p >= this.size) {
+            throw new IllegalArgumentException("Point not in range!");
         }
-        return null;
+        return this.pos[p];
     }
 
+    /**
+     * checks if ship got hit
+     * @param c Coordinate
+     * @return true if hit, false if not
+     */
     public boolean checkIfHit(Coordinate c) {
         for(Coordinate p: pos) {
             if(c.isEqual(p)) {
@@ -102,6 +115,10 @@ public class Ship {
         return false;
     }
 
+    /**
+     *
+     * @return health decreased by one
+     */
     public int decreaseHealth() {
         return --this.health;
     }
