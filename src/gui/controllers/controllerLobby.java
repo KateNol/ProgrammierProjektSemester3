@@ -23,13 +23,14 @@ public class controllerLobby {
     @FXML
     private VBox vBox_Board;
 
+    /**
+     * Initialize the visible board with Water Tiles
+     * and save the position from the tile
+     * in x and y Coordinates
+     */
     public void initialize() throws IOException {
 
-        /**
-         * Initialize the visible board with Water Tiles
-         * and save the position from the tile
-         * in x and y Coordinates
-         */
+
         for (int x = 0; x < BOARD_SIZE + 1; x++) {
             HBox row = new HBox();
             for (int y = 0; y < BOARD_SIZE + 1; y++) {
