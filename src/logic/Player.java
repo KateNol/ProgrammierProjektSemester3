@@ -1,5 +1,7 @@
 package logic;
 
+import Logic_demo.Logic;
+
 /**
  * abstract player class
  * this should be extended by NetworkPlayer, GUIPlayer, AI
@@ -7,4 +9,6 @@ package logic;
  * logic needs to call these methods to interact with the players
  */
 public abstract class Player {
+    public void setLogic(Logic logic) {
+    }
 }

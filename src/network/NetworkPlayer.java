@@ -4,7 +4,7 @@ import logic.Player;
 import network.internal.Client;
 import network.internal.Contact;
 import network.internal.Server;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public abstract class NetworkPlayer extends Player {
      * @param address     is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    public NetworkPlayer(@NotNull NetworkMode networkMode, String address, int port) throws IOException {
+    public NetworkPlayer(/*@NotNull*/ NetworkMode networkMode, String address, int port) throws IOException {
         switch (networkMode) {
             case SERVER -> {
                 log_stdio("server");
