@@ -54,6 +54,7 @@ public class Player extends NetworkPlayer {
         ships.add(s);
     }
 
+    //TODO check if useless
     public MapState getShot(Coordinate c) {
         switch (myMap.getState(c)) {
             case WATER:

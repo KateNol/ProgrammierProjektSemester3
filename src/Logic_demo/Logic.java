@@ -10,10 +10,7 @@ import java.util.List;
  * when enemy sends a move to player, logic should check that move and respond accordingly
  */
 public class Logic { //Logic is subject, Player is observer
-    //private logic.Player player;
-    //private logic.Player enemy;
     private int level = 1;
-    //private List<Observer> observerList;
     private List<Player> playersList = new ArrayList<Player>();
 
     /**
