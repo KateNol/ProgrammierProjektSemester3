@@ -1,4 +1,4 @@
-package Logic_demo;
+package logic;
 
 /**
  * Enum for shipalignment starting from pivotpoint

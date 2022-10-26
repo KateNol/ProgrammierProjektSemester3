@@ -1,4 +1,4 @@
-package Logic_demo;
+package logic;
 
 public enum MapState {
     WATER,

@@ -1,4 +1,4 @@
-package Logic_demo;
+package logic;
 
 /**
  * represents a 2DPoint with x and y coordinate
