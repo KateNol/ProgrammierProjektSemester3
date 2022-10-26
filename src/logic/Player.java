@@ -6,7 +6,7 @@ import network.NetworkPlayer;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Player extends NetworkPlayer {
+public class Player {
 
     private Logic logic = null;
 
@@ -16,13 +16,17 @@ public class Player extends NetworkPlayer {
     private final Map myMap = new Map();
     private final Map enemyMap = new Map();
 
+    public Player() {
+    }
+
     /**
      * Initialize player with name and empty ships for level 1 in an array
      *
      * @param name Name of the player
      */
-    public Player(NetworkMode networkMode, String name) throws IOException {
-        super(networkMode);
+    //public Player(NetworkMode networkMode, String name) throws IOException {
+    public Player(String name) throws IOException {
+        //super(networkMode);
         this.name = name;
         //Initialize shipsizes for Level 1 fixed
         int[] shipSizes = {2, 2, 2, 2, 4, 6};
