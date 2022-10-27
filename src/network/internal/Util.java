@@ -11,7 +11,7 @@ public final class Util {
 
     public static final Character messageDelimiter = ';';
 
-    public static String constructMessage(String command, String[] args) {
+    public static String constructMessage(String command, String... args) {
         StringBuilder builder = new StringBuilder();
 
         builder.append(command);
