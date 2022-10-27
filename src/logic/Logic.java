@@ -27,7 +27,7 @@ public class Logic { //Logic is subject, Player is observer
      * Adds players to itself for gamemanagement and adds itself to the players.
      *
      * @param player Player 1, mainly local Player
-     * @param enemy  Player 2, mainly network player or AI
+     * @param enemy  Player 2, mainly network player or ai.AI
      * @throws NullPointerException if one of the players is null
      */
     //TODO limit the players to two

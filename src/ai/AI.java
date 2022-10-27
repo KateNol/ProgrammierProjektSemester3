@@ -1,8 +1,10 @@
+package ai;
+
 import java.util.*;
 import java.math.*;
 import java.awt.Point;
 
-public class AI {
+public class AI extends logic.Player {
     protected int[][] board;    //Represents the Board
     List<Point> Moves = new ArrayList<Point>(); //Stores the moves which were already used
     List<Point> HitPoints = new ArrayList<Point>(); //Stores the Points which hit a ship
@@ -12,9 +14,9 @@ public class AI {
         this.board = board;
     }
 
-    public int[][] placeShips(int[] listShip) {
+    /* public int[][] placeShips(int[] listShip) {
 
-    }
+    }*/
 
     public Point shoot() {  //Generates random points to place shots
         Random placeShot = new Random();
