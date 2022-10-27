@@ -4,6 +4,8 @@ public final class Util {
     private Util() {
     }
 
+    public static final boolean debug = true;
+
     public static final String defaultAddress = "localhost";
     public static final int defaultPort = 13337;
 
@@ -27,6 +29,12 @@ public final class Util {
 
     public static void log_stdio(String msg) {
         System.out.println(logPrefix + msg);
+    }
+
+    public static void log_debug(String msg) {
+        if (!debug)
+            return;
+        log_stdio("debug: " + msg);
     }
 
     public static void log_stderr(String msg) {
