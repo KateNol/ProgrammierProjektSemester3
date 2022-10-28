@@ -50,6 +50,6 @@ public abstract class NetworkPlayer extends Player {
 
 
     public void sendMessage(String msg) {
-        contact.sendMessage(msg);
+        contact.sendRawMessage(msg);
     }
 }

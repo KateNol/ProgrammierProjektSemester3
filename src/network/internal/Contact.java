@@ -366,11 +366,24 @@ public final class Contact {
         }
     }
 
-    private void sendRawMessage(String msg) {
+    /**
+     * send an arbitrary message to the other player
+     * use for debug purposes only
+     *
+     * @deprecated
+     */
+    public void sendRawMessage(String msg) {
+        log_debug("sending: '" + msg + "'");
         outWriter.println(msg);
     }
 
-    public void sendMessage(String command, String... args) {
+    /**
+     * constructs a command message as per protocol and sends it
+     *
+     * @param command
+     * @param args
+     */
+    private void sendMessage(String command, String... args) {
         String msg = constructMessage(command, args);
         log_debug("sending: '" + msg + "'");
         outWriter.println(msg);
