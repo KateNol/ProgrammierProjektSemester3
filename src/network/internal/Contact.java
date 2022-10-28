@@ -57,7 +57,6 @@ public final class Contact {
         System.out.println("Contact CTOR end");
     }
 
-
     Contact(Socket socket, NetworkMode networkMode) throws IOException {
         this(socket, networkMode, networkMode.name(), 1);
     }
@@ -165,15 +164,34 @@ public final class Contact {
             }
             case "END" -> {
                 // END;<WINNER>
+                String winner = args.get(0);
+                END(RECEIVE, winner);
             }
             case "END_ACK" -> {
                 // END_ACK
+                END_ACK(RECEIVE);
             }
             case "BYE" -> {
                 // BYE;[<CODE>;<REASON>]
+                // TODO handle optionals better
+                int code = 0;
+                String reason = "None";
+                if (args.size() >= 2) {
+                    code = Integer.parseInt(args.get(0));
+                    reason = args.get(1);
+                }
+                BYE(RECEIVE, code, reason);
             }
             case "ERR" -> {
                 // ERR;<CODE>;<REASON>
+                // TODO handle optionals better
+                int code = 0;
+                String reason = "None";
+                if (args.size() >= 2) {
+                    code = Integer.parseInt(args.get(0));
+                    reason = args.get(1);
+                }
+                ERR(RECEIVE, code, reason);
             }
 
         }
@@ -356,12 +374,54 @@ public final class Contact {
         FIRE_ACK(mode, TYPE, false);
     }
 
-
-    private void ERR(MessageMode mode) {
+    private void END(MessageMode mode, String WINNER) {
         switch (mode) {
             case SEND -> {
+                // TODO expose this to logic
+                sendMessage("END", WINNER);
             }
             case RECEIVE -> {
+                // TODO forward this info to logic
+                boolean accept = true;      // dummy
+                if (accept)
+                    END_ACK(SEND);
+            }
+        }
+    }
+
+    private void END_ACK(MessageMode mode) {
+        switch (mode) {
+            case SEND -> {
+                sendMessage("END_ACK");
+            }
+            case RECEIVE -> {
+                // TODO forward this info to logic
+            }
+        }
+    }
+
+    private void BYE(MessageMode mode, int CODE, String REASON) {
+        // TODO CODE and REASON are optional, add overloads without them?
+        switch (mode) {
+            case SEND -> {
+                sendMessage("BYE", String.valueOf(CODE), REASON);
+            }
+            case RECEIVE -> {
+                // TODO how do we handle this?
+                log_debug("BYE: " + CODE + ", " + REASON);
+            }
+        }
+    }
+
+    private void ERR(MessageMode mode, int CODE, String REASON) {
+        // TODO CODE and REASON are optional, add overloads without them?
+        switch (mode) {
+            case SEND -> {
+                sendMessage("ERR", String.valueOf(CODE), REASON);
+            }
+            case RECEIVE -> {
+                // TODO how do we handle this?
+                log_stderr("ERR: " + CODE + ", " + REASON);
             }
         }
     }
