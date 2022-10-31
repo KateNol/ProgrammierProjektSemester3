@@ -65,6 +65,43 @@ public final class Contact {
         this(null, networkMode);
     }
 
+    /**
+     * send an arbitrary message to the other player
+     * use for debug purposes only
+     *
+     * @deprecated
+     */
+    public void sendRawMessage(String msg) {
+        log_debug("sending: '" + msg + "'");
+        outWriter.println(msg);
+    }
+
+    /**
+     * constructs a command message as per protocol and sends it
+     *
+     * @param command
+     * @param args
+     */
+    private void sendMessage(String command, String... args) {
+        String msg = constructMessage(command, args);
+        log_debug("sending: '" + msg + "'");
+        outWriter.println(msg);
+    }
+
+    public void setSocket(@NotNull Socket clientSocket) throws IOException {
+        if (socket != null) {
+            log_stderr("Attempting to overwrite socket");
+            System.exit(1);
+        }
+
+        this.socket = clientSocket;
+
+        this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
+        this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+        init_communication();
+    }
+
     private void init_communication() {
         new Thread(this::receiveLoop).start();
 
@@ -424,42 +461,5 @@ public final class Contact {
                 log_stderr("ERR: " + CODE + ", " + REASON);
             }
         }
-    }
-
-    /**
-     * send an arbitrary message to the other player
-     * use for debug purposes only
-     *
-     * @deprecated
-     */
-    public void sendRawMessage(String msg) {
-        log_debug("sending: '" + msg + "'");
-        outWriter.println(msg);
-    }
-
-    /**
-     * constructs a command message as per protocol and sends it
-     *
-     * @param command
-     * @param args
-     */
-    private void sendMessage(String command, String... args) {
-        String msg = constructMessage(command, args);
-        log_debug("sending: '" + msg + "'");
-        outWriter.println(msg);
-    }
-
-    public void setSocket(@NotNull Socket clientSocket) throws IOException {
-        if (socket != null) {
-            log_stderr("Attempting to overwrite socket");
-            System.exit(1);
-        }
-
-        this.socket = clientSocket;
-
-        this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
-        this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-
-        init_communication();
     }
 }
