@@ -1,5 +1,7 @@
 package logic;
 
+import java.io.IOException;
+
 /**
  * implements ships with size, exact positions and health
  */
@@ -99,6 +101,37 @@ public class Ship {
             throw new IllegalArgumentException("Point not in range!");
         }
         return this.pos[p];
+    }
+
+    /**
+     * creates an array
+     * @param pivot
+     * @param alignment
+     * @return
+     */
+    public Coordinate[] createArray(Coordinate pivot, Alignment alignment) {
+        Coordinate[] position = new Coordinate[this.size];
+        for(int i = 0; i < this.size; i++) {
+            switch (alignment) {
+                case VERT_UP:
+                    position[i].setRow(pivot.getRow());
+                    position[i].setCol(pivot.getCol()-i);
+                    break;
+                case VERT_DOWN:
+                    position[i].setRow(pivot.getRow());
+                    position[i].setCol(pivot.getCol()+i);
+                    break;
+                case HOR_RIGHT:
+                    position[i].setRow(pivot.getRow()+i);
+                    position[i].setCol(pivot.getCol());
+                    break;
+                case HOR_LEFT:
+                    position[i].setRow(pivot.getRow()-i);
+                    position[i].setCol(pivot.getCol());
+                    break;
+            }
+        }
+        return position;
     }
 
     /**

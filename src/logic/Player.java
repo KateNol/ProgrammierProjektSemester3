@@ -6,16 +6,19 @@ import network.NetworkPlayer;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Player {
+public abstract class Player {
 
-    public Logic logic = null;
+    private Logic logic = null; //for inform the logic about certain actions
 
-    public int maxLevel = 1;
+    public int maxLevel = 1; //max progress the player made
     public String name;
-    private final ArrayList<Ship> ships = null;
-    private final Map myMap = new Map();
-    private final Map enemyMap = new Map();
+    private final ArrayList<Ship> ships = null; // List of ships the player has
+    private final Map myMap = new Map(); // own map, that contains the state of the ships and the shots the enemy took
+    private final Map enemyMap = new Map(); // enemy map, contains information about whether the shot was a hit or miss
 
+    /**
+     * empty constructor
+     */
     public Player() {
     }
 
@@ -35,6 +38,14 @@ public class Player {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * sets Logic to communicate with it in special situations
+     * @param logic Gamelogic
+     */
     public void setLogic(Logic logic) {
         if (this.logic == null) {
             this.logic = logic;
@@ -42,60 +53,69 @@ public class Player {
     }
 
     /**
-     * @param size size of the ship
-     * @param c    coordinate of the pivotpoint
-     * @param a    alignment of the ship
-     * @see Alignment
+     * has to be implemented by inheriting class
+     * routine to set the ships on the map
      */
-    public Ship createShip(int size, Coordinate c, Alignment a) {
-        Ship s = new Ship(size, c, a);
-        ships.add(s);
-        return s;
-    }
+    abstract void setShips();
 
-    public void setShip(Ship s) {
-        ships.add(s);
-    }
+    /**
+     * add ship to the ship array
+     * //TODO add ship to the map
+     * @param size
+     * @param pivot
+     * @param alignment
+     */
 
-    //TODO check if useless
-    public MapState getShot(Coordinate c) {
-        switch (myMap.getState(c)) {
-            case WATER:
-                myMap.setState(c, MapState.MISS);
-                break;
-            case SHIP:
-                myMap.setState(c, MapState.HIT);
-                hitShip(c);
-                break;
-            default:
-                break;
+    private void addSchip(int size, Coordinate pivot, Alignment alignment) {
+        Ship s = new Ship(size);
+        Coordinate[] position = s.createArray(pivot, alignment);
+        if(checkLegal(position)) {
+            s.
         }
-        return MapState.WATER;
     }
 
-    private MapState hitShip(Coordinate c) {
-        for (Ship s : ships) {
-            int shipHealth = -1;
-            if (s.checkIfHit(c)) {
-                shipHealth = s.decreaseHealth();
-            }
-            if (shipHealth == 0) {
-                ships.remove(s);
-                return MapState.SUNK;
+    /**
+     *  iterates over all ships set and checks, if there's an overlapping ship
+     *  and checks if any point of the ship is off map
+     * @param position
+     * @return
+     */
+    //TODO check if neighbor is also empty
+    private boolean checkLegal(Coordinate[] position) {
+        boolean check = true;
+        for(int i = 0; i < position.length; i++) {
+            for(Ship s: ships) {
+               for(int n = 0; n < s.getSize(); n++) {
+                   if(position[i].isEqual(s.getPoint(n))) {
+                       check = false;
+                   }
+               }
             }
         }
-        return MapState.HIT;
+        if(check) {
+            for (Coordinate c: position) {
+                if(c.getCol() >= myMap.getMapSize() && c.getRow() >= myMap.getMapSize()) {
+                    check = false;
+                }
+            }
+        }
+
+        return check;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public Coordinate getInput() {
-        //TODO read input
-        return new Coordinate(5, 5);
-    }
+    /**
+     * Inheriting class has to implement this.
+     * @return the coordinate of the shot the Player wants to shoot at.
+     */
+    public abstract Coordinate getInput();
 
+    /**
+     * triggered by the logic gets the shot of the other player and returns if shot was successful or not
+     * triggers gameOver, if all ships sunk
+     * @param c Shotcoordinate from the other player, handled by the logic
+     * @return MapState whether the shot was a hit or miss.
+     */
     public MapState updateMap(Coordinate c) {
         switch (myMap.getState(c)) {
             case WATER:
@@ -114,6 +134,30 @@ public class Player {
         return myMap.getState(c);
     }
 
+    /**
+     * at the moment helpermethod for updateMap(c) in case a ship got hit.
+     * @param c Shotcoordinate from the other player, handled by the logic
+     * @return MapState whether the ship got hit but has health left or sunk.
+     */
+    private MapState hitShip(Coordinate c) {
+        for (Ship s : ships) {
+            int shipHealth = -1;
+            if (s.checkIfHit(c)) {
+                shipHealth = s.decreaseHealth();
+            }
+            if (shipHealth == 0) {
+                ships.remove(s);
+                return MapState.SUNK;
+            }
+        }
+        return MapState.HIT;
+    }
+
+    /**
+     * Updates Enemymap, getting the result of the shot from getInput.
+     * @param c Coordinate the shot was set
+     * @param ms MapState, the result of the shot (either hit or miss, or sunk)
+     */
     public void updateMapState(Coordinate c, MapState ms) {
         enemyMap.setState(c, ms);
     }
