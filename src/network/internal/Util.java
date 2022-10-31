@@ -7,7 +7,7 @@ public final class Util {
     public static final boolean debug = true;
 
     public static final String defaultAddress = "localhost";
-    public static final int defaultPort = 13337;
+    public static final int defaultPort = 42069;
 
     public static final Character messageDelimiter = ';';
 
