@@ -37,7 +37,7 @@ public final class Server {
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 log_stdio("Server starting to listen on port " + port);
                 Socket clientSocket = serverSocket.accept();
-                log_stdio("Server accepted client");
+                log_stdio("Server accepted client with address " + clientSocket.getInetAddress() + " " + clientSocket.getInetAddress().getHostName());
 
                 contact.setSocket(clientSocket);
             } catch (IOException ignored) {
