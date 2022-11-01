@@ -21,6 +21,12 @@ public final class ConsolePlayer extends NetworkPlayer {
         inputLoop();
     }
 
+    public ConsolePlayer(NetworkMode networkMode, String address) throws IOException {
+        super(networkMode, address);
+
+        inputLoop();
+    }
+
     private void inputLoop() {
         new Thread(() -> {
             while (true) {
