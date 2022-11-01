@@ -6,6 +6,7 @@ import network.internal.Util;
 
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -26,16 +27,23 @@ public final class Driver {
 
         System.out.println("enter mode: \n\t'C'lient\n\t'S'erver");
 
-        String in = scanner.nextLine();
+        String in;
+        if (args.length > 0) {
+            in = args[0];
+        } else {
+            in = scanner.nextLine();
+        }
 
         switch (in.toLowerCase(Locale.ROOT)) {
             case "c" -> {
                 System.out.println("Client mode");
-                Util.implementedProtocolVersion = 3;
+
+                //NetworkPlayer player = new ConsolePlayer(NetworkMode.CLIENT, "www.jannik-rosendahl.com");
                 NetworkPlayer player = new ConsolePlayer(NetworkMode.CLIENT);
             }
             case "s" -> {
                 System.out.println("Server mode");
+                Util.implementedProtocolVersion = 1;
                 NetworkPlayer player = new ConsolePlayer(NetworkMode.SERVER);
             }
         }
