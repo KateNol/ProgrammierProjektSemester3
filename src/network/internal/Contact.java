@@ -72,6 +72,8 @@ public final class Contact {
      * @deprecated
      */
     public void sendRawMessage(String msg) {
+        if (outWriter == null)
+            return;
         log_debug("sending: '" + msg + "'");
         outWriter.println(msg);
     }
@@ -86,6 +88,12 @@ public final class Contact {
         String msg = constructMessage(command, args);
         log_debug("sending: '" + msg + "'");
         outWriter.println(msg);
+    }
+
+    private void exitWithError(int error, String msg) {
+        log_stderr(msg);
+        ERR(SEND, error, msg);
+        System.exit(error);
     }
 
     public void setSocket(@NotNull Socket clientSocket) throws IOException {
@@ -129,8 +137,9 @@ public final class Contact {
             }
         } catch (IOException e) {
             log_stderr(e.getMessage());
+            System.exit(0);
         } catch (IndexOutOfBoundsException e) {
-            log_stderr(e.getMessage());
+            exitWithError(1, e.getMessage());
         }
     }
 
@@ -230,7 +239,9 @@ public final class Contact {
                 }
                 ERR(RECEIVE, code, reason);
             }
-
+            default -> {
+                ERR(SEND, 0, "unknown message command");
+            }
         }
 
 
@@ -243,8 +254,7 @@ public final class Contact {
             }
             case RECEIVE -> {
                 if (protocolVersionNegotiated || semesterNegotiated) {
-                    log_stderr("HELLO: attempted re-negotiation of protocol or semester");
-                    System.exit(1);
+                    exitWithError(1, "HELLO: attempted re-negotiation of protocol or semester, exiting...");
                 }
                 protocolVersion = Math.min(implementedProtocolVersion, VERSION);
                 protocolVersionNegotiated = true;
@@ -264,16 +274,13 @@ public final class Contact {
             }
             case RECEIVE -> {
                 if (VERSION > implementedProtocolVersion) {
-                    log_stderr("HELLO_ACK: VERSION > implementedProtocolVersion (" + VERSION + ">" + implementedProtocolVersion + ")");
-                    System.exit(1);
+                    exitWithError(2, "HELLO_ACK: VERSION > implementedProtocolVersion (" + VERSION + ">" + implementedProtocolVersion + ")");
                 }
                 if (SEMESTER > semester) {
-                    log_stderr("HELLO_ACK: SEMESTER > this.semester (" + SEMESTER + ">" + semester + ")");
-                    System.exit(1);
+                    exitWithError(3, "HELLO_ACK: SEMESTER > this.semester (" + SEMESTER + ">" + semester + ")");
                 }
                 if (protocolVersionNegotiated || semesterNegotiated) {
-                    log_stderr("HELLO_ACK: attempted re-negotiation of protocol or semester");
-                    System.exit(1);
+                    exitWithError(4, "HELLO_ACK: attempted re-negotiation of protocol or semester");
                 }
 
                 protocolVersion = VERSION;
