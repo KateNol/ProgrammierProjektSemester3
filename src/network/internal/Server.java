@@ -1,7 +1,7 @@
 package network.internal;
 
 
-import network.NetworkMode;
+import network.ServerMode;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -31,7 +31,7 @@ public final class Server {
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
     public static Contact getContact(int port) throws IOException {
-        Contact contact = new Contact(NetworkMode.SERVER);
+        Contact contact = new Contact(ServerMode.SERVER);
 
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(port)) {

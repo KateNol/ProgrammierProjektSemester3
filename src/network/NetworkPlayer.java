@@ -14,12 +14,12 @@ public abstract class NetworkPlayer extends Player {
     private Contact contact;
 
     /**
-     * @param networkMode determines if we set up a Server and wait for a connection or try to connect as a client
-     * @param address     is the target address for client mode, may be null in server mode
+     * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
+     * @param address    is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    public NetworkPlayer(/*@NotNull*/ NetworkMode networkMode, String address, int port) throws IOException {
-        switch (networkMode) {
+    public NetworkPlayer(/*@NotNull*/ ServerMode serverMode, String address, int port) throws IOException {
+        switch (serverMode) {
             case SERVER -> {
                 log_stdio("server");
                 this.contact = Server.getContact(port);
@@ -36,20 +36,31 @@ public abstract class NetworkPlayer extends Player {
         System.out.println("NetworkPlayer CTOR end");
     }
 
-    public NetworkPlayer(NetworkMode networkMode, String address) throws IOException {
-        this(networkMode, address, defaultPort);
+    public NetworkPlayer(ServerMode serverMode, String address) throws IOException {
+        this(serverMode, address, defaultPort);
     }
 
-    public NetworkPlayer(NetworkMode networkMode, int port) throws IOException {
-        this(networkMode, defaultAddress, port);
+    public NetworkPlayer(ServerMode serverMode, int port) throws IOException {
+        this(serverMode, defaultAddress, port);
     }
 
-    public NetworkPlayer(NetworkMode networkMode) throws IOException {
-        this(networkMode, defaultAddress, defaultPort);
+    public NetworkPlayer(ServerMode serverMode) throws IOException {
+        this(serverMode, defaultAddress, defaultPort);
     }
 
 
     public void sendMessage(String msg) {
         contact.sendRawMessage(msg);
     }
+
+    @Override
+    public boolean getIsConnected() {
+        return contact.getIsConnected();
+    }
+
+    @Override
+    public int getCommonSemester() {
+        return contact.getCommonSemester();
+    }
+
 }

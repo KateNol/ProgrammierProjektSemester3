@@ -1,7 +1,7 @@
 package network.debug;
 
 
-import network.NetworkMode;
+import network.ServerMode;
 import network.NetworkPlayer;
 
 import java.io.IOException;
@@ -15,14 +15,14 @@ import static network.debug.Driver.scanner;
  */
 public final class ConsolePlayer extends NetworkPlayer {
 
-    public ConsolePlayer(NetworkMode networkMode) throws IOException {
-        super(networkMode);
+    public ConsolePlayer(ServerMode serverMode) throws IOException {
+        super(serverMode);
 
         inputLoop();
     }
 
-    public ConsolePlayer(NetworkMode networkMode, String address) throws IOException {
-        super(networkMode, address);
+    public ConsolePlayer(ServerMode serverMode, String address) throws IOException {
+        super(serverMode, address);
 
         inputLoop();
     }

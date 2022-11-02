@@ -1,6 +1,6 @@
 package network.internal;
 
-import network.NetworkMode;
+import network.ServerMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -24,7 +24,7 @@ import static network.internal.Util.*;
  */
 public final class Contact {
     private Socket socket;
-    private NetworkMode networkMode;
+    private ServerMode serverMode;
 
     private PrintWriter outWriter;
     private BufferedReader inReader;
@@ -39,8 +39,8 @@ public final class Contact {
     private boolean semesterNegotiated = false;
 
 
-    Contact(Socket socket, NetworkMode networkMode, String username, int semester) throws IOException {
-        this.networkMode = networkMode;
+    Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
+        this.serverMode = serverMode;
         this.username = username;
         this.semester = semester;
 
@@ -57,12 +57,12 @@ public final class Contact {
         System.out.println("Contact CTOR end");
     }
 
-    Contact(Socket socket, NetworkMode networkMode) throws IOException {
-        this(socket, networkMode, networkMode.name(), 1);
+    Contact(Socket socket, ServerMode serverMode) throws IOException {
+        this(socket, serverMode, serverMode.name(), 1);
     }
 
-    Contact(NetworkMode networkMode) throws IOException {
-        this(null, networkMode);
+    Contact(ServerMode serverMode) throws IOException {
+        this(null, serverMode);
     }
 
     /**
@@ -111,10 +111,12 @@ public final class Contact {
     }
 
     private void init_communication() {
-        new Thread(this::receiveLoop).start();
+        Thread comm = new Thread(this::receiveLoop);
+        comm.setName("Contact comm Thread");
+        comm.start();
 
         // if hosted, send HELLO
-        if (networkMode == NetworkMode.SERVER) {
+        if (serverMode == ServerMode.SERVER) {
             HELLO(SEND, implementedProtocolVersion, semester, username);
         }
     }
@@ -125,6 +127,9 @@ public final class Contact {
                 String input = inReader.readLine();
                 if (input == null) {
                     throw new IOException("Network received null input, peer seems to have disconnected");
+                }
+                if (input.equals("")) {
+                    continue;
                 }
                 log_debug("received: '" + input + "'");
                 input = input.toUpperCase();
@@ -468,5 +473,19 @@ public final class Contact {
                 log_stderr("ERR: " + CODE + ", " + REASON);
             }
         }
+    }
+
+    public boolean getIsConnected() {
+        if (!semesterNegotiated)
+            log_debug("wait for me");
+
+        return semesterNegotiated;
+    }
+
+    public int getCommonSemester() {
+        if (!semesterNegotiated) {
+            log_stderr("error, trying to get negotiated semester before negotiation took place");
+        }
+        return semester;
     }
 }
