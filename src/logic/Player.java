@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private Logic logic = null;
+    public Logic logic = null;
 
     public int maxLevel = 1;
     public String name;
