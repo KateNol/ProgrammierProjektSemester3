@@ -30,7 +30,6 @@ public class Logic { //Logic is subject, Player is observer
      * @param enemy  Player 2, mainly network player or AI
      * @throws NullPointerException if one of the players is null
      */
-    //TODO limit the players to two
     public Logic(Player player, Player enemy) throws NullPointerException {
         if (player == null || enemy == null) {
             throw new NullPointerException("One of the players is null!");
@@ -47,10 +46,11 @@ public class Logic { //Logic is subject, Player is observer
      * @param p Player
      * @throws NullPointerException if player is null
      */
-    public void addPlayer(Player p) throws NullPointerException {
+    public void addPlayer(Player p) throws NullPointerException, IndexOutOfBoundsException {
         if (p == null) {
             throw new NullPointerException("Not able to add player!");
         }
+        if (playersList.size() == 2) { throw new IndexOutOfBoundsException("Can't add more than two Players"); }
         p.setLogic(this);
         playersList.add(p);
     }
@@ -88,6 +88,7 @@ public class Logic { //Logic is subject, Player is observer
      * @param p Player
      */
     public void gameOver(Player p) {
-
+        //TODO implement, perhaps let the GUI know to return to the home screen
+        playersList.remove(1);
     }
 }

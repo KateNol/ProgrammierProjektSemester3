@@ -11,7 +11,7 @@ public abstract class Player {
     private Logic logic = null; //for inform the logic about certain actions
 
     public int maxLevel = 1; //max progress the player made
-    public String name;
+    public String name; // name of the player
     private final ArrayList<Ship> ships = null; // List of ships the player has
     private final Map myMap = new Map(); // own map, that contains the state of the ships and the shots the enemy took
     private final Map enemyMap = new Map(); // enemy map, contains information about whether the shot was a hit or miss
@@ -137,6 +137,8 @@ public abstract class Player {
 
     /**
      * Inheriting class has to implement this.
+     * this method gets called by the logic when it's the players turn.
+     * Expects a Coordinate. After returning the Coordinate the procedure of the turn goes automatically
      * @return the coordinate of the shot the Player wants to shoot at.
      */
     public abstract Coordinate getInput();
