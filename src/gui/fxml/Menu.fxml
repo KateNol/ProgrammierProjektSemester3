@@ -9,17 +9,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="gui.controllers.controllerScene">
+<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.controllerScene">
    <children>
-      <BorderPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="CENTER" prefHeight="272.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Battleship">
                      <font>
-                        <Font size="72.0"/>
+                        <Font size="72.0" />
                      </font>
                   </Label>
                </children>
@@ -28,53 +26,49 @@
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="350.0" text="Continue" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#switchToSceneLobby" prefWidth="350.0" text="Continue" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="50.0"/>
+                        <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
                   <Button mnemonicParsing="false" prefWidth="350.0" text="New Game" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="50.0"/>
+                        <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="loadGame" mnemonicParsing="false" onAction="#switchToSceneFileManager"
-                          prefWidth="350.0" text="Load Game" textAlignment="CENTER">
+                  <Button fx:id="loadGame" mnemonicParsing="false" onAction="#switchToSceneFileManager" prefWidth="350.0" text="Load Game" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="50.0"/>
+                        <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="rules" mnemonicParsing="false" onAction="#switchToSceneRules" prefWidth="350.0"
-                          text="Rules" textAlignment="CENTER">
+                  <Button fx:id="rules" mnemonicParsing="false" onAction="#switchToSceneRules" prefWidth="350.0" text="Rules" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="50.0"/>
+                        <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#switchToSceneSettings" prefWidth="350.0" text="Settings"
-                          textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#switchToSceneSettings" prefWidth="350.0" text="Settings" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="50.0"/>
+                        <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="exit" mnemonicParsing="false" onAction="#exitGame" prefWidth="350.0" text="Exit"
-                          textAlignment="CENTER">
+                  <Button fx:id="exit" mnemonicParsing="false" onAction="#exitGame" prefWidth="350.0" text="Exit" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                   </Button>
                </children>

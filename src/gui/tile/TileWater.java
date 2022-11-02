@@ -1,21 +1,20 @@
 package gui.tile;
 
-
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
+/**
+ * @author Stefan
+ */
+public class TileWater extends Tile {
 
-public class TileWater extends Rectangle {
-    public int x, y;
-    public String name;
-
+    /**
+     * Coordinates where water is on the board
+     * @param x Coordinate on the Board
+     * @param y Coordinate on the Board
+     */
     public TileWater(int x, int y) {
-        super(40, 40);
-        this.name = name;
-        this.setWidth(40);
-        this.setHeight(40);
+        super(x, y);
         setFill(Color.AQUA);
         setStroke(Color.BLACK);
     }
-
 }
