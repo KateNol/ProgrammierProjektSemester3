@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static network.internal.Util.*;
 
-public abstract class NetworkPlayer {
+public abstract class NetworkPlayer extends Player {
     private Contact contact;
 
     /**

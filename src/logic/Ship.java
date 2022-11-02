@@ -1,5 +1,7 @@
 package logic;
 
+import java.io.IOException;
+
 /**
  * implements ships with size, exact positions and health
  */
@@ -10,13 +12,11 @@ public class Ship {
 
     /**
      *
-     * @param size defines shipsize as int
-     * @param pivot pivot of ship, works only with alignment
-     * @param align alignment, can be HOR_LEFT, HOR_RIGHT, VERT_UP, VERT_DOWN
+     * @param pos Array containing the Coordinates of the ship
      */
-    public Ship(int size, Coordinate pivot, Alignment align) {
-        initShip(size);
-        setPos(pivot, align);
+    public Ship(Coordinate[] pos) {
+        initShip(pos.length);
+        this.pos = pos;
     }
 
     /**
@@ -100,6 +100,8 @@ public class Ship {
         }
         return this.pos[p];
     }
+
+
 
     /**
      * checks if ship got hit
