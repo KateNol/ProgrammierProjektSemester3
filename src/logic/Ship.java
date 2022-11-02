@@ -12,13 +12,11 @@ public class Ship {
 
     /**
      *
-     * @param size defines shipsize as int
-     * @param pivot pivot of ship, works only with alignment
-     * @param align alignment, can be HOR_LEFT, HOR_RIGHT, VERT_UP, VERT_DOWN
+     * @param pos Array containing the Coordinates of the ship
      */
-    public Ship(int size, Coordinate pivot, Alignment align) {
-        initShip(size);
-        setPos(pivot, align);
+    public Ship(Coordinate[] pos) {
+        initShip(pos.length);
+        this.pos = pos;
     }
 
     /**
@@ -103,36 +101,7 @@ public class Ship {
         return this.pos[p];
     }
 
-    /**
-     * creates an array
-     * @param pivot
-     * @param alignment
-     * @return
-     */
-    public Coordinate[] createArray(Coordinate pivot, Alignment alignment) {
-        Coordinate[] position = new Coordinate[this.size];
-        for(int i = 0; i < this.size; i++) {
-            switch (alignment) {
-                case VERT_UP:
-                    position[i].setRow(pivot.getRow());
-                    position[i].setCol(pivot.getCol()-i);
-                    break;
-                case VERT_DOWN:
-                    position[i].setRow(pivot.getRow());
-                    position[i].setCol(pivot.getCol()+i);
-                    break;
-                case HOR_RIGHT:
-                    position[i].setRow(pivot.getRow()+i);
-                    position[i].setCol(pivot.getCol());
-                    break;
-                case HOR_LEFT:
-                    position[i].setRow(pivot.getRow()-i);
-                    position[i].setCol(pivot.getCol());
-                    break;
-            }
-        }
-        return position;
-    }
+
 
     /**
      * checks if ship got hit

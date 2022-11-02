@@ -27,10 +27,9 @@ public abstract class Player {
      *
      * @param name Name of the player
      */
-    //public Player(NetworkMode networkMode, String name) throws IOException {
     public Player(String name) throws IOException {
-        //super(networkMode);
         this.name = name;
+        //TODO shipSizes maybe attribute so one can iterate over it to set ships, or iterate over ships-Array?
         //Initialize shipsizes for Level 1 fixed
         int[] shipSizes = {2, 2, 2, 2, 4, 6};
         for (int shipSize : shipSizes) {
@@ -59,26 +58,58 @@ public abstract class Player {
     abstract void setShips();
 
     /**
-     * add ship to the ship array
-     * //TODO add ship to the map
-     * @param size
-     * @param pivot
-     * @param alignment
+     * Creates a ship with check, if the position is legal nd adds it either to the ships-Array and to the Map
+     * @param size int
+     * @param pivot Coordinate
+     * @param alignment Alignment
      */
 
-    private void addSchip(int size, Coordinate pivot, Alignment alignment) {
-        Ship s = new Ship(size);
-        Coordinate[] position = s.createArray(pivot, alignment);
+    private void addShip(int size, Coordinate pivot, Alignment alignment) {
+        Coordinate[] position = createArray(size, pivot, alignment);
         if(checkLegal(position)) {
-            s.
+            ships.add(new Ship(position));
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.SHIP);
+            }
         }
+    }
+
+    /**
+     * creates an array
+     * @param pivot Coordinate
+     * @param alignment Alignment
+     * @return created array of type Coordinate[]
+     */
+    private Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
+        Coordinate[] position = new Coordinate[size];
+        for(int i = 0; i < size; i++) {
+            switch (alignment) {
+                case VERT_UP:
+                    position[i].setRow(pivot.getRow());
+                    position[i].setCol(pivot.getCol()-i);
+                    break;
+                case VERT_DOWN:
+                    position[i].setRow(pivot.getRow());
+                    position[i].setCol(pivot.getCol()+i);
+                    break;
+                case HOR_RIGHT:
+                    position[i].setRow(pivot.getRow()+i);
+                    position[i].setCol(pivot.getCol());
+                    break;
+                case HOR_LEFT:
+                    position[i].setRow(pivot.getRow()-i);
+                    position[i].setCol(pivot.getCol());
+                    break;
+            }
+        }
+        return position;
     }
 
     /**
      *  iterates over all ships set and checks, if there's an overlapping ship
      *  and checks if any point of the ship is off map
      * @param position
-     * @return
+     * @return result of the check as boolean
      */
     //TODO check if neighbor is also empty
     private boolean checkLegal(Coordinate[] position) {
