@@ -1,5 +1,7 @@
 package network.internal;
 
+import logic.Coordinate;
+import logic.ShotResult;
 import network.ServerMode;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +12,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static network.internal.MessageMode.RECEIVE;
 import static network.internal.MessageMode.SEND;
@@ -22,7 +26,7 @@ import static network.internal.Util.*;
  * player classes will use this class to send info to the other player
  * network protocol methods are named in CAPSLOCK
  */
-public final class Contact {
+public final class Contact extends Observable {
     private Socket socket;
     private ServerMode serverMode;
 
@@ -401,6 +405,7 @@ public final class Contact {
             }
             case RECEIVE -> {
                 // TODO forward this info to logic
+                notifyObservers(new Coordinate(3, 4));
             }
         }
     }
@@ -414,6 +419,7 @@ public final class Contact {
             case RECEIVE -> {
                 // TODO forward this info to logic
                 // TODO special handling for GAME_OVER?
+                notifyObservers(ShotResult.HIT);
             }
         }
     }
@@ -488,4 +494,26 @@ public final class Contact {
         }
         return semester;
     }
+
+    /**
+     * If this object has changed, as indicated by the
+     * {@code hasChanged} method, then notify all of its observers
+     * and then call the {@code clearChanged} method to indicate
+     * that this object has no longer changed.
+     * <p>
+     * Each observer has its {@code update} method called with two
+     * arguments: this observable object and the {@code arg} argument.
+     *
+     * @param arg any object.
+     * @see Observable#clearChanged()
+     * @see Observable#hasChanged()
+     * @see Observer#update(Observable, Object)
+     */
+    @Override
+    public void notifyObservers(Object arg) {
+        setChanged();
+        log_debug("trying to notify " + countObservers());
+        super.notifyObservers(arg);
+    }
+
 }

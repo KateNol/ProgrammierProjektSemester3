@@ -1,12 +1,15 @@
 package network;
 
 import logic.Player;
+import logic.ShotResult;
 import network.internal.Client;
 import network.internal.Contact;
 import network.internal.Server;
 //import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import static network.internal.Util.*;
 
@@ -63,4 +66,26 @@ public abstract class NetworkPlayer extends Player {
         return contact.getCommonSemester();
     }
 
+    /**
+     * Adds an observer to the set of observers for this object, provided
+     * that it is not the same as some observer already in the set.
+     * The order in which notifications will be delivered to multiple
+     * observers is not specified. See the class comment.
+     *
+     * @param o an observer to be added.
+     * @throws NullPointerException if the parameter o is null.
+     */
+    @Override
+    public synchronized void addObserver(Observer o) {
+        super.addObserver(o);
+        contact.addObserver(o);
+    }
+
+    /**
+     * @param hit
+     */
+    @Override
+    public void send(ShotResult hit) {
+        contact.sendRawMessage("FIRE_ACK;HIT;");
+    }
 }
