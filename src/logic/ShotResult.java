@@ -1,10 +1,7 @@
 package logic;
 
-public enum MapState {
-    WATER,
-    SHIP,
+public enum ShotResult {
     HIT,
     MISS,
     SUNK
 }
-

@@ -1,6 +1,6 @@
 package network;
 
-public enum NetworkMode {
+public enum ServerMode {
     SERVER,
     CLIENT
 }
