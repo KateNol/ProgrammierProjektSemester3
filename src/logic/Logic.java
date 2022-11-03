@@ -55,7 +55,7 @@ public class Logic implements Observer {
             log_debug("we got shot");
             // figure out if the enemy hit
             player.send(ShotResult.HIT);
-
+            mostRecentShotReceived = null;
         }
     }
 

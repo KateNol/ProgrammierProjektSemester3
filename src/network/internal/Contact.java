@@ -514,6 +514,7 @@ public final class Contact extends Observable {
         setChanged();
         log_debug("trying to notify " + countObservers());
         super.notifyObservers(arg);
+        clearChanged();
     }
 
 }
