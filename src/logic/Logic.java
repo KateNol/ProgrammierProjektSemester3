@@ -10,7 +10,15 @@ import java.util.concurrent.locks.ReentrantLock;
 import static logic.Util.log_debug;
 import static logic.Util.log_stderr;
 
+/**
+ * the logic class contains a thread with the game loop
+ * the logic is an overserver of the player, the player will notify the logic of shot and shotresult events
+ */
 public class Logic implements Observer {
+
+    /**
+     * the game loop is implemented as a finite state machine, these are the states
+     */
     enum State {
         Start,
         PlayersReady,
@@ -26,7 +34,6 @@ public class Logic implements Observer {
     private State state = null;
 
     private int semester = 0;
-    private boolean gameOver = false;
 
     private Coordinate shot = new Coordinate(-1, -1);
     private ShotResult shotResult = ShotResult.SUNK;
@@ -34,7 +41,7 @@ public class Logic implements Observer {
     private final Object shotLock = new Object();
     private final Object shotResultLock = new Object();
 
-    // FIXME: remove this, only used by gui-player
+    // FIXME: remove this
     public Logic(Player p, Player e) {
         log_stderr("do not use this method");
         System.exit(1);
@@ -50,8 +57,13 @@ public class Logic implements Observer {
         logicThread.start();
     }
 
+
+    /**
+     * main logic thread containing the game loop
+     */
     private void logicGameLoop() {
         state = State.Start;
+
         // wait for both players to connect
         while (!player.getIsConnected()) ;
         log_debug("both players connected");
@@ -68,7 +80,8 @@ public class Logic implements Observer {
             state = State.EnemyTurn;
         }
 
-        while (!gameOver) {
+        // begin loop
+        while (state != State.GameOver) {
             switch (state) {
                 case OurTurn -> {
                     // our turn, ask our player for a move
@@ -80,11 +93,14 @@ public class Logic implements Observer {
                     state = State.WaitForShotResponse;
                 }
                 case WaitForShotResponse -> {
+                    // we just shot somewhere, now we wait for a response, this means
+                    // we have to wait for notify() to get called
                     try {
                         synchronized (shotResultLock) {
                             shotResultLock.wait();
                         }
                         log_debug("got response " + shotResult);
+                        // if we hit/sunk, its our turn again, else its the enemies turn next
                         if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                             state = State.OurTurn;
                         } else {
@@ -95,13 +111,16 @@ public class Logic implements Observer {
                     }
                 }
                 case EnemyTurn -> {
+                    // its the enemies turn, wait until notify() tells us where the enemy shot
                     try {
                         synchronized (shotLock) {
                             shotLock.wait();
                             log_debug("received shot, sending response");
                             // TODO actually evaluate the shot
+                            // for now, we just flip a coin on whether the enemy hit a ship or not
                             Random random = new Random();
                             ShotResult shotResult = random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
+                            // send the result to the other player
                             player.sendShotResponse(shotResult);
                             if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                                 state = State.EnemyTurn;
@@ -118,14 +137,11 @@ public class Logic implements Observer {
     }
 
     /**
-     * This method is called whenever the observed object is changed. An
-     * application calls an {@code Observable} object's
-     * {@code notifyObservers} method to have all the object's
-     * observers notified of the change.
+     * this method will get triggert by the player
+     * for more info visit observer-pattern
      *
-     * @param o   the observable object.
-     * @param arg an argument passed to the {@code notifyObservers}
-     *            method.
+     * @param arg arg will be a Coordinate (enemy wants to shoot there)
+     *            or a ShotResult (we shot somewhere and this is the result)
      */
     @Override
     public void update(Observable o, Object arg) {
