@@ -15,6 +15,7 @@ import static network.internal.Util.*;
 
 public abstract class NetworkPlayer extends Player {
     private Contact contact;
+    private ShotResult lastShotResult = null;
 
     /**
      * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
@@ -66,6 +67,11 @@ public abstract class NetworkPlayer extends Player {
         return contact.getCommonSemester();
     }
 
+    @Override
+    public String getUsername() {
+        return contact.getUsername();
+    }
+
     /**
      * Adds an observer to the set of observers for this object, provided
      * that it is not the same as some observer already in the set.
@@ -86,6 +92,9 @@ public abstract class NetworkPlayer extends Player {
      */
     @Override
     public void send(ShotResult hit) {
-        contact.sendRawMessage("FIRE_ACK;HIT;");
+        String hitString = hit.toString();
+
+
+        contact.sendRawMessage("FIRE_ACK;" + hitString + ";");
     }
 }

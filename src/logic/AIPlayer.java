@@ -22,4 +22,9 @@ public class AIPlayer extends NetworkPlayer {
     public AIPlayer(ServerMode serverMode) throws IOException {
         super(serverMode);
     }
+
+    @Override
+    public void getShot() {
+
+    }
 }

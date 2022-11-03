@@ -8,6 +8,9 @@ public abstract class Player extends Observable {
 
     public abstract int getCommonSemester();
 
-    public void send(ShotResult hit) {
-    }
+    public abstract void send(ShotResult hit);
+
+    public abstract String getUsername();
+
+    public abstract void getShot();
 }

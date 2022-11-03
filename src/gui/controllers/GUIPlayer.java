@@ -28,6 +28,11 @@ public abstract class GUIPlayer extends Player {
     private void initialize() throws IOException {
         instance = this;
         networkPlayer = new NetworkPlayer(ServerMode.SERVER) {
+            @Override
+            public void getShot() {
+
+            }
+
             /**
              * @param msg
              */

@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 import static network.internal.MessageMode.RECEIVE;
 import static network.internal.MessageMode.SEND;
@@ -405,7 +402,7 @@ public final class Contact extends Observable {
             }
             case RECEIVE -> {
                 // TODO forward this info to logic
-                notifyObservers(new Coordinate(3, 4));
+                notifyObservers(new Coordinate(ROW, COL));
             }
         }
     }
@@ -419,7 +416,13 @@ public final class Contact extends Observable {
             case RECEIVE -> {
                 // TODO forward this info to logic
                 // TODO special handling for GAME_OVER?
-                notifyObservers(ShotResult.HIT);
+                ShotResult shotResult = switch (TYPE.toLowerCase(Locale.ROOT)) {
+                    case "hit" -> ShotResult.HIT;
+                    case "miss" -> ShotResult.MISS;
+                    case "sunk" -> ShotResult.SUNK;
+                    default -> null;
+                };
+                notifyObservers(shotResult);
             }
         }
     }
@@ -515,6 +518,10 @@ public final class Contact extends Observable {
         log_debug("trying to notify " + countObservers());
         super.notifyObservers(arg);
         clearChanged();
+    }
+
+    public String getUsername() {
+        return username;
     }
 
 }

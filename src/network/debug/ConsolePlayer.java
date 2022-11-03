@@ -1,6 +1,7 @@
 package network.debug;
 
 
+import logic.ShotResult;
 import network.ServerMode;
 import network.NetworkPlayer;
 
@@ -28,6 +29,7 @@ public final class ConsolePlayer extends NetworkPlayer {
     }
 
     private void inputLoop() {
+        /*
         new Thread(() -> {
             while (true) {
                 String input;
@@ -36,5 +38,15 @@ public final class ConsolePlayer extends NetworkPlayer {
                 sendMessage(input);
             }
         }).start();
+        */
+    }
+
+    @Override
+    public void getShot() {
+        System.out.println("Enter coords");
+        int x = scanner.nextInt();
+        int y = scanner.nextInt();
+
+        sendMessage("FIRE;" + x + ";" + y);
     }
 }
