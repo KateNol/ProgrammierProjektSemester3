@@ -1,5 +1,6 @@
 package logic;
 
+import javax.xml.stream.events.EndElement;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -10,22 +11,28 @@ import static logic.Util.log_debug;
 import static logic.Util.log_stderr;
 
 public class Logic implements Observer {
-    private enum State {
+    enum State {
         Start,
         PlayersReady,
         ShipsPlaced,
         GameReady,
         OurTurn,
+        WaitForShotResponse,
         EnemyTurn,
         GameOver
     }
+
     private Player player = null;
     private State state = null;
 
     private int semester = 0;
     private boolean gameOver = false;
-    ShotResult shotResult = null;
-    private Lock lock = new ReentrantLock();
+
+    private Coordinate shot = new Coordinate(-1, -1);
+    private ShotResult shotResult = ShotResult.SUNK;
+
+    private final Object shotLock = new Object();
+    private final Object shotResultLock = new Object();
 
     // FIXME: remove this, only used by gui-player
     public Logic(Player p, Player e) {
@@ -37,75 +44,78 @@ public class Logic implements Observer {
         this.player = player;
         player.addObserver(this);
 
+        Thread logicThread = new Thread(this::logicGameLoop);
+        logicThread.setName("Logic Game Loop");
+        logicThread.setDaemon(false);
+        logicThread.start();
+    }
+
+    private void logicGameLoop() {
         state = State.Start;
-        while (!player.getIsConnected());
+        // wait for both players to connect
+        while (!player.getIsConnected()) ;
+        log_debug("both players connected");
         state = State.PlayersReady;
-        // TODO implement get ships
-        // while(!player.getShips());
-        state = State.ShipsPlaced;
-        // TODO implement choose starting player
+
+        // TODO get ships from player
+        state = State.GameReady;
+
+        // get info on who begins
+        // TODO get actual info, for now server always begins
         if (player.getUsername().equalsIgnoreCase("server")) {
             state = State.OurTurn;
         } else {
             state = State.EnemyTurn;
         }
-        log_debug("state: " + state);
-    }
 
-    private void handleReceiveShot(Coordinate coordinate) {
-        if (state != State.EnemyTurn) {
-            log_debug("not in state EnemyTurn");
-            return;
-        }
-
-        // TODO determine if this was a hit
-        Random random = new Random();
-        ShotResult shotResult = random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
-        player.send(shotResult);
-
-        switch (shotResult) {
-            case MISS:
-                state = State.OurTurn;
-                handleTurn();
-                break;
-            case HIT:
-            case SUNK: {
-                state = State.EnemyTurn;
-                break;
+        while (!gameOver) {
+            switch (state) {
+                case OurTurn -> {
+                    // our turn, ask our player for a move
+                    Coordinate coordinate = player.getShot();
+                    log_debug("our player wants to shoot at " + coordinate);
+                    // TODO check if this move would be legal
+                    player.sendShot(coordinate);
+                    log_debug("waiting for response");
+                    state = State.WaitForShotResponse;
+                }
+                case WaitForShotResponse -> {
+                    try {
+                        synchronized (shotResultLock) {
+                            shotResultLock.wait();
+                        }
+                        log_debug("got response " + shotResult);
+                        if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                            state = State.OurTurn;
+                        } else {
+                            state = State.EnemyTurn;
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case EnemyTurn -> {
+                    try {
+                        synchronized (shotLock) {
+                            shotLock.wait();
+                            log_debug("received shot, sending response");
+                            // TODO actually evaluate the shot
+                            Random random = new Random();
+                            ShotResult shotResult = random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
+                            player.sendShotResponse(shotResult);
+                            if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                                state = State.EnemyTurn;
+                            } else {
+                                state = State.OurTurn;
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }
-
-    private void handleTurn() {
-        if (state != State.OurTurn) {
-            log_debug("not in state OutTurn");
-            return;
-        }
-        player.getShot();
-
-        while(true) {
-            while (!lock.tryLock());
-            if (shotResult != null)
-                break;
-        }
-
-
-        switch (shotResult) {
-            case MISS:
-                state = State.EnemyTurn;
-                handleTurn();
-                break;
-            case HIT:
-            case SUNK: {
-                state = State.OurTurn;
-                break;
-            }
-        }
-
-        shotResult = null;
-        lock.unlock();
-    }
-
 
     /**
      * This method is called whenever the observed object is changed. An
@@ -120,15 +130,20 @@ public class Logic implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         log_debug("notify got something");
-        if (arg instanceof Coordinate) {
-            log_debug("got notified of new show at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
-            handleReceiveShot((Coordinate) arg);
-        } else if (arg instanceof ShotResult) {
-            log_debug("got notified of ShotResult");
-
-            while(!lock.tryLock());
-            shotResult = (ShotResult) arg;
-            lock.unlock();
+        if (arg instanceof Coordinate recvShot) {
+            log_debug("got notified of new shot at " + ((Coordinate) arg).row() + " " + ((Coordinate) arg).col());
+            synchronized (shotLock) {
+                log_debug("acquired lock for shot");
+                shot = recvShot;
+                shotLock.notify();
+            }
+        } else if (arg instanceof ShotResult recvShotResult) {
+            log_debug("got notified of ShotResult " + recvShotResult);
+            synchronized (shotResultLock) {
+                log_debug("acquired lock");
+                shotResult = recvShotResult;
+                shotResultLock.notify();
+            }
         }
     }
 }

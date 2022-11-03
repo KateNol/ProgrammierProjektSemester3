@@ -1,6 +1,7 @@
 package network.debug;
 
 
+import logic.Coordinate;
 import logic.ShotResult;
 import network.ServerMode;
 import network.NetworkPlayer;
@@ -41,12 +42,15 @@ public final class ConsolePlayer extends NetworkPlayer {
         */
     }
 
-    @Override
-    public void getShot() {
-        System.out.println("Enter coords");
-        int x = scanner.nextInt();
-        int y = scanner.nextInt();
 
-        sendMessage("FIRE;" + x + ";" + y);
+    /**
+     * @return
+     */
+    @Override
+    public Coordinate getShot() {
+        System.out.println("Enter a Move: ");
+        int col = scanner.nextInt();
+        int row = scanner.nextInt();
+        return new Coordinate(row, col);
     }
 }

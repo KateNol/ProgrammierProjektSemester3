@@ -4,6 +4,7 @@ import network.NetworkPlayer;
 import network.ServerMode;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class AIPlayer extends NetworkPlayer {
 
@@ -23,8 +24,12 @@ public class AIPlayer extends NetworkPlayer {
         super(serverMode);
     }
 
+    /**
+     * @return
+     */
     @Override
-    public void getShot() {
-
+    public Coordinate getShot() {
+        Random random = new Random();
+        return new Coordinate(random.nextInt(), random.nextInt());
     }
 }

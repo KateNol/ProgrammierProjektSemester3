@@ -38,6 +38,7 @@ public final class Contact extends Observable {
 
     private int semester;
     private boolean semesterNegotiated = false;
+    private final Object semesterLock = new Object();
 
 
     Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
@@ -259,16 +260,18 @@ public final class Contact extends Observable {
                 sendMessage("HELLO", String.valueOf(VERSION), String.valueOf(MAX_SEMESTER), USERNAME);
             }
             case RECEIVE -> {
-                if (protocolVersionNegotiated || semesterNegotiated) {
-                    exitWithError(1, "HELLO: attempted re-negotiation of protocol or semester, exiting...");
+                synchronized (semesterLock) {
+                    if (protocolVersionNegotiated || semesterNegotiated) {
+                        exitWithError(1, "HELLO: attempted re-negotiation of protocol or semester, exiting...");
+                    }
+                    protocolVersion = Math.min(implementedProtocolVersion, VERSION);
+                    protocolVersionNegotiated = true;
+                    semester = Math.min(semester, MAX_SEMESTER);
+                    semesterNegotiated = true;
+                    peerUsername = USERNAME;
+                    log_debug("HELLO: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
+                    HELLO_ACK(SEND, protocolVersion, semester, username);
                 }
-                protocolVersion = Math.min(implementedProtocolVersion, VERSION);
-                protocolVersionNegotiated = true;
-                semester = Math.min(semester, MAX_SEMESTER);
-                semesterNegotiated = true;
-                peerUsername = USERNAME;
-                log_debug("HELLO: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
-                HELLO_ACK(SEND, protocolVersion, semester, username);
             }
         }
     }
@@ -279,23 +282,25 @@ public final class Contact extends Observable {
                 sendMessage("HELLO_ACK", String.valueOf(VERSION), String.valueOf(SEMESTER), USERNAME);
             }
             case RECEIVE -> {
-                if (VERSION > implementedProtocolVersion) {
-                    exitWithError(2, "HELLO_ACK: VERSION > implementedProtocolVersion (" + VERSION + ">" + implementedProtocolVersion + ")");
-                }
-                if (SEMESTER > semester) {
-                    exitWithError(3, "HELLO_ACK: SEMESTER > this.semester (" + SEMESTER + ">" + semester + ")");
-                }
-                if (protocolVersionNegotiated || semesterNegotiated) {
-                    exitWithError(4, "HELLO_ACK: attempted re-negotiation of protocol or semester");
-                }
+                synchronized (semesterLock) {
+                    if (VERSION > implementedProtocolVersion) {
+                        exitWithError(2, "HELLO_ACK: VERSION > implementedProtocolVersion (" + VERSION + ">" + implementedProtocolVersion + ")");
+                    }
+                    if (SEMESTER > semester) {
+                        exitWithError(3, "HELLO_ACK: SEMESTER > this.semester (" + SEMESTER + ">" + semester + ")");
+                    }
+                    if (protocolVersionNegotiated || semesterNegotiated) {
+                        exitWithError(4, "HELLO_ACK: attempted re-negotiation of protocol or semester");
+                    }
 
-                protocolVersion = VERSION;
-                protocolVersionNegotiated = true;
-                semester = SEMESTER;
-                semesterNegotiated = true;
-                peerUsername = USERNAME;
-                log_debug("HELLO_ACK: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
-                START(SEND);
+                    protocolVersion = VERSION;
+                    protocolVersionNegotiated = true;
+                    semester = SEMESTER;
+                    semesterNegotiated = true;
+                    peerUsername = USERNAME;
+                    log_debug("HELLO_ACK: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
+                    START(SEND);
+                }
             }
         }
     }
@@ -485,15 +490,16 @@ public final class Contact extends Observable {
     }
 
     public boolean getIsConnected() {
-        if (!semesterNegotiated)
-            log_debug("wait for me");
-
-        return semesterNegotiated;
+        synchronized (semesterLock) {
+            return semesterNegotiated;
+        }
     }
 
-    public int getCommonSemester() {
-        if (!semesterNegotiated) {
-            log_stderr("error, trying to get negotiated semester before negotiation took place");
+    public synchronized int getCommonSemester() {
+        synchronized (semesterLock) {
+            if (!semesterNegotiated) {
+                log_stderr("error, trying to get negotiated semester before negotiation took place");
+            }
         }
         return semester;
     }

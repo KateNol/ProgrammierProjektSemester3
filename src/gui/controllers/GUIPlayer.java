@@ -2,6 +2,7 @@ package gui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import logic.Coordinate;
 import logic.Player;
 import network.ServerMode;
 import network.NetworkPlayer;
@@ -28,9 +29,14 @@ public abstract class GUIPlayer extends Player {
     private void initialize() throws IOException {
         instance = this;
         networkPlayer = new NetworkPlayer(ServerMode.SERVER) {
-            @Override
-            public void getShot() {
 
+
+            /**
+             * @return
+             */
+            @Override
+            public Coordinate getShot() {
+                return null;
             }
 
             /**

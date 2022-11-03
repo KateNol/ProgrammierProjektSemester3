@@ -1,5 +1,6 @@
 package network;
 
+import logic.Coordinate;
 import logic.Player;
 import logic.ShotResult;
 import network.internal.Client;
@@ -73,6 +74,22 @@ public abstract class NetworkPlayer extends Player {
     }
 
     /**
+     * @param coordinate
+     */
+    @Override
+    public void sendShot(Coordinate coordinate) {
+        sendMessage("FIRE;" + coordinate.col() + ";" + coordinate.row());
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void sendShotResponse(ShotResult shotResult) {
+        sendMessage("FIRE_ACK;" + shotResult);
+    }
+
+    /**
      * Adds an observer to the set of observers for this object, provided
      * that it is not the same as some observer already in the set.
      * The order in which notifications will be delivered to multiple
@@ -82,19 +99,8 @@ public abstract class NetworkPlayer extends Player {
      * @throws NullPointerException if the parameter o is null.
      */
     @Override
-    public synchronized void addObserver(Observer o) {
+    public void addObserver(Observer o) {
         super.addObserver(o);
         contact.addObserver(o);
-    }
-
-    /**
-     * @param hit
-     */
-    @Override
-    public void send(ShotResult hit) {
-        String hitString = hit.toString();
-
-
-        contact.sendRawMessage("FIRE_ACK;" + hitString + ";");
     }
 }
