@@ -4,9 +4,36 @@ import java.util.Observable;
 import java.util.Random;
 
 public abstract class Player extends Observable {
+    private String username;
+    private int maxSemester;
+
+    private int[] shipSizes;
+    private int mapSize;
+    private boolean globalConfigLoaded;
+
+    private GlobalConfig globalConfig;
+
+    public Player(PlayerConfig playerConfig, GlobalConfig globalConfig) {
+        if (playerConfig != null && globalConfig != null) {
+            maxSemester = playerConfig.getMaxSemester();
+            username = playerConfig.getUsername();
+        }
+
+        this.globalConfig = globalConfig;
+        globalConfigLoaded = false;
+    }
+
+    public void loadGlobalConfig() {
+        shipSizes = globalConfig.getShipSizes(getCommonSemester());
+        mapSize = globalConfig.getMapSize(getCommonSemester());
+
+        globalConfigLoaded = true;
+    }
+
     /**
      * returns true when both players are connected
      * implemented by NetworkPlayer
+     *
      * @return
      */
     public abstract boolean getIsConnected();

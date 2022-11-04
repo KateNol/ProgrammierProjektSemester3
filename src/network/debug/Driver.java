@@ -81,9 +81,9 @@ public final class Driver {
         Player player = null;
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(serverMode, addr);
+            player = new ConsolePlayer(null, null, serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(serverMode, addr);
+            player = new AIPlayer(null, null, serverMode, addr);
         }
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
