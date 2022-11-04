@@ -1,11 +1,9 @@
-package action;
+package gui.action;
 
 import gui.objekt.BoardBase;
-import gui.tile.TileShip;
-import gui.tile.TileShipComplete;
+import gui.objekt.HBoxShip;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 
 public class DraggableMaker extends BoardBase {
 
@@ -22,7 +20,7 @@ public class DraggableMaker extends BoardBase {
     public DraggableMaker(int boardSize, int tileSize, Pane pane) {
         super(boardSize, tileSize, pane);
     }
-    public void makeDraggable(TileShipComplete reg){
+    public void makeDraggable(HBoxShip reg){
         Node node = reg;
         node.setOnMouseDragged(mouseEvent -> {
             mousePositionX = mouseEvent.getSceneX();
@@ -31,8 +29,8 @@ public class DraggableMaker extends BoardBase {
             int x = (int) ((mousePositionX/getTileSize()) % getBoardSize()) * getTileSize();
             int y = (int) ((MousePositionY/getTileSize()) % getBoardSize()) * getTileSize();
 
-            node.setLayoutX(x - reg.getStartPositionX());
-            node.setLayoutY(y - reg.getStartPositionY());
+            //node.setLayoutX(x - reg.getStartPositionX());
+            //node.setLayoutY(y - reg.getStartPositionY());
         });
     }
 

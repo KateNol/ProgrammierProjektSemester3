@@ -1,59 +1,55 @@
 package gui.objekt;
 
-import gui.tile.TileShip;
-import gui.tile.TileShipComplete;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-public class Harbour {
-    private int[] sizeShip = {2, 2, 2, 2, 4, 6};
-    Pane pane;
+/**
+ * @author Stefan
+ */
+public class Harbour extends VBox {
+    private int[] sizeShip;
+    private int tileSize;
+    private Pane pane;
+    double startx;
+    double starty;
 
-    int startx = 700;
-    int starty = 0;
+    /**
+     *
+     * @param tileSize
+     * @param sizeShip
+     * @param pane
+     */
 
-   action.DraggableMaker draggableMaker;
-
-    public Harbour(Pane pane, action.DraggableMaker draggableMaker){
+    public Harbour(int tileSize, int[] sizeShip, Pane pane){
+        this.sizeShip = sizeShip;
+        this.tileSize = tileSize;
         this.pane = pane;
-        this.draggableMaker = draggableMaker;
     }
 
     /**
-     * Initialize Ships
+     * Initialize Ships from given Array with ship lengths
      */
-    public void inizializeShips(){
-
-        int count = 0;
-        int last_number = sizeShip[0];
-
+    public void initializeShip(){
         for(int y = 0; y < sizeShip.length; y++){
-            TileShipComplete tileShipComplete = new TileShipComplete(100,100);
-            if(last_number != sizeShip[y]){
-                count = 0;
-            }
-            count++;
-            last_number = sizeShip[y];
-            for(int x = 0; x < sizeShip[y]; x++){
-                TileShip ts = new TileShip(x, y, draggableMaker.getTileSize());
-                tileShipComplete.getChildren().add(ts);
-            }
-            Label lblCount = new Label(Integer.toString(count));
-            pane.getChildren().addAll(tileShipComplete, lblCount);
+            HBoxShip hBoxShip = new HBoxShip(sizeShip[y], tileSize);
+            this.getChildren().add(hBoxShip);
         }
+        pane.getChildren().add(this);
+        this.getChildren().forEach(this::makeDraggable);
     }
 
-    public void makeShip(){
-        for(int y = 0; y < sizeShip.length; y++){
-            TileShipComplete tsc = new TileShipComplete(startx, starty);
-            tsc.setTranslateX(700+ (y * 50));
-            draggableMaker.makeDraggable(tsc);
-            for( int x = 0; x < sizeShip[y]; x++){
-                TileShip tileShip = new TileShip(x, y, draggableMaker.getTileSize());
-                tsc.getChildren().add(tileShip);
-            }
-            pane.getChildren().add(tsc);
-        }
+    private void makeDraggable(Node node) {
+        node.setOnMousePressed(e -> {
+            //calc offeset
+            startx = e.getSceneX() - node.getTranslateX();
+            starty = e.getSceneY() - node.getTranslateY();
+        });
 
+        node.setOnMouseDragged(e -> {
+            //set
+            node.setTranslateX(e.getSceneX() - startx);
+            node.setTranslateY(e.getSceneY() - starty);
+        });
     }
 }
