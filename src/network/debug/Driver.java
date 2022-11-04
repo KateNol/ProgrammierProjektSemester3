@@ -31,7 +31,7 @@ public final class Driver {
     }
 
     public static void main(String[] args) throws IOException {
-        log_debug("this is a test class, use this only to test network classes");
+        log_debug("this is a test class, use this only to test classes");
 
         String mode = "";
 
