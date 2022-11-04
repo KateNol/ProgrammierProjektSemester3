@@ -86,6 +86,7 @@ public abstract class NetworkPlayer extends Player {
      */
     @Override
     public void sendShotResponse(ShotResult shotResult) {
+        super.sendShotResponse(shotResult);
         sendMessage("FIRE_ACK;" + shotResult);
     }
 
