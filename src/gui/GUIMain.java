@@ -43,7 +43,6 @@ public class GUIMain extends Application {
         this.stage = stage;
         this.stage.setTitle("Game Select");
         this.stage.setScene(scene);
-        System.out.println("fuck");
 
         //Set icon and tile
         Image icon = new Image(ICON_PATH);
