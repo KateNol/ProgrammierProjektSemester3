@@ -1,23 +1,28 @@
 package gui.tile;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
  * @author Stefan
  */
 public class Tile extends Rectangle {
-    public int x, y;
-    public int tileSize = 40;
+    private int x, y;
+    private int tileSize;
 
     /**
-     *
+     * Base Tile is a Rectangle
      * @param x Coordinate on the Board
      * @param y Coordinate on the Board
+     * @param tileSize TileSize in Pixel
      */
-    public Tile(int x, int y){
-        super(40 - 1, 40 - 1);
+    public Tile(int x, int y, int tileSize){
+        super(tileSize - 1, tileSize - 1);
+        this.tileSize = tileSize;
         this.x = x;
         this.y = y;
+        //Design from Tile
+        setStroke(Color.BLACK);
     }
 
     /**

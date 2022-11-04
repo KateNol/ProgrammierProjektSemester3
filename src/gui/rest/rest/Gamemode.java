@@ -1,4 +1,4 @@
-package gui.controllers;
+package gui.rest.rest;
 
 import gui.GUIMain;
 import internal.LocalEnemyMode;

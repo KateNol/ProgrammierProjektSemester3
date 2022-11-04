@@ -1,7 +1,6 @@
 package gui.objekt;
 
 import gui.tile.TileBoardText;
-import gui.tile.TileHit;
 import gui.tile.TileMiss;
 import gui.tile.TileWater;
 import javafx.scene.layout.GridPane;
@@ -32,20 +31,20 @@ public class Board extends BoardBase{
         for(int y = 0; y < getBoardSize() + 1; y++){
             for (int x = 0; x < getBoardSize() + 1; x++){
                 if(y == 0 && x == 0){
-                    TileBoardText tbt = new TileBoardText("");
+                    TileBoardText tbt = new TileBoardText(x, y, getTileSize(),"");
                     gridPane.add(tbt, x, y, 1, 1);
                 } else {
                     if(y == 0){
-                        TileBoardText tbt = new TileBoardText("" + (char) ('A' + x - 1));
+                        TileBoardText tbt = new TileBoardText(x, y, getTileSize(),"" + (char) ('A' + x - 1));
                         gridPane.add(tbt, x, y, 1, 1);
                     } else if (x == 0 && y > 0) {
-                        TileBoardText tbt = new TileBoardText("" + y);
+                        TileBoardText tbt = new TileBoardText(x, y, getTileSize(),"" + y);
                         gridPane.add(tbt, x, y, 1, 1);
                     } else {
-                        TileWater tile = new TileWater(x, y);
+                        TileWater tile = new TileWater(x, y, getTileSize());
                         tile.setOnMouseClicked(mouseEvent -> {
 
-                            TileMiss tileHit = new TileMiss(tile.getCoordinateX(), tile.getCoordinateY());
+                            TileMiss tileHit = new TileMiss(tile.getCoordinateX(), tile.getCoordinateY(), getTileSize());
                             gridPane.add(tileHit, tile.getCoordinateX(), tile.getCoordinateY(), 1, 1);
                         });
                         gridPane.add(tile, x, y, 1, 1);
