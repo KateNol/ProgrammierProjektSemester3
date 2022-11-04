@@ -1,15 +1,22 @@
 package gui.objekt;
 
 import gui.tile.TileBoardText;
+import gui.tile.TileShip;
 import gui.tile.TileWater;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 /**
  * @author Stefan
  */
-public class Board extends BoardBase{
+public class Board extends BoardBase {
     private int[][] board;
+    GridPane gridPane;
+    private int[] sizeShip;
+    private int shipCount;
+    private int shipPlaced = 0;
+
     /**
      * create a Board
      * @param board
@@ -17,9 +24,11 @@ public class Board extends BoardBase{
      * @param tileSize Pixel from one Tile
      * @param pane
      */
-    public Board(int[][] board, int boardSize, int tileSize, Pane pane) {
+    public Board(int[][] board, int[] sizeShip, int boardSize, int tileSize, Pane pane) {
         super(boardSize, tileSize, pane);
+        this.sizeShip = sizeShip;
         this.board = board;
+        this.shipCount = sizeShip.length;
     }
 
     /**
@@ -28,7 +37,7 @@ public class Board extends BoardBase{
      * in x and y Coordinates
      */
     public void initializeBoard(){
-        GridPane gridPane = new GridPane();
+        gridPane = new GridPane();
         for(int y = 0; y < getBoardSize() + 1; y++){
             for (int x = 0; x < getBoardSize() + 1; x++){
                 if(y == 0 && x == 0){
@@ -49,13 +58,31 @@ public class Board extends BoardBase{
                 }
             }
         }
+        gridPane.getChildren().forEach(this::setShip);
         getPane().getChildren().add(gridPane);
+
+    }
+
+    public void setShip(Node node){
+        node.setOnMouseClicked(e -> {
+            TileWater tileWater = (TileWater) e.getSource();
+            int x = tileWater.getCoordinateX();
+            int y = tileWater.getCoordinateY();
+            if(shipPlaced < shipCount){
+                for(int i = 0; i < sizeShip[shipPlaced]; i++){
+                    gridPane.add(new TileShip(x, y + i, getTileSize()),x + i,y,1,1);
+                    board[y - 1][x - 1 + i] = 1;
+                }
+                shipPlaced++;
+                printBoard();
+            }
+        });
     }
 
     /**
      * Print board on Console
      */
-    public void showBoard(){
+    public void printBoard(){
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board.length; y++){
                 System.out.print(board[x][y] + "  ");
@@ -63,5 +90,13 @@ public class Board extends BoardBase{
             System.out.println();
         }
         System.out.println("----------------------------------------");
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int x, int y, int ship) {
+        board[x][y] = ship;
     }
 }

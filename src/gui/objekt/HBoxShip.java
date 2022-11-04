@@ -10,6 +10,10 @@ public class HBoxShip extends HBox {
 
     private int shipLength;
     private int tileSize;
+    private int shipSize;
+    private int x;
+    private int y;
+
 
     /**
      * Create a Ship as an HBox
@@ -21,8 +25,19 @@ public class HBoxShip extends HBox {
         this.tileSize = tileSize;
         for(int i = 0; i < shipLength; i++){
             TileShip tileShip = new TileShip(0, 0, tileSize);
+            tileShip.setOnMouseClicked(e -> {
+
+            });
             this.getChildren().add(tileShip);
         }
+    }
+
+    public int getShipLength(){
+        return shipLength;
+    }
+
+    public void printShipLength(){
+        System.out.println(shipLength);
     }
 }
 

@@ -23,6 +23,6 @@
 
 
     tile.setOnMouseClicked(mouseEvent -> {
-                                TileMiss tileHit = new TileMiss(tile.getCoordinateX(), tile.getCoordinateY(), getTileSize());
-                                gridPane.add(tileHit, tile.getCoordinateX(), tile.getCoordinateY(), 1, 1);
+    TileMiss tileHit = new TileMiss(tile.getCoordinateX(), tile.getCoordinateY(), getTileSize());
+    gridPane.add(tileHit, tile.getCoordinateX(), tile.getCoordinateY(), 1, 1);
                             });

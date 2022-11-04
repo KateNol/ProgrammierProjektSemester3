@@ -52,7 +52,7 @@ public class Tile extends Rectangle {
     /**
      * print Coordinates
      */
-    public void getCoordinates(){
+    public void printCoordinates(){
         System.out.println(x + " " + y);
     }
 }

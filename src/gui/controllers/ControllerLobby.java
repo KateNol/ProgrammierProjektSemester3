@@ -1,7 +1,6 @@
 package gui.controllers;
 
-import gui.objekt.Board;
-import gui.objekt.Harbour;
+import gui.objekt.BoardWithShips;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -21,12 +20,9 @@ public class ControllerLobby extends Controller {
     private HBox hbox;
 
     public void initialize() throws IOException {
-        Board playerBoard = new Board(BOARD, BOARD_SIZE, TILE_SIZE, hbox);
-        playerBoard.initializeBoard();
+        BoardWithShips playerBoard = new BoardWithShips(BOARD,SIZE_SHIP,BOARD_SIZE,TILE_SIZE,hbox);
 
-        Harbour harbour = new Harbour(TILE_SIZE, SIZE_SHIP, hbox);
-        harbour.initializeShip();
+        playerBoard.getBoard().printBoard();
 
-        playerBoard.showBoard();
     }
 }

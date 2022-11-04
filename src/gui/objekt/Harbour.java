@@ -1,5 +1,6 @@
 package gui.objekt;
 
+import gui.action.EventHandlerPlacement;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -11,6 +12,8 @@ public class Harbour extends VBox {
     private int[] sizeShip;
     private int tileSize;
     private Pane pane;
+
+    private boolean horizontal = true;
     double startx;
     double starty;
 
@@ -25,6 +28,7 @@ public class Harbour extends VBox {
         this.sizeShip = sizeShip;
         this.tileSize = tileSize;
         this.pane = pane;
+        this.setSpacing(20);
     }
 
     /**
@@ -33,10 +37,11 @@ public class Harbour extends VBox {
     public void initializeShip(){
         for(int y = 0; y < sizeShip.length; y++){
             HBoxShip hBoxShip = new HBoxShip(sizeShip[y], tileSize);
+
             this.getChildren().add(hBoxShip);
         }
         pane.getChildren().add(this);
-        this.getChildren().forEach(this::makeDraggable);
+        //this.getChildren().forEach(this::makeDraggable);
     }
 
     private void makeDraggable(Node node) {
