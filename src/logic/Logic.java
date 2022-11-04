@@ -118,8 +118,7 @@ public class Logic implements Observer {
                             log_debug("received shot, sending response");
                             // TODO actually evaluate the shot
                             // for now, we just flip a coin on whether the enemy hit a ship or not
-                            Random random = new Random();
-                            ShotResult shotResult = random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
+                            ShotResult shotResult = player.receiveShot(shot);
                             // send the result to the other player
                             player.sendShotResponse(shotResult);
                             if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
