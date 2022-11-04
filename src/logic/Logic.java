@@ -1,94 +1,164 @@
 package logic;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.stream.events.EndElement;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static logic.Util.log_debug;
+import static logic.Util.log_stderr;
 
 /**
- * logic base class
- * this class should contain a thread monitoring the game state.
- * when logic determines it is players turn, it should ask the player for a move
- * when enemy sends a move to player, logic should check that move and respond accordingly
+ * the logic class contains a thread with the game loop
+ * the logic is an overserver of the player, the player will notify the logic of shot and shotresult events
  */
-public class Logic { //Logic is subject, Player is observer
-    private int level = 1;
-    private List<Player> playersList = new ArrayList<Player>();
+public class Logic implements Observer {
 
     /**
-     * you can construct the Logic with just one player and add the other later
+     * the game loop is implemented as a finite state machine, these are the states
      */
-    public Logic(Player player) throws NullPointerException {
-        if (player == null) {
-            throw new NullPointerException("Player is null!");
+    enum State {
+        Start,
+        PlayersReady,
+        ShipsPlaced,
+        GameReady,
+        OurTurn,
+        WaitForShotResponse,
+        EnemyTurn,
+        GameOver
+    }
+
+    private Player player = null;
+    private State state = null;
+
+    private int semester = 0;
+
+    private Coordinate shot = new Coordinate(-1, -1);
+    private ShotResult shotResult = ShotResult.SUNK;
+
+    private final Object shotLock = new Object();
+    private final Object shotResultLock = new Object();
+
+    // FIXME: remove this
+    public Logic(Player p, Player e) {
+        log_stderr("do not use this method");
+        System.exit(1);
+    }
+
+    public Logic(Player player) {
+        this.player = player;
+        player.addObserver(this);
+
+        Thread logicThread = new Thread(this::logicGameLoop);
+        logicThread.setName("Logic Game Loop");
+        logicThread.setDaemon(false);
+        logicThread.start();
+    }
+
+
+    /**
+     * main logic thread containing the game loop
+     */
+    private void logicGameLoop() {
+        state = State.Start;
+
+        // wait for both players to connect
+        while (!player.getIsConnected()) ;
+        log_debug("both players connected");
+        state = State.PlayersReady;
+
+        // TODO get ships from player
+        state = State.GameReady;
+
+        // get info on who begins
+        // TODO get actual info, for now server always begins
+        if (player.getUsername().equalsIgnoreCase("server")) {
+            state = State.OurTurn;
+        } else {
+            state = State.EnemyTurn;
         }
-        playersList.add(player);
-    }
 
-    /**
-     * Adds players to itself for gamemanagement and adds itself to the players.
-     *
-     * @param player Player 1, mainly local Player
-     * @param enemy  Player 2, mainly network player or AI
-     * @throws NullPointerException if one of the players is null
-     */
-    public Logic(Player player, Player enemy) throws NullPointerException {
-        if (player == null || enemy == null) {
-            throw new NullPointerException("One of the players is null!");
+        // begin loop
+        while (state != State.GameOver) {
+            switch (state) {
+                case OurTurn -> {
+                    // our turn, ask our player for a move
+                    Coordinate coordinate = player.getShot();
+                    log_debug("our player wants to shoot at " + coordinate);
+                    // TODO check if this move would be legal
+                    player.sendShot(coordinate);
+                    log_debug("waiting for response");
+                    state = State.WaitForShotResponse;
+                }
+                case WaitForShotResponse -> {
+                    // we just shot somewhere, now we wait for a response, this means
+                    // we have to wait for notify() to get called
+                    try {
+                        synchronized (shotResultLock) {
+                            shotResultLock.wait();
+                        }
+                        log_debug("got response " + shotResult);
+                        // if we hit/sunk, its our turn again, else its the enemies turn next
+                        if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                            state = State.OurTurn;
+                        } else {
+                            state = State.EnemyTurn;
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case EnemyTurn -> {
+                    // its the enemies turn, wait until notify() tells us where the enemy shot
+                    try {
+                        synchronized (shotLock) {
+                            shotLock.wait();
+                            log_debug("received shot, sending response");
+                            // TODO actually evaluate the shot
+                            // for now, we just flip a coin on whether the enemy hit a ship or not
+                            ShotResult shotResult = player.receiveShot(shot);
+                            // send the result to the other player
+                            player.sendShotResponse(shotResult);
+                            if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                                state = State.EnemyTurn;
+                            } else {
+                                state = State.OurTurn;
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
-        playersList.add(player);
-        playersList.add(enemy);
-        player.setLogic(this);
-        enemy.setLogic(this);
     }
 
     /**
-     * add a player to the logic and set itself to the player
+     * this method will get triggert by the player
+     * for more info visit observer-pattern
      *
-     * @param p Player
-     * @throws NullPointerException if player is null
+     * @param arg arg will be a Coordinate (enemy wants to shoot there)
+     *            or a ShotResult (we shot somewhere and this is the result)
      */
-    public void addPlayer(Player p) throws NullPointerException, IndexOutOfBoundsException {
-        if (p == null) {
-            throw new NullPointerException("Not able to add player!");
+    @Override
+    public void update(Observable o, Object arg) {
+        log_debug("notify got something");
+        if (arg instanceof Coordinate recvShot) {
+            log_debug("got notified of new shot at " + ((Coordinate) arg).row() + " " + ((Coordinate) arg).col());
+            synchronized (shotLock) {
+                log_debug("acquired lock for shot");
+                shot = recvShot;
+                shotLock.notify();
+            }
+        } else if (arg instanceof ShotResult recvShotResult) {
+            log_debug("got notified of ShotResult " + recvShotResult);
+            synchronized (shotResultLock) {
+                log_debug("acquired lock");
+                shotResult = recvShotResult;
+                shotResultLock.notify();
+            }
         }
-        if (playersList.size() == 2) { throw new IndexOutOfBoundsException("Can't add more than two Players"); }
-        p.setLogic(this);
-        playersList.add(p);
-    }
-
-    /**
-     * delete player from the list
-     *
-     * @param p Player
-     */
-    public void deletePlayer(Player p) {
-        if (playersList.contains(p)) {
-            playersList.remove(p);
-        }
-        //TODO what if player is not in playersList?
-    }
-
-    /**
-     * procedure of one turn
-     */
-    private void turn(int playerIndex, int enemyIndex) {
-        Coordinate c = playersList.get(playerIndex).getInput(); // wait for the player x to take its shot
-        MapState ms = playersList.get(enemyIndex).updateMap(c); // hand over the shotposition to player y and get result
-        playersList.get(playerIndex).updateMapState(c, ms); // hand over shotresult to player x
-    }
-
-    /**
-     * don't know but keep it maybe for later
-     */
-    public void notifyPlayer() {
-    }
-
-    /**
-     * gets called if there are no ships left for one player
-     *
-     * @param p Player
-     */
-    public void gameOver(Player p) {
-        //TODO implement, perhaps let the GUI know to return to the home screen
-        playersList.remove(1);
     }
 }

@@ -1,7 +1,9 @@
 package network.debug;
 
 
-import network.NetworkMode;
+import logic.Coordinate;
+import logic.ShotResult;
+import network.ServerMode;
 import network.NetworkPlayer;
 
 import java.io.IOException;
@@ -15,13 +17,20 @@ import static network.debug.Driver.scanner;
  */
 public final class ConsolePlayer extends NetworkPlayer {
 
-    public ConsolePlayer(NetworkMode networkMode) throws IOException {
-        super(networkMode);
+    public ConsolePlayer(ServerMode serverMode) throws IOException {
+        super(serverMode);
+
+        inputLoop();
+    }
+
+    public ConsolePlayer(ServerMode serverMode, String address) throws IOException {
+        super(serverMode, address);
 
         inputLoop();
     }
 
     private void inputLoop() {
+        /*
         new Thread(() -> {
             while (true) {
                 String input;
@@ -30,5 +39,18 @@ public final class ConsolePlayer extends NetworkPlayer {
                 sendMessage(input);
             }
         }).start();
+        */
+    }
+
+
+    /**
+     * @return
+     */
+    @Override
+    public Coordinate getShot() {
+        System.out.println("Enter a Move: ");
+        int col = scanner.nextInt();
+        int row = scanner.nextInt();
+        return new Coordinate(row, col);
     }
 }

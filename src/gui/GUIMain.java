@@ -80,7 +80,7 @@ public class GUIMain extends Application {
         note: if the enemy is a networkplayer, we don't need another logic instance for him (?)
          */
         Player player = GUIPlayer.getInstance();
-        Player enemy = new ConsolePlayer(network.NetworkMode.CLIENT);
+        Player enemy = new ConsolePlayer(network.ServerMode.CLIENT);
 
         Logic playerLogic = new Logic(player, enemy);
         Logic enemyLogic = new Logic(enemy, player);
