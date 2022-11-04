@@ -21,6 +21,8 @@ import static network.internal.Util.log_stderr;
 /**
  * driver class for testing purposes only
  * only used as main entry point when debugging networking
+ * to start as server, use args: player=human network=online server=host
+ * to start as client, use args: player=human network=online server=client
  */
 public final class Driver {
     public static final Scanner scanner = new Scanner(System.in);
