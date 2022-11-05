@@ -1,5 +1,6 @@
 package logic;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
@@ -12,6 +13,16 @@ public abstract class Player extends Observable {
     private boolean globalConfigLoaded;
 
     private GlobalConfig globalConfig;
+    /* Attributes hard coded at the moment, will be softcoded later */
+
+    private final ArrayList<Ship> ships = null; // List of ships the player has
+    private Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
+    private Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
+
+    public Player(int semester) {
+        myMap = new Map(mapSize);
+        enemyMap = new Map(mapSize);
+    }
 
     public Player(PlayerConfig playerConfig, GlobalConfig globalConfig) {
         if (playerConfig != null && globalConfig != null) {
@@ -53,6 +64,90 @@ public abstract class Player extends Observable {
     public abstract String getUsername();
 
     /**
+     * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method
+     * has to be implemented by ai/gui-player
+     */
+    abstract void setShips();
+
+    //TODO setShipCoordinates(Ship s, Coordinate pivot, Alignment alignment)
+
+    /**
+     * Creates a ship with check, if the position is legal nd adds it either to the ships-Array and to the Map
+     * @param size int
+     * @param pivot Coordinate
+     * @param alignment Alignment
+     */
+
+    private void addShip(int size, Coordinate pivot, Alignment alignment) {
+        Coordinate[] position = createArray(size, pivot, alignment);
+        if(checkLegal(position)) {
+            ships.add(new Ship(position));
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.SHIP);
+            }
+        }
+    }
+
+    /**
+     * creates an array
+     * @param pivot Coordinate
+     * @param alignment Alignment
+     * @return created array of type Coordinate[]
+     */
+    private Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
+        Coordinate[] position = new Coordinate[size];
+        for(int i = 0; i < size; i++) {
+            switch (alignment) {
+                case VERT_UP:
+                    position[i] = new Coordinate(pivot.row(),pivot.col()-i);
+                    break;
+                case VERT_DOWN:
+                    position[i] = new Coordinate(pivot.row(),pivot.col()+i);
+                    break;
+                case HOR_RIGHT:
+                    position[i] = new Coordinate(pivot.row()+i,pivot.col());
+                    break;
+                case HOR_LEFT:
+                    position[i] = new Coordinate(pivot.row()-i,pivot.col());
+                    break;
+            }
+        }
+        return position;
+    }
+
+    /**
+     *  iterates over all ships set and checks, if there's an overlapping ship
+     *  and checks if any point of the ship is off map
+     * @param position
+     * @return result of the check as boolean
+     */
+    //TODO check if neighbor is also empty
+    private boolean checkLegal(Coordinate[] position) {
+        boolean check = true;
+        for(int i = 0; i < position.length; i++) {
+            for(Ship s: ships) {
+                for(int n = 0; n < s.getSize(); n++) {
+                    if(position[i].row() == s.getPoint(n).row()) {
+                        if(position[i].col() == s.getPoint(n).col())
+                            check = false;
+                    }
+                }
+            }
+        }
+        if(check) {
+            for (Coordinate c: position) {
+                if(c.col() >= myMap.getMapSize() && c.row() >= myMap.getMapSize()) {
+                    check = false;
+                }
+            }
+        }
+
+        return check;
+    }
+
+
+
+    /**
      * requests a coordinate from the player
      * has to be implemented by GUIPlayer/AIPlayer/ConsolePlayer
      * @return the point where your player wants to shoot
@@ -72,9 +167,7 @@ public abstract class Player extends Observable {
      * implemented by NetworkPlayer
      * @param shotResult
      */
-    public void sendShotResponse(ShotResult shotResult) {
-        // Ewpojwpoegj
-    }
+    public abstract void sendShotResponse(ShotResult shotResult);
 
     /**
      * this method will be called by Logic when a shot was received via notify()
@@ -84,7 +177,19 @@ public abstract class Player extends Observable {
      */
     public ShotResult receiveShot(Coordinate shot) {
         // TODO look up actual result in map
-        Random random = new Random();
-        return random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
+        for (Ship s : ships) {
+            int shipHealth = -1;
+            if (s.checkIfHit(shot)) {
+                shipHealth = s.decreaseHealth();
+            }
+            if (shipHealth == 0) {
+                ships.remove(s);
+                return ShotResult.SUNK;
+            }
+        }
+        return ShotResult.HIT;
+
+        //Random random = new Random();
+        //return random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
     }
 }

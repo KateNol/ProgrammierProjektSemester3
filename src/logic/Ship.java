@@ -38,41 +38,6 @@ public class Ship {
     }
 
     /**
-     * sets position of the ship starting with the pivotpoint in the direction handet as Alignment
-     * @param pivot pivot of ship, works only with alignment
-     * @param align alignment, can be HOR_LEFT, HOR_RIGHT, VERT_UP, VERT_DOWN
-     * @return returns true, if set successfull false, if not
-     */
-    public boolean setPos(Coordinate pivot, Alignment align) {
-        for(int i = 0; i < this.size; i++) {
-            switch (align) {
-                case VERT_UP:
-                    //TODO check boardSize
-                    //TODO check if touching
-                    //TODO check if every coordinate is valid
-                    pos[i].setRow(pivot.getRow());
-                    pos[i].setCol(pivot.getCol()-i);
-                    break;
-                case VERT_DOWN:
-                    pos[i].setRow(pivot.getRow());
-                    pos[i].setCol(pivot.getCol()+i);
-                    break;
-                case HOR_RIGHT:
-                    pos[i].setRow(pivot.getRow()+i);
-                    pos[i].setCol(pivot.getCol());
-                    break;
-                case HOR_LEFT:
-                    pos[i].setRow(pivot.getRow()-i);
-                    pos[i].setCol(pivot.getCol());
-                    break;
-                default:
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      *
      * @return size as int
      */
@@ -101,7 +66,14 @@ public class Ship {
         return this.pos[p];
     }
 
-
+    /**
+     * Set the distinct Coordinates of the ship
+     * @param pos Coordinate array containing the Coordinates of the ship
+     */
+    protected void setPos(Coordinate[] pos) throws IndexOutOfBoundsException{
+        if(pos.length > this.size) { throw new IndexOutOfBoundsException("Shipsize doesn't match the handed Size");}
+        this.pos = pos;
+    }
 
     /**
      * checks if ship got hit
@@ -110,7 +82,7 @@ public class Ship {
      */
     public boolean checkIfHit(Coordinate c) {
         for(Coordinate p: pos) {
-            if(c.isEqual(p)) {
+            if(c.row() == p.row() && c.col() == p.col()) {
                 return true;
             }
         }
