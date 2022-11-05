@@ -1,7 +1,7 @@
 package logic;
 
 public class Map {
-    public MapState[][] map = null;
+    private MapState[][] map = null;
     private int boardSize = 14;
 
     /**
@@ -22,6 +22,11 @@ public class Map {
      * @return value of the map on this coordinate
      */
     public MapState getState(Coordinate c) {return map[c.row()][c.col()];}
+
+    public MapState[][] getMap() {
+        return map;
+    }
+
     /**
      *
      * @param c coordinate the value should change

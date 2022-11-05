@@ -16,13 +16,9 @@ public abstract class Player extends Observable {
     /* Attributes hard coded at the moment, will be softcoded later */
 
     private final ArrayList<Ship> ships = null; // List of ships the player has
-    private Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
-    private Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
+    protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
+    protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
-    public Player(int semester) {
-        myMap = new Map(mapSize);
-        enemyMap = new Map(mapSize);
-    }
 
     public Player(PlayerConfig playerConfig, GlobalConfig globalConfig) {
         if (playerConfig != null && globalConfig != null) {
@@ -37,6 +33,8 @@ public abstract class Player extends Observable {
     public void loadGlobalConfig() {
         shipSizes = globalConfig.getShipSizes(getCommonSemester());
         mapSize = globalConfig.getMapSize(getCommonSemester());
+        myMap = new Map(mapSize);
+        enemyMap = new Map(mapSize);
 
         globalConfigLoaded = true;
     }
@@ -63,11 +61,15 @@ public abstract class Player extends Observable {
      */
     public abstract String getUsername();
 
+    protected int[] getShipSizes() {
+        return shipSizes;
+    }
+
     /**
      * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method
      * has to be implemented by ai/gui-player
      */
-    abstract void setShips();
+    protected abstract void setShips();
 
     //TODO setShipCoordinates(Ship s, Coordinate pivot, Alignment alignment)
 
@@ -78,7 +80,7 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      */
 
-    private void addShip(int size, Coordinate pivot, Alignment alignment) {
+    protected void addShip(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = createArray(size, pivot, alignment);
         if(checkLegal(position)) {
             ships.add(new Ship(position));
@@ -181,13 +183,19 @@ public abstract class Player extends Observable {
             int shipHealth = -1;
             if (s.checkIfHit(shot)) {
                 shipHealth = s.decreaseHealth();
+                myMap.setState(shot, MapState.HIT);
+                return ShotResult.HIT;
             }
             if (shipHealth == 0) {
+                for(Coordinate c: s.getPos()) {
+                    myMap.setState(c, MapState.SUNK);
+                }
                 ships.remove(s);
                 return ShotResult.SUNK;
             }
         }
-        return ShotResult.HIT;
+        myMap.setState(shot, MapState.MISS);
+        return ShotResult.MISS;
 
         //Random random = new Random();
         //return random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
