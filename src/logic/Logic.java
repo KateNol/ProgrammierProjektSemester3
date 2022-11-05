@@ -70,6 +70,7 @@ public class Logic implements Observer {
         state = State.PlayersReady;
 
         // TODO get ships from player
+        player.setShips();
         state = State.GameReady;
 
         // get info on who begins

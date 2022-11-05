@@ -1,10 +1,10 @@
 package logic;
 
 public enum MapState {
-    WATER,
-    SHIP,
-    HIT,
-    MISS,
-    SUNK
+    W, //WATER
+    S, //SHIP
+    H, //HIT
+    M,  //MISS
+    D   //DESTROYED
 }
 

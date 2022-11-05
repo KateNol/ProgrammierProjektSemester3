@@ -2,7 +2,6 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Random;
 
 public abstract class Player extends Observable {
     private String username;
@@ -13,9 +12,8 @@ public abstract class Player extends Observable {
     private boolean globalConfigLoaded;
 
     private GlobalConfig globalConfig;
-    /* Attributes hard coded at the moment, will be softcoded later */
 
-    private final ArrayList<Ship> ships = null; // List of ships the player has
+    private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
@@ -31,9 +29,14 @@ public abstract class Player extends Observable {
         globalConfigLoaded = false;
     }
 
+    /**
+     * Stored in GlobalConfig are baseinformations about the level the players play
+     * this method loads them and initializes the maps
+     */
     public void loadGlobalConfig() {
-        shipSizes = globalConfig.getShipSizes(getCommonSemester());
-        mapSize = globalConfig.getMapSize(getCommonSemester());
+        shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
+        mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
+        ships = new ArrayList<Ship>(shipSizes.length);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
@@ -83,10 +86,15 @@ public abstract class Player extends Observable {
 
     protected void addShip(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = createArray(size, pivot, alignment);
+        //Has to be done once, otherwise it gets NullPointerException
+        ships.add(new Ship(position));
+        for(Coordinate c: position) {
+            myMap.setState(c, MapState.S);
+        }
         if(checkLegal(position)) {
             ships.add(new Ship(position));
             for(Coordinate c: position) {
-                myMap.setState(c, MapState.SHIP);
+                myMap.setState(c, MapState.S);
             }
         }
     }
@@ -102,16 +110,16 @@ public abstract class Player extends Observable {
         for(int i = 0; i < size; i++) {
             switch (alignment) {
                 case VERT_UP:
-                    position[i] = new Coordinate(pivot.row(),pivot.col()-i);
+                    position[i] = new Coordinate(pivot.row()-i,pivot.col());
                     break;
                 case VERT_DOWN:
-                    position[i] = new Coordinate(pivot.row(),pivot.col()+i);
-                    break;
-                case HOR_RIGHT:
                     position[i] = new Coordinate(pivot.row()+i,pivot.col());
                     break;
+                case HOR_RIGHT:
+                    position[i] = new Coordinate(pivot.row(),pivot.col()+i);
+                    break;
                 case HOR_LEFT:
-                    position[i] = new Coordinate(pivot.row()-i,pivot.col());
+                    position[i] = new Coordinate(pivot.row(),pivot.col()-i);
                     break;
             }
         }
@@ -184,18 +192,18 @@ public abstract class Player extends Observable {
             int shipHealth = -1;
             if (s.checkIfHit(shot)) {
                 shipHealth = s.decreaseHealth();
-                myMap.setState(shot, MapState.HIT);
+                myMap.setState(shot, MapState.H);
                 return ShotResult.HIT;
             }
             if (shipHealth == 0) {
                 for(Coordinate c: s.getPos()) {
-                    myMap.setState(c, MapState.SUNK);
+                    myMap.setState(c, MapState.D);
                 }
                 ships.remove(s);
                 return ShotResult.SUNK;
             }
         }
-        myMap.setState(shot, MapState.MISS);
+        myMap.setState(shot, MapState.M);
         return ShotResult.MISS;
 
         //Random random = new Random();

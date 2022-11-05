@@ -60,14 +60,14 @@ public final class ConsolePlayer extends NetworkPlayer {
     public Coordinate getShot() {
         System.out.println("My Map:");
         for(int i = 0; i < myMap.getMapSize(); i++) {
-            for(int n = 0; n < myMap.getMapSize(); i++) {
+            for(int n = 0; n < myMap.getMapSize(); n++) {
                 System.out.print(myMap.getMap()[i][n]);
             }
             System.out.println();
         }
         System.out.println("Enemy Map:");
         for(int i = 0; i < enemyMap.getMapSize(); i++) {
-            for(int n = 0; n < enemyMap.getMapSize(); i++) {
+            for(int n = 0; n < enemyMap.getMapSize(); n++) {
                 System.out.print(enemyMap.getMap()[i][n]);
             }
             System.out.println();

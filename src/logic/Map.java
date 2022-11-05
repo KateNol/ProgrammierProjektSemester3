@@ -2,16 +2,17 @@ package logic;
 
 public class Map {
     private MapState[][] map = null;
-    private int boardSize = 14;
+    private int boardSize;
 
     /**
      * the map should initialise with WATER entirely
      */
     public Map(int boardSize) {
+        this.boardSize = boardSize;
         map = new MapState[boardSize][boardSize];
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
-                map[row][col] = MapState.WATER;
+                map[row][col] = MapState.W;
             }
         }
     }
