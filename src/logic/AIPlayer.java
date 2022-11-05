@@ -8,20 +8,21 @@ import java.util.Random;
 
 public class AIPlayer extends NetworkPlayer {
 
-    public AIPlayer(ServerMode serverMode, String address, int port) throws IOException {
-        super(serverMode, address, port);
+
+    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
+        super(playerConfig, globalConfig, serverMode, address, port);
     }
 
-    public AIPlayer(ServerMode serverMode, String address) throws IOException {
-        super(serverMode, address);
+    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
+        super(playerConfig, globalConfig, serverMode, address);
     }
 
-    public AIPlayer(ServerMode serverMode, int port) throws IOException {
-        super(serverMode, port);
+    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
+        super(playerConfig, globalConfig, serverMode, port);
     }
 
-    public AIPlayer(ServerMode serverMode) throws IOException {
-        super(serverMode);
+    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
+        super(playerConfig, globalConfig, serverMode);
     }
 
     /**

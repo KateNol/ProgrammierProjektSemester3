@@ -1,0 +1,28 @@
+    public void inizializeShips(){
+
+        int count = 0;
+        int last_number = sizeShip[0];
+
+        for(int y = 0; y < sizeShip.length; y++){
+            TileShipComplete tileShipComplete = new TileShipComplete(100,100);
+            if(last_number != sizeShip[y]){
+                count = 0;
+            }
+            count++;
+            last_number = sizeShip[y];
+            for(int x = 0; x < sizeShip[y]; x++){
+                TileShip ts = new TileShip(x, y, tileSize);
+                tileShipComplete.getChildren().add(ts);
+            }
+            Label lblCount = new Label(Integer.toString(count));
+            pane.getChildren().addAll(tileShipComplete, lblCount);
+        }
+    }
+
+
+
+
+    tile.setOnMouseClicked(mouseEvent -> {
+    TileMiss tileHit = new TileMiss(tile.getCoordinateX(), tile.getCoordinateY(), getTileSize());
+    gridPane.add(tileHit, tile.getCoordinateX(), tile.getCoordinateY(), 1, 1);
+                            });

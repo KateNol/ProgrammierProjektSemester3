@@ -1,8 +1,6 @@
 package network;
 
-import logic.Coordinate;
-import logic.Player;
-import logic.ShotResult;
+import logic.*;
 import network.internal.Client;
 import network.internal.Contact;
 import network.internal.Server;
@@ -23,7 +21,8 @@ public abstract class NetworkPlayer extends Player {
      * @param address    is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    public NetworkPlayer(/*@NotNull*/ ServerMode serverMode, String address, int port) throws IOException {
+    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
+        super(playerConfig, globalConfig);
         switch (serverMode) {
             case SERVER -> {
                 log_stdio("server");
@@ -41,16 +40,16 @@ public abstract class NetworkPlayer extends Player {
         System.out.println("NetworkPlayer CTOR end");
     }
 
-    public NetworkPlayer(ServerMode serverMode, String address) throws IOException {
-        this(serverMode, address, defaultPort);
+    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
+        this(playerConfig, globalConfig, serverMode, address, defaultPort);
     }
 
-    public NetworkPlayer(ServerMode serverMode, int port) throws IOException {
-        this(serverMode, defaultAddress, port);
+    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
+        this(playerConfig, globalConfig, serverMode, defaultAddress, port);
     }
 
-    public NetworkPlayer(ServerMode serverMode) throws IOException {
-        this(serverMode, defaultAddress, defaultPort);
+    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
+        this(playerConfig, globalConfig, serverMode, defaultAddress, defaultPort);
     }
 
 

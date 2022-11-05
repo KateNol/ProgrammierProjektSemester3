@@ -2,6 +2,8 @@ package network.debug;
 
 
 import logic.Coordinate;
+import logic.GlobalConfig;
+import logic.PlayerConfig;
 import logic.ShotResult;
 import network.ServerMode;
 import network.NetworkPlayer;
@@ -17,14 +19,14 @@ import static network.debug.Driver.scanner;
  */
 public final class ConsolePlayer extends NetworkPlayer {
 
-    public ConsolePlayer(ServerMode serverMode) throws IOException {
-        super(serverMode);
+    public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
+        super(playerConfig, globalConfig, serverMode);
 
         inputLoop();
     }
 
-    public ConsolePlayer(ServerMode serverMode, String address) throws IOException {
-        super(serverMode, address);
+    public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
+        super(playerConfig, globalConfig, serverMode, address);
 
         inputLoop();
     }

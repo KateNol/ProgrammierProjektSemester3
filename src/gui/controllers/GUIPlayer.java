@@ -3,7 +3,9 @@ package gui.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import logic.Coordinate;
+import logic.GlobalConfig;
 import logic.Player;
+import logic.PlayerConfig;
 import network.ServerMode;
 import network.NetworkPlayer;
 
@@ -20,6 +22,10 @@ public abstract class GUIPlayer extends Player {
 
     private NetworkPlayer networkPlayer;
 
+    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
+        super(playerConfig, globalConfig);
+    }
+
     /**
      * this method gets called just after the ctor, so we use this to build the player
      *
@@ -28,7 +34,7 @@ public abstract class GUIPlayer extends Player {
     @FXML
     private void initialize() throws IOException {
         instance = this;
-        networkPlayer = new NetworkPlayer(ServerMode.SERVER) {
+        networkPlayer = new NetworkPlayer(null, null, ServerMode.SERVER) {
 
 
             /**

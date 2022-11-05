@@ -43,7 +43,6 @@ public class GUIMain extends Application {
         this.stage = stage;
         this.stage.setTitle("Game Select");
         this.stage.setScene(scene);
-        System.out.println("fuck");
 
         //Set icon and tile
         Image icon = new Image(ICON_PATH);
@@ -80,7 +79,7 @@ public class GUIMain extends Application {
         note: if the enemy is a networkplayer, we don't need another logic instance for him (?)
          */
         Player player = GUIPlayer.getInstance();
-        Player enemy = new ConsolePlayer(network.ServerMode.CLIENT);
+        Player enemy = new ConsolePlayer(null, null, network.ServerMode.CLIENT);
 
         Logic playerLogic = new Logic(player, enemy);
         Logic enemyLogic = new Logic(enemy, player);

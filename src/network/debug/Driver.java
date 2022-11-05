@@ -21,6 +21,8 @@ import static network.internal.Util.log_stderr;
 /**
  * driver class for testing purposes only
  * only used as main entry point when debugging networking
+ * to start as server, use args: player=human network=online server=host
+ * to start as client, use args: player=human network=online server=client
  */
 public final class Driver {
     public static final Scanner scanner = new Scanner(System.in);
@@ -29,7 +31,7 @@ public final class Driver {
     }
 
     public static void main(String[] args) throws IOException {
-        log_debug("this is a test class, use this only to test network classes");
+        log_debug("this is a test class, use this only to test classes");
 
         String mode = "";
 
@@ -79,9 +81,9 @@ public final class Driver {
         Player player = null;
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(serverMode, addr);
+            player = new ConsolePlayer(null, null, serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(serverMode, addr);
+            player = new AIPlayer(null, null, serverMode, addr);
         }
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
