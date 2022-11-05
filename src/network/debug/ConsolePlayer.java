@@ -25,7 +25,6 @@ public final class ConsolePlayer extends NetworkPlayer {
 
     public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
         super(playerConfig, globalConfig, serverMode, address);
-
         inputLoop();
     }
 

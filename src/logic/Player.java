@@ -27,6 +27,7 @@ public abstract class Player extends Observable {
         }
 
         this.globalConfig = globalConfig;
+        loadGlobalConfig();
         globalConfigLoaded = false;
     }
 

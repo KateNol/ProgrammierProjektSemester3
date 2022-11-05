@@ -25,6 +25,11 @@ public class AIPlayer extends NetworkPlayer {
         super(playerConfig, globalConfig, serverMode);
     }
 
+    @Override
+    protected void setShips() {
+
+    }
+
     /**
      * @return
      */

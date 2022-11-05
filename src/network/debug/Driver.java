@@ -3,11 +3,9 @@ package network.debug;
 import internal.LocalEnemyMode;
 import internal.NetworkMode;
 import internal.PlayerMode;
-import logic.AIPlayer;
-import logic.Logic;
+import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
-import logic.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,9 +79,9 @@ public final class Driver {
         Player player = null;
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(null, null, serverMode, addr);
+            player = new ConsolePlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(null, null, serverMode, addr);
+            player = new AIPlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
         }
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
