@@ -3,6 +3,9 @@ package logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import static network.internal.Util.log_debug;
+
+
 public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
@@ -150,7 +153,6 @@ public abstract class Player extends Observable {
                 }
             }
         }
-
         return check;
     }
 
@@ -160,7 +162,7 @@ public abstract class Player extends Observable {
      * @param res shotResult, the result of the shot (either hit or miss, or sunk)
      */
     public void updateMapState(Coordinate c, ShotResult res) {
-        MapState ms = MapState.D;
+        MapState ms = null;
         switch(res) {
             case HIT -> {ms = MapState.H;}
             case MISS -> {ms = MapState.M;}
@@ -175,6 +177,14 @@ public abstract class Player extends Observable {
      */
     private void shipSunk(Coordinate c) {
         //TODO update every coordinate of this ship to MapState.D
+        log_debug("Pathfinding shipSunk");
+        if(enemyMap.getState(c) == MapState.H) {
+            enemyMap.setState(c, MapState.D);
+            shipSunk(new Coordinate(c.row()-1, c.col())); //look west
+            shipSunk(new Coordinate(c.row(), c.col()-1)); //look north
+            shipSunk(new Coordinate(c.row()+1, c.col())); //look east
+            shipSunk(new Coordinate(c.row(), c.col()+1)); //look south
+        }
     }
 
 
@@ -208,23 +218,24 @@ public abstract class Player extends Observable {
      */
     public ShotResult receiveShot(Coordinate shot) {
         // TODO look up actual result in map
+        ShotResult shotResult = ShotResult.MISS;
+        myMap.setState(shot, MapState.M);
         for (Ship s : ships) {
             int shipHealth = -1;
             if (s.checkIfHit(shot)) {
                 shipHealth = s.decreaseHealth();
                 myMap.setState(shot, MapState.H);
-                return ShotResult.HIT;
+                shotResult =  ShotResult.HIT;
             }
             if (shipHealth == 0) {
                 for(Coordinate c: s.getPos()) {
                     myMap.setState(c, MapState.D);
                 }
-                ships.remove(s);
-                return ShotResult.SUNK;
+                //ships.remove(s);
+                shotResult = ShotResult.SUNK;
             }
         }
-        myMap.setState(shot, MapState.M);
-        return ShotResult.MISS;
+        return shotResult;
 
         //Random random = new Random();
         //return random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
