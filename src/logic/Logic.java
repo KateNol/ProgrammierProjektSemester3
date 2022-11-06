@@ -86,10 +86,14 @@ public class Logic implements Observer {
             switch (state) {
                 case OurTurn -> {
                     // our turn, ask our player for a move
-                    Coordinate coordinate = player.getShot();
+                    /*Coordinate coordinate = player.getShot();
                     log_debug("our player wants to shoot at " + coordinate);
                     // TODO check if this move would be legal
-                    player.sendShot(coordinate);
+                    player.sendShot(coordinate);*/
+                    shot = player.getShot();
+                    log_debug("our player wants to shoot at " + shot);
+                    // TODO check if this move would be legal
+                    player.sendShot(shot);
                     log_debug("waiting for response");
                     state = State.WaitForShotResponse;
                 }
@@ -101,6 +105,8 @@ public class Logic implements Observer {
                             shotResultLock.wait();
                         }
                         log_debug("got response " + shotResult);
+                        //TODO update enemyMap with shotResponse. Get coordinate somewhere
+                        player.updateMapState(shot, shotResult);
                         // if we hit/sunk, its our turn again, else its the enemies turn next
                         if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                             state = State.OurTurn;
@@ -117,8 +123,6 @@ public class Logic implements Observer {
                         synchronized (shotLock) {
                             shotLock.wait();
                             log_debug("received shot, sending response");
-                            // TODO actually evaluate the shot
-                            // for now, we just flip a coin on whether the enemy hit a ship or not
                             ShotResult shotResult = player.receiveShot(shot);
                             // send the result to the other player
                             player.sendShotResponse(shotResult);

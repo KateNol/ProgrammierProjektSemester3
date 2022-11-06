@@ -94,6 +94,7 @@ public class Ship {
      * @return health decreased by one
      */
     public int decreaseHealth() {
-        return --this.health;
+        this.health -= 1;
+        return this.health;
     }
 }

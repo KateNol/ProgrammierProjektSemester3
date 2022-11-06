@@ -77,7 +77,7 @@ public abstract class NetworkPlayer extends Player {
      */
     @Override
     public void sendShot(Coordinate coordinate) {
-        sendMessage("FIRE;" + coordinate.col() + ";" + coordinate.row());
+        sendMessage("FIRE;" + coordinate.row() + ";" + coordinate.col());
     }
 
     /**

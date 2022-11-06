@@ -75,8 +75,6 @@ public abstract class Player extends Observable {
      */
     protected abstract void setShips();
 
-    //TODO setShipCoordinates(Ship s, Coordinate pivot, Alignment alignment)
-
     /**
      * Creates a ship with check, if the position is legal nd adds it either to the ships-Array and to the Map
      * @param size int
@@ -156,6 +154,28 @@ public abstract class Player extends Observable {
         return check;
     }
 
+    /**
+     * Updates Enemymap, getting the result of the shot from getInput.
+     * @param c Coordinate the shot was set
+     * @param res shotResult, the result of the shot (either hit or miss, or sunk)
+     */
+    public void updateMapState(Coordinate c, ShotResult res) {
+        MapState ms = MapState.D;
+        switch(res) {
+            case HIT -> {ms = MapState.H;}
+            case MISS -> {ms = MapState.M;}
+            case SUNK -> {shipSunk(c);}
+        }
+        enemyMap.setState(c, ms);
+    }
+
+    /**
+     * helper for updateMapState(...) to handle the changes on enemymap in case the response is sunk
+     * @param c
+     */
+    private void shipSunk(Coordinate c) {
+        //TODO update every coordinate of this ship to MapState.D
+    }
 
 
     /**
