@@ -1,16 +1,19 @@
 package ai;
 
-import java.util.*;
-import java.math.*;
-import java.awt.Point;
+import network.NetworkPlayer;
 
-public class AI extends logic.Player {
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class AI extends NetworkPlayer {
     protected int[][] board;    //Represents the Board
     List<Point> Moves = new ArrayList<Point>(); //Stores the moves which were already used
     List<Point> HitPoints = new ArrayList<Point>(); //Stores the Points which hit a ship
 
     //Constructor which initiates the board size
-    public AI (int[][] board) {
+    public AI(i .[][] board) {
         this.board = board;
     }
 
@@ -28,7 +31,7 @@ public class AI extends logic.Player {
             do {
                 bullet.x = placeShot.nextInt(board.length); //length of row
                 bullet.y = placeShot.nextInt(board[0].length);  //length of column
-            } while(Moves.contains(bullet));
+            } while (Moves.contains(bullet));
         }
         Moves.add(bullet);
         return bullet;

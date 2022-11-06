@@ -2,11 +2,12 @@ package gui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import logic.Logic;
+import logic.Coordinate;
+import logic.GlobalConfig;
 import logic.Player;
-import network.NetworkMode;
+import logic.PlayerConfig;
+import network.ServerMode;
 import network.NetworkPlayer;
-import network.debug.ConsolePlayer;
 
 import java.io.IOException;
 
@@ -15,11 +16,15 @@ import java.io.IOException;
  * javafx controller class, reacts to gui input
  * this class cant extend the network player directly because we cant invoke its ctor directly
  */
-public class GUIPlayer extends Player {
+public abstract class GUIPlayer extends Player {
     // singleton because I don't know how to change scenes otherwise
     private static GUIPlayer instance;
 
     private NetworkPlayer networkPlayer;
+
+    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
+        super(playerConfig, globalConfig);
+    }
 
     /**
      * this method gets called just after the ctor, so we use this to build the player
@@ -29,7 +34,17 @@ public class GUIPlayer extends Player {
     @FXML
     private void initialize() throws IOException {
         instance = this;
-        networkPlayer = new NetworkPlayer(NetworkMode.SERVER) {
+        networkPlayer = new NetworkPlayer(null, null, ServerMode.SERVER) {
+
+
+            /**
+             * @return
+             */
+            @Override
+            public Coordinate getShot() {
+                return null;
+            }
+
             /**
              * @param msg
              */

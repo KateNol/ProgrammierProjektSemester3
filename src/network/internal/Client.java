@@ -1,7 +1,7 @@
 package network.internal;
 
 
-import network.NetworkMode;
+import network.ServerMode;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -26,6 +26,6 @@ public final class Client {
         Socket socket = new Socket(address, port);
         log_stdio("Client connected on port " + port);
 
-        return new Contact(socket, NetworkMode.CLIENT);
+        return new Contact(socket, ServerMode.CLIENT);
     }
 }
