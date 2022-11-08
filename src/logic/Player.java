@@ -162,13 +162,11 @@ public abstract class Player extends Observable {
      * @param res shotResult, the result of the shot (either hit or miss, or sunk)
      */
     public void updateMapState(Coordinate c, ShotResult res) {
-        MapState ms = null;
         switch(res) {
-            case HIT -> {ms = MapState.H;}
-            case MISS -> {ms = MapState.M;}
-            case SUNK -> {shipSunk(c);}
+            case HIT -> {enemyMap.setState(c, MapState.H);}
+            case MISS -> {enemyMap.setState(c, MapState.M);}
+            case SUNK -> {enemyMap.setState(c, MapState.H); shipSunk(c);}
         }
-        enemyMap.setState(c, ms);
     }
 
     /**
@@ -220,6 +218,7 @@ public abstract class Player extends Observable {
         // TODO look up actual result in map
         ShotResult shotResult = ShotResult.MISS;
         myMap.setState(shot, MapState.M);
+        Ship destroyedShip = null;
         for (Ship s : ships) {
             int shipHealth = -1;
             if (s.checkIfHit(shot)) {
@@ -231,13 +230,11 @@ public abstract class Player extends Observable {
                 for(Coordinate c: s.getPos()) {
                     myMap.setState(c, MapState.D);
                 }
-                //ships.remove(s);
+                destroyedShip = s;
                 shotResult = ShotResult.SUNK;
             }
         }
+        ships.remove(destroyedShip);
         return shotResult;
-
-        //Random random = new Random();
-        //return random.nextBoolean() ? ShotResult.HIT : ShotResult.MISS;
     }
 }
