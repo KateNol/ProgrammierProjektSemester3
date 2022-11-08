@@ -2,10 +2,10 @@ package logic;
 
 public class PlayerConfig {
     public int getMaxSemester() {
-        return -1;
+        return 1;
     }
 
     public String getUsername() {
-        return "unknown";
+        return "Test";
     }
 }

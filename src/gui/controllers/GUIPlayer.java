@@ -37,6 +37,11 @@ public abstract class GUIPlayer extends Player {
         networkPlayer = new NetworkPlayer(null, null, ServerMode.SERVER) {
 
 
+            @Override
+            protected void setShips() {
+
+            }
+
             /**
              * @return
              */
