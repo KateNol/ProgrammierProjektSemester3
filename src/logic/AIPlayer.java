@@ -3,10 +3,19 @@ package logic;
 import network.NetworkPlayer;
 import network.ServerMode;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class AIPlayer extends NetworkPlayer {
+
+    Map board;
+    int size = board.getMapSize();
+    List<Coordinate> Moves = new ArrayList<Coordinate>(); //Stores the moves which were already used
+    List<Coordinate> HitPoints = new ArrayList<Coordinate>(); //Stores the Points which hit a ship
+
 
 
     public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
@@ -36,6 +45,13 @@ public class AIPlayer extends NetworkPlayer {
     @Override
     public Coordinate getShot() {
         Random random = new Random();
-        return new Coordinate(random.nextInt(), random.nextInt());
+        Coordinate bullet;
+
+        do {
+            bullet = new Coordinate(random.nextInt(size), random.nextInt(size));
+        } while (Moves.contains(bullet));
+
+        Moves.add(bullet);
+        return bullet;
     }
 }
