@@ -77,11 +77,13 @@ public final class Driver {
         }
 
         Player player = null;
+        // TODO this info will come from the gui later on
+        String username = serverMode == ServerMode.SERVER ? "Server" : "Client";
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
+            player = new ConsolePlayer(new PlayerConfig(username), new GlobalConfig(), serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
+            player = new AIPlayer(new PlayerConfig(username), new GlobalConfig(), serverMode, addr);
         }
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
