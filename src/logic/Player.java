@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import static logic.Util.mapStateToChar;
 import static network.internal.Util.log_debug;
 
 
@@ -237,4 +238,43 @@ public abstract class Player extends Observable {
         ships.remove(destroyedShip);
         return shotResult;
     }
+
+    protected void printBothMaps() {
+        int mapSize = globalConfig.getMapSize(getCommonSemester());
+        System.out.print("My Map:");
+        // right padding
+        for (int i=0; i<mapSize*2-"My Map:".length(); i++) {
+            System.out.print(" ");
+        }
+        System.out.println("\t  Enemy Map:");
+
+        for (int i=0; i<mapSize; i++) {
+            // our map
+            for (int j=0; j<myMap.getMapSize(); j++) {
+                System.out.print(mapStateToChar(myMap.getMap()[i][j]));
+                System.out.print(" ");
+            }
+
+            // padding
+            System.out.print(" |" + i%10 + "|  ");
+
+            // enemy map
+            for (int j=0; j<enemyMap.getMapSize(); j++) {
+                System.out.print(mapStateToChar(enemyMap.getMap()[i][j]));
+                System.out.print(" ");
+            }
+
+            System.out.println();
+        }
+
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i%10 + "|");
+        }
+        System.out.print("  +   ");
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i%10 + "|");
+        }
+        System.out.println();
+    }
+
 }

@@ -71,54 +71,6 @@ public final class ConsolePlayer extends NetworkPlayer {
         return validInput("Enter a Move: ");
     }
 
-    private char mapStateToChar(MapState mapState) {
-        switch (mapState) {
-            case W -> {
-                return '~';
-            }
-            case S -> {
-                return 'S';
-            }
-            case H -> {
-                return 'x';
-            }
-            case M -> {
-                return 'o';
-            }
-            case D -> {
-                return 'X';
-            }
-        }
-        return '.';
-    }
-    private void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(getCommonSemester());
-        System.out.print("My Map:");
-        // right padding
-        for (int i=0; i<mapSize*2-"My Map:".length(); i++) {
-            System.out.print(" ");
-        }
-        System.out.println("\tEnemy Map:");
-
-        for (int i=0; i<mapSize; i++) {
-            // our map
-            for (int j=0; j<myMap.getMapSize(); j++) {
-                System.out.print(mapStateToChar(myMap.getMap()[i][j]));
-                System.out.print(" ");
-            }
-
-            // padding
-            System.out.print("\t");
-
-            // enemy map
-            for (int j=0; j<enemyMap.getMapSize(); j++) {
-                System.out.print(mapStateToChar(enemyMap.getMap()[i][j]));
-                System.out.print(" ");
-            }
-
-            System.out.println();
-        }
-    }
 
     /**
      * Checks if the entered Coordinate is in range of the mapsize
