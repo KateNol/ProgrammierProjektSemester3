@@ -256,7 +256,7 @@ public abstract class Player extends Observable {
             }
 
             // padding
-            System.out.print(" |" + i%10 + "|  ");
+            System.out.print(" |" + String.format("%02d", i) + "|  ");
 
             // enemy map
             for (int j=0; j<enemyMap.getMapSize(); j++) {
@@ -268,9 +268,17 @@ public abstract class Player extends Observable {
         }
 
         for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i/10 + "|");
+        }
+        System.out.print(" ++++  ");
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i/10 + "|");
+        }
+        System.out.println();
+        for (int i=0; i<myMap.getMapSize(); i++) {
             System.out.print(i%10 + "|");
         }
-        System.out.print("  +   ");
+        System.out.print(" ++++  ");
         for (int i=0; i<myMap.getMapSize(); i++) {
             System.out.print(i%10 + "|");
         }

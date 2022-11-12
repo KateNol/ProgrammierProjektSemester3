@@ -35,7 +35,9 @@ public class AIPlayer extends NetworkPlayer {
      */
     @Override
     public Coordinate getShot() {
+        System.out.println("out turn! state of the game:");
+        printBothMaps();
         Random random = new Random();
-        return new Coordinate(random.nextInt(), random.nextInt());
+        return new Coordinate(random.nextInt(0, globalConfig.getMapSize(getCommonSemester())), random.nextInt(0, globalConfig.getMapSize(getCommonSemester())));
     }
 }
