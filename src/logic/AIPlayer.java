@@ -27,7 +27,12 @@ public class AIPlayer extends NetworkPlayer {
 
     @Override
     protected void setShips() {
-
+        addShip(2, new Coordinate(5, 4), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(12, 2), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(8, 6), Alignment.HOR_LEFT);
+        addShip(2, new Coordinate(4, 8), Alignment.VERT_UP);
+        addShip(4, new Coordinate(9, 9), Alignment.VERT_DOWN);
+        addShip(6, new Coordinate(4, 13), Alignment.VERT_DOWN);
     }
 
     /**
@@ -35,9 +40,9 @@ public class AIPlayer extends NetworkPlayer {
      */
     @Override
     public Coordinate getShot() {
-        System.out.println("out turn! state of the game:");
+        System.out.println("our turn! state of the game:");
         printBothMaps();
         Random random = new Random();
-        return new Coordinate(random.nextInt(0, globalConfig.getMapSize(getCommonSemester())), random.nextInt(0, globalConfig.getMapSize(getCommonSemester())));
+        return new Coordinate(random.nextInt(0, globalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, globalConfig.getMapSize(getNegotiatedSemester())));
     }
 }
