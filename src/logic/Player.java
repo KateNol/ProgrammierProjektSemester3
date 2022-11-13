@@ -53,14 +53,15 @@ public abstract class Player extends Observable {
      *
      * @return
      */
-    public abstract boolean getIsConnected();
+    public abstract boolean getIsConnectionEstablished();
 
     /**
      * returns the highest semester both players can play in
      * a call to this is only valid if getIsConnected() returns true
+     *
      * @return
      */
-    public abstract int getCommonSemester();
+    public abstract int getNegotiatedSemester();
 
     /**
      * gets our username
@@ -240,7 +241,7 @@ public abstract class Player extends Observable {
     }
 
     protected void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(getCommonSemester());
+        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
         System.out.print("My Map:");
         // right padding
         for (int i=0; i<mapSize*2-"My Map:".length(); i++) {

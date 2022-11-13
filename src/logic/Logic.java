@@ -1,11 +1,9 @@
 package logic;
 
-import javax.xml.stream.events.EndElement;
+import network.NetworkPlayer;
+
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static logic.Util.log_debug;
 import static logic.Util.log_stderr;
@@ -30,7 +28,7 @@ public class Logic implements Observer {
         GameOver
     }
 
-    private Player player = null;
+    private NetworkPlayer player = null;
     private State state = null;
 
     private int semester = 0;
@@ -41,13 +39,8 @@ public class Logic implements Observer {
     private final Object shotLock = new Object();
     private final Object shotResultLock = new Object();
 
-    // FIXME: remove this
-    public Logic(Player p, Player e) {
-        log_stderr("do not use this method");
-        System.exit(1);
-    }
 
-    public Logic(Player player) {
+    public Logic(NetworkPlayer player) {
         this.player = player;
         player.addObserver(this);
 
@@ -65,13 +58,15 @@ public class Logic implements Observer {
         state = State.Start;
 
         // wait for both players to connect
-        while (!player.getIsConnected()) ;
+        while (!player.getIsConnectionEstablished()) ;
         log_debug("both players connected");
         state = State.PlayersReady;
 
         // TODO get ships from player
         player.setShips();
         state = State.GameReady;
+        player.setReadyToBegin(true);
+        while (!player.getEnemyReadyToBegin()) ;
 
         // get info on who begins
         // TODO get actual info, for now server always begins
@@ -164,6 +159,9 @@ public class Logic implements Observer {
                 shotResult = recvShotResult;
                 shotResultLock.notify();
             }
+        } else if (arg instanceof String argStr) {
+            if (argStr.equalsIgnoreCase("game over"))
+                state = State.GameOver;
         }
     }
 }

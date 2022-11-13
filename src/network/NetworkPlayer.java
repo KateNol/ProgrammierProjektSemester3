@@ -7,7 +7,7 @@ import network.internal.Server;
 //import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Observable;
+import java.util.Arrays;
 import java.util.Observer;
 
 import static network.internal.Util.*;
@@ -58,18 +58,31 @@ public abstract class NetworkPlayer extends Player {
     }
 
     @Override
-    public boolean getIsConnected() {
-        return contact.getIsConnected();
+    public boolean getIsConnectionEstablished() {
+        return contact.getIsConnectionEstablished();
     }
 
     @Override
-    public int getCommonSemester() {
-        return contact.getCommonSemester();
+    public int getNegotiatedSemester() {
+        return contact.getNegotiatedSemester();
     }
 
     @Override
     public String getUsername() {
         return contact.getUsername();
+    }
+
+    public String getEnemyUsername() {
+        return contact.getPeerUsername();
+    }
+
+    public void setReadyToBegin(boolean b) {
+        // FIXME: replace with semester sensitive info
+        contact.setShipsPlaced(globalConfig.getShipSizes(getNegotiatedSemester()).length);
+    }
+
+    public boolean getEnemyReadyToBegin() {
+        return contact.getBegin();
     }
 
     /**
@@ -85,8 +98,17 @@ public abstract class NetworkPlayer extends Player {
      */
     @Override
     public void sendShotResponse(ShotResult shotResult) {
-        //super.sendShotResponse(shotResult);
-        sendMessage("FIRE_ACK;" + shotResult);
+        boolean gameOver = true;
+        for (int i = 0; i < myMap.getMapSize(); i++) {
+            for (int j = 0; j < myMap.getMapSize(); j++) {
+                if (myMap.getMap()[i][j] == MapState.S)
+                    gameOver = false;
+            }
+        }
+        if (!gameOver)
+            sendMessage("FIRE_ACK;" + shotResult);
+        else
+            sendMessage("FIRE_ACK;" + shotResult + ";" + "true");
     }
 
     /**
@@ -103,4 +125,6 @@ public abstract class NetworkPlayer extends Player {
         super.addObserver(o);
         contact.addObserver(o);
     }
+
+
 }
