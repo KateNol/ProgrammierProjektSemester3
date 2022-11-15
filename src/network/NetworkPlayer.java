@@ -25,11 +25,9 @@ public abstract class NetworkPlayer extends Player {
         super(playerConfig, globalConfig);
         switch (serverMode) {
             case SERVER -> {
-                log_stdio("server");
                 this.contact = Server.getContact(port);
             }
             case CLIENT -> {
-                log_stdio("client");
                 this.contact = Client.getContact(address, port);
             }
             default -> {
@@ -37,7 +35,6 @@ public abstract class NetworkPlayer extends Player {
                 System.exit(1);
             }
         }
-        System.out.println("NetworkPlayer CTOR end");
     }
 
     public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
@@ -126,5 +123,10 @@ public abstract class NetworkPlayer extends Player {
         contact.addObserver(o);
     }
 
-
+    @Override
+    public void notifyObservers(Object arg) {
+        new Thread(() -> {
+            super.notifyObservers(arg);
+        }).start();
+    }
 }
