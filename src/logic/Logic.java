@@ -55,25 +55,25 @@ public class Logic implements Observer {
      * main logic thread containing the game loop
      */
     private void logicGameLoop() {
-        state = State.Start;
+        switchState(State.Start);
 
         // wait for both players to connect
         while (!player.getIsConnectionEstablished()) ;
         log_debug("both players connected");
-        state = State.PlayersReady;
+        switchState(State.PlayersReady);
 
         // TODO get ships from player
         player.setShips();
-        state = State.GameReady;
+        switchState(State.GameReady);
         player.setReadyToBegin(true);
-        while (!player.getEnemyReadyToBegin()) ;
+        while (!player.getEnemyReadyToBegin());
 
         // get info on who begins
         // TODO get actual info, for now server always begins
         if (player.getUsername().equalsIgnoreCase("server")) {
-            state = State.OurTurn;
+            switchState(State.OurTurn);
         } else {
-            state = State.EnemyTurn;
+            switchState(State.EnemyTurn);
         }
 
         // begin loop
@@ -90,7 +90,7 @@ public class Logic implements Observer {
                     // TODO check if this move would be legal
                     player.sendShot(shot);
                     log_debug("waiting for response");
-                    state = State.WaitForShotResponse;
+                    switchState(State.WaitForShotResponse);
                 }
                 case WaitForShotResponse -> {
                     // we just shot somewhere, now we wait for a response, this means
@@ -104,9 +104,9 @@ public class Logic implements Observer {
                         player.updateMapState(shot, shotResult);
                         // if we hit/sunk, its our turn again, else its the enemies turn next
                         if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
-                            state = State.OurTurn;
+                            switchState(State.OurTurn);
                         } else {
-                            state = State.EnemyTurn;
+                            switchState(State.EnemyTurn);
                         }
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -122,9 +122,9 @@ public class Logic implements Observer {
                             // send the result to the other player
                             player.sendShotResponse(shotResult);
                             if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
-                                state = State.EnemyTurn;
+                                switchState(State.EnemyTurn);
                             } else {
-                                state = State.OurTurn;
+                                switchState(State.OurTurn);
                             }
                         }
                     } catch (InterruptedException e) {
@@ -133,6 +133,11 @@ public class Logic implements Observer {
                 }
             }
         }
+    }
+
+    private void switchState(State newState) {
+        state = newState;
+        log_debug("switching state: " + state + " -> " + newState);
     }
 
     /**
@@ -144,24 +149,38 @@ public class Logic implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        log_debug("notify got something");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         if (arg instanceof Coordinate recvShot) {
-            log_debug("got notified of new shot at " + ((Coordinate) arg).row() + " " + ((Coordinate) arg).col());
+            log_debug("got notified new shot at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
+            if (state != State.EnemyTurn) {
+                log_stderr("not in state EnemyTurn");
+                while (state != State.EnemyTurn);
+                log_stderr("we have now reached state " + state);
+            }
             synchronized (shotLock) {
-                log_debug("acquired lock for shot");
                 shot = recvShot;
                 shotLock.notify();
             }
         } else if (arg instanceof ShotResult recvShotResult) {
             log_debug("got notified of ShotResult " + recvShotResult);
+            if (state != State.EnemyTurn) {
+                log_stderr("not in state WaitForShotResponse");
+                while (state != State.WaitForShotResponse);
+                log_stderr("we have now reached state " + state);
+            }
             synchronized (shotResultLock) {
-                log_debug("acquired lock");
                 shotResult = recvShotResult;
                 shotResultLock.notify();
             }
         } else if (arg instanceof String argStr) {
-            if (argStr.equalsIgnoreCase("game over"))
-                state = State.GameOver;
+            log_debug("got notified of game over");
+            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
+                switchState(State.GameOver);
         }
     }
 }
