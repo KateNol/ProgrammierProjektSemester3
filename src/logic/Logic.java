@@ -2,11 +2,13 @@ package logic;
 
 import network.NetworkPlayer;
 
+import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Stack;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
-import static logic.Util.log_debug;
-import static logic.Util.log_stderr;
+import static logic.Util.*;
 
 /**
  * the logic class contains a thread with the game loop
@@ -31,13 +33,20 @@ public class Logic implements Observer {
     private NetworkPlayer player = null;
     private State state = null;
 
+    /*
+     * these 2 Stacks hold the incoming updates we receive from the network.
+     * by using a >Concurrent< LinkedDeque we save ourselves from using thread locks and further synchronisation
+     * because input is not guaranteed to be received in the correct order, using 2 separate stacks is easier
+     * FIXME: if any one stack at any point holds more than 1 item that (probably) means one client is out of sync, should we check for this?
+     * TODO: look for a better, for thread friendly, method that while(stack.isEmpty()) to wait for input
+     */
+    private final Deque<Coordinate> shotStack = new ConcurrentLinkedDeque<>();
+    private final Deque<ShotResult> shotResultStack = new ConcurrentLinkedDeque<>();
+
     private int semester = 0;
 
     private Coordinate shot = new Coordinate(-1, -1);
     private ShotResult shotResult = ShotResult.SUNK;
-
-    private final Object shotLock = new Object();
-    private final Object shotResultLock = new Object();
 
 
     public Logic(NetworkPlayer player) {
@@ -95,49 +104,40 @@ public class Logic implements Observer {
                 case WaitForShotResponse -> {
                     // we just shot somewhere, now we wait for a response, this means
                     // we have to wait for notify() to get called
-                    try {
-                        synchronized (shotResultLock) {
-                            shotResultLock.wait();
-                        }
-                        log_debug("got response " + shotResult);
-                        //TODO update enemyMap with shotResponse. Get coordinate somewhere
-                        player.updateMapState(shot, shotResult);
-                        // if we hit/sunk, its our turn again, else its the enemies turn next
-                        if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
-                            switchState(State.OurTurn);
-                        } else {
-                            switchState(State.EnemyTurn);
-                        }
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                    while (shotResultStack.isEmpty());
+                    shotResult = shotResultStack.pop();
+                    log_debug("got response " + shotResult);
+                    //TODO update enemyMap with shotResponse. Get coordinate somewhere
+                    player.updateMapState(shot, shotResult);
+                    // if we hit/sunk, its our turn again, else its the enemies turn next
+                    if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                        switchState(State.OurTurn);
+                    } else {
+                        switchState(State.EnemyTurn);
                     }
                 }
                 case EnemyTurn -> {
                     // its the enemies turn, wait until notify() tells us where the enemy shot
-                    try {
-                        synchronized (shotLock) {
-                            shotLock.wait();
-                            log_debug("received shot, sending response");
-                            ShotResult shotResult = player.receiveShot(shot);
-                            // send the result to the other player
-                            player.sendShotResponse(shotResult);
-                            if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
-                                switchState(State.EnemyTurn);
-                            } else {
-                                switchState(State.OurTurn);
-                            }
-                        }
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                    while (shotStack.isEmpty());
+                    shot = shotStack.pop();
+                    log_debug("received shot, sending response");
+                    ShotResult shotResult = player.receiveShot(shot);
+                    // send the result to the other player
+                    player.sendShotResponse(shotResult);
+                    if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                        switchState(State.EnemyTurn);
+                    } else {
+                        switchState(State.OurTurn);
                     }
+
                 }
             }
         }
     }
 
     private void switchState(State newState) {
-        state = newState;
         log_debug("switching state: " + state + " -> " + newState);
+        state = newState;
     }
 
     /**
@@ -149,34 +149,12 @@ public class Logic implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         if (arg instanceof Coordinate recvShot) {
             log_debug("got notified new shot at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
-            if (state != State.EnemyTurn) {
-                log_stderr("not in state EnemyTurn");
-                while (state != State.EnemyTurn);
-                log_stderr("we have now reached state " + state);
-            }
-            synchronized (shotLock) {
-                shot = recvShot;
-                shotLock.notify();
-            }
+            shotStack.push(recvShot);
         } else if (arg instanceof ShotResult recvShotResult) {
             log_debug("got notified of ShotResult " + recvShotResult);
-            if (state != State.EnemyTurn) {
-                log_stderr("not in state WaitForShotResponse");
-                while (state != State.WaitForShotResponse);
-                log_stderr("we have now reached state " + state);
-            }
-            synchronized (shotResultLock) {
-                shotResult = recvShotResult;
-                shotResultLock.notify();
-            }
+            shotResultStack.push(recvShotResult);
         } else if (arg instanceof String argStr) {
             log_debug("got notified of game over");
             if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
