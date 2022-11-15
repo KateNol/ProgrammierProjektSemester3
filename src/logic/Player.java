@@ -176,14 +176,17 @@ public abstract class Player extends Observable {
      * @param c
      */
     private void shipSunk(Coordinate c) {
-        //TODO update every coordinate of this ship to MapState.D
         log_debug("Pathfinding shipSunk");
         if(enemyMap.getState(c) == MapState.H) {
             enemyMap.setState(c, MapState.D);
-            shipSunk(new Coordinate(c.row()-1, c.col())); //look west
-            shipSunk(new Coordinate(c.row(), c.col()-1)); //look north
-            shipSunk(new Coordinate(c.row()+1, c.col())); //look east
-            shipSunk(new Coordinate(c.row(), c.col()+1)); //look south
+            if (c.row()-1 > 0)
+                shipSunk(new Coordinate(c.row()-1, c.col())); //look west
+            if (c.col()-1 > 0)
+                shipSunk(new Coordinate(c.row(), c.col()-1)); //look north
+            if (c.row()+1 < mapSize)
+                shipSunk(new Coordinate(c.row()+1, c.col())); //look east
+            if (c.col()+1 < mapSize)
+                shipSunk(new Coordinate(c.row(), c.col()+1)); //look south
         }
     }
 
