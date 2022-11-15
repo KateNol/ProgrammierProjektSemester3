@@ -81,8 +81,6 @@ public class GUIMain extends Application {
         Player player = GUIPlayer.getInstance();
         Player enemy = new ConsolePlayer(null, null, network.ServerMode.CLIENT);
 
-        Logic playerLogic = new Logic(player, enemy);
-        Logic enemyLogic = new Logic(enemy, player);
     }
 
     public static GUIMain getInstance() {
