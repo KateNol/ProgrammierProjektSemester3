@@ -53,12 +53,12 @@ public final class ConsolePlayer extends NetworkPlayer {
         }
          */
         // FIXME fixed ships for debugging
-        addShip(2, new Coordinate(5,4), Alignment.VERT_DOWN);
-        addShip(2, new Coordinate(12,2), Alignment.VERT_DOWN);
-        addShip(2, new Coordinate(8,6), Alignment.HOR_LEFT);
-        addShip(2, new Coordinate(4,8), Alignment.VERT_UP);
-        addShip(4, new Coordinate(9,9), Alignment.VERT_DOWN);
-        addShip(6, new Coordinate(4,13), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(0,0), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(1,1), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(2,2), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(3,4), Alignment.VERT_DOWN);
+        addShip(4, new Coordinate(5,5), Alignment.VERT_DOWN);
+        addShip(6, new Coordinate(6,6), Alignment.VERT_DOWN);
     }
 
     /**
