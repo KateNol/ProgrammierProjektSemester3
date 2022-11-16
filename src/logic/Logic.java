@@ -90,10 +90,6 @@ public class Logic implements Observer {
             switch (state) {
                 case OurTurn -> {
                     // our turn, ask our player for a move
-                    /*Coordinate coordinate = player.getShot();
-                    log_debug("our player wants to shoot at " + coordinate);
-                    // TODO check if this move would be legal
-                    player.sendShot(coordinate);*/
                     shot = player.getShot();
                     log_debug("our player wants to shoot at " + shot);
                     // TODO check if this move would be legal
@@ -123,8 +119,11 @@ public class Logic implements Observer {
                     log_debug("received shot, sending response");
                     ShotResult shotResult = player.receiveShot(shot);
                     // send the result to the other player
-                    player.sendShotResponse(shotResult);
-                    if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
+                    boolean gameOver = player.noShipsLeft();
+                    player.sendShotResponse(shotResult, gameOver);
+                    if (gameOver) {
+                        switchState(State.GameOver);
+                    } else if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                         switchState(State.EnemyTurn);
                     } else {
                         switchState(State.OurTurn);
@@ -132,13 +131,15 @@ public class Logic implements Observer {
                 }
             }
         }
+        player.sendEnd("");
+        player.sendBye();
     }
 
-    private void switchState(State newState) {
-        if(state != State.GameOver) {
-            log_debug("switching state: " + state + " -> " + newState);
-            state = newState;
-        }
+    private synchronized void switchState(State newState) {
+        if (state == State.GameOver)
+            return;
+        log_debug("switching state: " + state + " -> " + newState);
+        state = newState;
     }
 
     /**

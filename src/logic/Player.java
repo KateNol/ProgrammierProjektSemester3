@@ -102,6 +102,10 @@ public abstract class Player extends Observable {
         }
     }
 
+    public boolean noShipsLeft() {
+        return ships.isEmpty();
+    }
+
     /**
      * creates an array
      * @param pivot Coordinate

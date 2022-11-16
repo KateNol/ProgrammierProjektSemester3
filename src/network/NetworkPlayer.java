@@ -95,17 +95,22 @@ public abstract class NetworkPlayer extends Player {
      */
     @Override
     public void sendShotResponse(ShotResult shotResult) {
-        boolean gameOver = true;
-        for (int i = 0; i < myMap.getMapSize(); i++) {
-            for (int j = 0; j < myMap.getMapSize(); j++) {
-                if (myMap.getMap()[i][j] == MapState.S)
-                    gameOver = false;
-            }
-        }
+        sendShotResponse(shotResult, false);
+    }
+
+    public void sendShotResponse(ShotResult shotResult, boolean gameOver) {
         if (!gameOver)
             sendMessage("FIRE_ACK;" + shotResult);
         else
             sendMessage("FIRE_ACK;" + shotResult + ";" + "true");
+    }
+
+    public void sendEnd(String winner) {
+        sendMessage("END;" + winner);
+    }
+
+    public void sendBye() {
+        sendMessage("BYE");
     }
 
     /**

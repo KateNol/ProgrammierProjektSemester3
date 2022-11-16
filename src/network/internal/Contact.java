@@ -120,6 +120,7 @@ public final class Contact extends Observable {
     private void init_communication() {
         Thread comm = new Thread(this::receiveLoop);
         comm.setName("Contact comm Thread");
+        comm.setDaemon(true);
         comm.start();
 
         // if hosted, send HELLO
@@ -433,9 +434,9 @@ public final class Contact extends Observable {
                     case "sunk" -> ShotResult.SUNK;
                     default -> null;
                 };
-                notifyObservers(shotResult);
                 if (GAME_OVER)
                     notifyObservers("game over");
+                notifyObservers(shotResult);
             }
         }
     }
