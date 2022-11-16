@@ -43,6 +43,7 @@ public class Logic implements Observer {
     private final Deque<Coordinate> shotStack = new ConcurrentLinkedDeque<>();
     private final Deque<ShotResult> shotResultStack = new ConcurrentLinkedDeque<>();
 
+
     private int semester = 0;
 
     private Coordinate shot = new Coordinate(-1, -1);
@@ -85,6 +86,8 @@ public class Logic implements Observer {
             switchState(State.EnemyTurn);
         }
 
+        String winner = player.getUsername().equalsIgnoreCase("host") ? "host" : "client";
+
         // begin loop
         while (state != State.GameOver) {
             switch (state) {
@@ -122,6 +125,8 @@ public class Logic implements Observer {
                     boolean gameOver = player.noShipsLeft();
                     player.sendShotResponse(shotResult, gameOver);
                     if (gameOver) {
+                        log_debug("game over, we lost!");
+                        winner = player.getUsername().equalsIgnoreCase("host") ? "host" : "client";
                         switchState(State.GameOver);
                     } else if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                         switchState(State.EnemyTurn);
@@ -131,7 +136,7 @@ public class Logic implements Observer {
                 }
             }
         }
-        player.sendEnd("");
+        player.sendEnd(winner);
         player.sendBye();
     }
 
@@ -152,7 +157,7 @@ public class Logic implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof String argStr) {
-            log_debug("got notified of game over");
+            log_debug("got notified of game over, we seem to have won");
             if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
                 switchState(State.GameOver);
         } else if (arg instanceof ShotResult recvShotResult) {
@@ -163,16 +168,5 @@ public class Logic implements Observer {
             shotStack.push(recvShot);
         }
 
-        /*if (arg instanceof Coordinate recvShot) {
-            log_debug("got notified new shot at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
-            shotStack.push(recvShot);
-        } else if (arg instanceof ShotResult recvShotResult) {
-            log_debug("got notified of ShotResult " + recvShotResult);
-            shotResultStack.push(recvShotResult);
-        } else if (arg instanceof String argStr) {
-            log_debug("got notified of game over");
-            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
-                switchState(State.GameOver);
-        }*/
     }
 }
