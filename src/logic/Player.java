@@ -221,25 +221,37 @@ public abstract class Player extends Observable {
      */
     public ShotResult receiveShot(Coordinate shot) {
         // TODO look up actual result in map
-        ShotResult shotResult = ShotResult.MISS;
-        myMap.setState(shot, MapState.M);
+        ShotResult shotResult = null;
         Ship destroyedShip = null;
-        for (Ship s : ships) {
-            int shipHealth = -1;
-            if (s.checkIfHit(shot)) {
-                shipHealth = s.decreaseHealth();
-                myMap.setState(shot, MapState.H);
-                shotResult =  ShotResult.HIT;
+
+        switch (myMap.getState(shot)) {
+            case W -> {
+                shotResult = ShotResult.MISS;
+                myMap.setState(shot, MapState.M);
             }
-            if (shipHealth == 0) {
-                for(Coordinate c: s.getPos()) {
-                    myMap.setState(c, MapState.D);
+            case S -> {
+                for (Ship s : ships) {
+                    int shipHealth = -1;
+                    if (s.checkIfHit(shot)) {
+                        shipHealth = s.decreaseHealth();
+                        myMap.setState(shot, MapState.H);
+                        shotResult =  ShotResult.HIT;
+                    }
+                    if (shipHealth == 0) {
+                        for(Coordinate c: s.getPos()) {
+                            myMap.setState(c, MapState.D);
+                        }
+                        destroyedShip = s;
+                        shotResult = ShotResult.SUNK;
+                    }
                 }
-                destroyedShip = s;
-                shotResult = ShotResult.SUNK;
+                ships.remove(destroyedShip);
             }
+            case H -> shotResult = ShotResult.HIT;
+            case D -> shotResult = ShotResult.SUNK;
+            case M -> shotResult = ShotResult.MISS;
         }
-        ships.remove(destroyedShip);
+
         return shotResult;
     }
 

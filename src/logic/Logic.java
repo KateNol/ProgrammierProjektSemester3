@@ -129,15 +129,16 @@ public class Logic implements Observer {
                     } else {
                         switchState(State.OurTurn);
                     }
-
                 }
             }
         }
     }
 
     private void switchState(State newState) {
-        log_debug("switching state: " + state + " -> " + newState);
-        state = newState;
+        if(state != State.GameOver) {
+            log_debug("switching state: " + state + " -> " + newState);
+            state = newState;
+        }
     }
 
     /**
@@ -149,7 +150,19 @@ public class Logic implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof Coordinate recvShot) {
+        if (arg instanceof String argStr) {
+            log_debug("got notified of game over");
+            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
+                switchState(State.GameOver);
+        } else if (arg instanceof ShotResult recvShotResult) {
+            log_debug("got notified of ShotResult " + recvShotResult);
+            shotResultStack.push(recvShotResult);
+        } else if (arg instanceof Coordinate recvShot) {
+            log_debug("got notified new shot at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
+            shotStack.push(recvShot);
+        }
+
+        /*if (arg instanceof Coordinate recvShot) {
             log_debug("got notified new shot at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
             shotStack.push(recvShot);
         } else if (arg instanceof ShotResult recvShotResult) {
@@ -159,6 +172,6 @@ public class Logic implements Observer {
             log_debug("got notified of game over");
             if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
                 switchState(State.GameOver);
-        }
+        }*/
     }
 }
