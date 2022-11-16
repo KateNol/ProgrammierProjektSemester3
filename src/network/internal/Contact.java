@@ -126,6 +126,9 @@ public final class Contact extends Observable {
         // if hosted, send HELLO
         if (serverMode == ServerMode.SERVER) {
             HELLO(SEND, implementedProtocolVersion, semester, username);
+            if (debug) {
+                sendRawMessage("to kill and restart this bot send ERR with code 9");
+            }
         }
     }
 
@@ -494,6 +497,10 @@ public final class Contact extends Observable {
             case RECEIVE -> {
                 // TODO how do we handle this?
                 log_stderr("ERR: " + CODE + ", " + REASON);
+                if (CODE == 9) {
+                    exitWithError(9, "received command to kill self, quitting...");
+                    System.exit(9);
+                }
             }
         }
     }
