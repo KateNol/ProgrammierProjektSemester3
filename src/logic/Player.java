@@ -142,16 +142,7 @@ public abstract class Player extends Observable {
     //TODO check if neighbor is also empty
     private boolean checkLegal(Coordinate[] position) {
         boolean check = true;
-        for(int i = 0; i < position.length; i++) {
-            for(Ship s: ships) {
-                for(int n = 0; n < s.getSize(); n++) {
-                    if(position[i].row() == s.getPoint(n).row()) {
-                        if(position[i].col() == s.getPoint(n).col())
-                            check = false;
-                    }
-                }
-            }
-        }
+        //Check if off map
         if(check) {
             for (Coordinate c: position) {
                 if(c.col() >= myMap.getMapSize() && c.row() >= myMap.getMapSize()) {
@@ -159,7 +150,32 @@ public abstract class Player extends Observable {
                 }
             }
         }
+        //Check if overlapping ship
+        for(Coordinate c:position) {
+            if(check) {
+                check = checkSurroundings(c);
+            }
+        }
+
+
         return check;
+    }
+
+    private boolean checkSurroundings(Coordinate coordinate) {
+        // only gets true if every surrounding is Water
+        return checkIfWater(coordinate)
+                && checkIfWater(new Coordinate(coordinate.row() - 1, coordinate.col())) // up
+                && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col())) // down
+                && checkIfWater(new Coordinate(coordinate.row(), coordinate.col() - 1)) // left
+                && checkIfWater(new Coordinate(coordinate.row(), coordinate.col() + 1)) // right
+                && checkIfWater(new Coordinate(coordinate.row() - 1, coordinate.col() - 1)) // up-left
+                && checkIfWater(new Coordinate(coordinate.row() - 1, coordinate.col() + 1)) // up-right
+                && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() - 1)) // down-left
+                && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() + 1)); // down-right
+    }
+    // returns true if mapState == Water
+    private boolean checkIfWater(Coordinate c) {
+        return myMap.getState(c) == MapState.W;
     }
 
     /**
