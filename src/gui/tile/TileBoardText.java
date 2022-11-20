@@ -13,6 +13,7 @@ public class TileBoardText extends StackPane {
 
     /**
      * Outer Tile for labeling the board
+     * @param coordinate Coordinates where the labeling is
      * @param tileSize TileSize in Pixel
      * @param s Labeling from the board
      */

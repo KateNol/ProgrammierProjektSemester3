@@ -10,8 +10,7 @@ public class TileWater extends Tile {
 
     /**
      * Create Water Tile
-     * Coordinates where water is on the board
-
+     * @param coordinate Coordinates where water is on the board
      * @param tileSize TileSize in Pixel
      */
     public TileWater(Coordinate coordinate, int tileSize) {

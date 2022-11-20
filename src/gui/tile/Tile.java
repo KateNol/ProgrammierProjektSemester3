@@ -13,13 +13,14 @@ public class Tile extends Rectangle {
 
     /**
      * Base Tile is a Rectangle
+     * @param coordinate Coordinate row, column
      * @param tileSize TileSize in Pixel
      */
     public Tile(Coordinate coordinate, int tileSize){
         super(tileSize - 1, tileSize - 1);
         this.tileSize = tileSize;
         this.coordinate = coordinate;
-        //Design from Tile
+        //Outline from Tile
         setStroke(Color.BLACK);
     }
 
@@ -31,6 +32,10 @@ public class Tile extends Rectangle {
         return tileSize;
     }
 
+    /**
+     * Get coordinate from Tile
+     * @return coordinate
+     */
     public Coordinate getCoordinate() {
         return coordinate;
     }

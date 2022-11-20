@@ -4,8 +4,10 @@ import javafx.scene.paint.Color;
 import logic.Coordinate;
 
 public class TileDisable extends Tile{
+
     /**
-     * Base Tile is a Rectangle
+     * Tile where Ships placement is not allowed
+     * @param coordinate Coordinates where Ship is not allowed to place
      * @param tileSize TileSize in Pixel
      */
     public TileDisable(Coordinate coordinate, int tileSize) {

@@ -1,7 +1,7 @@
 package gui;
 
-import gui.objekt.Board;
-import gui.objekt.Harbour;
+import gui.objekt.GuiBoard;
+import gui.objekt.GuiHarbour;
 import javafx.scene.layout.VBox;
 import logic.Coordinate;
 import logic.GlobalConfig;
@@ -14,16 +14,19 @@ import java.io.IOException;
 public class GUIPlayer extends NetworkPlayer {
     private static GUIPlayer instance;
     private int tileSize = 40;
+    private GuiBoard guiBoard;
+    private GuiHarbour guiHarbour;
+    private GuiBoard guiEnemyBoard;
 
-    //replace start
-    private int[][] board;
-    //replace end
-
-    private Board guiBoard;
-    private Harbour guiHarbour;
-    private Board guiEnemyBoard;
-
-
+    /**
+     * Create a GuiPlayer
+     * @param playerConfig maxSemester & userName
+     * @param globalConfig mapSize & ship Arraylist
+     * @param serverMode
+     * @param address
+     * @param port
+     * @throws IOException
+     */
     public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
         super(playerConfig, globalConfig, serverMode, address, port);
         instance = this;
@@ -42,19 +45,22 @@ public class GUIPlayer extends NetworkPlayer {
     public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
         super(playerConfig, globalConfig, serverMode);
         instance = this;
-        this.board = new int[this.getMapSize()][this.getMapSize()];
     }
 
     public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
         super(playerConfig, globalConfig);
         instance = this;
-        this.board = new int[this.getMapSize()][this.getMapSize()];
     }
 
+    /**
+     * Returning the instance of a GuiPlayer
+     * @return instance
+     */
     public static GUIPlayer getInstance() {
         return instance;
     }
 
+    //------------------------------------------------------
     @Override
     protected void setShips() {
 
@@ -64,32 +70,41 @@ public class GUIPlayer extends NetworkPlayer {
     public Coordinate getShot() {
         return null;
     }
-
     //------------------------------------------------------
 
+    /**
+     * Create Gui Objects off GuiBoard and GuiHarbour
+     * @param vboxMiddle Position on Screen
+     * @param vBoxLeft Position on Screen
+     */
     public void creatBoard(VBox vboxMiddle, VBox vBoxLeft){
+        this.guiBoard = new GuiBoard(this.getShips(), this.getMapSize(), tileSize, this);
+        this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
         guiBoard.initializeBoard(vboxMiddle);
         guiHarbour.initializeShip(vBoxLeft);
     }
 
-    public void setGuiBoard() {
-        this.guiBoard = new Board(board, this.getShipSizes(), this.getMapSize(), tileSize);
-    }
-
-    public void setGuiHarbour() {
-        this.guiHarbour = new Harbour(tileSize, this.getShipSizes());
-    }
-
-    public Board getGuiBoard() {
+    /**
+     * Get guiBoard
+     * @return guiBoard
+     */
+    public GuiBoard getGuiBoard() {
         return guiBoard;
     }
 
-    public Board getGuiEnemyBoard() {
+    /**
+     * Get guiEnemyBoard
+     * @return guiEnemyBoard
+     */
+    public GuiBoard getGuiEnemyBoard() {
         return guiEnemyBoard;
     }
 
+    /**
+     * Get tileSize
+     * @return tileSize
+     */
     public int getTileSize() {
         return tileSize;
     }
-
 }

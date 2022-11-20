@@ -21,22 +21,33 @@ public class ControllerLobby implements Initializable {
 
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
-
+    /**
+     * Initialize Lobby Screen items(Board, Ship)
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        guiPlayer.setGuiBoard();
-        guiPlayer.setGuiHarbour();
         guiPlayer.creatBoard(vBoxMiddle, vboxLeft);
     }
 
+    /**
+     * Return to Screen Menu
+     */
     public void onBack(){
         ViewSwitcher.switchTo(View.Menu);
     }
 
+    /**
+     * Switch to Screen Game
+     */
     public void onStartGame(){
         ViewSwitcher.switchTo(View.Game);
     }
 
+    /**
+     * Choose Alignment for placing ships
+     */
     public void setMyAlignment(){
         alignment.setOnMouseClicked(mouseEvent -> {
             if(guiPlayer.getGuiBoard().isVertical()){

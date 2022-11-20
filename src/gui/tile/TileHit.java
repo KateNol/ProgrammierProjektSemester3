@@ -7,10 +7,11 @@ import logic.Coordinate;
  * @author Stefan
  */
 public class TileHit extends Tile {
+
     /**
      * Create Hit Tile
-     * Coordinates where shoot hit
-     * @param tileSize tileSize in Pixel
+     * @param coordinate Coordinates where shoot hit
+     * @param tileSize TTileSize in Pixel
      */
     public TileHit(Coordinate coordinate, int tileSize) {
         super(coordinate, tileSize);

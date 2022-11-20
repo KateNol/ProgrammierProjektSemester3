@@ -10,8 +10,8 @@ public class TileShip extends Tile {
 
     /**
      * Create Ship Tile
-     * Coordinates where the Ship is placed
-     * @param tileSize tileSize in Pixel
+     * @param coordinate Coordinates where the Ship is placed
+     * @param tileSize TileSize in Pixel
      */
     public TileShip(Coordinate coordinate, int tileSize) {
         super(coordinate, tileSize);

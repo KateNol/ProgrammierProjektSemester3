@@ -8,15 +8,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ViewSwitcher {
+
+    //Caching for Screens
     private static Map<View, Parent> cache = new HashMap<>();
     private static Scene scene;
 
+    /**
+     * Set scene
+     * @param scene
+     */
     public static void setScene(Scene scene){
         ViewSwitcher.scene = scene;
     }
 
+    /**
+     * Manage switching between scenes
+     * @param view
+     */
     public static void switchTo(View view)  {
-
         if(scene == null){
             System.out.println("No Scene was set");
             return;
@@ -28,6 +37,7 @@ public class ViewSwitcher {
                 root = cache.get(view);
                 //System.out.println("Loading from cache");
             } else {
+                //Filer Lobby and Game Scene
                 if(view == View.Lobby || view == View.Game){
                     root = FXMLLoader.load(ViewSwitcher.class.getResource(view.getFileName()));
                 } else {
@@ -42,6 +52,10 @@ public class ViewSwitcher {
         }
     }
 
+    /**
+     * Get scene
+     * @return scene
+     */
     public static Scene getScene() {
         return scene;
     }

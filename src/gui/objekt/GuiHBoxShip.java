@@ -8,11 +8,16 @@ import logic.Ship;
 /**
  * @author Stefan
  */
-public class HBoxShip extends HBox {
+public class GuiHBoxShip extends HBox {
 
     private Ship ship;
 
-    public HBoxShip(Ship ship, int tileSize){
+    /**
+     * Gui object for a ship
+     * @param ship Ships with size, exact positions on board and health
+     * @param tileSize TileSize in Pixel
+     */
+    public GuiHBoxShip(Ship ship, int tileSize){
         this.ship = ship;
         for(int i = 0; i < ship.getSize(); i++){
             TileShip tileShip = new TileShip(new Coordinate(-1,-1), tileSize);
@@ -20,6 +25,10 @@ public class HBoxShip extends HBox {
         }
     }
 
+    /**
+     * Get ship
+     * @return ship
+     */
     public Ship getShip() {
         return ship;
     }

@@ -33,13 +33,20 @@ public class ControllerGame implements Initializable {
 
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
-
+    /**
+     * Initialize Game Screen items(Player Board, Enemy Board)
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
         //guiPlayer.getGuiEnemyBoard().getInitializedBoard(enemyBoard);
     }
 
+    /**
+     * Return to Screen Menu
+     */
     public void onExit(){
         ViewSwitcher.switchTo(View.Menu);
     }

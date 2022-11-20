@@ -52,6 +52,10 @@ public abstract class Player extends Observable {
         return mapSize;
     }
 
+    public ArrayList<Ship> getShips() {
+        return ships;
+    }
+
     //---------------------
     /**
      * returns true when both players are connected
@@ -92,8 +96,8 @@ public abstract class Player extends Observable {
      * @param pivot Coordinate
      * @param alignment Alignment
      */
-
-    protected void addShip(int size, Coordinate pivot, Alignment alignment) {
+    //change protected -> public
+    public void addShip(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = createArray(size, pivot, alignment);
         //Has to be done once, otherwise it gets NullPointerException
         ships.add(new Ship(position));
@@ -118,7 +122,8 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      * @return created array of type Coordinate[]
      */
-    private Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
+    //change protected -> public
+    public Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = new Coordinate[size];
         for(int i = 0; i < size; i++) {
             switch (alignment) {
@@ -146,7 +151,8 @@ public abstract class Player extends Observable {
      * @return result of the check as boolean
      */
     //TODO check if neighbor is also empty
-    private boolean checkLegal(Coordinate[] position) {
+    //change protected -> public
+    public boolean checkLegal(Coordinate[] position) {
         boolean check = true;
         //Check if off map
         if(check) {

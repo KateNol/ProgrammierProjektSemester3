@@ -9,8 +9,8 @@ import logic.Coordinate;
 public class TileMiss extends Tile{
     /**
      * Create Miss Tile
-     * Coordinates where shoot missed
-     * @param tileSize tileSize in Pixel
+     * @param coordinate Coordinates where shoot missed
+     * @param tileSize TileSize in Pixel
      */
     public TileMiss(Coordinate coordinate, int tileSize) {
         super(coordinate, tileSize);

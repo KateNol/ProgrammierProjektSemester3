@@ -1,14 +1,11 @@
 package gui.controllers;
 
-import gui.GUIPlayer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import logic.GlobalConfig;
 import logic.PlayerConfig;
-import network.ServerMode;
-
 
 public class ControllerFileManager {
 
@@ -36,19 +33,24 @@ public class ControllerFileManager {
 
     private PlayerConfig playerConfig;
     private GlobalConfig globalConfig;
-    private ServerMode serverMode;
-    private String address;
-    private int port;
 
-
+    /**
+     * Return to Screen Menu
+     */
     public void onReturn(){
         ViewSwitcher.switchTo(View.Menu);
     }
 
+    /**
+     * Switch to Screen Network Manager
+     */
     public void onNext(){
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * Create or load File 1
+     */
     public void onFile1() {
         if (fileExist1){
             loadPlayerFile();
@@ -58,6 +60,9 @@ public class ControllerFileManager {
         }
     }
 
+    /**
+     * Create or load File 2
+     */
     public void onFile2() {
         if (fileExist2){
             loadPlayerFile();
@@ -67,6 +72,9 @@ public class ControllerFileManager {
         }
     }
 
+    /**
+     * Create or load File 3
+     */
     public void onFile3() {
         if (fileExist3){
             loadPlayerFile();
@@ -76,15 +84,26 @@ public class ControllerFileManager {
         }
     }
 
+    /**
+     * Load Player File
+     */
     public void loadPlayerFile(){
 
     }
 
+    /**
+     * Create Player File
+     * @param i Witch file chosen
+     */
     public void createPlayerFile(int i) {
         userInput.setVisible(true);
         setUsername(i);
     }
 
+    /**
+     * Set Username for Player
+     * @param i Witch file chosen
+     */
     public void setUsername(int i){
         create.setOnMouseClicked(mouseEvent -> {
             switch (i){
@@ -101,11 +120,15 @@ public class ControllerFileManager {
             playerConfig = new PlayerConfig(nameInput.getText());
             nameInput.clear();
             userInput.setVisible(false);
-            //GUIPlayer guiPlayer = new GUIPlayer(playerConfig, globalConfig, serverMode, address, port);
         });
     }
 
+    /**
+     * Valid input for Player Name
+     * @return valid
+     */
     public boolean isValidInput(){
-        return false;
+        boolean valid = false;
+        return valid;
     }
 }
