@@ -21,8 +21,8 @@ public class GUIPlayer extends NetworkPlayer {
 
     private Board guiBoard;
     private Harbour guiHarbour;
-
     private Board guiEnemyBoard;
+
 
     public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
         super(playerConfig, globalConfig, serverMode, address, port);
