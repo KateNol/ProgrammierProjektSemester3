@@ -2,43 +2,25 @@ package gui.tile;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import logic.Coordinate;
 
 /**
  * @author Stefan
  */
 public class Tile extends Rectangle {
-    private int x, y;
+    private Coordinate coordinate;
     private int tileSize;
 
     /**
      * Base Tile is a Rectangle
-     * @param x Coordinate on the Board
-     * @param y Coordinate on the Board
      * @param tileSize TileSize in Pixel
      */
-    public Tile(int x, int y, int tileSize){
+    public Tile(Coordinate coordinate, int tileSize){
         super(tileSize - 1, tileSize - 1);
         this.tileSize = tileSize;
-        this.x = x;
-        this.y = y;
+        this.coordinate = coordinate;
         //Design from Tile
         setStroke(Color.BLACK);
-    }
-
-    /**
-     * Coordinate
-     * @return x
-     */
-    public int getCoordinateX(){
-        return x;
-    }
-
-    /**
-     * Coordinate
-     * @return y
-     */
-    public int getCoordinateY(){
-        return y;
     }
 
     /**
@@ -49,10 +31,7 @@ public class Tile extends Rectangle {
         return tileSize;
     }
 
-    /**
-     * print Coordinates
-     */
-    public void printCoordinates(){
-        System.out.println(x + " " + y);
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 }

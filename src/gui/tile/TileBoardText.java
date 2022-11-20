@@ -3,6 +3,7 @@ package gui.tile;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import logic.Coordinate;
 
 /**
  * @author Stefan
@@ -12,13 +13,11 @@ public class TileBoardText extends StackPane {
 
     /**
      * Outer Tile for labeling the board
-     * @param x Coordinate on the Board
-     * @param y Coordinate on the Board
      * @param tileSize TileSize in Pixel
      * @param s Labeling from the board
      */
-    public TileBoardText(int x, int y, int tileSize, String s) {
-        this.tile = new Tile(x, y, tileSize);
+    public TileBoardText(Coordinate coordinate, int tileSize, String s) {
+        this.tile = new Tile(coordinate, tileSize);
         tile.setFill(Color.WHITE);
 
         Text text = new Text(s);

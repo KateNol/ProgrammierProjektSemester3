@@ -26,7 +26,7 @@
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#switchToSceneLobby" prefWidth="350.0" text="Continue" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onContinue" prefWidth="350.0" text="Continue" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -34,7 +34,7 @@
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="350.0" text="New Game" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onNewGame" prefWidth="350.0" text="New Game" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -42,7 +42,7 @@
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="loadGame" mnemonicParsing="false" onAction="#switchToSceneFileManager" prefWidth="350.0" text="Load Game" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onLoadGame" prefWidth="350.0" text="Load Game" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -50,7 +50,7 @@
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="rules" mnemonicParsing="false" onAction="#switchToSceneRules" prefWidth="350.0" text="Rules" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onRules" prefWidth="350.0" text="Rules" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -58,7 +58,7 @@
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#switchToSceneSettings" prefWidth="350.0" text="Settings" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onSettings" prefWidth="350.0" text="Settings" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -66,7 +66,7 @@
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="exit" mnemonicParsing="false" onAction="#exitGame" prefWidth="350.0" text="Exit" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onExit" prefWidth="350.0" text="Exit" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>

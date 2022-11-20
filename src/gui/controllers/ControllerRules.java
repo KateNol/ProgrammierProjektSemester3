@@ -1,4 +1,8 @@
 package gui.controllers;
 
-public class ControllerRules extends Controller{
+public class ControllerRules {
+
+    public void onReturn(){
+        ViewSwitcher.switchTo(View.Menu);
+    }
 }

@@ -1,102 +1,205 @@
 package gui.objekt;
 
 import gui.tile.TileBoardText;
+import gui.tile.TileDisable;
 import gui.tile.TileShip;
 import gui.tile.TileWater;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import logic.Coordinate;
 
-/**
- * @author Stefan
- */
-public class Board extends BoardBase {
+public class Board {
+
+    private GridPane grid;
     private int[][] board;
-    GridPane gridPane;
     private int[] sizeShip;
+    private int boardSize;
+    private int tileSize;
     private int shipCount;
     private int shipPlaced = 0;
+    private boolean vertical = false;
 
-    /**
-     * create a Board
-     * @param board
-     * @param boardSize from 14x14 to 19x19 in Tiles
-     * @param tileSize Pixel from one Tile
-     * @param pane
-     */
-    public Board(int[][] board, int[] sizeShip, int boardSize, int tileSize, Pane pane) {
-        super(boardSize, tileSize, pane);
-        this.sizeShip = sizeShip;
+
+    public Board(int[][] board, int[] sizeShip, int boardSize, int tileSize) {
+
         this.board = board;
+        this.sizeShip = sizeShip;
+        this.boardSize = boardSize;
+        this.tileSize = tileSize;
         this.shipCount = sizeShip.length;
     }
 
-    /**
-     * Initialize the visible board with Water Tiles
-     * and save the position from the tile
-     * in x and y Coordinates
-     */
-    public void initializeBoard(){
-        gridPane = new GridPane();
-        for(int y = 0; y < getBoardSize() + 1; y++){
-            for (int x = 0; x < getBoardSize() + 1; x++){
-                if(y == 0 && x == 0){
-                    TileBoardText tbt = new TileBoardText(x, y, getTileSize(),"");
-                    gridPane.add(tbt, x, y, 1, 1);
+    public void initializeBoard(VBox vboxMiddle){
+        grid = new GridPane();
+        grid.setTranslateX((380 - (((double)boardSize * tileSize) / 2)));
+        for(int row = 0; row < boardSize + 1; row++){
+            for (int col = 0; col < boardSize + 1; col++){
+                if(row == 0 && col == 0){
+                    TileBoardText tbt = new TileBoardText(new Coordinate(row, col),tileSize,"");
+                    grid.add(tbt, row, col, 1, 1);
                 } else {
-                    if(y == 0){
-                        TileBoardText tbt = new TileBoardText(x, y, getTileSize(),"" + (char) ('A' + x - 1));
-                        gridPane.add(tbt, x, y, 1, 1);
-                    } else if (x == 0 && y > 0) {
-                        TileBoardText tbt = new TileBoardText(x, y, getTileSize(),"" + y);
-                        gridPane.add(tbt, x, y, 1, 1);
+                    if(row == 0){
+                        TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + (char) ('A' + col - 1));
+                        grid.add(tbt, col, row, 1, 1);
+                    } else if (col == 0 && row > 0) {
+                        TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + row);
+                        grid.add(tbt, col, row, 1, 1);
                     } else {
-                        TileWater tile = new TileWater(x, y, getTileSize());
-                        gridPane.add(tile, x, y, 1, 1);
-                        board[x - 1][y - 1] = 0;
+                        TileWater tile = new TileWater(new Coordinate(row, col), tileSize);
+                        grid.add(tile, row, col, 1, 1);
+                        board[row - 1][col - 1] = 0;
                     }
                 }
             }
         }
-        gridPane.getChildren().forEach(this::setShip);
-        getPane().getChildren().add(gridPane);
-
+        grid.getChildren().forEach(this::setShip);
+        vboxMiddle.getChildren().add(grid);
     }
 
     public void setShip(Node node){
         node.setOnMouseClicked(e -> {
-            TileWater tileWater = (TileWater) e.getSource();
-            int x = tileWater.getCoordinateX();
-            int y = tileWater.getCoordinateY();
-            if(shipPlaced < shipCount){
-                for(int i = 0; i < sizeShip[shipPlaced]; i++){
-                    gridPane.add(new TileShip(x, y + i, getTileSize()),x + i,y,1,1);
-                    board[y - 1][x - 1 + i] = 1;
+            if(e.getSource() instanceof TileWater){
+                if (shipPlaced == shipCount) {
+                    node.setDisable(true);
+                } else {
+                    TileWater tileWater = (TileWater) e.getSource();
+                    int row = tileWater.getCoordinate().row();
+                    int col = tileWater.getCoordinate().col();
+                    //Vertical
+                    if(vertical && isValidPoint(row, col, sizeShip[shipPlaced])){
+                        if(shipPlaced < shipCount) {
+                            for (int i = 0; i < sizeShip[shipPlaced]; i++) {
+                                grid.add(new TileShip(new Coordinate(row + i, col), tileSize), row, col + i, 1, 1);
+                                setDisableVertical(row, col);
+                                board[col - 1 + i][row - 1] = 1;
+                            }
+                            shipPlaced++;
+                        }
+                    //Horizontal
+                    } else if (isValidPoint(row, col, sizeShip[shipPlaced])) {
+                        if(shipPlaced < shipCount){
+                            for(int i = 0; i < sizeShip[shipPlaced]; i++){
+                                grid.add(new TileShip(new Coordinate(row, col + 1), tileSize),row + i,col,1,1);
+                                setDisableHorizontal(row, col);
+                                board[col - 1][row - 1 + i] = 1;
+                            }
+                            shipPlaced++;
+                        }
+                    }
+                    print();
                 }
-                shipPlaced++;
-                printBoard();
             }
         });
     }
 
-    /**
-     * Print board on Console
-     */
-    public void printBoard(){
-        for(int x = 0; x < board.length; x++){
-            for(int y = 0; y < board.length; y++){
-                System.out.print(board[x][y] + "  ");
+    public void setDisableHorizontal(int row, int col){
+        //left
+        if(row - 1 != 0){
+            if(col - 1 != 0){
+                //top left
+                grid.add(new TileDisable(new Coordinate(row - 1 , col - 1), tileSize), row  - 1 , col - 1, 1, 1);
+            }
+            //middle left
+            grid.add(new TileDisable(new Coordinate(row - 1, col), tileSize), row - 1 , col, 1, 1);
+            //bottom left
+            if(col + 1 != boardSize + 1){
+                grid.add(new TileDisable(new Coordinate(row - 1 , col + 1), tileSize), row - 1 , col + 1, 1, 1);
+            }
+        }
+        //middle
+        for(int i = 0; i < sizeShip[shipPlaced]; i++){
+            if(col - 1 != 0){
+                //top middle
+                grid.add(new TileDisable(new Coordinate(row + i, col + 1), tileSize), row + i, col - 1, 1, 1);
+            }
+            if(col + 1 != boardSize + 1){
+                //bottom middle
+                grid.add(new TileDisable(new Coordinate(row + i, col + 1), tileSize), row + i, col + 1, 1, 1);
+            }
+        }
+        //right
+        if(row + sizeShip[shipPlaced] != boardSize + 1){
+            //bottom right
+            if(col + 1 != boardSize + 1){
+                grid.add(new TileDisable(new Coordinate(row + sizeShip[shipPlaced], col + 1), tileSize), row + sizeShip[shipPlaced], col + 1, 1, 1);
+            }
+            //middle right
+            grid.add(new TileDisable(new Coordinate(row + sizeShip[shipPlaced], col), tileSize), row + sizeShip[shipPlaced], col, 1, 1);
+            //top right
+            if(col - 1 != 0){
+                grid.add(new TileDisable(new Coordinate(row + sizeShip[shipPlaced], col - 1), tileSize), row + sizeShip[shipPlaced], col - 1, 1, 1);
+            }
+        }
+    }
+
+    public void setDisableVertical(int row, int col){
+        //top
+        if(col - 1 != 0){
+            //right top
+            if(row + 1 != boardSize + 1){
+                grid.add(new TileDisable(new Coordinate(row + 1, col - 1), tileSize), row + 1, col - 1, 1, 1);
+            }
+            //middle top
+            grid.add(new TileDisable(new Coordinate(row, col - 1), tileSize), row, col - 1, 1, 1);
+            //left top
+            if(row - 1 != 0){
+                grid.add(new TileDisable(new Coordinate(row - 1, col - 1), tileSize), row - 1, col - 1, 1, 1);
+            }
+        }
+        //middle
+        for(int i = 0; i < sizeShip[shipPlaced]; i++){
+            // left middle
+            if(row - 1 != 0){
+                grid.add(new TileDisable(new Coordinate(row + 1, col + i), tileSize), row - 1, col + i, 1, 1);
+            }
+            //right middle
+            if(row + 1 != boardSize + 1){
+                grid.add(new TileDisable(new Coordinate(row + 1, col + i), tileSize), row + 1, col + i, 1, 1);
+            }
+        }
+        //bottom
+        if(col + sizeShip[shipPlaced] != boardSize + 1){
+            //right bottom
+            if(row + 1 != boardSize + 1){
+                grid.add(new TileDisable(new Coordinate(row + 1, col + sizeShip[shipPlaced]), tileSize), row + 1, col + sizeShip[shipPlaced], 1, 1);
+            }
+            //middle bottom
+            grid.add(new TileDisable(new Coordinate(row, col + sizeShip[shipPlaced]), tileSize), row, col + sizeShip[shipPlaced], 1, 1);
+            //left bottom
+            if(row - 1 != 0){
+                grid.add(new TileDisable(new Coordinate(row - 1, col + sizeShip[shipPlaced]), tileSize), row - 1, col + sizeShip[shipPlaced], 1, 1);
+            }
+        }
+    }
+
+    public void print(){
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
+                System.out.print("  " + board[row][col]);
             }
             System.out.println();
         }
         System.out.println("----------------------------------------");
     }
 
-    public int[][] getBoard() {
-        return board;
+    public void getInitializedBoard(VBox myBoard){
+        myBoard.getChildren().add(grid);
     }
 
-    public void setBoard(int x, int y, int ship) {
-        board[x][y] = ship;
+    private boolean isValidPoint(int row, int col, int i) {
+        if (vertical){
+            return col + i - 1 <= boardSize;
+        } else {
+            return row + i - 1 <= boardSize;
+        }
+    }
+
+    public boolean isVertical() {
+        return vertical;
+    }
+
+    public void setVertical(boolean vertical) {
+        this.vertical = vertical;
     }
 }

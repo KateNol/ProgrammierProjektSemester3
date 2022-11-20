@@ -2,42 +2,26 @@ package gui.objekt;
 
 import gui.tile.TileShip;
 import javafx.scene.layout.HBox;
+import logic.Coordinate;
+import logic.Ship;
 
 /**
  * @author Stefan
  */
 public class HBoxShip extends HBox {
 
-    private int shipLength;
-    private int tileSize;
-    private int shipSize;
-    private int x;
-    private int y;
+    private Ship ship;
 
-
-    /**
-     * Create a Ship as an HBox
-     * @param shipLength The length from the Ship
-     * @param tileSize TileSize in Pixel
-     */
-    public HBoxShip(int shipLength, int tileSize){
-        this.shipLength = shipLength;
-        this.tileSize = tileSize;
-        for(int i = 0; i < shipLength; i++){
-            TileShip tileShip = new TileShip(0, 0, tileSize);
-            tileShip.setOnMouseClicked(e -> {
-
-            });
+    public HBoxShip(Ship ship, int tileSize){
+        this.ship = ship;
+        for(int i = 0; i < ship.getSize(); i++){
+            TileShip tileShip = new TileShip(new Coordinate(-1,-1), tileSize);
             this.getChildren().add(tileShip);
         }
     }
 
-    public int getShipLength(){
-        return shipLength;
-    }
-
-    public void printShipLength(){
-        System.out.println(shipLength);
+    public Ship getShip() {
+        return ship;
     }
 }
 
