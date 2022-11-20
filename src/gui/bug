@@ -1,0 +1,4 @@
+Bug Report:
+
+-index out of bound and wired behavior when adding ships to map
+-checkLegal does not properly work

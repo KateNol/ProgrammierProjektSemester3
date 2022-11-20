@@ -53,7 +53,7 @@ public class GuiBoard {
                     if(row == 0){
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + (char) ('A' + col - 1));
                         grid.add(tbt, col, row, 1, 1);
-                    } else if (col == 0 && row > 0) {
+                    } else if (col == 0) {
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + row);
                         grid.add(tbt, col, row, 1, 1);
                     } else {
@@ -84,9 +84,12 @@ public class GuiBoard {
                         if(shipPlaced < shipCount) {
                             for (int i = 0; i < ships.get(shipPlaced).getSize(); i++) {
                                 grid.add(new TileShip(new Coordinate(row + i, col), tileSize), row, col + i, 1, 1);
+
                                 //Deactivate Tiles clickable function
                                 setDisableVertical(row, col);
                             }
+                            //set Coordinates from ship
+                            ships.get(shipPlaced).setPos(coordinatesVer);
                             //Add ship to Board
                             guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
                             shipPlaced++;
@@ -99,6 +102,8 @@ public class GuiBoard {
                                 //Deactivate Tiles clickable function
                                 setDisableHorizontal(row, col);
                             }
+                            //set Coordinates from ship
+                            ships.get(shipPlaced).setPos(coordinatesHor);
                             //Add ship to Board
                             guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
                             shipPlaced++;
@@ -194,7 +199,7 @@ public class GuiBoard {
     }
 
     private boolean isValidPoint(int row, int col, int i, Coordinate[] coordinates) {
-        if (vertical && guiPlayer.checkLegal(coordinates)){
+        if (vertical){
             return col + i - 1 <= boardSize;
         } else if (guiPlayer.checkLegal(coordinates)){
             return row + i - 1 <= boardSize;

@@ -40,7 +40,8 @@ public abstract class Player extends Observable {
     public void loadGlobalConfig() {
         shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
         mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
-        ships = new ArrayList<Ship>(shipSizes.length);
+        //ships = new ArrayList<Ship>(shipSizes.length); //global-config methode
+        ships = globalConfig.getShips(1 /*getCommonSemester()*/);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
