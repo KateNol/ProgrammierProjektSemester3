@@ -2,3 +2,6 @@ Bug Report:
 
 -index out of bound and wired behavior when adding ships to map
 -checkLegal does not properly work
+-on witch instance checking for allowance for placing a ship
+
+-Does Player need in constructor global-config
