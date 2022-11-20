@@ -1,11 +1,9 @@
 package gui.objekt;
 
 import gui.GUIPlayer;
-import gui.tile.TileBoardText;
-import gui.tile.TileDisable;
-import gui.tile.TileShip;
-import gui.tile.TileWater;
+import gui.tile.*;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.Alignment;
@@ -25,6 +23,9 @@ public class GuiBoard {
     private int shipCount;
     private int shipPlaced = 0;
     private boolean vertical = false;
+    private boolean enemyBoard;
+    private boolean turn = true;
+    private Label label;
 
     /**
      * Gui object for the board
@@ -33,12 +34,27 @@ public class GuiBoard {
      * @param tileSize
      * @param guiPlayer
      */
-    public GuiBoard(ArrayList<Ship> ships, int boardSize, int tileSize, GUIPlayer guiPlayer) {
+
+    /**
+     * For player
+     */
+    public GuiBoard(ArrayList<Ship> ships, int boardSize, int tileSize, boolean enemyBoard, GUIPlayer guiPlayer) {
         this.guiPlayer = guiPlayer;
         this.ships = ships;
         this.boardSize = boardSize;
         this.tileSize = tileSize;
+        this.enemyBoard = enemyBoard;
         this.shipCount = ships.size();
+    }
+
+    /**
+     * For enemy
+     */
+    public GuiBoard(int boardSize, int tileSize, boolean enemyBoard, Label label) {
+        this.boardSize = boardSize;
+        this.tileSize = tileSize;
+        this.enemyBoard = enemyBoard;
+        this.label = label;
     }
 
     public void initializeBoard(VBox vboxMiddle){
@@ -64,7 +80,27 @@ public class GuiBoard {
             }
         }
         grid.getChildren().forEach(this::setShip);
+        if(enemyBoard){
+            grid.getChildren().forEach(this::sendShot);
+        }
         vboxMiddle.getChildren().add(grid);
+    }
+
+    private void sendShot(Node node) {
+        node.setOnMouseClicked(e -> {
+            //need to receive witch tile to set
+            TileWater tileWater = (TileWater) e.getSource();
+            TileMiss tileMiss = new TileMiss(tileWater.getCoordinate(), tileSize);
+            grid.add(tileMiss, tileWater.getCoordinate().row(), tileWater.getCoordinate().col(), 1, 1);
+            node.setDisable(true);
+            if(turn){
+                label.setText("Your Turn");
+                turn = false;
+            } else {
+                label.setText("My Turn");
+                turn = true;
+            }
+        });
     }
 
     public void setShip(Node node){
@@ -77,6 +113,7 @@ public class GuiBoard {
                     int row = tileWater.getCoordinate().row();
                     int col = tileWater.getCoordinate().col();
                     Coordinate coordinate = new Coordinate(row, col);
+                    //create array of ship coordinates vertical or horizontal
                     Coordinate[] coordinatesVer = guiPlayer.createArray(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
                     Coordinate[] coordinatesHor = guiPlayer.createArray(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
                     //Vertical

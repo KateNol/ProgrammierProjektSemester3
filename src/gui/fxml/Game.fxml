@@ -27,7 +27,7 @@
                </HBox.margin></VBox>
             <VBox alignment="TOP_CENTER">
                <children>
-                  <Label fx:id="turn" text="Turn">
+                  <Label fx:id="turn" alignment="TOP_LEFT" contentDisplay="CENTER" prefWidth="110.0" text="Your Turn">
                      <VBox.margin>
                         <Insets top="50.0" />
                      </VBox.margin>

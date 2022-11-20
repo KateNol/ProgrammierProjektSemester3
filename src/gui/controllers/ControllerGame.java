@@ -41,7 +41,8 @@ public class ControllerGame implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
-        //guiPlayer.getGuiEnemyBoard().getInitializedBoard(enemyBoard);
+        guiPlayer.createEnemyBoard(enemyBoard, turn);
+
     }
 
     /**

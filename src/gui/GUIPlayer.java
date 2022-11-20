@@ -2,6 +2,7 @@ package gui;
 
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.Coordinate;
 import logic.GlobalConfig;
@@ -78,10 +79,15 @@ public class GUIPlayer extends NetworkPlayer {
      * @param vBoxLeft Position on Screen
      */
     public void creatBoard(VBox vboxMiddle, VBox vBoxLeft){
-        this.guiBoard = new GuiBoard(this.getShips(), this.getMapSize(), tileSize, this);
+        this.guiBoard = new GuiBoard(this.getShips(), this.getMapSize(), tileSize, false, this);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
         guiBoard.initializeBoard(vboxMiddle);
         guiHarbour.initializeShip(vBoxLeft);
+    }
+
+    public void createEnemyBoard(VBox enemyBoard, Label label){
+        guiEnemyBoard = new GuiBoard(this.getMapSize(), tileSize, true, label);
+        guiEnemyBoard.initializeBoard(enemyBoard);
     }
 
     /**
