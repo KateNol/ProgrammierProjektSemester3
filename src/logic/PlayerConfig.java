@@ -11,6 +11,7 @@ public class PlayerConfig implements Serializable {
 
     private String userName;
     private int maxSemester;
+    private File file;
 
 
     /**
@@ -49,6 +50,21 @@ public class PlayerConfig implements Serializable {
 
     }
 
+
+    public void decreaseMaxSemester(){
+
+
+    }
+
+    /**
+     * this method deletes cofigFiles no longer needed
+     */
+
+
+    public void configDelete(){
+        file.delete();
+    }
+
     /**
      * writes the current Player state and save it in a Binary file
      *
@@ -56,7 +72,9 @@ public class PlayerConfig implements Serializable {
      */
 
     public void writeToFile() throws IOException {
-        ObjectOutputStream as = new ObjectOutputStream(new FileOutputStream(userName + ".bin"));
+        String absolutePath = "src/configfiles" +userName + ".bin";
+        file = new File(absolutePath);
+        ObjectOutputStream as = new ObjectOutputStream(new FileOutputStream(file));
         as.writeObject(this); // write object
         as.close();
 

@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 /**
  * return values are just for debug
  */
@@ -25,6 +27,17 @@ public class GlobalConfig {
             neuShip[i] = ships[commonSemester - 1][i];
         }
         return neuShip;
+
+    }
+
+    public ArrayList<Ship> getShips(int commonSemester) {
+
+        ArrayList<Ship> shipHabour = new ArrayList<>();
+        for (int i = 0;i < getShipSizes(commonSemester).length; i++) {
+            shipHabour.add(new Ship(ships[commonSemester - 1][i]));
+        }
+
+        return shipHabour;
 
     }
 
