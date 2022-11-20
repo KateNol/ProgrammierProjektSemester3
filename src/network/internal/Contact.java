@@ -40,6 +40,11 @@ public final class Contact extends Observable {
     private boolean semesterNegotiated = false;
     private final Object semesterLock = new Object();
 
+    private int shipsPlaced;
+
+    private boolean begin = false;
+    private final Object beginLock = new Object();
+
 
     Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
         this.serverMode = serverMode;
@@ -115,11 +120,15 @@ public final class Contact extends Observable {
     private void init_communication() {
         Thread comm = new Thread(this::receiveLoop);
         comm.setName("Contact comm Thread");
+        comm.setDaemon(true);
         comm.start();
 
         // if hosted, send HELLO
         if (serverMode == ServerMode.SERVER) {
             HELLO(SEND, implementedProtocolVersion, semester, username);
+            if (debug) {
+                sendRawMessage("to kill and restart this bot send ERR with code 9");
+            }
         }
     }
 
@@ -250,8 +259,6 @@ public final class Contact extends Observable {
                 ERR(SEND, 0, "unknown message command");
             }
         }
-
-
     }
 
     private void HELLO(MessageMode mode, int VERSION, int MAX_SEMESTER, String USERNAME) {
@@ -337,12 +344,12 @@ public final class Contact extends Observable {
             case RECEIVE -> {
                 // TODO forward SHIPS_PLACED to logic
                 // TODO get info from logic on how many ships we have placed to be able to respond
-                int playerShipsPlaced = 0;      // dummy
+                int enemyShipsPlaced = SHIPS_PLACED;      // dummy
                 // TODO get info what maxPlacedShips for current semester is (from logic?)
                 int maxPlacedShips = 5;         // dummy
 
                 // TODO does this not cause an infinite loop / spam until all ships are placed?
-                if (playerShipsPlaced == maxPlacedShips) {
+                if (shipsPlaced == maxPlacedShips) {
                     READY_CHK(SEND);
                 } else {
                     // FIXME maybe the api gets changed?
@@ -351,7 +358,7 @@ public final class Contact extends Observable {
                             new java.util.TimerTask() {
                                 @Override
                                 public void run() {
-                                    READY_PING(SEND, playerShipsPlaced);
+                                    READY_PING(SEND, shipsPlaced);
                                 }
                             }, 500
                     );
@@ -397,6 +404,9 @@ public final class Contact extends Observable {
                 // TODO do we need to do anything here?
             }
         }
+        synchronized (beginLock) {
+            begin = true;
+        }
     }
 
     private void FIRE(MessageMode mode, int ROW, int COL) {
@@ -427,6 +437,8 @@ public final class Contact extends Observable {
                     case "sunk" -> ShotResult.SUNK;
                     default -> null;
                 };
+                if (GAME_OVER)
+                    notifyObservers("game over");
                 notifyObservers(shotResult);
             }
         }
@@ -485,23 +497,47 @@ public final class Contact extends Observable {
             case RECEIVE -> {
                 // TODO how do we handle this?
                 log_stderr("ERR: " + CODE + ", " + REASON);
+                if (CODE == 9) {
+                    exitWithError(9, "received command to kill self, quitting...");
+                    System.exit(9);
+                }
             }
         }
     }
 
-    public boolean getIsConnected() {
+    public boolean getIsConnectionEstablished() {
         synchronized (semesterLock) {
             return semesterNegotiated;
         }
     }
 
-    public synchronized int getCommonSemester() {
+    public boolean getIsSemesterNegotiated() {
+        synchronized (semesterLock) {
+            return semesterNegotiated;
+        }
+    }
+
+    public synchronized int getNegotiatedSemester() {
         synchronized (semesterLock) {
             if (!semesterNegotiated) {
                 log_stderr("error, trying to get negotiated semester before negotiation took place");
             }
         }
         return semester;
+    }
+
+    public void setShipsPlaced(int i) {
+        shipsPlaced = i;
+        synchronized (beginLock) {
+            if (!begin)
+                BEGIN(SEND, username.equals("SERVER") ? "host" : "client");
+        }
+    }
+
+    public boolean getBegin() {
+        synchronized (beginLock) {
+            return begin;
+        }
     }
 
     /**
@@ -528,6 +564,10 @@ public final class Contact extends Observable {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPeerUsername() {
+        return peerUsername;
     }
 
 }

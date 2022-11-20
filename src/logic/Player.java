@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import static logic.Util.mapStateToChar;
 import static network.internal.Util.log_debug;
 
 
@@ -14,7 +15,7 @@ public abstract class Player extends Observable {
     private int mapSize;
     private boolean globalConfigLoaded;
 
-    private GlobalConfig globalConfig;
+    protected GlobalConfig globalConfig;
 
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
@@ -52,14 +53,15 @@ public abstract class Player extends Observable {
      *
      * @return
      */
-    public abstract boolean getIsConnected();
+    public abstract boolean getIsConnectionEstablished();
 
     /**
      * returns the highest semester both players can play in
      * a call to this is only valid if getIsConnected() returns true
+     *
      * @return
      */
-    public abstract int getCommonSemester();
+    public abstract int getNegotiatedSemester();
 
     /**
      * gets our username
@@ -98,6 +100,10 @@ public abstract class Player extends Observable {
                 myMap.setState(c, MapState.S);
             }
         }
+    }
+
+    public boolean noShipsLeft() {
+        return ships.isEmpty();
     }
 
     /**
@@ -174,14 +180,48 @@ public abstract class Player extends Observable {
      * @param c
      */
     private void shipSunk(Coordinate c) {
-        //TODO update every coordinate of this ship to MapState.D
         log_debug("Pathfinding shipSunk");
         if(enemyMap.getState(c) == MapState.H) {
             enemyMap.setState(c, MapState.D);
-            shipSunk(new Coordinate(c.row()-1, c.col())); //look west
-            shipSunk(new Coordinate(c.row(), c.col()-1)); //look north
-            shipSunk(new Coordinate(c.row()+1, c.col())); //look east
-            shipSunk(new Coordinate(c.row(), c.col()+1)); //look south
+            if (c.row() - 1 > 0)
+                shipSunk(new Coordinate(c.row() - 1, c.col())); //look west
+            if (c.col() - 1 > 0)
+                shipSunk(new Coordinate(c.row(), c.col() - 1)); //look north
+            if (c.row() + 1 < mapSize)
+                shipSunk(new Coordinate(c.row() + 1, c.col())); //look east
+            if (c.col() + 1 < mapSize)
+                shipSunk(new Coordinate(c.row(), c.col() + 1)); //look south
+
+            // mark all surrounding tiles as miss
+            int i = c.row();
+            int j = c.col();
+            int mapMax = enemyMap.getMapSize() - 1;
+            Coordinate coordinate;
+            // up
+            if (enemyMap.getState(new Coordinate(i, Math.min(j + 1, mapMax))) == MapState.W)
+                enemyMap.setState(new Coordinate(i, Math.min(j + 1, mapMax)), MapState.M);
+            // up right
+            if (enemyMap.getState(new Coordinate(Math.min(i + 1, mapMax), Math.min(j + 1, mapMax))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.min(i + 1, mapMax), Math.min(j + 1, mapMax)), MapState.M);
+            // up left
+            if (enemyMap.getState(new Coordinate(Math.max(i - 1, 0), Math.min(j + 1, mapMax))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.max(i - 1, 0), Math.min(j + 1, mapMax)), MapState.M);
+            // down
+            if (enemyMap.getState(new Coordinate(i, Math.max(j - 1, 0))) == MapState.W)
+                enemyMap.setState(new Coordinate(i, Math.max(j - 1, 0)), MapState.M);
+            // down right
+            if (enemyMap.getState(new Coordinate(Math.min(i + 1, mapMax), Math.max(j - 1, 0))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.min(i + 1, mapMax), Math.max(j - 1, 0)), MapState.M);
+            // down left
+            if (enemyMap.getState(new Coordinate(Math.max(i - 1, 0), Math.max(j - 1, 0))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.max(i - 1, 0), Math.max(j - 1, 0)), MapState.M);
+            // right
+            if (enemyMap.getState(new Coordinate(Math.min(i + 1, mapMax), j)) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.min(i + 1, mapMax), j), MapState.M);
+            // left
+            if (enemyMap.getState(new Coordinate(Math.max(i - 1, 0), j)) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.max(i - 1, 0), j), MapState.M);
+
         }
     }
 
@@ -216,25 +256,84 @@ public abstract class Player extends Observable {
      */
     public ShotResult receiveShot(Coordinate shot) {
         // TODO look up actual result in map
-        ShotResult shotResult = ShotResult.MISS;
-        myMap.setState(shot, MapState.M);
+        ShotResult shotResult = null;
         Ship destroyedShip = null;
-        for (Ship s : ships) {
-            int shipHealth = -1;
-            if (s.checkIfHit(shot)) {
-                shipHealth = s.decreaseHealth();
-                myMap.setState(shot, MapState.H);
-                shotResult =  ShotResult.HIT;
+
+        switch (myMap.getState(shot)) {
+            case W -> {
+                shotResult = ShotResult.MISS;
+                myMap.setState(shot, MapState.M);
             }
-            if (shipHealth == 0) {
-                for(Coordinate c: s.getPos()) {
-                    myMap.setState(c, MapState.D);
+            case S -> {
+                for (Ship s : ships) {
+                    int shipHealth = -1;
+                    if (s.checkIfHit(shot)) {
+                        shipHealth = s.decreaseHealth();
+                        myMap.setState(shot, MapState.H);
+                        shotResult =  ShotResult.HIT;
+                    }
+                    if (shipHealth == 0) {
+                        for(Coordinate c: s.getPos()) {
+                            myMap.setState(c, MapState.D);
+                        }
+                        destroyedShip = s;
+                        shotResult = ShotResult.SUNK;
+                    }
                 }
-                destroyedShip = s;
-                shotResult = ShotResult.SUNK;
+                ships.remove(destroyedShip);
             }
+            case H -> shotResult = ShotResult.HIT;
+            case D -> shotResult = ShotResult.SUNK;
+            case M -> shotResult = ShotResult.MISS;
         }
-        ships.remove(destroyedShip);
+
         return shotResult;
     }
+
+    protected void printBothMaps() {
+        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
+        System.out.print("My Map:");
+        // right padding
+        for (int i=0; i<mapSize*2-"My Map:".length(); i++) {
+            System.out.print(" ");
+        }
+        System.out.println("\t  Enemy Map:");
+
+        for (int i=0; i<mapSize; i++) {
+            // our map
+            for (int j=0; j<myMap.getMapSize(); j++) {
+                System.out.print(mapStateToChar(myMap.getMap()[i][j]));
+                System.out.print(" ");
+            }
+
+            // padding
+            System.out.print(" |" + String.format("%02d", i) + "|  ");
+
+            // enemy map
+            for (int j=0; j<enemyMap.getMapSize(); j++) {
+                System.out.print(mapStateToChar(enemyMap.getMap()[i][j]));
+                System.out.print(" ");
+            }
+
+            System.out.println();
+        }
+
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i/10 + "|");
+        }
+        System.out.print(" ++++  ");
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i/10 + "|");
+        }
+        System.out.println();
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i%10 + "|");
+        }
+        System.out.print(" ++++  ");
+        for (int i=0; i<myMap.getMapSize(); i++) {
+            System.out.print(i%10 + "|");
+        }
+        System.out.println();
+    }
+
 }

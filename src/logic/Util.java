@@ -29,4 +29,25 @@ public class Util {
         System.err.println(getDateTimePrefix() + logPrefix + msg);
     }
 
+    public static char mapStateToChar(MapState mapState) {
+        switch (mapState) {
+            case W -> {
+                return '~';
+            }
+            case S -> {
+                return 'S';
+            }
+            case H -> {
+                return 'x';
+            }
+            case M -> {
+                return 'o';
+            }
+            case D -> {
+                return 'X';
+            }
+        }
+        return '.';
+    }
+
 }

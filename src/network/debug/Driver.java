@@ -76,13 +76,14 @@ public final class Driver {
             }
         }
 
-        Player player = null;
+        NetworkPlayer player = null;
 
         if (playerMode == PlayerMode.HUMAN) {
             player = new ConsolePlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
             player = new AIPlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
         }
+        assert player != null;
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
         // note: if local play is disabled, e.g. networkMode==ONLINE, then the other player has to connect from another process/pc/network

@@ -18,11 +18,12 @@ public class Map {
     }
 
     /**
-     *
      * @param c Coordinate
      * @return value of the map on this coordinate
      */
-    public MapState getState(Coordinate c) {return map[c.row()][c.col()];}
+    public MapState getState(Coordinate c) {
+        return map[c.row()][c.col()];
+    }
 
     public MapState[][] getMap() {
         return map;
