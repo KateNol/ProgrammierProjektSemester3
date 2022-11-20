@@ -3,7 +3,7 @@ package logic;
 import java.util.ArrayList;
 
 /**
- * return values are just for debug
+ * This class contains all possible sizes of ships and also the map size
  */
 
 
@@ -11,15 +11,27 @@ public class GlobalConfig {
     private final int ships[][] = {{2, 2, 2, 2, 4, 6}, {2, 2, 2, 2, 2}, {2, 2, 2, 2, 4, 6}, {2, 2, 2, 2, 4, 6}, {2, 2, 2, 3, 3, 6}, {2, 1, 1, 1, 6}};
     private int  mapSize = 14;
 
-
+    /**
+     *  Constructor for the GlobalConfig class
+     */
     public GlobalConfig() {
     }
 
-
+    /**
+     *
+     * @param commonSemester the semester in which both players are
+     * @return the mapsize according to the semester
+     */
     public int getMapSize(int commonSemester) {
         mapSize  += commonSemester;
         return mapSize;
     }
+
+    /**
+     *
+     * @param commonSemester the semester in which both players are
+     * @return the size of ships the player needs
+     */
 
     public int[] getShipSizes(int commonSemester) {
         int neuShip[] = new int[ships[commonSemester - 1].length];
@@ -29,6 +41,12 @@ public class GlobalConfig {
         return neuShip;
 
     }
+
+    /**
+     *
+     * @param commonSemester he semester in which both players are
+     * @return a list of ships sizes which the players need
+     */
 
     public ArrayList<Ship> getShips(int commonSemester) {
 
