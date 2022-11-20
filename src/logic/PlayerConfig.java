@@ -57,7 +57,7 @@ public class PlayerConfig implements Serializable {
     }
 
     /**
-     * this method deletes cofigFiles no longer needed
+     * this method deletes configFiles no longer needed
      */
 
 
@@ -66,7 +66,7 @@ public class PlayerConfig implements Serializable {
     }
 
     /**
-     * writes the current Player state and save it in a Binary file
+     * writes the current Player state and saves it in a Binary file
      *
      * @throws IOException Incase there is an input/output exception
      */
