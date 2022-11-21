@@ -87,7 +87,8 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      */
 
-    protected void addShip(int size, Coordinate pivot, Alignment alignment) {
+    protected boolean addShip(int size, Coordinate pivot, Alignment alignment) {
+        boolean check = false;
         Coordinate[] position = createArray(size, pivot, alignment);
         //Has to be done once, otherwise it gets NullPointerException
         ships.add(new Ship(position));
@@ -99,7 +100,9 @@ public abstract class Player extends Observable {
             for(Coordinate c: position) {
                 myMap.setState(c, MapState.S);
             }
+            check = true;
         }
+        return check;
     }
 
     public boolean noShipsLeft() {
