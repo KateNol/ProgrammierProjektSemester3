@@ -117,7 +117,7 @@ public class GuiBoard {
                     Coordinate[] coordinatesVer = guiPlayer.createArray(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
                     Coordinate[] coordinatesHor = guiPlayer.createArray(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
                     //Vertical
-                    if(vertical && isValidPoint(row, col, ships.get(shipPlaced).getSize(), coordinatesVer)){
+                    if(vertical && isValidPoint(row, col, ships.get(shipPlaced).getSize(), coordinatesVer)){//addShip
                         if(shipPlaced < shipCount) {
                             for (int i = 0; i < ships.get(shipPlaced).getSize(); i++) {
                                 grid.add(new TileShip(new Coordinate(row + i, col), tileSize), row, col + i, 1, 1);
@@ -128,7 +128,7 @@ public class GuiBoard {
                             //set Coordinates from ship
                             ships.get(shipPlaced).setPos(coordinatesVer);
                             //Add ship to Board
-                            guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
+                            //guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
                             shipPlaced++;
                         }
                         //Horizontal
@@ -142,7 +142,7 @@ public class GuiBoard {
                             //set Coordinates from ship
                             ships.get(shipPlaced).setPos(coordinatesHor);
                             //Add ship to Board
-                            guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
+                            //guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
                             shipPlaced++;
                         }
                     }

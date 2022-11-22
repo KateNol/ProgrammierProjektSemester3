@@ -15,7 +15,7 @@ public abstract class Player extends Observable {
     private int mapSize;
     private boolean globalConfigLoaded;
 
-    protected GlobalConfig globalConfig;
+    protected GlobalConfig globalConfig = new GlobalConfig();
 
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
@@ -98,7 +98,7 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      */
     //change protected -> public
-    public void addShip(int size, Coordinate pivot, Alignment alignment) {
+    protected void addShip(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = createArray(size, pivot, alignment);
         //Has to be done once, otherwise it gets NullPointerException
         ships.add(new Ship(position));
@@ -283,7 +283,7 @@ public abstract class Player extends Observable {
      * @param shot
      * @return
      */
-    public ShotResult receiveShot(Coordinate shot) {
+    protected ShotResult receiveShot(Coordinate shot) {
         // TODO look up actual result in map
         ShotResult shotResult = null;
         Ship destroyedShip = null;

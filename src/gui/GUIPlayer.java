@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import logic.Coordinate;
 import logic.GlobalConfig;
 import logic.PlayerConfig;
+import logic.ShotResult;
 import network.NetworkPlayer;
 import network.ServerMode;
 
@@ -70,6 +71,19 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     public Coordinate getShot() {
         return null;
+    }
+
+    @Override
+    public void updateMapState(Coordinate c, ShotResult res){
+        super.updateMapState(c, res);
+        //TODO update in GuiBoard
+    }
+
+    @Override
+    protected ShotResult receiveShot(Coordinate shot){
+        ShotResult shotResult = super.receiveShot(shot);
+        //TODO update in GuiBoard
+        return shotResult;
     }
     //------------------------------------------------------
 
