@@ -89,24 +89,18 @@ public final class Driver {
         // note: if local play is disabled, e.g. networkMode==ONLINE, then the other player has to connect from another process/pc/network
         if (networkMode == NetworkMode.OFFLINE && serverMode == ServerMode.SERVER) {
             LocalEnemyMode finalLocalEnemyMode = localEnemyMode;
-            Thread enemyThread = new Thread(() -> {
-                log_debug("starting new player thread");
-                String enemy;
-                if (finalLocalEnemyMode == LocalEnemyMode.HUMAN) {
-                    enemy = "human";
-                } else {
-                    enemy = "ai";
-                }
-                String[] new_args = new String[]{"player=" + enemy, "server=client", "network=offline"};
+            new Thread(() -> {
                 try {
-                    main(new_args);
+                    String enemy = "ai";
+                    if (finalLocalEnemyMode == LocalEnemyMode.HUMAN)
+                        enemy = "human";
+                    else if (finalLocalEnemyMode == LocalEnemyMode.COMPUTER)
+                        enemy = "ai";
+                    main(new String[]{"player=" + enemy, "network=offline", "server=client"});
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            });
-            enemyThread.setDaemon(false);
-            enemyThread.setName("Enemy Thread");
-            enemyThread.start();
+            }).start();
         }
 
     }
