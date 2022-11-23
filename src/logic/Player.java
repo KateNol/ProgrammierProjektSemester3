@@ -98,20 +98,44 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      */
     //change protected -> public
-    protected void addShip(int size, Coordinate pivot, Alignment alignment) {
+    public boolean addShip(int size, Coordinate pivot, Alignment alignment) {
+        boolean check = false;
         Coordinate[] position = createArray(size, pivot, alignment);
-        //Has to be done once, otherwise it gets NullPointerException
-        ships.add(new Ship(position));
-        for(Coordinate c: position) {
-            myMap.setState(c, MapState.S);
-        }
         if(checkLegal(position)) {
             ships.add(new Ship(position));
             for(Coordinate c: position) {
                 myMap.setState(c, MapState.S);
             }
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.S);
+            }
+            check = true;
         }
+        return check;
     }
+
+    /**
+     * Sets the position of the ship handed over with check if position is legal
+     * @param s Ship from ArrayList ships
+     * @param pivot Coordinate of the pivotpoint
+     * @param alignment Alignment the ship has
+     * @return boolean true if ship successfully set on the map
+     */
+    public boolean addShip1(Ship s, Coordinate pivot, Alignment alignment) {
+        boolean check = false;
+        Coordinate[] position = createArray(s.getSize(), pivot, alignment);
+        if(checkLegal(position)) {
+            s.setPos(position);
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.S);
+            }
+            check = true;
+        }
+        return check;
+    }
+
+
+
 
     public boolean noShipsLeft() {
         return ships.isEmpty();

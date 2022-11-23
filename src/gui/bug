@@ -1,7 +1,7 @@
 Bug Report:
 
--index out of bound and wired behavior when adding ships to map
--checkLegal does not properly work
--on witch instance checking for allowance for placing a ship
+-index out of bound on index 13 and 14
 
--Does Player need in constructor global-config
+-need method to reset Map dont needed if we create new guiPlayer
+
+-enemy Board reverse shots actions

@@ -26,3 +26,75 @@
     TileMiss tileHit = new TileMiss(tile.getCoordinateX(), tile.getCoordinateY(), getTileSize());
     gridPane.add(tileHit, tile.getCoordinateX(), tile.getCoordinateY(), 1, 1);
                             });
+
+
+
+
+addShips()
+if(vertical && isValidPoint(row, col, ships.get(shipPlaced).getSize(), coordinatesVer)){//addShip
+                        if(shipPlaced < shipCount) {
+                            for (int i = 0; i < ships.get(shipPlaced).getSize(); i++) {
+                                grid.add(new TileShip(new Coordinate(row + i, col), tileSize), row, col + i, 1, 1);
+
+                                //Deactivate Tiles clickable function
+                                setDisableVertical(row, col);
+                            }
+                            //set Coordinates from ship
+                            ships.get(shipPlaced).setPos(coordinatesVer);
+                            //Add ship to Board
+                            //guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
+                            shipPlaced++;
+                        }
+                        //Horizontal
+                    } else if (isValidPoint(row, col, ships.get(shipPlaced).getSize(), coordinatesHor)) {
+                        if(shipPlaced < shipCount){
+                            for(int i = 0; i < ships.get(shipPlaced).getSize(); i++){
+                                grid.add(new TileShip(new Coordinate(row, col + 1), tileSize),row + i,col,1,1);
+                                //Deactivate Tiles clickable function
+                                setDisableHorizontal(row, col);
+                            }
+                            //set Coordinates from ship
+                            ships.get(shipPlaced).setPos(coordinatesHor);
+                            //Add ship to Board
+                            //guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
+                            shipPlaced++;
+                        }
+                    }
+
+
+--------------------------------
+if(e.getSource() instanceof TileWater){
+    if (shipPlaced == guiPlayer.getShips().size()) {
+        node.setDisable(true);
+    } else {
+        TileWater tileWater = (TileWater) e.getSource();
+        int row = tileWater.getCoordinate().row();
+        int col = tileWater.getCoordinate().col();
+        Coordinate coordinate = new Coordinate(row, col);
+        if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced).getSize(), coordinate, guiPlayer.getAlignment())) {//addShip
+            if (shipPlaced < guiPlayer.getShips().size()) {
+                for (int i = 0; i < guiPlayer.getShips().get(shipPlaced).getSize(); i++) {
+                    grid.add(new TileShip(new Coordinate(row + i, col), tileSize), row, col + i, 1, 1);
+                }
+                shipPlaced++;
+            }
+        }
+    }
+}
+
+public void setShip(Node node) {
+        node.setOnMouseClicked(e -> {
+            if(e.getSource() instanceof TileWater) {
+                if (shipPlaced == guiPlayer.getShips().size()) {
+                    node.setDisable(true);
+                } else {
+                    TileWater tileWater = (TileWater) e.getSource();
+                    int row = tileWater.getCoordinate().row();
+                    int col = tileWater.getCoordinate().col();
+                    Coordinate coordinate = new Coordinate(row, col);
+                    guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced).getSize(), coordinate, guiPlayer.getAlignment());
+                    guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
+                }
+            }
+        });
+    }
