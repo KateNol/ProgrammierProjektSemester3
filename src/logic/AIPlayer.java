@@ -46,6 +46,7 @@ public class AIPlayer extends NetworkPlayer {
     public Coordinate getShot() {
         Random random = new Random();
         Coordinate bullet;
+        //enemyMap
 
         do {
             bullet = new Coordinate(random.nextInt(size), random.nextInt(size));
