@@ -11,18 +11,18 @@ public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
 
-    private int[] shipSizes;
+    private int[] shipSizes; //FIXME deprecated
     private int mapSize;
     private boolean globalConfigLoaded;
 
-    protected GlobalConfig globalConfig;
+    protected GlobalConfig globalConfig = new GlobalConfig();
 
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
 
-    public Player(PlayerConfig playerConfig, GlobalConfig globalConfig) {
+    public Player(PlayerConfig playerConfig) {
         if (playerConfig != null && globalConfig != null) {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
@@ -40,7 +40,8 @@ public abstract class Player extends Observable {
     public void loadGlobalConfig() {
         shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
         mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
-        ships = new ArrayList<Ship>(shipSizes.length);
+        //ships = new ArrayList<Ship>(shipSizes.length);
+        ships = globalConfig.getShips(1 /*getCommomSemester()*/);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
@@ -70,6 +71,7 @@ public abstract class Player extends Observable {
      */
     public abstract String getUsername();
 
+    @Deprecated
     protected int[] getShipSizes() {
         return shipSizes;
     }
@@ -81,22 +83,22 @@ public abstract class Player extends Observable {
     protected abstract void setShips();
 
     /**
-     * Creates a ship with check, if the position is legal nd adds it either to the ships-Array and to the Map
+     * Creates a ship with check, if the position is legal and adds it either to the ships-Array and to the Map
+     * @deprecated shoud not be used, will cause failure
      * @param size int
      * @param pivot Coordinate
      * @param alignment Alignment
      */
-
+    //FIXME deprecated
+    @Deprecated
     protected boolean addShip(int size, Coordinate pivot, Alignment alignment) {
         boolean check = false;
         Coordinate[] position = createArray(size, pivot, alignment);
-        //Has to be done once, otherwise it gets NullPointerException
-        ships.add(new Ship(position));
-        for(Coordinate c: position) {
-            myMap.setState(c, MapState.S);
-        }
         if(checkLegal(position)) {
             ships.add(new Ship(position));
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.S);
+            }
             for(Coordinate c: position) {
                 myMap.setState(c, MapState.S);
             }
@@ -105,6 +107,30 @@ public abstract class Player extends Observable {
         return check;
     }
 
+    /**
+     * Sets the position of the ship handed over with check if position is legal
+     * @param s Ship from ArrayList ships
+     * @param pivot Coordinate of the pivotpoint
+     * @param alignment Alignment the ship has
+     * @return boolean true if ship successfully set on the map
+     */
+    protected boolean addShip(Ship s, Coordinate pivot, Alignment alignment) {
+        boolean check = false;
+        Coordinate[] position = createArray(s.getSize(), pivot, alignment);
+        if(checkLegal(position)) {
+            s.setPos(position);
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.S);
+            }
+            check = true;
+        }
+        return check;
+    }
+
+    /**
+     *
+     * @return
+     */
     public boolean noShipsLeft() {
         return ships.isEmpty();
     }
@@ -142,7 +168,6 @@ public abstract class Player extends Observable {
      * @param position
      * @return result of the check as boolean
      */
-    //TODO check if neighbor is also empty
     private boolean checkLegal(Coordinate[] position) {
         boolean check = true;
         //Check if off map
@@ -164,6 +189,11 @@ public abstract class Player extends Observable {
         return check;
     }
 
+    /**
+     * Checks if in all directions, even diagonally, there is no ship set on the map, otherwise it returns false
+     * @param coordinate Coordinate on the map to check surrounding tiles for water
+     * @return true if every tile surrounding the coordinate, including the coordinate itself, is water
+     */
     private boolean checkSurroundings(Coordinate coordinate) {
         // only gets true if every surrounding is Water
         return checkIfWater(coordinate)
@@ -176,7 +206,12 @@ public abstract class Player extends Observable {
                 && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() - 1)) // down-left
                 && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() + 1)); // down-right
     }
-    // returns true if mapState == Water
+
+    /**
+     *
+     * @param c Coordinate to check MapState
+     * @return true if mapState == Water
+     */
     private boolean checkIfWater(Coordinate c) {
         return myMap.getState(c) == MapState.W;
     }
@@ -273,8 +308,7 @@ public abstract class Player extends Observable {
      * @param shot
      * @return
      */
-    public ShotResult receiveShot(Coordinate shot) {
-        // TODO look up actual result in map
+    protected ShotResult receiveShot(Coordinate shot) {
         ShotResult shotResult = null;
         Ship destroyedShip = null;
 
@@ -309,6 +343,7 @@ public abstract class Player extends Observable {
         return shotResult;
     }
 
+    //FIXME delete if not needed anymore
     protected void printBothMaps() {
         int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
         System.out.print("My Map:");

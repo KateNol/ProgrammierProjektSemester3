@@ -71,7 +71,6 @@ public final class ConsolePlayer extends NetworkPlayer {
         return validInput("Enter a Move: ");
     }
 
-
     /**
      * Checks if the entered Coordinate is in range of the mapsize
      * @param output
