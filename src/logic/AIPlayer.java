@@ -11,8 +11,8 @@ import java.util.Random;
 
 public class AIPlayer extends NetworkPlayer {
 
-    Map board;
-    int size = board.getMapSize();
+
+    int size = globalConfig.getMapSize(1);
     List<Coordinate> Moves = new ArrayList<Coordinate>(); //Stores the moves which were already used
     List<Coordinate> HitPoints = new ArrayList<Coordinate>(); //Stores the Points which hit a ship
 

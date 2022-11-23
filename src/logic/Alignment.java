@@ -1,6 +1,7 @@
 package logic;
 
 /**
+ *
  * Enum for shipalignment starting from pivotpoint
  * HOR_LEFT: horizontal left
  * HOR_RIGHT: horizontal right
