@@ -18,6 +18,7 @@ public class AIPlayer extends NetworkPlayer {
 
 
 
+
     public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
         super(playerConfig, globalConfig, serverMode, address, port);
     }
@@ -45,14 +46,32 @@ public class AIPlayer extends NetworkPlayer {
     @Override
     public Coordinate getShot() {
         Random random = new Random();
-        Coordinate bullet;
-        //enemyMap
-
-        do {
-            bullet = new Coordinate(random.nextInt(size), random.nextInt(size));
-        } while (Moves.contains(bullet));
-
-        Moves.add(bullet);
+        Coordinate bullet = null; //return this coordinate
+        boolean randomShot = true; //if no ship found, shoot randomly
+        for (int row = 0; row < size; row++) {  //iterate through enemy map: rows
+            for (int col = 0; col < size; col++) {  //iterate through enemy map: columns
+                if(enemyMap.getState(new Coordinate(row, col))== MapState.S) { //search for ships
+                    randomShot = false; //Ship was found, so no random shot
+                    bullet = cleverShot((new Coordinate(row, col))); //let algorithm decide the shot
+                    break;
+                }
+            }
+        }
+        if(randomShot) { //if true, then no ship is found and the shot is placed randomly
+            do {
+                bullet = new Coordinate(random.nextInt(size), random.nextInt(size));
+            } while (Moves.contains(bullet));
+        }
+        if (bullet != null) { //no idea why there is an error without the if statement :D
+            Moves.add(bullet);
+        }
         return bullet;
     }
+
+    Coordinate cleverShot(Coordinate orientation) {
+        /** todo: implement algorithm for precise shooting */
+
+    }
+
+
 }
