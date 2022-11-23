@@ -27,8 +27,13 @@ public class GuiBoard {
         this.isEnemyBoard = isEnemyBoard;
     }
 
+    /**
+     * Initialize GuiBoard
+     * @param vboxMiddle
+     */
     public void initializeBoard(VBox vboxMiddle){
         grid = new GridPane();
+        //set Position on Scene
         grid.setTranslateX((380 - (((double)guiPlayer.getMapSize() * tileSize) / 2)));
         for(int row = 0; row < guiPlayer.getMapSize() + 1; row++){
             for (int col = 0; col < guiPlayer.getMapSize() + 1; col++){
@@ -49,6 +54,7 @@ public class GuiBoard {
                 }
             }
         }
+        //add setShip methode to every Water Tile
         grid.getChildren().forEach(this::setShip);
         if(isEnemyBoard){
             grid.getChildren().forEach(this::sendShot);
@@ -56,6 +62,10 @@ public class GuiBoard {
         vboxMiddle.getChildren().add(grid);
     }
 
+    /**
+     * Add Ships when clicked on Tiles on Board
+     * @param node
+     */
     public void setShip(Node node){
         node.setOnMouseClicked(e -> {
             if(e.getSource() instanceof TileWater){
@@ -78,6 +88,10 @@ public class GuiBoard {
         });
     }
 
+    /**
+     *
+     * @param node
+     */
     private void sendShot(Node node) {
         node.setOnMouseClicked(e -> {
             //need to receive witch tile to set
@@ -88,10 +102,11 @@ public class GuiBoard {
         });
     }
 
-    public void setShipPlaced() {
-        this.shipPlaced = 0;
-    }
-
+    /**
+     *
+     * @param alignment
+     * @param coordinate
+     */
     public void setDisabledTiles(Alignment alignment, Coordinate coordinate){
         int shipLength = guiPlayer.getShips().get(shipPlaced).getSize();
         int mapSize = guiPlayer.getMapSize();
@@ -212,5 +227,7 @@ public class GuiBoard {
         myBoard.getChildren().add(grid);
     }
 
-
+    public void setShipPlaced() {
+        this.shipPlaced = 0;
+    }
 }

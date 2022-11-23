@@ -15,7 +15,7 @@ public class GUIPlayer extends NetworkPlayer {
     private GuiBoard guiBoard;
     private GuiHarbour guiHarbour;
     private GuiBoard guiEnemyBoard;
-    //-------------
+
     private Alignment alignment = Alignment.HOR_RIGHT;
     private boolean shipsPlaced = false;
 
@@ -155,6 +155,10 @@ public class GUIPlayer extends NetworkPlayer {
         this.alignment = alignment;
     }
 
+    /**
+     * notify when all Ships are placed or reset
+     * @param b
+     */
     public void confirmShipsPlaced(Boolean b){
         this.shipsPlaced = b;
     }
