@@ -23,12 +23,10 @@ public abstract class Player extends Observable {
 
 
     public Player(PlayerConfig playerConfig) {
-        if (playerConfig != null && globalConfig != null) {
+        if (playerConfig != null) {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
         }
-
-        this.globalConfig = globalConfig;
         loadGlobalConfig();
         globalConfigLoaded = false;
     }
@@ -213,6 +211,7 @@ public abstract class Player extends Observable {
      * @return true if mapState == Water
      */
     private boolean checkIfWater(Coordinate c) {
+        if(c.row() >= mapSize || c.col() >= mapSize) return true;
         return myMap.getState(c) == MapState.W;
     }
 

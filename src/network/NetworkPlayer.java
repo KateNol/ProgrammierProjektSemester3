@@ -21,8 +21,8 @@ public abstract class NetworkPlayer extends Player {
      * @param address    is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, globalConfig);
+    public NetworkPlayer(PlayerConfig playerConfig, ServerMode serverMode, String address, int port) throws IOException {
+        super(playerConfig);
         switch (serverMode) {
             case SERVER -> {
                 this.contact = Server.getContact(port);
@@ -37,16 +37,16 @@ public abstract class NetworkPlayer extends Player {
         }
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        this(playerConfig, globalConfig, serverMode, address, defaultPort);
+    public NetworkPlayer(PlayerConfig playerConfig, ServerMode serverMode, String address) throws IOException {
+        this(playerConfig, serverMode, address, defaultPort);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        this(playerConfig, globalConfig, serverMode, defaultAddress, port);
+    public NetworkPlayer(PlayerConfig playerConfig, ServerMode serverMode, int port) throws IOException {
+        this(playerConfig, serverMode, defaultAddress, port);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        this(playerConfig, globalConfig, serverMode, defaultAddress, defaultPort);
+    public NetworkPlayer(PlayerConfig playerConfig, ServerMode serverMode) throws IOException {
+        this(playerConfig, serverMode, defaultAddress, defaultPort);
     }
 
 

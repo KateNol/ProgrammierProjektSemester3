@@ -23,7 +23,7 @@ public abstract class GUIPlayer extends Player {
     private NetworkPlayer networkPlayer;
 
     public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
-        super(playerConfig, globalConfig);
+        super(playerConfig);
     }
 
     /**
@@ -34,7 +34,7 @@ public abstract class GUIPlayer extends Player {
     @FXML
     private void initialize() throws IOException {
         instance = this;
-        networkPlayer = new NetworkPlayer(null, null, ServerMode.SERVER) {
+        networkPlayer = new NetworkPlayer(null, ServerMode.SERVER) {
 
 
             @Override
