@@ -30,7 +30,7 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onStartGame" prefWidth="250.0" text="Start Game">
+                  <Button fx:id="startGame" mnemonicParsing="false" onAction="#onStartGame" prefWidth="250.0" text="Start Game">
                      <font>
                         <Font size="24.0" />
                      </font>

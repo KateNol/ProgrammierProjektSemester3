@@ -2,6 +2,7 @@ package gui;
 
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
@@ -19,6 +20,7 @@ public class GUIPlayer extends NetworkPlayer {
     private Alignment alignment = Alignment.HOR_RIGHT;
     private boolean shipsPlaced = false;
     private Coordinate  shotCoordinate = null;
+    private Button button;
 
     /**
      * Create a GuiPlayer
@@ -66,6 +68,7 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     protected void setShips() {
         while (getShips() == null || getShips().size() < globalConfig.getShips(1).size() || !shipsPlaced);
+        button.setDisable(false);
     }
 
     @Override
@@ -93,9 +96,10 @@ public class GUIPlayer extends NetworkPlayer {
      * @param boardPosition Position on Screen
      * @param harbourPosition Position on Screen
      */
-    public void creatBoard(VBox boardPosition, VBox harbourPosition){
+    public void creatBoard(VBox boardPosition, VBox harbourPosition, Button button){
         this.guiBoard = new GuiBoard(tileSize, false);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
+        this.button = button;
         guiBoard.initializeBoard(boardPosition);
         guiHarbour.initializeShip(harbourPosition);
     }

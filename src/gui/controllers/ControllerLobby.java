@@ -20,6 +20,8 @@ public class ControllerLobby implements Initializable {
     private VBox vBoxMiddle;
     @FXML
     private VBox vboxLeft;
+    @FXML
+    private Button startGame;
 
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
@@ -32,7 +34,8 @@ public class ControllerLobby implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        guiPlayer.creatBoard(vBoxMiddle, vboxLeft);
+        startGame.setDisable(true);
+        guiPlayer.creatBoard(vBoxMiddle, vboxLeft, startGame);
     }
 
     /**
@@ -88,6 +91,4 @@ public class ControllerLobby implements Initializable {
             }
         });
     }
-
-
 }
