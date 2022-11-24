@@ -70,7 +70,7 @@ public class AIPlayer extends NetworkPlayer {
 
     Coordinate cleverShot(Coordinate orientation) {
         /** todo: implement algorithm for precise shooting */
-
+        return getShot();
     }
 
 
