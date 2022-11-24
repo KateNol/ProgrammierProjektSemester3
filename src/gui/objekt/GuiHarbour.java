@@ -41,7 +41,7 @@ public class GuiHarbour extends VBox {
     public void drawShipOnBoard(GridPane gridPane, int witchShip){
         Coordinate coordinate[] = ships.get(witchShip).getPos();
         for (int i = 0; i < ships.get(witchShip).getPos().length; i++) {
-            gridPane.add(new TileShip(coordinate[i], tileSize), coordinate[i].col(), coordinate[i].row(), 1, 1);
+            gridPane.add(new TileShip(coordinate[i], tileSize), coordinate[i].col() + 1, coordinate[i].row() + 1, 1, 1); //FIXME
             printPlaced(coordinate[i]);
         }
     }

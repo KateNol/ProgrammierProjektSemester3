@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.Alignment;
 import logic.Coordinate;
+import logic.ShotResult;
 
 public class GuiBoard {
 
@@ -74,10 +75,13 @@ public class GuiBoard {
                 } else {
                     TileWater tileWater = (TileWater) e.getSource();
                     Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row(), tileWater.getCoordinate().col());
-                    System.out.println("SetShip = row: " + coordinate.row() + " col: " + coordinate.col());
-                    if(guiPlayer.addShip1(guiPlayer.getShips().get(shipPlaced), coordinate, guiPlayer.getAlignment())){
+                    Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
+                    System.out.println("SetShip = row: " + coordinate.row()  + " col: " + coordinate.col());
+                    System.out.println("SetShipMap = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
+                    if(guiPlayer.addShip1(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())){
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
+                        guiPlayer.printBothMaps();
                         shipPlaced++;
                         if(shipPlaced == guiPlayer.getShips().size()){
                             guiPlayer.confirmShipsPlaced(true);
@@ -94,12 +98,26 @@ public class GuiBoard {
      */
     private void sendShot(Node node) {
         node.setOnMouseClicked(e -> {
-            //need to receive witch tile to set
             TileWater tileWater = (TileWater) e.getSource();
-            TileMiss tileMiss = new TileMiss(tileWater.getCoordinate(), tileSize);
-            grid.add(tileMiss, tileWater.getCoordinate().row(), tileWater.getCoordinate().col(), 1, 1);
+            guiPlayer.setShotCoordinate(tileWater.getCoordinate());
             node.setDisable(true);
         });
+    }
+
+    public void updateBoard(ShotResult shotResult, Coordinate coordinate){
+        switch (shotResult){
+            case HIT: {
+                TileHit tileHit = new TileHit(coordinate, tileSize);
+                grid.add(tileHit, coordinate.col(), coordinate.row(), 1, 1);
+            }
+            case MISS: {
+                TileMiss tileMiss = new TileMiss(coordinate, tileSize);
+                grid.add(tileMiss, coordinate.col(), coordinate.row(), 1, 1);
+            }
+            case SUNK: {
+                //TODO
+            }
+        }
     }
 
     /**
@@ -117,7 +135,48 @@ public class GuiBoard {
                 //left
                 if(coordinate.col() - 1 != 0){
                     //top left
-                    if(coordinate.row() - 1 != 0){
+                    if(row - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1 , col - 1), tileSize), col  - 1 , row - 1, 1, 1);
+                    }
+                    //middle left
+                    grid.add(new TileDisable(new Coordinate(row, col - 1), tileSize), col - 1, row, 1, 1);
+                    //bottom left
+                    if(row + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col - 1), tileSize), col - 1, row + 1, 1, 1);
+                    }
+                }
+                //middle
+                for(int i = 0; i < shipLength; i++){
+                    if(row - 1 != 0){
+                        //top middle
+                        grid.add(new TileDisable(new Coordinate(row - 1, col + i), tileSize), col + i, row - 1, 1, 1);
+                    }
+                    if(row + 1 != mapSize + 1){
+                        //bottom middle
+                        grid.add(new TileDisable(new Coordinate(row + 1, col + i), tileSize), col + i, row + 1, 1, 1);
+                    }
+                }
+                //right
+                if(col + shipLength != mapSize + 1){
+                    //bottom right
+                    if(row + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col + shipLength), tileSize), col + shipLength, row + 1, 1, 1);
+                    }
+                    //middle right
+                    grid.add(new TileDisable(new Coordinate(row, col + shipLength), tileSize), col + shipLength, row, 1, 1);
+                    //top right
+                    if(row - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1, col + shipLength), tileSize), col + shipLength, row - 1, 1, 1);
+                    }
+                }
+                break;
+            }
+            case HOR_LEFT: {
+                //TODO
+                //left
+                if(col - shipLength != 0){
+                    //top left
+                    if(row - 1 != 0){
                         grid.add(new TileDisable(new Coordinate(row - 1 , col - 1), tileSize), col  - 1 , row - 1, 1, 1);
                     }
                     //middle left
@@ -151,9 +210,6 @@ public class GuiBoard {
                         grid.add(new TileDisable(new Coordinate(row - 1, col + shipLength), tileSize), col + shipLength, row - 1, 1, 1);
                     }
                 }
-                break;
-            }
-            case HOR_LEFT: {
                 //TODO
                 break;
             }

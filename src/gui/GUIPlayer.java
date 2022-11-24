@@ -18,6 +18,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     private Alignment alignment = Alignment.HOR_RIGHT;
     private boolean shipsPlaced = false;
+    private Coordinate  shotCoordinate = null;
 
     /**
      * Create a GuiPlayer
@@ -69,7 +70,8 @@ public class GUIPlayer extends NetworkPlayer {
 
     @Override
     public Coordinate getShot() {
-        return null;
+        while (shotCoordinate == null);
+        return shotCoordinate;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
-        //TODO update in GuiBoard
+        guiEnemyBoard.updateBoard(shotResult, shot);
         return shotResult;
     }
     //------------------------------------------------------
@@ -161,5 +163,9 @@ public class GUIPlayer extends NetworkPlayer {
      */
     public void confirmShipsPlaced(Boolean b){
         this.shipsPlaced = b;
+    }
+
+    public void setShotCoordinate(Coordinate shotCoordinate) {
+        this.shotCoordinate = shotCoordinate;
     }
 }

@@ -212,8 +212,10 @@ public abstract class Player extends Observable {
     }
     // returns true if mapState == Water
     private boolean checkIfWater(Coordinate c) {
+        if(c.row() >= mapSize || c.col() >= mapSize) return true;
         return myMap.getState(c) == MapState.W;
     }
+
 
     /**
      * Updates Enemymap, getting the result of the shot from getInput.
@@ -343,8 +345,8 @@ public abstract class Player extends Observable {
         return shotResult;
     }
 
-    protected void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
+    public void printBothMaps() {
+        int mapSize = globalConfig.getMapSize(/*getNegotiatedSemester()*/ 1);
         System.out.print("My Map:");
         // right padding
         for (int i=0; i<mapSize*2-"My Map:".length(); i++) {
