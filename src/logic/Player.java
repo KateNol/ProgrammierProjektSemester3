@@ -171,7 +171,7 @@ public abstract class Player extends Observable {
         //Check if off map
         if(check) {
             for (Coordinate c: position) {
-                if(c.col() >= myMap.getMapSize() && c.row() >= myMap.getMapSize()) {
+                if(c.col() >= myMap.getMapSize() || c.row() >= myMap.getMapSize() || c.col() < 0 || c.row() < 0) {
                     check = false;
                 }
             }
