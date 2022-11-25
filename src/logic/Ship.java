@@ -97,4 +97,12 @@ public class Ship {
         this.health -= 1;
         return this.health;
     }
+
+    /**
+     * resets position and health to default
+     */
+    protected void resetShip() {
+        this.pos = new Coordinate[size];
+        this.health = this.size;
+    }
 }

@@ -10,6 +10,13 @@ public class Map {
     public Map(int boardSize) {
         this.boardSize = boardSize;
         map = new MapState[boardSize][boardSize];
+        fillWater();
+    }
+
+    /**
+     * Fills map with water
+     */
+    protected void fillWater() {
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
                 map[row][col] = MapState.W;
