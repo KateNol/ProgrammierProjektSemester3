@@ -17,7 +17,7 @@ public abstract class Player extends Observable {
 
     protected GlobalConfig globalConfig = new GlobalConfig();
 
-    private ArrayList<Ship> ships = null; // List of ships the player has
+    protected ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
