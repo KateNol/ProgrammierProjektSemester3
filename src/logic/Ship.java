@@ -101,6 +101,7 @@ public class Ship {
     /**
      * resets position and health to default
      */
+    //TODO maybe not needed
     protected void resetShip() {
         this.pos = new Coordinate[size];
         this.health = this.size;

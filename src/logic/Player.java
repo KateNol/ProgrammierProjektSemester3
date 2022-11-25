@@ -345,6 +345,7 @@ public abstract class Player extends Observable {
     /**
      * reset maps and ships to default
      */
+    //TODO maybe not needed
     protected void reset() {
         myMap.fillWater();
         enemyMap.fillWater();
