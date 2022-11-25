@@ -278,6 +278,8 @@ public abstract class Player extends Observable {
         }
     }
 
+    protected ArrayList<Ship> getArrayListShips() {return ships;}
+
 
     /**
      * requests a coordinate from the player
