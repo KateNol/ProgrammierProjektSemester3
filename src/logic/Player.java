@@ -212,7 +212,7 @@ public abstract class Player extends Observable {
     }
     // returns true if mapState == Water
     private boolean checkIfWater(Coordinate c) {
-        if(c.row() >= mapSize || c.col() >= mapSize) return true;
+        if(c.row() >= mapSize || c.col() >= mapSize || c.row() < 0 || c.col() < 0) return true;
         return myMap.getState(c) == MapState.W;
     }
 
