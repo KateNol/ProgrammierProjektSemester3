@@ -23,9 +23,20 @@ public final class Client {
      * @return IOException if an I/O error occurs when creating the socket.
      */
     public static Contact getContact(String address, int port) throws IOException {
-        Socket socket = new Socket(address, port);
-        log_stdio("Client connected on port " + port);
+        Socket socket = null;
+        boolean success;
 
+        do {
+            success = true;
+            try {
+                socket = new Socket(address, port);
+            } catch (IOException ignored) {
+                success = false;
+            }
+        } while (!success);
+
+
+        log_stdio("Client connected on port " + port);
         return new Contact(socket, ServerMode.CLIENT);
     }
 }
