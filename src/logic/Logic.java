@@ -120,8 +120,8 @@ public class Logic implements Observer {
                     while (shotStack.isEmpty()) ;
                     shot = shotStack.pop();
                     assert shot != null;
-                    log_debug("received shot " + shot + ", sending response");
                     ShotResult shotResult = player.receiveShot(shot);
+                    log_debug("received shot " + shot + ", sending response: " + shotResult);
                     // send the result to the other player
                     boolean gameOver = player.noShipsLeft();
                     player.sendShotResponse(shotResult, gameOver);

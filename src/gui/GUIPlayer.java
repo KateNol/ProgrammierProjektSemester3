@@ -88,13 +88,11 @@ public class GUIPlayer extends NetworkPlayer {
                 }
                 shotCopy = new Coordinate(shotCoordinate.row(), shotCoordinate.col());
                 shotCoordinate = null;
-
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         log_debug("got shot from GUIPlayer at " + shotCopy);
-
 
         return shotCopy;
     }
