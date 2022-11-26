@@ -23,7 +23,7 @@ public class GlobalConfig {
      * @return the mapsize according to the semester
      */
     public int getMapSize(int commonSemester) {
-        mapSize  += commonSemester;
+        mapSize += commonSemester - 1;
         return mapSize;
     }
 

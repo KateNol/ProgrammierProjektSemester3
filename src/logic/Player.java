@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import static logic.Util.mapStateToChar;
@@ -107,17 +108,18 @@ public abstract class Player extends Observable {
 
     /**
      * Sets the position of the ship handed over with check if position is legal
-     * @param s Ship from ArrayList ships
-     * @param pivot Coordinate of the pivotpoint
+     *
+     * @param s         Ship from ArrayList ships
+     * @param pivot     Coordinate of the pivotpoint
      * @param alignment Alignment the ship has
      * @return boolean true if ship successfully set on the map
      */
-    protected boolean addShip(Ship s, Coordinate pivot, Alignment alignment) {
+    public boolean addShip(Ship s, Coordinate pivot, Alignment alignment) {
         boolean check = false;
         Coordinate[] position = createArray(s.getSize(), pivot, alignment);
-        if(checkLegal(position)) {
+        if (checkLegal(position)) {
             s.setPos(position);
-            for(Coordinate c: position) {
+            for (Coordinate c : position) {
                 myMap.setState(c, MapState.S);
             }
             check = true;
@@ -344,29 +346,26 @@ public abstract class Player extends Observable {
         return shotResult;
     }
 
-    /**
-     * reset maps and ships to default
-     */
-    //TODO maybe not needed
-    protected void reset() {
-        myMap.fillWater();
-        enemyMap.fillWater();
-        for(Ship s: ships) {
-            s.resetShip();
-        }
+    public ArrayList<Ship> getShips() {
+        return ships;
     }
 
+    public int getMapSize() {
+        return myMap.getMapSize();
+    }
+
+
     //FIXME delete if not needed anymore
-    protected void printBothMaps() {
+    public void printBothMaps() {
         int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
         System.out.print("My Map:");
         // right padding
-        for (int i=0; i<mapSize*2-"My Map:".length(); i++) {
+        for (int i = 0; i < mapSize * 2 - "My Map:".length(); i++) {
             System.out.print(" ");
         }
         System.out.println("\t  Enemy Map:");
 
-        for (int i=0; i<mapSize; i++) {
+        for (int i = 0; i < mapSize; i++) {
             // our map
             for (int j=0; j<myMap.getMapSize(); j++) {
                 System.out.print(mapStateToChar(myMap.getMap()[i][j]));

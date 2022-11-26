@@ -11,7 +11,7 @@ import network.ServerMode;
 import java.io.IOException;
 
 public class GUIPlayer extends NetworkPlayer {
-    private static GUIPlayer instance;
+    private static GUIPlayer instance = null;
     private int tileSize = 40;
     private GuiBoard guiBoard;
     private GuiHarbour guiHarbour;
@@ -24,6 +24,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create a GuiPlayer
+     *
      * @param playerConfig maxSemester & userName
      * @param globalConfig mapSize & ship Arraylist
      * @param serverMode
@@ -31,8 +32,8 @@ public class GUIPlayer extends NetworkPlayer {
      * @param port
      * @throws IOException
      */
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address, port);
+    public GUIPlayer(PlayerConfig playerConfig, ServerMode serverMode, String address, int port) throws IOException {
+        super(playerConfig, serverMode, address, port);
         instance = this;
     }
 
@@ -41,8 +42,8 @@ public class GUIPlayer extends NetworkPlayer {
         instance = this;
     }
 
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, port);
+    public GUIPlayer(PlayerConfig playerConfig, ServerMode serverMode, int port) throws IOException {
+        super(playerConfig, serverMode, port);
         instance = this;
     }
 
@@ -58,6 +59,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Returning the instance of a GuiPlayer
+     *
      * @return instance
      */
     public static GUIPlayer getInstance() {

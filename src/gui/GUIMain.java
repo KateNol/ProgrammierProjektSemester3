@@ -18,14 +18,11 @@ import java.io.IOException;
  * also creates the logic/player instances
  */
 public class GUIMain extends Application  {
-
     public static void main(String[] args) {
         launch(args);
     }
 
     private Scene scene;
-    GUIPlayer gp;
-    private static GUIMain instance = null;
     private static final String ICON_PATH = "/gui/img/Icon.png";
 
     @Override
@@ -41,14 +38,12 @@ public class GUIMain extends Application  {
         stage.setScene(scene);
 
         //Set icon and tile
-        Image icon = new Image(ICON_PATH);
-        stage.getIcons().add(icon);
+        //Image icon = new Image(ICON_PATH);
+        //stage.getIcons().add(icon);
         stage.setTitle("Battleship");
 
         //Start application
         stage.show();
     }
-    public static GUIMain getInstance() {
-        return instance;
-    }
+
 }
