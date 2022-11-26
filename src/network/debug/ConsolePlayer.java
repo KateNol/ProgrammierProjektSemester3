@@ -17,12 +17,12 @@ import static network.debug.Driver.scanner;
  */
 public final class ConsolePlayer extends NetworkPlayer {
 
-    public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, globalConfig, serverMode);
+    public ConsolePlayer(PlayerConfig playerConfig, ServerMode serverMode) throws IOException {
+        super(playerConfig, serverMode);
     }
 
-    public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address);
+    public ConsolePlayer(PlayerConfig playerConfig, ServerMode serverMode, String address) throws IOException {
+        super(playerConfig, serverMode, address);
     }
 
     /**
@@ -70,7 +70,6 @@ public final class ConsolePlayer extends NetworkPlayer {
         printBothMaps();
         return validInput("Enter a Move: ");
     }
-
 
     /**
      * Checks if the entered Coordinate is in range of the mapsize

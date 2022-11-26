@@ -11,7 +11,7 @@ public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
 
-    private int[] shipSizes;
+    private int[] shipSizes; //FIXME deprecated
     private int mapSize;
     private boolean globalConfigLoaded;
 
@@ -22,13 +22,11 @@ public abstract class Player extends Observable {
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
 
-    public Player(PlayerConfig playerConfig, GlobalConfig globalConfig) {
-        if (playerConfig != null && globalConfig != null) {
+    public Player(PlayerConfig playerConfig) {
+        if (playerConfig != null) {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
         }
-
-        this.globalConfig = globalConfig;
         loadGlobalConfig();
         globalConfigLoaded = false;
     }
@@ -40,24 +38,14 @@ public abstract class Player extends Observable {
     public void loadGlobalConfig() {
         shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
         mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
-        //ships = new ArrayList<Ship>(shipSizes.length); //global-config methode
-        ships = globalConfig.getShips(1 /*getCommonSemester()*/);
+        //ships = new ArrayList<Ship>(shipSizes.length);
+        ships = globalConfig.getShips(1 /*getCommomSemester()*/);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
         globalConfigLoaded = true;
     }
-    //---------------------
 
-    public int getMapSize() {
-        return mapSize;
-    }
-
-    public ArrayList<Ship> getShips() {
-        return ships;
-    }
-
-    //---------------------
     /**
      * returns true when both players are connected
      * implemented by NetworkPlayer
@@ -81,6 +69,7 @@ public abstract class Player extends Observable {
      */
     public abstract String getUsername();
 
+    @Deprecated
     protected int[] getShipSizes() {
         return shipSizes;
     }
@@ -92,13 +81,15 @@ public abstract class Player extends Observable {
     protected abstract void setShips();
 
     /**
-     * Creates a ship with check, if the position is legal nd adds it either to the ships-Array and to the Map
+     * Creates a ship with check, if the position is legal and adds it either to the ships-Array and to the Map
+     * @deprecated shoud not be used, will cause failure
      * @param size int
      * @param pivot Coordinate
      * @param alignment Alignment
      */
-    //change protected -> public
-    public boolean addShip(int size, Coordinate pivot, Alignment alignment) {
+    //FIXME deprecated
+    @Deprecated
+    protected boolean addShip(int size, Coordinate pivot, Alignment alignment) {
         boolean check = false;
         Coordinate[] position = createArray(size, pivot, alignment);
         if(checkLegal(position)) {
@@ -121,7 +112,7 @@ public abstract class Player extends Observable {
      * @param alignment Alignment the ship has
      * @return boolean true if ship successfully set on the map
      */
-    public boolean addShip1(Ship s, Coordinate pivot, Alignment alignment) {
+    protected boolean addShip(Ship s, Coordinate pivot, Alignment alignment) {
         boolean check = false;
         Coordinate[] position = createArray(s.getSize(), pivot, alignment);
         if(checkLegal(position)) {
@@ -134,9 +125,10 @@ public abstract class Player extends Observable {
         return check;
     }
 
-
-
-
+    /**
+     *
+     * @return
+     */
     public boolean noShipsLeft() {
         return ships.isEmpty();
     }
@@ -147,8 +139,7 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      * @return created array of type Coordinate[]
      */
-    //change protected -> public
-    public Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
+    private Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = new Coordinate[size];
         for(int i = 0; i < size; i++) {
             switch (alignment) {
@@ -175,14 +166,12 @@ public abstract class Player extends Observable {
      * @param position
      * @return result of the check as boolean
      */
-    //TODO check if neighbor is also empty
-    //change protected -> public
-    public boolean checkLegal(Coordinate[] position) {
+    private boolean checkLegal(Coordinate[] position) {
         boolean check = true;
         //Check if off map
         if(check) {
             for (Coordinate c: position) {
-                if(c.col() >= myMap.getMapSize() && c.row() >= myMap.getMapSize()) {
+                if(c.col() >= myMap.getMapSize() || c.row() >= myMap.getMapSize() || c.col() < 0 || c.row() < 0) {
                     check = false;
                 }
             }
@@ -198,6 +187,11 @@ public abstract class Player extends Observable {
         return check;
     }
 
+    /**
+     * Checks if in all directions, even diagonally, there is no ship set on the map, otherwise it returns false
+     * @param coordinate Coordinate on the map to check surrounding tiles for water
+     * @return true if every tile surrounding the coordinate, including the coordinate itself, is water
+     */
     private boolean checkSurroundings(Coordinate coordinate) {
         // only gets true if every surrounding is Water
         return checkIfWater(coordinate)
@@ -210,12 +204,16 @@ public abstract class Player extends Observable {
                 && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() - 1)) // down-left
                 && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() + 1)); // down-right
     }
-    // returns true if mapState == Water
+
+    /**
+     *
+     * @param c Coordinate to check MapState
+     * @return true if mapState == Water
+     */
     private boolean checkIfWater(Coordinate c) {
         if(c.row() >= mapSize || c.col() >= mapSize || c.row() < 0 || c.col() < 0) return true;
         return myMap.getState(c) == MapState.W;
     }
-
 
     /**
      * Updates Enemymap, getting the result of the shot from getInput.
@@ -280,6 +278,8 @@ public abstract class Player extends Observable {
         }
     }
 
+    protected ArrayList<Ship> getArrayListShips() {return ships;}
+
 
     /**
      * requests a coordinate from the player
@@ -310,7 +310,6 @@ public abstract class Player extends Observable {
      * @return
      */
     protected ShotResult receiveShot(Coordinate shot) {
-        // TODO look up actual result in map
         ShotResult shotResult = null;
         Ship destroyedShip = null;
 
@@ -345,8 +344,21 @@ public abstract class Player extends Observable {
         return shotResult;
     }
 
-    public void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(/*getNegotiatedSemester()*/ 1);
+    /**
+     * reset maps and ships to default
+     */
+    //TODO maybe not needed
+    protected void reset() {
+        myMap.fillWater();
+        enemyMap.fillWater();
+        for(Ship s: ships) {
+            s.resetShip();
+        }
+    }
+
+    //FIXME delete if not needed anymore
+    protected void printBothMaps() {
+        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
         System.out.print("My Map:");
         // right padding
         for (int i=0; i<mapSize*2-"My Map:".length(); i++) {

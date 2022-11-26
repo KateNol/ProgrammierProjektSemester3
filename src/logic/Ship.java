@@ -70,8 +70,7 @@ public class Ship {
      * Set the distinct Coordinates of the ship
      * @param pos Coordinate array containing the Coordinates of the ship
      */
-    //protected -> public
-    public void setPos(Coordinate[] pos) throws IndexOutOfBoundsException{
+    protected void setPos(Coordinate[] pos) throws IndexOutOfBoundsException{
         if(pos.length > this.size) { throw new IndexOutOfBoundsException("Shipsize doesn't match the handed Size");}
         this.pos = pos;
     }
