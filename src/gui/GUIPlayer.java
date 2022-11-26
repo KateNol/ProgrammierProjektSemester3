@@ -10,6 +10,8 @@ import network.ServerMode;
 
 import java.io.IOException;
 
+import static logic.Util.log_debug;
+
 public class GUIPlayer extends NetworkPlayer {
     private static GUIPlayer instance = null;
     private int tileSize = 40;
@@ -32,8 +34,8 @@ public class GUIPlayer extends NetworkPlayer {
      * @param port
      * @throws IOException
      */
-    public GUIPlayer(PlayerConfig playerConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, serverMode, address, port);
+    public GUIPlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
         instance = this;
     }
 
@@ -75,8 +77,26 @@ public class GUIPlayer extends NetworkPlayer {
 
     @Override
     public Coordinate getShot() {
-        while (shotCoordinate == null);
-        return shotCoordinate;
+        log_debug("getting shot from GUIPlayer");
+        Coordinate shotCopy;
+        try {
+            synchronized (lock) {
+                if (shotCoordinate == null) {
+                    log_debug("GUIPlayer waiting for shot");
+                    lock.wait();
+                    log_debug("GUIPlayer got notified of shot");
+                }
+                shotCopy = new Coordinate(shotCoordinate.row(), shotCoordinate.col());
+                shotCoordinate = null;
+
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log_debug("got shot from GUIPlayer at " + shotCopy);
+
+
+        return shotCopy;
     }
 
     @Override
@@ -95,7 +115,8 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create Gui Objects off GuiBoard and GuiHarbour
-     * @param boardPosition Position on Screen
+     *
+     * @param boardPosition   Position on Screen
      * @param harbourPosition Position on Screen
      */
     public void creatBoard(VBox boardPosition, VBox harbourPosition, Button button){
@@ -173,5 +194,9 @@ public class GUIPlayer extends NetworkPlayer {
 
     public void setShotCoordinate(Coordinate shotCoordinate) {
         this.shotCoordinate = shotCoordinate;
+        synchronized (lock) {
+            lock.notify();
+        }
+        log_debug("shot lock notify");
     }
 }

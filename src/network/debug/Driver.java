@@ -81,7 +81,8 @@ public final class Driver {
         String username = serverMode == ServerMode.SERVER ? "Server" : "Client";
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(new PlayerConfig(username), serverMode, addr);
+            player = new ConsolePlayer(new PlayerConfig(username));
+            player.establishConnection(serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
             player = new AIPlayer(new PlayerConfig(username), new GlobalConfig(), serverMode, addr);
         }

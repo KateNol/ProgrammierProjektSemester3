@@ -17,12 +17,8 @@ import static network.debug.Driver.scanner;
  */
 public final class ConsolePlayer extends NetworkPlayer {
 
-    public ConsolePlayer(PlayerConfig playerConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, serverMode);
-    }
-
-    public ConsolePlayer(PlayerConfig playerConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, serverMode, address);
+    public ConsolePlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
     }
 
     /**
@@ -30,31 +26,9 @@ public final class ConsolePlayer extends NetworkPlayer {
      */
     @Override
     protected void setShips() {
-        /*
-        for(int size: getShipSizes()) {
-            Coordinate pivot = validInput("Enter coordinates for ship size " + size + ":");
-            boolean valid = true;
-            Alignment alignment = null;
-            do {
-                System.out.println("Enter alignment, can be either hr (horizontal right), hl (horizontal left), vd (vertical down), vu (vertical up) ");
-                System.out.println("Alignment:");
-                String alignmentString = scanner.next();
-                switch (alignmentString) {
-                    case "hl" -> {alignment = Alignment.HOR_LEFT;}
-                    case "hr" -> {alignment = Alignment.HOR_RIGHT;}
-                    case "vd" -> {alignment = Alignment.VERT_DOWN;}
-                    case "vu" -> {alignment = Alignment.VERT_UP;}
-                    default -> {valid = false;}
-                }
-            } while(!valid);
-            addShip(size, pivot, alignment);
-            System.out.println("Your ship has been set to" + pivot.row() + " ," + pivot.col()
-                    + "with the alignment" + alignment);
-        }
-         */
         // FIXME fixed ships for debugging
-        addShip(2, new Coordinate(5,4), Alignment.VERT_DOWN);
-        addShip(2, new Coordinate(12,2), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(5, 4), Alignment.VERT_DOWN);
+        addShip(2, new Coordinate(12, 2), Alignment.VERT_DOWN);
         addShip(2, new Coordinate(8,6), Alignment.HOR_LEFT);
         addShip(2, new Coordinate(4,8), Alignment.VERT_UP);
         addShip(4, new Coordinate(9,9), Alignment.VERT_DOWN);

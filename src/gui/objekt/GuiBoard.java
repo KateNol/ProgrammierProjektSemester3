@@ -2,6 +2,7 @@ package gui.objekt;
 
 import gui.GUIPlayer;
 import gui.tile.*;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -83,7 +84,7 @@ public class GuiBoard {
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
                         guiPlayer.printBothMaps();
                         shipPlaced++;
-                        if(shipPlaced == guiPlayer.getShips().size()){
+                        if (shipPlaced == guiPlayer.getShips().size()) {
                             guiPlayer.confirmShipsPlaced(true);
                         }
                     }
@@ -104,20 +105,22 @@ public class GuiBoard {
         });
     }
 
-    public void updateBoard(ShotResult shotResult, Coordinate coordinate){
-        switch (shotResult){
-            case HIT: {
-                TileHit tileHit = new TileHit(coordinate, tileSize);
-                grid.add(tileHit, coordinate.col(), coordinate.row(), 1, 1);
+    public void updateBoard(ShotResult shotResult, Coordinate coordinate) {
+        Platform.runLater(() -> {
+            switch (shotResult) {
+                case HIT: {
+                    TileHit tileHit = new TileHit(coordinate, tileSize);
+                    grid.add(tileHit, coordinate.col(), coordinate.row(), 1, 1);
+                }
+                case MISS: {
+                    TileMiss tileMiss = new TileMiss(coordinate, tileSize);
+                    grid.add(tileMiss, coordinate.col(), coordinate.row(), 1, 1);
+                }
+                case SUNK: {
+                    //TODO
+                }
             }
-            case MISS: {
-                TileMiss tileMiss = new TileMiss(coordinate, tileSize);
-                grid.add(tileMiss, coordinate.col(), coordinate.row(), 1, 1);
-            }
-            case SUNK: {
-                //TODO
-            }
-        }
+        });
     }
 
     /**

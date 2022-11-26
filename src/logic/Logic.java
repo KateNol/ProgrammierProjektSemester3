@@ -117,9 +117,10 @@ public class Logic implements Observer {
                 }
                 case EnemyTurn -> {
                     // its the enemies turn, wait until notify() tells us where the enemy shot
-                    while (shotStack.isEmpty());
+                    while (shotStack.isEmpty()) ;
                     shot = shotStack.pop();
-                    log_debug("received shot, sending response");
+                    assert shot != null;
+                    log_debug("received shot " + shot + ", sending response");
                     ShotResult shotResult = player.receiveShot(shot);
                     // send the result to the other player
                     boolean gameOver = player.noShipsLeft();

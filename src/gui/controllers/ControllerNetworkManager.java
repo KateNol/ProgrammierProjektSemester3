@@ -30,9 +30,6 @@ public class ControllerNetworkManager {
      * Choose SinglePlayer Mode
      */
     public void onSinglePlayer() throws IOException {
-        ViewSwitcher.switchTo(View.Lobby);
-
-        LocalEnemyMode localEnemyMode = LocalEnemyMode.COMPUTER;
         Thread enemyThread = new Thread(() -> {
             String[] new_args = new String[]{"player=ai", "server=client", "network=offline"};
             try {

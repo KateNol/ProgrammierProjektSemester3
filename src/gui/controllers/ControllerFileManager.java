@@ -1,11 +1,14 @@
 package gui.controllers;
 
+import gui.GUIPlayer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import logic.GlobalConfig;
 import logic.PlayerConfig;
+
+import java.io.IOException;
 
 public class ControllerFileManager {
 
@@ -118,6 +121,7 @@ public class ControllerFileManager {
                     break;
             }
             playerConfig = new PlayerConfig(nameInput.getText());
+            new GUIPlayer(playerConfig);
             nameInput.clear();
             userInput.setVisible(false);
         });
