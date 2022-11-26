@@ -49,8 +49,8 @@ public abstract class NetworkPlayer extends Player {
         this(playerConfig, globalConfig, serverMode, defaultAddress, defaultPort);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
-        super(playerConfig, globalConfig);
+    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) throws IOException {
+        this(playerConfig, globalConfig, ServerMode.SERVER);
     }
 
     public void sendMessage(String msg) {
