@@ -27,8 +27,6 @@ public class GUIMain extends Application  {
 
     @Override
     public void start(Stage stage) throws IOException {
-        instance = this;
-        gp = new GUIPlayer(new PlayerConfig(""), new GlobalConfig());
         scene = new Scene(new Pane());
         //Load Scene
         ViewSwitcher.setScene(scene);

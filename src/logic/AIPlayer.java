@@ -16,18 +16,6 @@ public class AIPlayer extends NetworkPlayer {
         super(playerConfig);
     }
 
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address);
-    }
-
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, port);
-    }
-
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, globalConfig, serverMode);
-    }
-
     @Override
     protected void setShips() {
         addShip(2, new Coordinate(5, 4), Alignment.VERT_DOWN);

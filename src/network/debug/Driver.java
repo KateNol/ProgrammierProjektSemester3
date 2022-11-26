@@ -84,7 +84,8 @@ public final class Driver {
             player = new ConsolePlayer(new PlayerConfig(username));
             player.establishConnection(serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(new PlayerConfig(username), new GlobalConfig(), serverMode, addr);
+            player = new AIPlayer(new PlayerConfig(username));
+            player.establishConnection(serverMode, addr);
         }
         assert player != null;
         Logic logic = new Logic(player);

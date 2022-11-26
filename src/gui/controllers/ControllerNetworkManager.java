@@ -44,6 +44,9 @@ public class ControllerNetworkManager {
 
 
         GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
+        new Logic(GUIPlayer.getInstance());
+
+        ViewSwitcher.switchTo(View.Lobby);
     }
 
     /**
@@ -56,5 +59,8 @@ public class ControllerNetworkManager {
         int port = defaultPort;
 
         GUIPlayer.getInstance().establishConnection(serverMode, address, port);
+        new Logic(GUIPlayer.getInstance());
+
+        ViewSwitcher.switchTo(View.Lobby);
     }
 }

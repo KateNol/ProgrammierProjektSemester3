@@ -35,7 +35,7 @@ public class ControllerLobby implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startGame.setDisable(true);
-        guiPlayer.creatBoard(vBoxMiddle, vboxLeft, startGame);
+        guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame);
     }
 
     /**

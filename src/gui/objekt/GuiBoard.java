@@ -79,7 +79,7 @@ public class GuiBoard {
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
                     System.out.println("SetShip = row: " + coordinate.row()  + " col: " + coordinate.col());
                     System.out.println("SetShipMap = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
-                    if(guiPlayer.addShip1(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())){
+                    if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())) {
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
                         guiPlayer.printBothMaps();
@@ -100,6 +100,7 @@ public class GuiBoard {
     private void sendShot(Node node) {
         node.setOnMouseClicked(e -> {
             TileWater tileWater = (TileWater) e.getSource();
+            System.out.println(tileWater.getCoordinate().col() + " " + tileWater.getCoordinate().row());
             guiPlayer.setShotCoordinate(tileWater.getCoordinate());
             node.setDisable(true);
         });
@@ -109,11 +110,11 @@ public class GuiBoard {
         Platform.runLater(() -> {
             switch (shotResult) {
                 case HIT: {
-                    TileHit tileHit = new TileHit(coordinate, tileSize);
+                    TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col(), coordinate.row(), 1, 1);
                 }
                 case MISS: {
-                    TileMiss tileMiss = new TileMiss(coordinate, tileSize);
+                    TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col(), coordinate.row(), 1, 1);
                 }
                 case SUNK: {

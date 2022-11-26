@@ -18,11 +18,13 @@ public class GUIPlayer extends NetworkPlayer {
     private GuiBoard guiBoard;
     private GuiHarbour guiHarbour;
     private GuiBoard guiEnemyBoard;
+    private Button startButton;
 
     private Alignment alignment = Alignment.HOR_RIGHT;
     private boolean shipsPlaced = false;
-    private Coordinate  shotCoordinate = null;
-    private Button button;
+    private Coordinate shotCoordinate = null;
+
+    private final Object lock = new Object();
 
     /**
      * Create a GuiPlayer
@@ -39,26 +41,6 @@ public class GUIPlayer extends NetworkPlayer {
         instance = this;
     }
 
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, ServerMode serverMode, int port) throws IOException {
-        super(playerConfig, serverMode, port);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, globalConfig, serverMode);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
-        super(playerConfig, globalConfig);
-        instance = this;
-    }
-
     /**
      * Returning the instance of a GuiPlayer
      *
@@ -72,7 +54,7 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     protected void setShips() {
         while (getShips() == null || getShips().size() < globalConfig.getShips(1).size() || !shipsPlaced);
-        button.setDisable(false);
+        startButton.setDisable(false);
     }
 
     @Override
@@ -100,13 +82,13 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
-        //TODO update in GuiBoard
+        guiEnemyBoard.updateBoard(res, c);
     }
 
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
-        guiEnemyBoard.updateBoard(shotResult, shot);
+        guiBoard.updateBoard(shotResult, shot);
         return shotResult;
     }
     //------------------------------------------------------
@@ -117,10 +99,11 @@ public class GUIPlayer extends NetworkPlayer {
      * @param boardPosition   Position on Screen
      * @param harbourPosition Position on Screen
      */
-    public void creatBoard(VBox boardPosition, VBox harbourPosition, Button button){
+    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button) {
+        this.startButton = startButton;
         this.guiBoard = new GuiBoard(tileSize, false);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
-        this.button = button;
+        this.startButton = startButton;
         guiBoard.initializeBoard(boardPosition);
         guiHarbour.initializeShip(harbourPosition);
     }
