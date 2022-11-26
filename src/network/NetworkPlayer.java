@@ -23,18 +23,7 @@ public abstract class NetworkPlayer extends Player {
      */
     public NetworkPlayer(PlayerConfig playerConfig, ServerMode serverMode, String address, int port) throws IOException {
         super(playerConfig);
-        switch (serverMode) {
-            case SERVER -> {
-                this.contact = Server.getContact(port);
-            }
-            case CLIENT -> {
-                this.contact = Client.getContact(address, port);
-            }
-            default -> {
-                log_stderr("invalid network mode");
-                System.exit(1);
-            }
-        }
+        establishConnection(serverMode, address, port);
     }
 
     public NetworkPlayer(PlayerConfig playerConfig, ServerMode serverMode, String address) throws IOException {
@@ -49,8 +38,31 @@ public abstract class NetworkPlayer extends Player {
         this(playerConfig, serverMode, defaultAddress, defaultPort);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) throws IOException {
-        this(playerConfig, globalConfig, ServerMode.SERVER);
+    public NetworkPlayer(PlayerConfig playerConfig) throws IOException {
+        this(playerConfig, ServerMode.SERVER);
+    }
+
+    public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
+        switch (serverMode) {
+            case SERVER -> {
+                this.contact = Server.getContact(port);
+            }
+            case CLIENT -> {
+                this.contact = Client.getContact(address, port);
+            }
+        }
+    }
+
+    public void establishConnection(ServerMode serverMode, String address) throws IOException {
+        establishConnection(serverMode, address, defaultPort);
+    }
+
+    public void establishConnection(ServerMode serverMode, int port) throws IOException {
+        establishConnection(serverMode, defaultAddress, port);
+    }
+
+    public void establishConnection(ServerMode serverMode) throws IOException {
+        establishConnection(serverMode, defaultAddress, defaultPort);
     }
 
     public void sendMessage(String msg) {
