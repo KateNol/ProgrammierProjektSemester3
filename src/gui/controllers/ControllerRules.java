@@ -1,4 +1,14 @@
 package gui.controllers;
 
-public class ControllerRules extends Controller{
+/**
+ * Controller for Rule Scene
+ */
+public class ControllerRules {
+
+    /**
+     * Return to Scene Menu
+     */
+    public void onReturn(){
+        ViewSwitcher.switchTo(View.Menu);
+    }
 }

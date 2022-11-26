@@ -15,7 +15,7 @@ public abstract class Player extends Observable {
     private int mapSize;
     private boolean globalConfigLoaded;
 
-    protected GlobalConfig globalConfig;
+    protected GlobalConfig globalConfig = new GlobalConfig();
 
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
@@ -40,13 +40,24 @@ public abstract class Player extends Observable {
     public void loadGlobalConfig() {
         shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
         mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
-        ships = new ArrayList<Ship>(shipSizes.length);
+        //ships = new ArrayList<Ship>(shipSizes.length); //global-config methode
+        ships = globalConfig.getShips(1 /*getCommonSemester()*/);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
         globalConfigLoaded = true;
     }
+    //---------------------
 
+    public int getMapSize() {
+        return mapSize;
+    }
+
+    public ArrayList<Ship> getShips() {
+        return ships;
+    }
+
+    //---------------------
     /**
      * returns true when both players are connected
      * implemented by NetworkPlayer
@@ -86,21 +97,45 @@ public abstract class Player extends Observable {
      * @param pivot Coordinate
      * @param alignment Alignment
      */
-
-    protected void addShip(int size, Coordinate pivot, Alignment alignment) {
+    //change protected -> public
+    public boolean addShip(int size, Coordinate pivot, Alignment alignment) {
+        boolean check = false;
         Coordinate[] position = createArray(size, pivot, alignment);
-        //Has to be done once, otherwise it gets NullPointerException
-        ships.add(new Ship(position));
-        for(Coordinate c: position) {
-            myMap.setState(c, MapState.S);
-        }
         if(checkLegal(position)) {
             ships.add(new Ship(position));
             for(Coordinate c: position) {
                 myMap.setState(c, MapState.S);
             }
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.S);
+            }
+            check = true;
         }
+        return check;
     }
+
+    /**
+     * Sets the position of the ship handed over with check if position is legal
+     * @param s Ship from ArrayList ships
+     * @param pivot Coordinate of the pivotpoint
+     * @param alignment Alignment the ship has
+     * @return boolean true if ship successfully set on the map
+     */
+    public boolean addShip1(Ship s, Coordinate pivot, Alignment alignment) {
+        boolean check = false;
+        Coordinate[] position = createArray(s.getSize(), pivot, alignment);
+        if(checkLegal(position)) {
+            s.setPos(position);
+            for(Coordinate c: position) {
+                myMap.setState(c, MapState.S);
+            }
+            check = true;
+        }
+        return check;
+    }
+
+
+
 
     public boolean noShipsLeft() {
         return ships.isEmpty();
@@ -112,7 +147,8 @@ public abstract class Player extends Observable {
      * @param alignment Alignment
      * @return created array of type Coordinate[]
      */
-    private Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
+    //change protected -> public
+    public Coordinate[] createArray(int size, Coordinate pivot, Alignment alignment) {
         Coordinate[] position = new Coordinate[size];
         for(int i = 0; i < size; i++) {
             switch (alignment) {
@@ -140,18 +176,10 @@ public abstract class Player extends Observable {
      * @return result of the check as boolean
      */
     //TODO check if neighbor is also empty
-    private boolean checkLegal(Coordinate[] position) {
+    //change protected -> public
+    public boolean checkLegal(Coordinate[] position) {
         boolean check = true;
-        for(int i = 0; i < position.length; i++) {
-            for(Ship s: ships) {
-                for(int n = 0; n < s.getSize(); n++) {
-                    if(position[i].row() == s.getPoint(n).row()) {
-                        if(position[i].col() == s.getPoint(n).col())
-                            check = false;
-                    }
-                }
-            }
-        }
+        //Check if off map
         if(check) {
             for (Coordinate c: position) {
                 if(c.col() >= myMap.getMapSize() && c.row() >= myMap.getMapSize()) {
@@ -159,8 +187,35 @@ public abstract class Player extends Observable {
                 }
             }
         }
+        //Check if overlapping ship
+        for(Coordinate c:position) {
+            if(check) {
+                check = checkSurroundings(c);
+            }
+        }
+
+
         return check;
     }
+
+    private boolean checkSurroundings(Coordinate coordinate) {
+        // only gets true if every surrounding is Water
+        return checkIfWater(coordinate)
+                && checkIfWater(new Coordinate(coordinate.row() - 1, coordinate.col())) // up
+                && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col())) // down
+                && checkIfWater(new Coordinate(coordinate.row(), coordinate.col() - 1)) // left
+                && checkIfWater(new Coordinate(coordinate.row(), coordinate.col() + 1)) // right
+                && checkIfWater(new Coordinate(coordinate.row() - 1, coordinate.col() - 1)) // up-left
+                && checkIfWater(new Coordinate(coordinate.row() - 1, coordinate.col() + 1)) // up-right
+                && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() - 1)) // down-left
+                && checkIfWater(new Coordinate(coordinate.row() + 1, coordinate.col() + 1)); // down-right
+    }
+    // returns true if mapState == Water
+    private boolean checkIfWater(Coordinate c) {
+        if(c.row() >= mapSize || c.col() >= mapSize || c.row() < 0 || c.col() < 0) return true;
+        return myMap.getState(c) == MapState.W;
+    }
+
 
     /**
      * Updates Enemymap, getting the result of the shot from getInput.
@@ -254,7 +309,7 @@ public abstract class Player extends Observable {
      * @param shot
      * @return
      */
-    public ShotResult receiveShot(Coordinate shot) {
+    protected ShotResult receiveShot(Coordinate shot) {
         // TODO look up actual result in map
         ShotResult shotResult = null;
         Ship destroyedShip = null;
@@ -290,8 +345,8 @@ public abstract class Player extends Observable {
         return shotResult;
     }
 
-    protected void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
+    public void printBothMaps() {
+        int mapSize = globalConfig.getMapSize(/*getNegotiatedSemester()*/ 1);
         System.out.print("My Map:");
         // right padding
         for (int i=0; i<mapSize*2-"My Map:".length(); i++) {

@@ -1,0 +1,7 @@
+Bug Report:
+
+-index out of bound on index 13 and 14
+
+-need method to reset Map dont needed if we create new guiPlayer
+
+-enemy Board reverse shots actions

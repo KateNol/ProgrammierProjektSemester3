@@ -79,9 +79,9 @@ public final class Driver {
         NetworkPlayer player = null;
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
+            player = new ConsolePlayer(new PlayerConfig(""), new GlobalConfig(), serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
+            player = new AIPlayer(new PlayerConfig(""), new GlobalConfig(), serverMode, addr);
         }
         assert player != null;
         Logic logic = new Logic(player);

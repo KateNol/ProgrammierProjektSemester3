@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gui.controllers.ControllerGame"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
+   <children>
+      <HBox layoutX="806.0" layoutY="259.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="myBoard" alignment="CENTER" prefWidth="760.0">
+               <children>
+                  <Label text="Your Board">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></VBox>
+            <VBox alignment="TOP_CENTER">
+               <children>
+                  <Label fx:id="turn" alignment="TOP_LEFT" contentDisplay="CENTER" prefWidth="110.0" text="Your Turn">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children></VBox>
+            <VBox fx:id="enemyBoard" alignment="CENTER" prefWidth="760.0">
+               <children>
+                  <Label text="Enemy Board">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children></VBox>
+            <VBox fx:id="menuBar" alignment="TOP_CENTER" spacing="40.0">
+               <children>
+                  <MenuButton mnemonicParsing="false" prefWidth="200.0" text="Options">
+                    <items>
+                      <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </MenuButton>
+                  <Button fx:id="ff" mnemonicParsing="false" prefWidth="200.0" text="/ff">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </children></VBox>
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>

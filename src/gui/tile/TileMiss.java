@@ -1,6 +1,7 @@
 package gui.tile;
 
 import javafx.scene.paint.Color;
+import logic.Coordinate;
 
 /**
  * @author Stenfan
@@ -8,13 +9,11 @@ import javafx.scene.paint.Color;
 public class TileMiss extends Tile{
     /**
      * Create Miss Tile
-     * Coordinates where shoot missed
-     * @param x Coordinate on the Board
-     * @param y Coordinate on the Board
-     * @param tileSize tileSize in Pixel
+     * @param coordinate Coordinates where shoot missed
+     * @param tileSize TileSize in Pixel
      */
-    public TileMiss(int x, int y, int tileSize) {
-        super(x, y, tileSize);
+    public TileMiss(Coordinate coordinate, int tileSize) {
+        super(coordinate, tileSize);
         setFill(Color.WHITE);
     }
 }
