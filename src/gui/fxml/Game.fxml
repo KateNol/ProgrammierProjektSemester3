@@ -48,8 +48,7 @@
                <children>
                   <MenuButton mnemonicParsing="false" prefWidth="200.0" text="Options">
                     <items>
-                      <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                      <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
                     </items>
                      <font>
                         <Font size="24.0" />
