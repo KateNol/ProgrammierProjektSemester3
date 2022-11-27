@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import logic.Alignment;
 import logic.Coordinate;
 import logic.ShotResult;
+import logic.Util;
 
 public class GuiBoard {
 
@@ -83,8 +84,7 @@ public class GuiBoard {
                     TileWater tileWater = (TileWater) e.getSource();
                     Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row(), tileWater.getCoordinate().col());
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
-                    System.out.println("SetShip = row: " + coordinate.row()  + " col: " + coordinate.col());
-                    System.out.println("SetShipMap = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
+                    Util.log_debug("SetShipGUI = row: " + coordinate.row()  + " col: " + coordinate.col() + " " + "SetShipMapLogic = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
                     if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())) {
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
@@ -105,8 +105,10 @@ public class GuiBoard {
     private void sendShot(Node node) {
         node.setOnMouseClicked(e -> {
             TileWater tileWater = (TileWater) e.getSource();
-            System.out.println(tileWater.getCoordinate().col() + " " + tileWater.getCoordinate().row());
-            guiPlayer.setShotCoordinate(tileWater.getCoordinate());
+            Util.log_debug("GuiPlayer clicked ON " + tileWater.getCoordinate().row() + " " + tileWater.getCoordinate().col());
+            Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() - 1);
+            Util.log_debug("GuiPlayer send shot " + coordinate.row() + " " + coordinate.col());
+            guiPlayer.setShotCoordinate(coordinate);
             node.setDisable(true);
         });
     }
@@ -116,11 +118,13 @@ public class GuiBoard {
             switch (shotResult) {
                 case HIT: {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
-                    grid.add(tileHit, coordinate.col(), coordinate.row(), 1, 1);
+                    grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                    break;
                 }
                 case MISS: {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
-                    grid.add(tileMiss, coordinate.col(), coordinate.row(), 1, 1);
+                    grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                    break;
                 }
                 case SUNK: {
                     //TODO

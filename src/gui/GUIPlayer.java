@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
-import network.ServerMode;
 
 import java.io.IOException;
 
@@ -28,13 +27,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create a GuiPlayer
-     *
-     * @param playerConfig maxSemester & userName
-     * @param globalConfig mapSize & ship Arraylist
-     * @param serverMode
-     * @param address
-     * @param port
-     * @throws IOException
+     * @param playerConfig
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);

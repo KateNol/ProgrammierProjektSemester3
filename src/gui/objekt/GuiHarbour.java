@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.Coordinate;
 import logic.Ship;
+import logic.Util;
 
 import java.util.ArrayList;
 
@@ -41,12 +42,13 @@ public class GuiHarbour extends VBox {
     public void drawShipOnBoard(GridPane gridPane, int witchShip){
         Coordinate coordinate[] = ships.get(witchShip).getPos();
         for (int i = 0; i < ships.get(witchShip).getPos().length; i++) {
-            gridPane.add(new TileShip(coordinate[i], tileSize), coordinate[i].col() + 1, coordinate[i].row() + 1, 1, 1); //FIXME
-            printPlaced(coordinate[i]);
+            Coordinate c = new Coordinate(coordinate[i].row() + 1, coordinate[i].col() + 1);
+            gridPane.add(new TileShip(c, tileSize), c.col(), c.row(), 1, 1);
+            Util.log_debug(printPlaced(coordinate[i], c));
         }
     }
 
-    public void printPlaced(Coordinate coordinate){
-        System.out.println("drawOnBoard = row: " + coordinate.row() + " col: " + coordinate.col());
+    public String printPlaced(Coordinate coordinate, Coordinate c){
+        return "drawOnBoardLogic = row: " + coordinate.row() + " col: " + coordinate.col() + " " + "drawOnBoardGUI = row: " + c.row() + " col: " + c.col();
     }
 }
