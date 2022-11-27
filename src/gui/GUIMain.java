@@ -23,7 +23,7 @@ public class GUIMain extends Application  {
     }
 
     private Scene scene;
-    private static final String ICON_PATH = "/gui/img/Icon.png";
+    private static final String ICON_PATH = "file:src/gui/img/Icon.png";
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,8 +36,8 @@ public class GUIMain extends Application  {
         stage.setScene(scene);
 
         //Set icon and tile
-        //Image icon = new Image(ICON_PATH);
-        //stage.getIcons().add(icon);
+        Image icon = new Image(ICON_PATH);
+        stage.getIcons().add(icon);
         stage.setTitle("Battleship");
 
         stage.setFullScreen(true);

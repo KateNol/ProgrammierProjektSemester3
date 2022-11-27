@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class ControllerFileManager implements Initializable {
 
-    private String deletePicturePath = "C:\\Users\\XeXeeD\\Desktop\\Hochschule Hannover\\3.Semester\\Programmier_Projekt\\Projekt\\gruppe07\\src\\gui\\img\\RecBin.png";
+    private String deletePicturePath = "file:src/gui/img/RecBin.png";
     @FXML
     private Button fileOne;
     @FXML
