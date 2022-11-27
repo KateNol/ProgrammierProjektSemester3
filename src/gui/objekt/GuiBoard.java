@@ -2,148 +2,95 @@ package gui.objekt;
 
 import gui.GUIPlayer;
 import gui.tile.*;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.Alignment;
 import logic.Coordinate;
-import logic.Ship;
-
-import java.util.ArrayList;
-
+import logic.ShotResult;
 
 public class GuiBoard {
 
-    private GUIPlayer guiPlayer;
     private GridPane grid;
-    private ArrayList<Ship> ships;
-    private int boardSize;
     private int tileSize;
-    private int shipCount;
     private int shipPlaced = 0;
-    private boolean vertical = false;
-    private boolean enemyBoard;
-    private boolean turn = true;
-    private Label label;
+    private boolean isEnemyBoard;
+    private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
     /**
      * Gui object for the board
-     * @param ships
-     * @param boardSize
      * @param tileSize
-     * @param guiPlayer
+     * @param isEnemyBoard
      */
-
-    /**
-     * For player
-     */
-    public GuiBoard(ArrayList<Ship> ships, int boardSize, int tileSize, boolean enemyBoard, GUIPlayer guiPlayer) {
-        this.guiPlayer = guiPlayer;
-        this.ships = ships;
-        this.boardSize = boardSize;
+    public GuiBoard(int tileSize, boolean isEnemyBoard) {
         this.tileSize = tileSize;
-        this.enemyBoard = enemyBoard;
-        this.shipCount = ships.size();
+        this.isEnemyBoard = isEnemyBoard;
     }
 
     /**
-     * For enemy
+     * Initialize GuiBoard
+     * @param vboxMiddle
      */
-    public GuiBoard(int boardSize, int tileSize, boolean enemyBoard, Label label) {
-        this.boardSize = boardSize;
-        this.tileSize = tileSize;
-        this.enemyBoard = enemyBoard;
-        this.label = label;
-    }
-
     public void initializeBoard(VBox vboxMiddle){
         grid = new GridPane();
-        grid.setTranslateX((380 - (((double)boardSize * tileSize) / 2)));
-        for(int row = 0; row < boardSize + 1; row++){
-            for (int col = 0; col < boardSize + 1; col++){
+        //set Position on Scene
+        grid.setTranslateX((380 - (((double)guiPlayer.getMapSize() * tileSize) / 2)));
+        for(int row = 0; row < guiPlayer.getMapSize() + 1; row++){
+            for (int col = 0; col < guiPlayer.getMapSize() + 1; col++){
                 if(row == 0 && col == 0){
                     TileBoardText tbt = new TileBoardText(new Coordinate(row, col),tileSize,"");
                     grid.add(tbt, row, col, 1, 1);
+                    Node node = getNodeByRowColumnIndex(row, col, grid);
+                    node.setDisable(true);
                 } else {
                     if(row == 0){
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + (char) ('A' + col - 1));
                         grid.add(tbt, col, row, 1, 1);
+                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        node.setDisable(true);
                     } else if (col == 0) {
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + row);
                         grid.add(tbt, col, row, 1, 1);
+                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        node.setDisable(true);
                     } else {
                         TileWater tile = new TileWater(new Coordinate(row, col), tileSize);
-                        grid.add(tile, row, col, 1, 1);
+                        grid.add(tile,col, row, 1, 1);
                     }
                 }
             }
         }
+        //add setShip methode to every Water Tile
         grid.getChildren().forEach(this::setShip);
-        if(enemyBoard){
+        if(isEnemyBoard){
             grid.getChildren().forEach(this::sendShot);
         }
         vboxMiddle.getChildren().add(grid);
     }
 
-    private void sendShot(Node node) {
-        node.setOnMouseClicked(e -> {
-            //need to receive witch tile to set
-            TileWater tileWater = (TileWater) e.getSource();
-            TileMiss tileMiss = new TileMiss(tileWater.getCoordinate(), tileSize);
-            grid.add(tileMiss, tileWater.getCoordinate().row(), tileWater.getCoordinate().col(), 1, 1);
-            node.setDisable(true);
-            if(turn){
-                label.setText("Your Turn");
-                turn = false;
-            } else {
-                label.setText("My Turn");
-                turn = true;
-            }
-        });
-    }
-
+    /**
+     * Add Ships when clicked on Tiles on Board
+     * @param node
+     */
     public void setShip(Node node){
         node.setOnMouseClicked(e -> {
             if(e.getSource() instanceof TileWater){
-                if (shipPlaced == shipCount) {
+                if (shipPlaced == guiPlayer.getShips().size()) {
                     node.setDisable(true);
                 } else {
                     TileWater tileWater = (TileWater) e.getSource();
-                    int row = tileWater.getCoordinate().row();
-                    int col = tileWater.getCoordinate().col();
-                    Coordinate coordinate = new Coordinate(row, col);
-                    //create array of ship coordinates vertical or horizontal
-                    Coordinate[] coordinatesVer = guiPlayer.createArray(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
-                    Coordinate[] coordinatesHor = guiPlayer.createArray(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
-                    //Vertical
-                    if(vertical && isValidPoint(row, col, ships.get(shipPlaced).getSize(), coordinatesVer)){
-                        if(shipPlaced < shipCount) {
-                            for (int i = 0; i < ships.get(shipPlaced).getSize(); i++) {
-                                grid.add(new TileShip(new Coordinate(row + i, col), tileSize), row, col + i, 1, 1);
-
-                                //Deactivate Tiles clickable function
-                                setDisableVertical(row, col);
-                            }
-                            //set Coordinates from ship
-                            ships.get(shipPlaced).setPos(coordinatesVer);
-                            //Add ship to Board
-                            guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.VERT_DOWN);
-                            shipPlaced++;
-                        }
-                        //Horizontal
-                    } else if (isValidPoint(row, col, ships.get(shipPlaced).getSize(), coordinatesHor)) {
-                        if(shipPlaced < shipCount){
-                            for(int i = 0; i < ships.get(shipPlaced).getSize(); i++){
-                                grid.add(new TileShip(new Coordinate(row, col + 1), tileSize),row + i,col,1,1);
-                                //Deactivate Tiles clickable function
-                                setDisableHorizontal(row, col);
-                            }
-                            //set Coordinates from ship
-                            ships.get(shipPlaced).setPos(coordinatesHor);
-                            //Add ship to Board
-                            guiPlayer.addShip(ships.get(shipPlaced).getSize(), coordinate, Alignment.HOR_RIGHT);
-                            shipPlaced++;
+                    Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row(), tileWater.getCoordinate().col());
+                    Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
+                    System.out.println("SetShip = row: " + coordinate.row()  + " col: " + coordinate.col());
+                    System.out.println("SetShipMap = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
+                    if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())) {
+                        guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
+                        setDisabledTiles(guiPlayer.getAlignment(), coordinate);
+                        shipPlaced++;
+                        if (shipPlaced == guiPlayer.getShips().size()) {
+                            guiPlayer.confirmShipsPlaced(true);
                         }
                     }
                 }
@@ -151,104 +98,235 @@ public class GuiBoard {
         });
     }
 
-    public void setDisableHorizontal(int row, int col){
-        //left
-        if(row - 1 != 0){
-            if(col - 1 != 0){
-                //top left
-                grid.add(new TileDisable(new Coordinate(row - 1 , col - 1), tileSize), row  - 1 , col - 1, 1, 1);
+    /**
+     *
+     * @param node
+     */
+    private void sendShot(Node node) {
+        node.setOnMouseClicked(e -> {
+            TileWater tileWater = (TileWater) e.getSource();
+            System.out.println(tileWater.getCoordinate().col() + " " + tileWater.getCoordinate().row());
+            guiPlayer.setShotCoordinate(tileWater.getCoordinate());
+            node.setDisable(true);
+        });
+    }
+
+    public void updateBoard(ShotResult shotResult, Coordinate coordinate) {
+        Platform.runLater(() -> {
+            switch (shotResult) {
+                case HIT: {
+                    TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
+                    grid.add(tileHit, coordinate.col(), coordinate.row(), 1, 1);
+                }
+                case MISS: {
+                    TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
+                    grid.add(tileMiss, coordinate.col(), coordinate.row(), 1, 1);
+                }
+                case SUNK: {
+                    //TODO
+                }
             }
-            //middle left
-            grid.add(new TileDisable(new Coordinate(row - 1, col), tileSize), row - 1 , col, 1, 1);
-            //bottom left
-            if(col + 1 != boardSize + 1){
-                grid.add(new TileDisable(new Coordinate(row - 1 , col + 1), tileSize), row - 1 , col + 1, 1, 1);
+        });
+    }
+
+    /**
+     *
+     * @param alignment
+     * @param coordinate
+     */
+    public void setDisabledTiles(Alignment alignment, Coordinate coordinate){
+        int shipLength = guiPlayer.getShips().get(shipPlaced).getSize();
+        int mapSize = guiPlayer.getMapSize();
+        int row = coordinate.row();
+        int col = coordinate.col();
+        switch (alignment) {
+            case HOR_RIGHT: {
+                //left
+                if(col - 1 != 0){
+                    //top left
+                    if(row - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1 , col - 1), tileSize), col  - 1 , row - 1, 1, 1);
+                    }
+                    //middle left
+                    grid.add(new TileDisable(new Coordinate(row, col - 1), tileSize), col - 1, row, 1, 1);
+                    //bottom left
+                    if(row + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col - 1), tileSize), col - 1, row + 1, 1, 1);
+                    }
+                }
+                //middle
+                for(int i = 0; i < shipLength; i++){
+                    if(row - 1 != 0){
+                        //top middle
+                        grid.add(new TileDisable(new Coordinate(row - 1, col + i), tileSize), col + i, row - 1, 1, 1);
+                    }
+                    if(row + 1 != mapSize + 1){
+                        //bottom middle
+                        grid.add(new TileDisable(new Coordinate(row + 1, col + i), tileSize), col + i, row + 1, 1, 1);
+                    }
+                }
+                //right
+                if(col + shipLength != mapSize + 1){
+                    //bottom right
+                    if(row + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col + shipLength), tileSize), col + shipLength, row + 1, 1, 1);
+                    }
+                    //middle right
+                    grid.add(new TileDisable(new Coordinate(row, col + shipLength), tileSize), col + shipLength, row, 1, 1);
+                    //top right
+                    if(row - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1, col + shipLength), tileSize), col + shipLength, row - 1, 1, 1);
+                    }
+                }
+                break;
             }
-        }
-        //middle
-        for(int i = 0; i < ships.get(shipPlaced).getSize(); i++){
-            if(col - 1 != 0){
-                //top middle
-                grid.add(new TileDisable(new Coordinate(row + i, col + 1), tileSize), row + i, col - 1, 1, 1);
+            case HOR_LEFT: {
+                //right
+                if(col + 1 != mapSize + 1){
+                    //top right
+                    if(row - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1 , col + 1), tileSize), col  + 1 , row - 1, 1, 1);
+                    }
+                    //middle right
+                    grid.add(new TileDisable(new Coordinate(row, col + 1), tileSize), col + 1, row, 1, 1);
+                    //bottom right
+                    if(row + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col + 1), tileSize), col + 1, row + 1, 1, 1);
+                    }
+                }
+                //middle
+                for(int i = 0; i < shipLength; i++){
+                    if(row - 1 != 0){
+                        //top middle
+                        grid.add(new TileDisable(new Coordinate(row - 1, col - i), tileSize), col - i, row - 1, 1, 1);
+                    }
+                    if(row + 1 != mapSize + 1){
+                        //bottom middle
+                        grid.add(new TileDisable(new Coordinate(row + 1, col - i), tileSize), col - i, row + 1, 1, 1);
+                    }
+                }
+                //left
+                if(col - shipLength != 0){
+                    //bottom left
+                    if(row + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col - shipLength), tileSize), col - shipLength, row + 1, 1, 1);
+                    }
+                    //middle left
+                    grid.add(new TileDisable(new Coordinate(row, col - shipLength), tileSize), col - shipLength, row, 1, 1);
+                    //top left
+                    if(row - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1, col - shipLength), tileSize), col - shipLength, row - 1, 1, 1);
+                    }
+                }
+                break;
             }
-            if(col + 1 != boardSize + 1){
-                //bottom middle
-                grid.add(new TileDisable(new Coordinate(row + i, col + 1), tileSize), row + i, col + 1, 1, 1);
+            case VERT_DOWN: {
+                //top
+                if(row - 1 != 0){
+                    //right top
+                    if(col + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row - 1, col + 1), tileSize), col + 1, row - 1, 1, 1);
+                    }
+                    //middle top
+                    grid.add(new TileDisable(new Coordinate(row -1, col), tileSize), col, row - 1, 1, 1);
+                    //left top
+                    if(col - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - 1, col - 1), tileSize), col - 1, row - 1, 1, 1);
+                    }
+                }
+                //middle
+                for(int i = 0; i < shipLength; i++){
+                    // left middle
+                    if(col - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row + i, col -1), tileSize), col - 1, row + i, 1, 1);
+                    }
+                    //right middle
+                    if(col + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + i, col + 1), tileSize), col + 1, row + i, 1, 1);
+                    }
+                }
+                //bottom
+                if(row + shipLength != mapSize + 1){
+                    //right bottom
+                    if(col + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + shipLength, col + 1), tileSize), col + 1, row + shipLength, 1, 1);
+                    }
+                    //middle bottom
+                    grid.add(new TileDisable(new Coordinate(row + shipLength, col), tileSize), col, row + shipLength, 1, 1);
+                    //left bottom
+                    if(col - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row + shipLength, col - 1), tileSize), col - 1, row + shipLength, 1, 1);
+                    }
+                }
+                break;
             }
-        }
-        //right
-        if(row + ships.get(shipPlaced).getSize() != boardSize + 1){
-            //bottom right
-            if(col + 1 != boardSize + 1){
-                grid.add(new TileDisable(new Coordinate(row + ships.get(shipPlaced).getSize(), col + 1), tileSize), row + ships.get(shipPlaced).getSize(), col + 1, 1, 1);
-            }
-            //middle right
-            grid.add(new TileDisable(new Coordinate(row + ships.get(shipPlaced).getSize(), col), tileSize), row + ships.get(shipPlaced).getSize(), col, 1, 1);
-            //top right
-            if(col - 1 != 0){
-                grid.add(new TileDisable(new Coordinate(row + ships.get(shipPlaced).getSize(), col - 1), tileSize), row + ships.get(shipPlaced).getSize(), col - 1, 1, 1);
+            case VERT_UP: {
+                //bottom
+                if(row + 1 != mapSize + 1){
+                    //right bottom
+                    if(col + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col + 1), tileSize), col + 1, row + 1, 1, 1);
+                    }
+                    //middle bottom
+                    grid.add(new TileDisable(new Coordinate(row + 1, col), tileSize), col, row + 1, 1, 1);
+                    //left bottom
+                    if(col - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row + 1, col - 1), tileSize), col - 1, row + 1, 1, 1);
+                    }
+                }
+                //middle
+                for(int i = 0; i < shipLength; i++){
+                    // left middle
+                    if(col - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - i, col -1), tileSize), col - 1, row - i, 1, 1);
+                    }
+                    //right middle
+                    if(col + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row - i, col + 1), tileSize), col + 1, row - i, 1, 1);
+                    }
+                }
+                //top
+                if(row - shipLength != 0){
+                    //right top
+                    if(col + 1 != mapSize + 1){
+                        grid.add(new TileDisable(new Coordinate(row - shipLength, col + 1), tileSize), col + 1, row - shipLength, 1, 1);
+                    }
+                    //middle top
+                    grid.add(new TileDisable(new Coordinate(row - shipLength, col), tileSize), col, row - shipLength, 1, 1);
+                    //left top
+                    if(col - 1 != 0){
+                        grid.add(new TileDisable(new Coordinate(row - shipLength, col - 1), tileSize), col - 1, row - shipLength, 1, 1);
+                    }
+                }
             }
         }
     }
 
-    public void setDisableVertical(int row, int col){
-        //top
-        if(col - 1 != 0){
-            //right top
-            if(row + 1 != boardSize + 1){
-                grid.add(new TileDisable(new Coordinate(row + 1, col - 1), tileSize), row + 1, col - 1, 1, 1);
-            }
-            //middle top
-            grid.add(new TileDisable(new Coordinate(row, col - 1), tileSize), row, col - 1, 1, 1);
-            //left top
-            if(row - 1 != 0){
-                grid.add(new TileDisable(new Coordinate(row - 1, col - 1), tileSize), row - 1, col - 1, 1, 1);
-            }
-        }
-        //middle
-        for(int i = 0; i < ships.get(shipPlaced).getSize(); i++){
-            // left middle
-            if(row - 1 != 0){
-                grid.add(new TileDisable(new Coordinate(row + 1, col + i), tileSize), row - 1, col + i, 1, 1);
-            }
-            //right middle
-            if(row + 1 != boardSize + 1){
-                grid.add(new TileDisable(new Coordinate(row + 1, col + i), tileSize), row + 1, col + i, 1, 1);
+    /**
+     * Get Node by Row, Column Index
+     * @param row
+     * @param column
+     * @param gridPane
+     * @return
+     */
+    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> childrens = gridPane.getChildren();
+
+        for (Node node : childrens) {
+            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
             }
         }
-        //bottom
-        if(col + ships.get(shipPlaced).getSize() != boardSize + 1){
-            //right bottom
-            if(row + 1 != boardSize + 1){
-                grid.add(new TileDisable(new Coordinate(row + 1, col + ships.get(shipPlaced).getSize()), tileSize), row + 1, col + ships.get(shipPlaced).getSize(), 1, 1);
-            }
-            //middle bottom
-            grid.add(new TileDisable(new Coordinate(row, col + ships.get(shipPlaced).getSize()), tileSize), row, col + ships.get(shipPlaced).getSize(), 1, 1);
-            //left bottom
-            if(row - 1 != 0){
-                grid.add(new TileDisable(new Coordinate(row - 1, col + ships.get(shipPlaced).getSize()), tileSize), row - 1, col + ships.get(shipPlaced).getSize(), 1, 1);
-            }
-        }
+        return result;
     }
 
     public void getInitializedBoard(VBox myBoard){
         myBoard.getChildren().add(grid);
     }
 
-    private boolean isValidPoint(int row, int col, int i, Coordinate[] coordinates) {
-        if (vertical){
-            return col + i - 1 <= boardSize;
-        } else if (guiPlayer.checkLegal(coordinates)){
-            return row + i - 1 <= boardSize;
-        }
-        return false;
-    }
-
-    public boolean isVertical() {
-        return vertical;
-    }
-
-    public void setVertical(boolean vertical) {
-        this.vertical = vertical;
+    public void setShipPlaced() {
+        this.shipPlaced = 0;
     }
 }

@@ -18,20 +18,15 @@ import java.io.IOException;
  * also creates the logic/player instances
  */
 public class GUIMain extends Application  {
-
     public static void main(String[] args) {
         launch(args);
     }
 
     private Scene scene;
-    GUIPlayer gp;
-    private static GUIMain instance = null;
-    private static final String ICON_PATH = "/gui/img/Icon.png";
+    private static final String ICON_PATH = "file:src/gui/img/Icon.png";
 
     @Override
     public void start(Stage stage) throws IOException {
-        instance = this;
-        gp = new GUIPlayer(new PlayerConfig(""), new GlobalConfig());
         scene = new Scene(new Pane());
         //Load Scene
         ViewSwitcher.setScene(scene);
@@ -45,19 +40,10 @@ public class GUIMain extends Application  {
         stage.getIcons().add(icon);
         stage.setTitle("Battleship");
 
+        stage.setFullScreen(true);
+
         //Start application
         stage.show();
-
-        stage.setFullScreen(true);// makes all screens big
     }
-    public static GUIMain getInstance() {
-        return instance;
-    }
-
-
-
-
-
-
 
 }

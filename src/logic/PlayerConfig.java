@@ -2,7 +2,6 @@ package logic;
 
 import java.io.*;
 
-
 /**
  * This class creates the Configuration file needed to be implemented
  * at the start of the Game
@@ -21,57 +20,32 @@ public class PlayerConfig implements Serializable {
         maxSemester = 1;
     }
 
-
     /**
      * @return the maximum semester in which the player currently is
      */
-
-
     public int getMaxSemester() {
         return maxSemester;
     }
 
-
     /**
      * @return username of player
      */
-
     public String getUsername() {
         return userName;
     }
-
 
     /**
      * Increases the Semester in the case where the player has won a game around.
      */
     public void increaseMaxSemester() {
-        maxSemester++;
-
+        if (maxSemester < 6) {
+            maxSemester++;
+        }
     }
 
-    /**
-     * writes the current Player state and save it in a Binary file
-     *
-     * @throws IOException Incase there is an input/output exception
-     */
-
-    public void writeToFile() throws IOException {
-        ObjectOutputStream as = new ObjectOutputStream(new FileOutputStream(userName + ".bin"));
-        as.writeObject(this); // write object
-        as.close();
-
-    }
-
-    /**
-     * @return the derealized object from the binary file
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-
-    public PlayerConfig loadFromFile() throws IOException, ClassNotFoundException {
-        ObjectInputStream is = new ObjectInputStream(new FileInputStream(userName + ".bin"));
-        PlayerConfig p = (PlayerConfig) is.readObject();
-        is.close();
-        return p;
+    public void decreaseMaxSemester(){
+        if (maxSemester > 1) {
+            maxSemester--;
+        }
     }
 }

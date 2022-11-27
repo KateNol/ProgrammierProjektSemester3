@@ -22,6 +22,242 @@
                         <Insets left="50.0" top="50.0" />
                      </VBox.margin>
                   </Label>
+                  <VBox prefHeight="961.0" prefWidth="1600.0">
+                     <children>
+                        <Label text="Spielregeln Vorbereitung des Spiels:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="- Zwei Spieler verbinden sich über ein Netzwerk zu einem Spiel.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Jeder Spiele kann maximal in dem höchsten Semester starten, dass er je gewonnen hat.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Beispiel: Zwei Spieler treffen sich zu einem ersten Duell. D. h., dass sich beideim ersten Semester treffen müssen. Der Sieger aus dieser">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Partie kannanschließend beim nächsten Spiel im zweiten Semester starten, der Verliererbleibt im ersten Semester.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Jeder Spieler zeichnet seine „Schiffe” entsprechend der Vorlesungen im gespielten Semester in die Spielfeld-Matrix ein.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Die Größe eiens „Schiffs” berechnet sich aus 8 - Anzahl_der_Credits_pro_Vorlesung">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Die Schiffe dürfen sich nicht berühren; es muss mindestens 1 Kästchen Abstand eingehalten werden">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Die Schiffe dürfen nicht über Eck gesetzt werden oder Ausbuchtungen enthalten">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Die Schiffe dürfen nicht diagonal gesetzt werden">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="- Nach dem Spielstart dürfen die Schiffe nicht mehr verschoben werden!">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Spielregeln Spielverlauf">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="- Über einen Zufallsgenerator wird ausgelost, wer das Spiel beginnen darf.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="- Anschließend gibt Spieler 1 eine Koordinate an, auf die er feuert.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="Die Koordinate besteht aus einer Zeile und einer Spalte, also zum Beispiel „B7”.Diese Koordinate markiert">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="sich Spieler 1 auf dem Spielfeld „Gegnerische Schiffe”, um den Überblick zu behalten.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="- Spieler 2 prüft nun, ob eines seiner Schiffe getroffen wurde.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="Er antwortet mit „Wasser” (falls kein Schiff getroffen wurde), „Treffer” oder „Versenkt” (falls alle Kästchen des Schiffs getroffen sind).Der">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="Spieler markiert sich die Koordinate ebenfalls im Spielfeld „Eigene Schiffe”, um zu verfolgen, obbzw. wann seine Schiffe versenkt sind.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="- Wenn Spieler 1 ein Schiff von Spieler 2 getroffen oder sogar versenkt hat, darf er noch einmal feuern.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="- Wenn Spieler 1 das Wasser getroffen hat, ist Spieler 2 an der Reihe.">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="- Gewonnen hat am Ende der Spieler, der alle Schiffe seines Gegners versenkt hat.">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="Schiffe:">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="1. 2, 2, 2, 2, 4, 6">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="2. 2, 2, 2, 2, 2,">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="3. 2, 2, 2, 2, 4, 6">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="4. 2, 2, 2, 2, 4, 6">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="5. 2, 2, 2, 3, 3, 6">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="6. 2, 1, 1, 1, 6">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" top="50.0" />
+                     </VBox.margin>
+                  </VBox>
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="1080.0" prefWidth="0.0" HBox.hgrow="ALWAYS">

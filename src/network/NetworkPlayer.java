@@ -16,13 +16,20 @@ public abstract class NetworkPlayer extends Player {
     private Contact contact;
     private ShotResult lastShotResult = null;
 
+    private ServerMode serverMode = null;
+    private String address = null;
+    private int port = -1;
+
     /**
      * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
      * @param address    is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, globalConfig);
+    public NetworkPlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
+    }
+
+    public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
         switch (serverMode) {
             case SERVER -> {
                 this.contact = Server.getContact(port);
@@ -30,27 +37,23 @@ public abstract class NetworkPlayer extends Player {
             case CLIENT -> {
                 this.contact = Client.getContact(address, port);
             }
-            default -> {
-                log_stderr("invalid network mode");
-                System.exit(1);
-            }
         }
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        this(playerConfig, globalConfig, serverMode, address, defaultPort);
+    public void establishConnection(ServerMode serverMode, String address) throws IOException {
+        establishConnection(serverMode, address, defaultPort);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        this(playerConfig, globalConfig, serverMode, defaultAddress, port);
+    public void establishConnection(ServerMode serverMode, int port) throws IOException {
+        establishConnection(serverMode, defaultAddress, port);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        this(playerConfig, globalConfig, serverMode, defaultAddress, defaultPort);
+    public void establishConnection(ServerMode serverMode) throws IOException {
+        establishConnection(serverMode, defaultAddress, defaultPort);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
-        super(playerConfig, globalConfig);
+    public void establishConnection() throws IOException {
+        establishConnection(ServerMode.SERVER, defaultAddress, defaultPort);
     }
 
     public void sendMessage(String msg) {

@@ -12,20 +12,8 @@ public class AIPlayer extends NetworkPlayer {
 
     private final Set<Coordinate> previousShots = new HashSet<>();
 
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address, port);
-    }
-
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address);
-    }
-
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, port);
-    }
-
-    public AIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, globalConfig, serverMode);
+    public AIPlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
     }
 
     @Override

@@ -8,8 +8,11 @@ import logic.Logic;
 import logic.Player;
 import network.ServerMode;
 import network.debug.ConsolePlayer;
+import network.debug.Driver;
 
 import java.io.IOException;
+
+import static network.internal.Util.*;
 
 /**
  * Controller for Network Manager
@@ -26,24 +29,38 @@ public class ControllerNetworkManager {
     /**
      * Choose SinglePlayer Mode
      */
-    public void onSinglePlayer(){
+    public void onSinglePlayer() throws IOException {
+        Thread enemyThread = new Thread(() -> {
+            String[] new_args = new String[]{"player=ai", "server=client", "network=offline"};
+            try {
+                Driver.main(new_args);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        enemyThread.setDaemon(false);
+        enemyThread.setName("Enemy Thread");
+        enemyThread.start();
+
+
+        GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
+        new Logic(GUIPlayer.getInstance());
+
         ViewSwitcher.switchTo(View.Lobby);
     }
 
     /**
      * Choose MultiPlayer Mode
      */
-    public void onMultiPlayer() {
-        //PlayerMode playerMode, NetworkMode networkMode, ServerMode serverMode, LocalEnemyMode localEnemyMode, String address, String port
-        //at this point we create the actual players and logic instances,
-        //here we could switch over all the parameters and instantiate the correct players,
-        // but for now we just use a gui player and a console player
-        // note: if the enemy is a networkplayer, we don't need another logic instance for him (?)
+    public void onMultiPlayer() throws IOException {
+        // Dialog Window to enter informations
+        ServerMode serverMode = ServerMode.SERVER;
+        String address = defaultAddress;
+        int port = defaultPort;
 
-        //Player player = GUIPlayer.getInstance();
-        //Player enemy = new ConsolePlayer(null, null, network.ServerMode.CLIENT);
+        GUIPlayer.getInstance().establishConnection(serverMode, address, port);
+        new Logic(GUIPlayer.getInstance());
 
-        //Logic playerLogic = new Logic(player, enemy);
-        //Logic enemyLogic = new Logic(enemy, player);
+        ViewSwitcher.switchTo(View.Lobby);
     }
 }

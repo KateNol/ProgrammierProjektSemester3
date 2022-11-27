@@ -2,25 +2,33 @@ package gui;
 
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import logic.Coordinate;
-import logic.GlobalConfig;
-import logic.PlayerConfig;
+import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
 
 import java.io.IOException;
 
+import static logic.Util.log_debug;
+
 public class GUIPlayer extends NetworkPlayer {
-    private static GUIPlayer instance;
+    private static GUIPlayer instance = null;
     private int tileSize = 40;
     private GuiBoard guiBoard;
     private GuiHarbour guiHarbour;
     private GuiBoard guiEnemyBoard;
+    private Button startButton;
+
+    private Alignment alignment = Alignment.HOR_RIGHT;
+    private boolean shipsPlaced = false;
+    private Coordinate shotCoordinate = null;
+
+    private final Object lock = new Object();
 
     /**
      * Create a GuiPlayer
+     *
      * @param playerConfig maxSemester & userName
      * @param globalConfig mapSize & ship Arraylist
      * @param serverMode
@@ -28,33 +36,14 @@ public class GUIPlayer extends NetworkPlayer {
      * @param port
      * @throws IOException
      */
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address, port);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        super(playerConfig, globalConfig, serverMode, port);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, globalConfig, serverMode);
-        instance = this;
-    }
-
-    public GUIPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig) {
-        super(playerConfig, globalConfig);
+    public GUIPlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
         instance = this;
     }
 
     /**
      * Returning the instance of a GuiPlayer
+     *
      * @return instance
      */
     public static GUIPlayer getInstance() {
@@ -64,29 +53,67 @@ public class GUIPlayer extends NetworkPlayer {
     //------------------------------------------------------
     @Override
     protected void setShips() {
-
+        while (getShips() == null || getShips().size() < globalConfig.getShips(1).size() || !shipsPlaced);
+        startButton.setDisable(false);
     }
 
     @Override
     public Coordinate getShot() {
-        return null;
+        log_debug("getting shot from GUIPlayer");
+        Coordinate shotCopy;
+        try {
+            synchronized (lock) {
+                if (shotCoordinate == null) {
+                    log_debug("GUIPlayer waiting for shot");
+                    lock.wait();
+                    log_debug("GUIPlayer got notified of shot");
+                }
+                shotCopy = new Coordinate(shotCoordinate.row(), shotCoordinate.col());
+                shotCoordinate = null;
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log_debug("got shot from GUIPlayer at " + shotCopy);
+
+        return shotCopy;
+    }
+
+    @Override
+    public void updateMapState(Coordinate c, ShotResult res){
+        super.updateMapState(c, res);
+        guiEnemyBoard.updateBoard(res, c);
+    }
+
+    @Override
+    protected ShotResult receiveShot(Coordinate shot){
+        ShotResult shotResult = super.receiveShot(shot);
+        guiBoard.updateBoard(shotResult, shot);
+        return shotResult;
     }
     //------------------------------------------------------
 
     /**
      * Create Gui Objects off GuiBoard and GuiHarbour
-     * @param vboxMiddle Position on Screen
-     * @param vBoxLeft Position on Screen
+     *
+     * @param boardPosition   Position on Screen
+     * @param harbourPosition Position on Screen
      */
-    public void creatBoard(VBox vboxMiddle, VBox vBoxLeft){
-        this.guiBoard = new GuiBoard(this.getShips(), this.getMapSize(), tileSize, false, this);
+    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button) {
+        this.startButton = startButton;
+        this.guiBoard = new GuiBoard(tileSize, false);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
-        guiBoard.initializeBoard(vboxMiddle);
-        guiHarbour.initializeShip(vBoxLeft);
+        this.startButton = startButton;
+        guiBoard.initializeBoard(boardPosition);
+        guiHarbour.initializeShip(harbourPosition);
     }
 
-    public void createEnemyBoard(VBox enemyBoard, Label label){
-        guiEnemyBoard = new GuiBoard(this.getMapSize(), tileSize, true, label);
+    /**
+     * Create enemy Board
+     * @param enemyBoard
+     */
+    public void createEnemyBoard(VBox enemyBoard){
+        guiEnemyBoard = new GuiBoard(tileSize, true);
         guiEnemyBoard.initializeBoard(enemyBoard);
     }
 
@@ -107,10 +134,50 @@ public class GUIPlayer extends NetworkPlayer {
     }
 
     /**
+     * Get guiHarbour
+     * @return guiHarbour
+     */
+    public GuiHarbour getGuiHarbour() {
+        return guiHarbour;
+    }
+
+    /**
      * Get tileSize
      * @return tileSize
      */
     public int getTileSize() {
         return tileSize;
+    }
+
+    /**
+     * Get alignment
+     * @return alignment
+     */
+    public Alignment getAlignment() {
+        return alignment;
+    }
+
+    /**
+     * Set alignment
+     * @param alignment
+     */
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
+    }
+
+    /**
+     * notify when all Ships are placed or reset
+     * @param b
+     */
+    public void confirmShipsPlaced(Boolean b){
+        this.shipsPlaced = b;
+    }
+
+    public void setShotCoordinate(Coordinate shotCoordinate) {
+        this.shotCoordinate = shotCoordinate;
+        synchronized (lock) {
+            lock.notify();
+        }
+        log_debug("shot lock notify");
     }
 }

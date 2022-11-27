@@ -2,6 +2,8 @@ package logic;
 
 import java.io.IOException;
 
+import static logic.Util.log_stderr;
+
 /**
  * implements ships with size, exact positions and health
  */
@@ -70,8 +72,7 @@ public class Ship {
      * Set the distinct Coordinates of the ship
      * @param pos Coordinate array containing the Coordinates of the ship
      */
-    //protected -> public
-    public void setPos(Coordinate[] pos) throws IndexOutOfBoundsException{
+    protected void setPos(Coordinate[] pos) throws IndexOutOfBoundsException{
         if(pos.length > this.size) { throw new IndexOutOfBoundsException("Shipsize doesn't match the handed Size");}
         this.pos = pos;
     }
@@ -82,8 +83,14 @@ public class Ship {
      * @return true if hit, false if not
      */
     public boolean checkIfHit(Coordinate c) {
+
         for(Coordinate p: pos) {
-            if(c.row() == p.row() && c.col() == p.col()) {
+            if (p == null) {
+                log_stderr("Pos for ship is null! " + size + " " + c);
+                return false;
+            }
+
+            if (c.row() == p.row() && c.col() == p.col()) {
                 return true;
             }
         }
