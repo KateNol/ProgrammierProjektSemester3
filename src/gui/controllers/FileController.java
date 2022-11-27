@@ -8,7 +8,7 @@ import java.util.Collections;
 
 public class FileController {
 
-    private static final File folder = new File("src/playerConfig/");
+    private static final File folder = new File("playerConfig/");
     private static ArrayList<File> listOfFiles = new ArrayList<>();
 
     private static boolean fileOne = false;
@@ -54,7 +54,7 @@ public class FileController {
      * @throws IOException In case there is an input/output exception
      */
     public static void writeToFile(PlayerConfig playerConfig, int count) throws IOException {
-        String absolutePath = "src/playerConfig/" + count + "" +playerConfig.getUsername() + ".bin";
+        String absolutePath = "playerConfig/" + count + "" +playerConfig.getUsername() + ".bin";
         listOfFiles.add(new File(absolutePath));
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
         oos.writeObject(playerConfig);
