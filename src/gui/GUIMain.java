@@ -47,8 +47,17 @@ public class GUIMain extends Application  {
 
         //Start application
         stage.show();
+
+        stage.setFullScreen(true);// makes all screens big
     }
     public static GUIMain getInstance() {
         return instance;
     }
+
+
+
+
+
+
+
 }
