@@ -25,6 +25,7 @@ public class ControllerMenu {
      * Switch to Screen Load Game File Manager
      */
     public void onLoadGame(){
+        FileController.checkIfFileExists();
         ViewSwitcher.switchTo(View.FileManager);
     }
 
