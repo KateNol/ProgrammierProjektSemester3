@@ -5,3 +5,53 @@ Bug Report:
 -need method to reset Map dont needed if we create new guiPlayer
 
 -enemy Board reverse shots actions
+
+
+
+
+/**
+     * this method deletes configFiles no longer needed
+     */
+    public void configDelete(){
+        file.delete();
+    }
+
+    /**
+     * writes the current Player state and saves it in a Binary file
+     *
+     * @throws IOException Incase there is an input/output exception
+     */
+    public void writeToFile(int count) throws IOException {
+        //src/configfiles
+        String absolutePath = "playerConfig/" + count + "" +userName + ".bin";
+        file = new File(absolutePath);
+        ObjectOutputStream as = new ObjectOutputStream(new FileOutputStream(file));
+        as.writeObject(this); // write object
+        as.close();
+    }
+
+    /**
+     * @return the derealized object from the binary file
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public PlayerConfig loadFromFile(File loadFile) throws IOException, ClassNotFoundException {
+        this.file = loadFile;
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+        PlayerConfig p = (PlayerConfig) is.readObject();
+        is.close();
+        return p;
+    }
+
+
+switch (i) {
+                case 0 -> {
+                    fileOne = true;
+                }
+                case 1 -> {
+                    fileTwo = true;
+                }
+                case 2 -> {
+                    fileThree = true;
+                }
+            }
