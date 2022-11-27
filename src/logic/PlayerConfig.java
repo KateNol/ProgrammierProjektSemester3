@@ -10,7 +10,7 @@ public class PlayerConfig implements Serializable {
 
     private String userName;
     private int maxSemester;
-    private File file;
+
 
     /**
      * @param userName This is the name of the player and is also used as the name of the  Config file to be saved
@@ -47,37 +47,5 @@ public class PlayerConfig implements Serializable {
         if (maxSemester > 1) {
             maxSemester--;
         }
-    }
-
-    /**
-     * this method deletes configFiles no longer needed
-     */
-    public void configDelete(){
-        file.delete();
-    }
-
-    /**
-     * writes the current Player state and saves it in a Binary file
-     *
-     * @throws IOException Incase there is an input/output exception
-     */
-    public void writeToFile() throws IOException {
-        String absolutePath = "src/configfiles" +userName + ".bin";
-        file = new File(absolutePath);
-        ObjectOutputStream as = new ObjectOutputStream(new FileOutputStream(file));
-        as.writeObject(this); // write object
-        as.close();
-    }
-
-    /**
-     * @return the derealized object from the binary file
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    public PlayerConfig loadFromFile() throws IOException, ClassNotFoundException {
-        ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
-        PlayerConfig p = (PlayerConfig) is.readObject();
-        is.close();
-        return p;
     }
 }
