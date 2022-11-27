@@ -42,13 +42,19 @@ public class GuiBoard {
                 if(row == 0 && col == 0){
                     TileBoardText tbt = new TileBoardText(new Coordinate(row, col),tileSize,"");
                     grid.add(tbt, row, col, 1, 1);
+                    Node node = getNodeByRowColumnIndex(row, col, grid);
+                    node.setDisable(true);
                 } else {
                     if(row == 0){
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + (char) ('A' + col - 1));
                         grid.add(tbt, col, row, 1, 1);
+                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        node.setDisable(true);
                     } else if (col == 0) {
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + row);
                         grid.add(tbt, col, row, 1, 1);
+                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        node.setDisable(true);
                     } else {
                         TileWater tile = new TileWater(new Coordinate(row, col), tileSize);
                         grid.add(tile,col, row, 1, 1);
@@ -82,7 +88,6 @@ public class GuiBoard {
                     if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())) {
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
-                        guiPlayer.printBothMaps();
                         shipPlaced++;
                         if (shipPlaced == guiPlayer.getShips().size()) {
                             guiPlayer.confirmShipsPlaced(true);
