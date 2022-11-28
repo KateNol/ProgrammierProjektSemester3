@@ -56,7 +56,7 @@ public class Logic implements Observer {
 
         Thread logicThread = new Thread(this::logicGameLoop);
         logicThread.setName("Logic Game Loop");
-        logicThread.setDaemon(false);
+        logicThread.setDaemon(true);
         logicThread.start();
     }
 
@@ -70,6 +70,7 @@ public class Logic implements Observer {
         // wait for both players to connect
         while (!player.getIsConnectionEstablished()) ;
         log_debug("both players connected");
+        player.loadGlobalConfig();
         switchState(State.PlayersReady);
 
         // TODO get ships from player

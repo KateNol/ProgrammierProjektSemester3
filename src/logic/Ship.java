@@ -85,10 +85,10 @@ public class Ship {
     public boolean checkIfHit(Coordinate c) {
 
         for(Coordinate p: pos) {
-            if (p == null) {
+            /*if (p == null) {
                 log_stderr("Pos for ship is null! " + size + " " + c);
                 return false;
-            }
+            }*/
 
             if (c.row() == p.row() && c.col() == p.col()) {
                 return true;

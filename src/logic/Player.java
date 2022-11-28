@@ -11,8 +11,6 @@ import static network.internal.Util.log_debug;
 public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
-
-    private int[] shipSizes; //FIXME deprecated
     private int mapSize;
     private boolean globalConfigLoaded;
 
@@ -28,7 +26,6 @@ public abstract class Player extends Observable {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
         }
-        loadGlobalConfig();
         globalConfigLoaded = false;
     }
 
@@ -37,10 +34,8 @@ public abstract class Player extends Observable {
      * this method loads them and initializes the maps
      */
     public void loadGlobalConfig() {
-        shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
-        mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
-        //ships = new ArrayList<Ship>(shipSizes.length);
-        ships = globalConfig.getShips(1 /*getCommomSemester()*/);
+        mapSize = globalConfig.getMapSize(1 /*getNegotiatedSemester()*/);
+        ships = globalConfig.getShips(1 /*getNegotiatedSemester()*/);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
@@ -70,41 +65,11 @@ public abstract class Player extends Observable {
      */
     public abstract String getUsername();
 
-    @Deprecated
-    protected int[] getShipSizes() {
-        return shipSizes;
-    }
-
     /**
      * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method
      * has to be implemented by ai/gui-player
      */
     protected abstract void setShips();
-
-    /**
-     * Creates a ship with check, if the position is legal and adds it either to the ships-Array and to the Map
-     * @deprecated shoud not be used, will cause failure
-     * @param size int
-     * @param pivot Coordinate
-     * @param alignment Alignment
-     */
-    //FIXME deprecated
-    @Deprecated
-    protected boolean addShip(int size, Coordinate pivot, Alignment alignment) {
-        boolean check = false;
-        Coordinate[] position = createArray(size, pivot, alignment);
-        if(checkLegal(position)) {
-            ships.add(new Ship(position));
-            for(Coordinate c: position) {
-                myMap.setState(c, MapState.S);
-            }
-            for(Coordinate c: position) {
-                myMap.setState(c, MapState.S);
-            }
-            check = true;
-        }
-        return check;
-    }
 
     /**
      * Sets the position of the ship handed over with check if position is legal
