@@ -85,6 +85,8 @@ public abstract class Player extends Observable {
         this.serverMode = serverMode;
     }
 
+    public abstract boolean getWeBegin();
+
     /**
      * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method
      * has to be implemented by ai/gui-player

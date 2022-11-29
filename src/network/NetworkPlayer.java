@@ -16,8 +16,6 @@ public abstract class NetworkPlayer extends Player {
     private Contact contact;
 
     /**
-     * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
-     * @param address    is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
     public NetworkPlayer(PlayerConfig playerConfig) {
@@ -70,12 +68,18 @@ public abstract class NetworkPlayer extends Player {
         return contact.getPeerUsername();
     }
 
-    public void setReadyToBegin(boolean b) {
-        contact.setBegin(b);
+    public void setReadyToBegin() {
+        contact.setReady();
+        contact.setBegin();
     }
 
     public boolean getEnemyReadyToBegin() {
-        return contact.getBegin();
+        return contact.getBegin() && contact.getEnemyReady() && contact.getEnemyBegin();
+    }
+
+    @Override
+    public boolean getWeBegin() {
+        return contact.getWeBeginGame();
     }
 
     /**
