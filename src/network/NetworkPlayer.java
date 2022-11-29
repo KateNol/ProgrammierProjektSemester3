@@ -80,7 +80,6 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void setReadyToBegin(boolean b) {
-        // FIXME: replace with semester sensitive info
         contact.setShipsPlaced(globalConfig.getShipSizes(getNegotiatedSemester()).length);
     }
 

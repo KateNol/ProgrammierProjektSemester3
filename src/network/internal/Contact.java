@@ -342,17 +342,13 @@ public final class Contact extends Observable {
                 sendMessage("READY_PING", String.valueOf(SHIPS_PLACED));
             }
             case RECEIVE -> {
-                // TODO forward SHIPS_PLACED to logic
-                // TODO get info from logic on how many ships we have placed to be able to respond
                 int enemyShipsPlaced = SHIPS_PLACED;      // dummy
                 // TODO get info what maxPlacedShips for current semester is (from logic?)
                 int maxPlacedShips = 5;         // dummy
 
-                // TODO does this not cause an infinite loop / spam until all ships are placed?
                 if (shipsPlaced == maxPlacedShips) {
                     READY_CHK(SEND);
                 } else {
-                    // FIXME maybe the api gets changed?
                     // if we received READY_PING, wait before sending response to avoid spam
                     new java.util.Timer().schedule(
                             new java.util.TimerTask() {
@@ -557,7 +553,6 @@ public final class Contact extends Observable {
     @Override
     public void notifyObservers(Object arg) {
         setChanged();
-        log_debug("trying to notify " + countObservers());
         super.notifyObservers(arg);
         clearChanged();
     }
