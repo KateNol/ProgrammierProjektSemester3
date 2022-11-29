@@ -7,16 +7,16 @@ public class Util {
 
     private static final boolean debug = true;
 
-    private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss :: ");
+    private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     private static String getDateTimePrefix() {
         return dtFormatter.format(LocalDateTime.now());
     }
 
-    private static final String logPrefix = "Logic :: ";
+    private static final String logPrefix = "Logic";
 
     public static void log_stdio(String msg) {
-        System.out.println(getDateTimePrefix() + logPrefix + msg);
+        System.out.println(getDateTimePrefix() + " :: " + Thread.currentThread().getName() + " :: " + logPrefix + " :: " + msg);
     }
 
     public static void log_debug(String msg) {

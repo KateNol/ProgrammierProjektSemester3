@@ -14,11 +14,6 @@ import static network.internal.Util.*;
 
 public abstract class NetworkPlayer extends Player {
     private Contact contact;
-    private ShotResult lastShotResult = null;
-
-    private ServerMode serverMode = null;
-    private String address = null;
-    private int port = -1;
 
     /**
      * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
@@ -30,12 +25,13 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
+        setServerMode(serverMode);
         switch (serverMode) {
             case SERVER -> {
-                this.contact = Server.getContact(port);
+                this.contact = Server.getContact(port, getUsername(), getMaxSemester());
             }
             case CLIENT -> {
-                this.contact = Client.getContact(address, port);
+                this.contact = Client.getContact(address, port, getUsername(), getMaxSemester());
             }
         }
     }
@@ -70,17 +66,12 @@ public abstract class NetworkPlayer extends Player {
         return contact.getNegotiatedSemester();
     }
 
-    @Override
-    public String getUsername() {
-        return contact.getUsername();
-    }
-
     public String getEnemyUsername() {
         return contact.getPeerUsername();
     }
 
     public void setReadyToBegin(boolean b) {
-        contact.setShipsPlaced(globalConfig.getShipSizes(getNegotiatedSemester()).length);
+        contact.setBegin(b);
     }
 
     public boolean getEnemyReadyToBegin() {

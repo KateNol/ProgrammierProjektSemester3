@@ -64,14 +64,6 @@ public final class Contact extends Observable {
         System.out.println("Contact CTOR end");
     }
 
-    Contact(Socket socket, ServerMode serverMode) throws IOException {
-        this(socket, serverMode, serverMode.name(), 1);
-    }
-
-    Contact(ServerMode serverMode) throws IOException {
-        this(null, serverMode);
-    }
-
     /**
      * send an arbitrary message to the other player
      * use for debug purposes only
@@ -557,12 +549,13 @@ public final class Contact extends Observable {
         clearChanged();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public String getPeerUsername() {
         return peerUsername;
     }
 
+    public void setBegin(boolean b) {
+        synchronized (beginLock) {
+            this.begin = b;
+        }
+    }
 }

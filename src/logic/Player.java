@@ -1,5 +1,7 @@
 package logic;
 
+import network.ServerMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -21,6 +23,7 @@ public abstract class Player extends Observable {
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
+    private ServerMode serverMode = null;
 
     public Player(PlayerConfig playerConfig) {
         if (playerConfig != null) {
@@ -66,8 +69,21 @@ public abstract class Player extends Observable {
      * implemented by NetworkPlayer
      * @return
      */
-    public abstract String getUsername();
+    public String getUsername() {
+        return username;
+    }
 
+    public int getMaxSemester() {
+        return maxSemester;
+    }
+
+    public ServerMode getServerMode() {
+        return serverMode;
+    }
+
+    public void setServerMode(ServerMode serverMode) {
+        this.serverMode = serverMode;
+    }
 
     /**
      * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method

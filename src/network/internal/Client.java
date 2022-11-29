@@ -22,7 +22,7 @@ public final class Client {
      * @param port    the port of the network target
      * @return IOException if an I/O error occurs when creating the socket.
      */
-    public static Contact getContact(String address, int port) throws IOException {
+    public static Contact getContact(String address, int port, String username, int semester) throws IOException {
         Socket socket = null;
         boolean success;
 
@@ -37,6 +37,6 @@ public final class Client {
 
 
         log_stdio("Client connected on port " + port);
-        return new Contact(socket, ServerMode.CLIENT);
+        return new Contact(socket, ServerMode.CLIENT, username, semester);
     }
 }

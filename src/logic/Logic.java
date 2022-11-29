@@ -80,7 +80,7 @@ public class Logic implements Observer {
 
         // get info on who begins
         // TODO get actual info, for now server always begins
-        if (player.getUsername().equalsIgnoreCase("server")) {
+        if (player.getServerMode().toString().equalsIgnoreCase("server")) {
             switchState(State.OurTurn);
         } else {
             switchState(State.EnemyTurn);
