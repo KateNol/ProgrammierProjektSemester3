@@ -14,15 +14,8 @@ import static network.internal.Util.*;
 
 public abstract class NetworkPlayer extends Player {
     private Contact contact;
-    private ShotResult lastShotResult = null;
-
-    private ServerMode serverMode = null;
-    private String address = null;
-    private int port = -1;
 
     /**
-     * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
-     * @param address    is the target address for client mode, may be null in server mode
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
     public NetworkPlayer(PlayerConfig playerConfig) {
@@ -30,12 +23,13 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
+        setServerMode(serverMode);
         switch (serverMode) {
             case SERVER -> {
-                this.contact = Server.getContact(port);
+                this.contact = Server.getContact(port, getUsername(), getMaxSemester());
             }
             case CLIENT -> {
-                this.contact = Client.getContact(address, port);
+                this.contact = Client.getContact(address, port, getUsername(), getMaxSemester());
             }
         }
     }
@@ -70,22 +64,22 @@ public abstract class NetworkPlayer extends Player {
         return contact.getNegotiatedSemester();
     }
 
-    @Override
-    public String getUsername() {
-        return contact.getUsername();
-    }
-
     public String getEnemyUsername() {
         return contact.getPeerUsername();
     }
 
-    public void setReadyToBegin(boolean b) {
-        // FIXME: replace with semester sensitive info
-        contact.setShipsPlaced(globalConfig.getShipSizes(getNegotiatedSemester()).length);
+    public void setReadyToBegin() {
+        contact.setReady();
+        contact.setBegin();
     }
 
     public boolean getEnemyReadyToBegin() {
-        return contact.getBegin();
+        return contact.getBegin() && contact.getEnemyReady() && contact.getEnemyBegin();
+    }
+
+    @Override
+    public boolean getWeBegin() {
+        return contact.getWeBeginGame();
     }
 
     /**

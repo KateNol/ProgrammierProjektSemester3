@@ -9,36 +9,35 @@ Links
 ## Anforderungen
 
 ### Anforderungen an den Einzelnen
-- [ ] klar definierte Aufgabe im Team und absolute Ergebnisverantwortung
+- [x] klar definierte Aufgabe im Team und absolute Ergebnisverantwortung
 - [ ] Mindestens 1000 Zeilen Code
 - [ ] Sorgfältige Kommentierung und Dokumentation seines Codes
 - [ ] Fehlerfreiheit des Codes
 - [ ] Regelmäßige Teilnahme an allen Projekttreffen!
-- [ ] Vollständiges und pünktliches Einhalten von Terminen
+- [x] Vollständiges und pünktliches Einhalten von Terminen
 
 ### Anforderungen an die Gruppe
 - [ ] vollständig erfasste Anwendungsfälle+gui.GUIMain-Prototyp (abgenommen durch Betreuer!)
-- [ ] Schichtenarchitektur (min. 2 Schichten; gui.GUIMain und Logik getrennt!)
+- [x] Schichtenarchitektur (min. 2 Schichten; gui.GUIMain und Logik getrennt!)
 - [ ] Sechs Semester (Spielstufen/Level)
 - [ ] Sound!
 - [ ] Eine „Überraschung” im Spiel
-- [ ] Projektplanung
+- [x] Projektplanung
 - [ ] Sorgfältige Dokumentation
 - [ ] fehlerfrei laufendes, absturz- und anwendungssicheres Spiel!
-- [ ] Lauffähig im Fenster (JFrame)
+- [x] Lauffähig im Fenster (JFrame)
 - [ ] Das Spiel muss gegen die Spiele der anderen Projektgruppen spielbar sein
 - [ ] Binaries als JAR-Datei (ggfs. mit Startskript für Linux (spiel.sh) und Windows (spiel.bat))
 
 ### Anforderungen an die zu erstellende Software
-- [ ] Lehrveranstaltungen werden durch „Schiffe” repräsentiert
-- [ ] eine Lehrveranstaltung kann horizontal oder vertikal platziert werden.
-- [ ] die Matrix ist mindestens 14 x 14 Felder groß und vergrößert sich mit
-- [ ] jedem weiteren Semester um eine Zeile/Spalte
+- [x] Lehrveranstaltungen werden durch „Schiffe” repräsentiert
+- [x] eine Lehrveranstaltung kann horizontal oder vertikal platziert werden.
+- [x] die Matrix ist mindestens 14 x 14 Felder groß und vergrößert sich mit jedem weiteren Semester um eine Zeile/Spalte
     - 1. Semester: 14x14
     - 2. Semester: 15x15
     - 3. Semester: ...
-- [ ] das Spiel bildet alle sechs Semster des BIN-Studiengangs ab (d.h.: es gibt sechs Level)
-- [ ] Gegner in dem Spiel können sowohl menschlich als auch künstlich sein  
+- [x] das Spiel bildet alle sechs Semster des BIN-Studiengangs ab (d.h.: es gibt sechs Level)
+- [x] Gegner in dem Spiel können sowohl menschlich als auch künstlich sein  
     Mögliche Paarungen:
         - Mensch gegen Mensch,
         - Mensch gegen Computer

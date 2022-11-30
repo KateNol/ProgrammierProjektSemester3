@@ -74,15 +74,14 @@ public class Logic implements Observer {
         log_debug("both players connected");
         switchState(State.PlayersReady);
 
-        // TODO get ships from player
         player.setShips();
         switchState(State.GameReady);
-        player.setReadyToBegin(true);
+        player.setReadyToBegin();
         while (!player.getEnemyReadyToBegin());
 
         // get info on who begins
         // TODO get actual info, for now server always begins
-        if (player.getUsername().equalsIgnoreCase("server")) {
+        if (player.getWeBegin()) {
             switchState(State.OurTurn);
         } else {
             switchState(State.EnemyTurn);
@@ -96,10 +95,8 @@ public class Logic implements Observer {
                 case OurTurn -> {
                     // our turn, ask our player for a move
                     shot = player.getShot();
-                    log_debug("our player wants to shoot at " + shot);
                     // TODO check if this move would be legal
                     player.sendShot(shot);
-                    log_debug("waiting for response");
                     switchState(State.WaitForShotResponse);
                 }
                 case WaitForShotResponse -> {
@@ -107,7 +104,6 @@ public class Logic implements Observer {
                     // we have to wait for notify() to get called
                     while (shotResultStack.isEmpty());
                     shotResult = shotResultStack.pop();
-                    log_debug("got response " + shotResult);
                     //TODO update enemyMap with shotResponse. Get coordinate somewhere
                     player.updateMapState(shot, shotResult);
                     // if we hit/sunk, its our turn again, else its the enemies turn next
@@ -161,14 +157,12 @@ public class Logic implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof String argStr) {
-            log_debug("got notified of game over, we seem to have won");
+            log_debug("got notified of GAME OVER, we seem to have won");
             if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
                 switchState(State.GameOver);
         } else if (arg instanceof ShotResult recvShotResult) {
-            log_debug("got notified of ShotResult " + recvShotResult);
             shotResultStack.push(recvShotResult);
         } else if (arg instanceof Coordinate recvShot) {
-            log_debug("got notified new shot at " + ((Coordinate) arg).col() + " " + ((Coordinate) arg).row());
             shotStack.push(recvShot);
         }
 
