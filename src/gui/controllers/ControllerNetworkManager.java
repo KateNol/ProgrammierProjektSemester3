@@ -1,13 +1,13 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
-import internal.LocalEnemyMode;
-import internal.NetworkMode;
-import internal.PlayerMode;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import logic.Logic;
-import logic.Player;
 import network.ServerMode;
-import network.debug.ConsolePlayer;
 import network.debug.Driver;
 
 import java.io.IOException;
@@ -19,10 +19,61 @@ import static network.internal.Util.*;
  */
 public class ControllerNetworkManager {
 
+    @FXML
+    private VBox multiplayerConnectTextfield;
+    @FXML
+    private TextField addressTextfield;
+    @FXML
+    private TextField portTextfield;
+    @FXML
+    private TextField serverModeTextfield;
+    @FXML
+    private Label connectionFaild;
+
+    private ServerMode serverMode;
+    private String address;
+    private int port;
+
+    private boolean connectionEstablished = false;
+
+    public boolean establishedConnecetion(){
+        String client = "client";
+        String host = "host";
+        if(client.equals(serverModeTextfield.getText())){
+            serverMode = ServerMode.CLIENT;
+            address = addressTextfield.getText();
+            port =  Integer.parseInt(portTextfield.getText());
+            return true;
+        } else if(host.equals(serverModeTextfield.getText())){
+            serverMode = ServerMode.SERVER;
+            address = addressTextfield.getText();
+            port =  Integer.parseInt(portTextfield.getText());
+            return true;
+        }
+        return false;
+    }
+
+    public void onConnect() throws IOException {
+        if(establishedConnecetion()){
+            multiplayerConnectTextfield.setVisible(false);
+            GUIPlayer.getInstance().establishConnection(serverMode, address, port);
+            new Logic(GUIPlayer.getInstance());
+            ViewSwitcher.switchTo(View.Lobby);
+        } else {
+            connectionFaild.setText("Could not establish connection! \n\tTry again");
+        }
+    }
+
     /**
      * Return to File Manager
      */
     public void onReturn(){
+        addressTextfield.clear();
+        portTextfield.clear();
+        serverModeTextfield.clear();
+        connectionFaild.setText("");
+        connectionEstablished = false;
+        multiplayerConnectTextfield.setVisible(false);
         ViewSwitcher.switchTo(View.FileManager);
     }
 
@@ -45,22 +96,16 @@ public class ControllerNetworkManager {
 
         GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
         new Logic(GUIPlayer.getInstance());
-
+        if(multiplayerConnectTextfield.isVisible()){
+            multiplayerConnectTextfield.setVisible(false);
+        }
         ViewSwitcher.switchTo(View.Lobby);
     }
 
     /**
      * Choose MultiPlayer Mode
      */
-    public void onMultiPlayer() throws IOException {
-        // Dialog Window to enter informations
-        ServerMode serverMode = ServerMode.SERVER;
-        String address = defaultAddress;
-        int port = defaultPort;
-
-        GUIPlayer.getInstance().establishConnection(serverMode, address, port);
-        new Logic(GUIPlayer.getInstance());
-
-        ViewSwitcher.switchTo(View.Lobby);
+    public void onMultiPlayer() {
+        multiplayerConnectTextfield.setVisible(true);
     }
 }
