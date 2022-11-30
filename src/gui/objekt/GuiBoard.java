@@ -4,6 +4,7 @@ import gui.GUIPlayer;
 import gui.tile.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -36,8 +37,8 @@ public class GuiBoard {
      */
     public void initializeBoard(VBox vboxMiddle){
         grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
         //set Position on Scene
-        grid.setTranslateX((380 - (((double)guiPlayer.getMapSize() * tileSize) / 2)));
         for(int row = 0; row < guiPlayer.getMapSize() + 1; row++){
             for (int col = 0; col < guiPlayer.getMapSize() + 1; col++){
                 if(row == 0 && col == 0){

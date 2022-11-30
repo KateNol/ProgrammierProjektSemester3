@@ -40,7 +40,8 @@ public class GUIMain extends Application  {
         stage.getIcons().add(icon);
         stage.setTitle("Battleship");
 
-        stage.setFullScreen(true);
+        stage.setResizable(false);
+        //stage.setFullScreen(true);
 
         //Start application
         stage.show();

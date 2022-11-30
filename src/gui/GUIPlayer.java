@@ -13,7 +13,7 @@ import static logic.Util.log_debug;
 
 public class GUIPlayer extends NetworkPlayer {
     private static GUIPlayer instance = null;
-    private int tileSize = 40;
+    private int tileSize;
     private GuiBoard guiBoard;
     private GuiHarbour guiHarbour;
     private GuiBoard guiEnemyBoard;
@@ -31,6 +31,7 @@ public class GUIPlayer extends NetworkPlayer {
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        setTileSize(playerConfig.getMaxSemester());
         instance = this;
     }
 
@@ -172,5 +173,16 @@ public class GUIPlayer extends NetworkPlayer {
             lock.notify();
         }
         log_debug("shot lock notify");
+    }
+
+    public void setTileSize(int tileSize) {
+        switch (tileSize){
+            case 1 -> this.tileSize = 29;
+            case 2 -> this.tileSize = 26;
+            case 3 -> this.tileSize = 25;
+            case 4 -> this.tileSize = 24;
+            case 5 -> this.tileSize = 23;
+            case 6 -> this.tileSize = 22;
+        }
     }
 }

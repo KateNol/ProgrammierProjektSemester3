@@ -8,23 +8,9 @@ import javafx.application.Platform;
 public class ControllerMenu {
 
     /**
-     * Switch to Screen Lobby
-     */
-    public void onContinue(){
-        ViewSwitcher.switchTo(View.Lobby);
-    }
-
-    /**
-     * Switch to Screen New Game File Manager
-     */
-    public void onNewGame(){
-        ViewSwitcher.switchTo(View.FileManager);
-    }
-
-    /**
      * Switch to Screen Load Game File Manager
      */
-    public void onLoadGame(){
+    public void onStartGame(){
         FileController.checkIfFileExists();
         ViewSwitcher.switchTo(View.FileManager);
     }

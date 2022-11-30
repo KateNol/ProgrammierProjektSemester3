@@ -7,36 +7,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancherPane" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerLobby">
+<AnchorPane fx:id="ancherPane" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerLobby">
    <children>
-      <HBox layoutX="656.0" layoutY="337.0" prefHeight="100.0" prefWidth="200.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="656.0" layoutY="337.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox fx:id="vboxLeft" prefWidth="300.0" />
-            <VBox fx:id="vBoxMiddle" alignment="CENTER" prefHeight="800.0" prefWidth="800.0">
+            <VBox fx:id="vboxLeft" minWidth="230.0" prefWidth="230.0" />
+            <VBox fx:id="vBoxMiddle" alignment="CENTER" minHeight="570.0" minWidth="700.0" prefHeight="570.0" prefWidth="700.0">
                <children>
-                  <Button fx:id="alignment" mnemonicParsing="false" onAction="#setMyAlignment" prefWidth="200.0" text="Horizontal_Right">
+                  <Button fx:id="alignment" minHeight="40.0" minWidth="180.0" mnemonicParsing="false" onAction="#setMyAlignment" prefHeight="40.0" prefWidth="180.0" text="Horizontal_Right">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="16.0" />
                      </font>
                      <VBox.margin>
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Button>
                </children></VBox>
-            <VBox fx:id="vBoxRight" alignment="CENTER" spacing="800.0">
+            <VBox fx:id="vBoxRight" alignment="CENTER_RIGHT" minWidth="250.0" prefWidth="250.0" spacing="520.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onBack" prefWidth="250.0" text="Back">
+                  <Button minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onBack" prefHeight="50.0" prefWidth="200.0" text="Back">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="startGame" mnemonicParsing="false" onAction="#onStartGame" prefWidth="250.0" text="Start Game">
+                  <Button fx:id="startGame" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onStartGame" prefHeight="50.0" prefWidth="200.0" text="Start Game">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
                </children></VBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>

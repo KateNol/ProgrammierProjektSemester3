@@ -60,7 +60,7 @@ public class ControllerNetworkManager {
             new Logic(GUIPlayer.getInstance());
             ViewSwitcher.switchTo(View.Lobby);
         } else {
-            connectionFaild.setText("Could not establish connection! \n\tTry again");
+            connectionFaild.setText("Could not establish connection!\tTry again!");
         }
     }
 

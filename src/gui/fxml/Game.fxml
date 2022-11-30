@@ -10,60 +10,89 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
+<AnchorPane minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
    <children>
-      <HBox layoutX="806.0" layoutY="259.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox fx:id="myBoard" alignment="CENTER" prefWidth="760.0">
+            <VBox minHeight="620.0" minWidth="980.0" prefHeight="620.0" prefWidth="980.0">
                <children>
-                  <Label text="Your Board">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></VBox>
-            <VBox alignment="TOP_CENTER">
-               <children>
-                  <Label fx:id="turn" alignment="TOP_LEFT" contentDisplay="CENTER" prefWidth="110.0" text="Your Turn">
+                  <HBox alignment="TOP_CENTER" minHeight="40.0" prefHeight="40.0">
+                     <children>
+                        <Label fx:id="turn" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" text="Your Turn">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
                      <VBox.margin>
-                        <Insets top="50.0" />
+                        <Insets />
                      </VBox.margin>
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </children></VBox>
-            <VBox fx:id="enemyBoard" alignment="CENTER" prefWidth="760.0">
+                  </HBox>
+                  <HBox alignment="CENTER" minHeight="580.0" prefHeight="580.0">
+                     <children>
+                        <VBox minHeight="580.0" minWidth="980.0" prefHeight="580.0" prefWidth="980.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" minWidth="490.0" prefWidth="490.0">
+                                       <children>
+                                          <Label text="Your Board">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" minWidth="490.0" prefWidth="490.0">
+                                       <children>
+                                          <Label text="Enemy Board">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" minHeight="418.0" minWidth="980.0" prefHeight="418.0" prefWidth="980.0">
+                                 <children>
+                                    <VBox fx:id="myBoard" alignment="CENTER" minHeight="418.0" minWidth="490.0" prefHeight="418.0" prefWidth="490.0">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox fx:id="enemyBoard" alignment="CENTER" minHeight="418.0" minWidth="490.0" prefHeight="418.0" prefWidth="490.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox fx:id="menuBar" alignment="TOP_RIGHT" minWidth="200.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Label text="Enemy Board">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </children></VBox>
-            <VBox fx:id="menuBar" alignment="TOP_CENTER" spacing="40.0">
-               <children>
-                  <MenuButton mnemonicParsing="false" prefWidth="200.0" text="Options">
+                  <MenuButton minHeight="40.0" minWidth="150.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Options">
                     <items>
                       <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
                     </items>
                      <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="50.0" />
+                        <Insets />
                      </VBox.margin>
                   </MenuButton>
-                  <Button fx:id="ff" mnemonicParsing="false" prefWidth="200.0" text="/ff">
+                  <Button fx:id="ff" minHeight="40.0" minWidth="150.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Surrender">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
                </children></VBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>

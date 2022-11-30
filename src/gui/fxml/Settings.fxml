@@ -12,13 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerSettings">
+<AnchorPane minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerSettings">
     <children>
         <HBox layoutX="441.0" layoutY="194.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox prefHeight="1080.0" prefWidth="1600.0">
+                <VBox>
                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="1600.0">
+                  <HBox prefHeight="50.0" />
+                        <HBox minHeight="100.0">
                             <children>
                                 <Label text="Settings">
                                     <font>
@@ -30,7 +31,7 @@
                                 </Label>
                             </children>
                         </HBox>
-                        <TabPane prefHeight="711.0" prefWidth="1600.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                        <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                             <tabs>
                                 <Tab text="Graphic">
                                     <content>
@@ -91,14 +92,15 @@
                         </TabPane>
                     </children>
                 </VBox>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                <VBox alignment="TOP_CENTER" minWidth="300.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#onReturn" prefWidth="200.0" text="Return">
+                  <HBox prefHeight="50.0" />
+                        <Button mnemonicParsing="false" onAction="#onReturn" prefHeight="50.0" prefWidth="200.0" text="Return">
                             <font>
                                 <Font size="24.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="50.0" />
+                                <Insets />
                             </VBox.margin>
                         </Button>
                     </children>
