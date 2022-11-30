@@ -127,7 +127,9 @@ public class GuiBoard {
                     break;
                 }
                 case SUNK: {
-                    //TODO
+                    TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
+                    grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                    break;
                 }
             }
         });
