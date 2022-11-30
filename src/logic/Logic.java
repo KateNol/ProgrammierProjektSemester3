@@ -1,5 +1,7 @@
 package logic;
 
+import gui.controllers.View;
+import gui.controllers.ViewSwitcher;
 import network.NetworkPlayer;
 
 import java.util.Deque;
@@ -129,6 +131,7 @@ public class Logic implements Observer {
                         log_debug("game over, we lost!");
                         winner = player.getUsername().equalsIgnoreCase("host") ? "host" : "client";
                         switchState(State.GameOver);
+                        ViewSwitcher.switchTo(View.Menu);
                     } else if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                         switchState(State.EnemyTurn);
                     } else {
