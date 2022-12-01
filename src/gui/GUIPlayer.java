@@ -7,8 +7,6 @@ import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
 
-import java.io.IOException;
-
 import static logic.Util.log_debug;
 
 public class GUIPlayer extends NetworkPlayer {
