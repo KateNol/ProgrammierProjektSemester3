@@ -1,8 +1,11 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -11,13 +14,13 @@ import network.ServerMode;
 import network.debug.Driver;
 
 import java.io.IOException;
-
-import static network.internal.Util.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Controller for Network Manager
  */
-public class ControllerNetworkManager {
+public class ControllerNetworkManager implements Initializable {
 
     @FXML
     private VBox multiplayerConnectTextfield;
@@ -26,26 +29,37 @@ public class ControllerNetworkManager {
     @FXML
     private TextField portTextfield;
     @FXML
-    private TextField serverModeTextfield;
+    private ComboBox<String> comboBoxServerMode;
     @FXML
     private Label connectionFaild;
 
-    private ServerMode serverMode;
+    private boolean connectionEstablished = false;
+    private ServerMode serverMode = ServerMode.CLIENT;
     private String address;
     private int port;
+    private String client = "client";
+    private String host = "host";
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        comboBoxServerMode.getItems().addAll("client", "host");
+        comboBoxServerMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
+                if(s2.equals(client)){
+                    serverMode = ServerMode.CLIENT;
+                } else if (s2.equals(host)) {
+                    serverMode = ServerMode.SERVER;
+                }
+            }
+        });
+    }
 
-    private boolean connectionEstablished = false;
-
-    public boolean establishedConnecetion(){
-        String client = "client";
-        String host = "host";
-        if(client.equals(serverModeTextfield.getText())){
-            serverMode = ServerMode.CLIENT;
+    public boolean setConnection(){
+        if(serverMode.equals(ServerMode.CLIENT)){
             address = addressTextfield.getText();
             port =  Integer.parseInt(portTextfield.getText());
             return true;
-        } else if(host.equals(serverModeTextfield.getText())){
-            serverMode = ServerMode.SERVER;
+        } else if(serverMode.equals(ServerMode.SERVER)){
             address = addressTextfield.getText();
             port =  Integer.parseInt(portTextfield.getText());
             return true;
@@ -54,7 +68,7 @@ public class ControllerNetworkManager {
     }
 
     public void onConnect() throws IOException {
-        if(establishedConnecetion()){
+        if(setConnection()){
             multiplayerConnectTextfield.setVisible(false);
             GUIPlayer.getInstance().establishConnection(serverMode, address, port);
             new Logic(GUIPlayer.getInstance());
@@ -70,7 +84,6 @@ public class ControllerNetworkManager {
     public void onReturn(){
         addressTextfield.clear();
         portTextfield.clear();
-        serverModeTextfield.clear();
         connectionFaild.setText("");
         connectionEstablished = false;
         multiplayerConnectTextfield.setVisible(false);

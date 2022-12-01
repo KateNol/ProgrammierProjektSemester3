@@ -125,34 +125,36 @@ public class GuiBoard {
                     break;
                 }
                 case SUNK: {
-                    MapState[][] map = guiPlayer.getEnemyMap().getMap();
-                    for(int row = 0; row < guiPlayer.getMapSize(); row++) {
-                        for (int col = 0; col < guiPlayer.getMapSize(); col++) {
-                            switch (map[row][col]){
-                                case W: {
-                                    TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
-                                    grid.add(tileWater,col + 1, row + 1, 1, 1);
-                                    this.sendShot(tileWater);
-                                    break;
-                                }
-                                case S: {
-                                    TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);
-                                    grid.add(tileShip, col + 1, row + 1, 1, 1);
-                                    break;
-                                }
-                                case H: {
-                                    TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
-                                    grid.add(tileHit, col + 1, row + 1, 1, 1);
-                                    break;
-                                }
-                                case M: {
-                                    TileMiss tileMiss = new TileMiss(new Coordinate(row + 1, col + 1), tileSize);
-                                    grid.add(tileMiss, col + 1, row + 1, 1, 1);
-                                    break;
-                                }
-                                case D: {
-                                    TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
-                                    grid.add(tileHit, col + 1, row + 1, 1, 1);
+                    if(isEnemyBoard){
+                        MapState[][] map = guiPlayer.getEnemyMap().getMap();
+                        for(int row = 0; row < guiPlayer.getMapSize(); row++) {
+                            for (int col = 0; col < guiPlayer.getMapSize(); col++) {
+                                switch (map[row][col]){
+                                    case W: {
+                                        TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileWater,col + 1, row + 1, 1, 1);
+                                        this.sendShot(tileWater);
+                                        break;
+                                    }
+                                    case S: {
+                                        TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileShip, col + 1, row + 1, 1, 1);
+                                        break;
+                                    }
+                                    case H: {
+                                        TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileHit, col + 1, row + 1, 1, 1);
+                                        break;
+                                    }
+                                    case M: {
+                                        TileMiss tileMiss = new TileMiss(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileMiss, col + 1, row + 1, 1, 1);
+                                        break;
+                                    }
+                                    case D: {
+                                        TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileHit, col + 1, row + 1, 1, 1);
+                                    }
                                 }
                             }
                         }
