@@ -8,10 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import logic.Alignment;
-import logic.Coordinate;
-import logic.ShotResult;
-import logic.Util;
+import logic.*;
 
 public class GuiBoard {
 
@@ -44,18 +41,18 @@ public class GuiBoard {
                 if(row == 0 && col == 0){
                     TileBoardText tbt = new TileBoardText(new Coordinate(row, col),tileSize,"");
                     grid.add(tbt, row, col, 1, 1);
-                    Node node = getNodeByRowColumnIndex(row, col, grid);
+                    Node node = getNodeByRowColumnIndex(row, col);
                     node.setDisable(true);
                 } else {
                     if(row == 0){
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + (char) ('A' + col - 1));
                         grid.add(tbt, col, row, 1, 1);
-                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        Node node = getNodeByRowColumnIndex(row, col);
                         node.setDisable(true);
                     } else if (col == 0) {
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + row);
                         grid.add(tbt, col, row, 1, 1);
-                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        Node node = getNodeByRowColumnIndex(row, col);
                         node.setDisable(true);
                     } else {
                         TileWater tile = new TileWater(new Coordinate(row, col), tileSize);
@@ -128,9 +125,38 @@ public class GuiBoard {
                     break;
                 }
                 case SUNK: {
-                    TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
-                    grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    break;
+                    MapState[][] map = guiPlayer.getEnemyMap().getMap();
+                    for(int row = 0; row < guiPlayer.getMapSize(); row++) {
+                        for (int col = 0; col < guiPlayer.getMapSize(); col++) {
+                            switch (map[row][col]){
+                                case W: {
+                                    TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
+                                    grid.add(tileWater,col + 1, row + 1, 1, 1);
+                                    this.sendShot(tileWater);
+                                    break;
+                                }
+                                case S: {
+                                    TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);
+                                    grid.add(tileShip, col + 1, row + 1, 1, 1);
+                                    break;
+                                }
+                                case H: {
+                                    TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
+                                    grid.add(tileHit, col + 1, row + 1, 1, 1);
+                                    break;
+                                }
+                                case M: {
+                                    TileMiss tileMiss = new TileMiss(new Coordinate(row + 1, col + 1), tileSize);
+                                    grid.add(tileMiss, col + 1, row + 1, 1, 1);
+                                    break;
+                                }
+                                case D: {
+                                    TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
+                                    grid.add(tileHit, col + 1, row + 1, 1, 1);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -313,15 +339,14 @@ public class GuiBoard {
      * Get Node by Row, Column Index
      * @param row
      * @param column
-     * @param gridPane
      * @return
      */
-    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+    public Node getNodeByRowColumnIndex (final int row, final int column) {
         Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
+        ObservableList<Node> childrens = grid.getChildren();
 
         for (Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+            if(grid.getRowIndex(node) == row && grid.getColumnIndex(node) == column) {
                 result = node;
                 break;
             }
