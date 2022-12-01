@@ -77,6 +77,10 @@ public abstract class Player extends Observable {
         return maxSemester;
     }
 
+    public Map getEnemyMap() {
+        return enemyMap;
+    }
+
     public ServerMode getServerMode() {
         return serverMode;
     }
