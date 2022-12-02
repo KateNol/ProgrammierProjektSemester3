@@ -44,10 +44,10 @@ public class ControllerGame implements Initializable {
     }
 
     public void setTurnLabel(){
-        if(!guiPlayer.getWeBegin()){
-            turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
-        } else {
+        if(guiPlayer.getWeBegin()){
             turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
+        } else {
+            turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
         }
     }
 
