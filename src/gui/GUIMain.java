@@ -1,5 +1,6 @@
 package gui;
 
+import gui.controllers.AudioPlayer;
 import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
 import javafx.application.Application;
@@ -52,6 +53,7 @@ public class GUIMain extends Application  {
         stage.setMaxWidth(1920);
         stage.setMaxHeight(1080);
 
+        AudioPlayer.playIntro();
         //stage.setResizable(false);
         //stage.setFullScreen(true);
 
