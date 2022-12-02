@@ -31,10 +31,9 @@ public final class Driver {
     public static void main(String[] args) throws IOException {
         log_debug("this is a test class, use this only to test classes");
 
-        String mode = "";
-
         if (args.length == 0) {
             log_stderr("missing arguments");
+            log_stderr("valid args are: player=[human,ai], network=[online/offline], enemy=[human/ai], address=$address, port=$port, name=$name, semester=[1..6]");
             System.exit(1);
         }
 
@@ -43,6 +42,8 @@ public final class Driver {
         LocalEnemyMode localEnemyMode = null;
         ServerMode serverMode = null;
         String addr = null;
+        String name = null;
+        int semester = 1;
 
         for (String arg : args) {
             arg = arg.toLowerCase();
@@ -73,19 +74,22 @@ public final class Driver {
                 } else if (arg.endsWith("client")) {
                     serverMode = ServerMode.CLIENT;
                 }
+            } else if (arg.startsWith("name=")) {
+                name = arg.substring("name=".length());
+            } else if (arg.startsWith("semester=")) {
+                semester = Integer.parseInt(arg.substring("semester=".length()));
             }
         }
 
         NetworkPlayer player = null;
-        // TODO this info will come from the gui later on
-
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(new PlayerConfig("Console Player"));
+            player = new ConsolePlayer("Console Player", semester);
             player.establishConnection(serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(3);
+            player = new AIPlayer(semester);
             player.establishConnection(serverMode, addr);
         }
+
         assert player != null;
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
