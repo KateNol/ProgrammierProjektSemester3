@@ -13,7 +13,6 @@ public class ViewSwitcher {
     //Caching for Screens
     private static Map<View, Parent> cache = new HashMap<>();
     private static Scene scene;
-
     private static Stage stage;
 
     /**

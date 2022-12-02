@@ -6,7 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import logic.Alignment;
 
 import java.net.URL;
@@ -40,6 +43,9 @@ public class ControllerLobby implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startGame.setDisable(true);
         guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame, failedshipPlacedLabel);
+        vboxLeft.setBackground(new Background(new BackgroundFill(Color.DARKORANGE,null,null)));
+        vBoxMiddle.setBackground(new Background(new BackgroundFill(Color.DARKCYAN,null,null)));
+
     }
 
     /**
