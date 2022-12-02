@@ -73,12 +73,20 @@ public abstract class Player extends Observable {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public int getMaxSemester() {
         return maxSemester;
     }
 
     public Map getEnemyMap() {
         return enemyMap;
+    }
+
+    public void setMaxSemester(int semester) {
+        this.maxSemester = semester;
     }
 
     public ServerMode getServerMode() {

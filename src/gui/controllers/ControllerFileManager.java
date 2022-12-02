@@ -11,8 +11,11 @@ import javafx.scene.layout.VBox;
 import logic.PlayerConfig;
 import logic.Util;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerFileManager implements Initializable {
@@ -50,14 +53,23 @@ public class ControllerFileManager implements Initializable {
         setPicture(deleteTwo);
         setPicture(deleteThree);
 
-        if(FileController.isFileOne()){
-            fileOne.setText(FileController.getFileName(0));
-        }
-        if(FileController.isFileTwo()) {
-            fileTwo.setText(FileController.getFileName(1));
-        }
-        if (FileController.isFileThree()) {
-            fileThree.setText(FileController.getFileName(2));
+        List<Integer> fileNumbers = new ArrayList<>();
+        if (FileController.isFileOne())
+            fileNumbers.add(0);
+        if (FileController.isFileTwo())
+            fileNumbers.add(1);
+        if (FileController.isFileThree())
+            fileNumbers.add(2);
+
+        for (int fileNumber : fileNumbers) {
+            Button file = fileNumber == 0 ? fileOne : fileNumber == 1 ? fileTwo : fileNumber == 2 ? fileThree : null;
+            try {
+                PlayerConfig player = FileController.loadFromFile(fileNumber);
+                String semester = " (" + player.getMaxSemester() + ")";
+                file.setText(FileController.getFileName(fileNumber) + semester);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
