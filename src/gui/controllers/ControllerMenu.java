@@ -12,7 +12,7 @@ public class ControllerMenu{
     /**
      * Switch to Screen Load Game File Manager
      */
-    public void onStartGame(){
+    public void onPlay(){
         if(!FileController.checkIfFolderExists()){
             try {
                 FileController.createFolder();

@@ -25,7 +25,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onStartGame" prefHeight="50.0" prefWidth="250.0" text="Play" textAlignment="CENTER">
+                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="50.0" prefWidth="250.0" text="Play" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
                            </font>
