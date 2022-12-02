@@ -38,7 +38,7 @@ public class ControllerGame implements Initializable {
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
         guiPlayer.createEnemyBoard(enemyBoard);
         selfLabel.setText(guiPlayer.getUsername());
-        enemyLabel.setText("Enemy Name");
+        enemyLabel.setText(guiPlayer.getEnemyUsername());
         setTurnLabel();
 
     }
