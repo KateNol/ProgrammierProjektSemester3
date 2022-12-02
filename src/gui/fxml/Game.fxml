@@ -18,7 +18,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" minHeight="-Infinity">
                      <children>
-                        <Label fx:id="turnLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" text="Your Turn">
+                        <Label fx:id="turnLabel" alignment="CENTER" contentDisplay="CENTER" text="Your Turn">
                            <font>
                               <Font size="24.0" />
                            </font>
