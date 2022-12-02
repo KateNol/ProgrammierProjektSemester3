@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerFileManager">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerFileManager">
    <children>
-      <HBox layoutX="732.0" layoutY="220.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <HBox fx:id="background" layoutX="732.0" layoutY="220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="100.0" HBox.hgrow="ALWAYS">
                <children>
@@ -18,15 +18,15 @@
                      <children>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Button fx:id="fileOne" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onMouseClicked="#onFile1" prefHeight="50.0" prefWidth="200.0" text="New File 1">
+                              <Button fx:id="fileOne" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#onFile1" prefHeight="60.0" prefWidth="250.0" text="New File 1">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font name="Rockwell" size="28.0" />
                                  </font>
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="deleteOne" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#onDelete1" prefHeight="50.0" prefWidth="50.0">
+                              <Button fx:id="deleteOne" mnemonicParsing="false" onAction="#onDelete1" prefHeight="60.0" prefWidth="60.0">
                                  <HBox.margin>
                                     <Insets left="50.0" />
                                  </HBox.margin>
@@ -35,15 +35,15 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Button fx:id="fileTwo" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onMouseClicked="#onFile2" prefHeight="50.0" prefWidth="200.0" text="New File 2">
+                              <Button fx:id="fileTwo" alignment="TOP_CENTER" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#onFile2" prefHeight="60.0" prefWidth="250.0" text="New File 2">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font name="Rockwell" size="28.0" />
                                  </font>
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="deleteTwo" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#onDelete2" prefHeight="50.0" prefWidth="50.0">
+                              <Button fx:id="deleteTwo" mnemonicParsing="false" onAction="#onDelete2" prefHeight="60.0" prefWidth="60.0">
                                  <HBox.margin>
                                     <Insets left="50.0" />
                                  </HBox.margin>
@@ -52,15 +52,15 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Button fx:id="fileThree" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onMouseClicked="#onFile3" prefHeight="50.0" prefWidth="200.0" text="New File 3">
+                              <Button fx:id="fileThree" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#onFile3" prefHeight="60.0" prefWidth="250.0" text="New File 3">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font name="Rockwell" size="28.0" />
                                  </font>
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="deleteThree" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#onDelete3" prefHeight="50.0" prefWidth="50.0">
+                              <Button fx:id="deleteThree" mnemonicParsing="false" onAction="#onDelete3" prefHeight="60.0" prefWidth="60.0">
                                  <HBox.margin>
                                     <Insets left="50.0" />
                                  </HBox.margin>
@@ -74,16 +74,16 @@
                   </VBox>
                   <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="userInput" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" visible="false">
+                        <VBox fx:id="userInput" alignment="CENTER" prefHeight="200.0" spacing="50.0" visible="false">
                            <children>
                               <TextField fx:id="nameInput" minHeight="-Infinity" minWidth="-Infinity" promptText="Set Username">
                                  <font>
-                                    <Font size="18.0" />
+                                    <Font name="Rockwell" size="20.0" />
                                  </font>
                               </TextField>
-                              <Button fx:id="create" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Create">
+                              <Button fx:id="create" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="Create">
                                  <font>
-                                    <Font size="18.0" />
+                                    <Font name="Rockwell" size="22.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets />
@@ -104,9 +104,9 @@
                   </VBox>
                   <VBox alignment="TOP_RIGHT" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button maxWidth="0.0" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onReturn" prefHeight="50.0" prefWidth="200.0" text="Return">
+                        <Button mnemonicParsing="false" onAction="#onReturn" prefHeight="60.0" prefWidth="250.0" text="Return">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="28.0" />
                            </font>
                            <VBox.margin>
                               <Insets />
@@ -123,6 +123,9 @@
                </HBox.margin>
             </HBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>

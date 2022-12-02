@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerMenu">
+<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerMenu">
    <children>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <VBox fx:id="background" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Battleship">
+                  <Label text="BATTLESHIP" underline="true">
                      <font>
-                        <Font size="72.0" />
+                        <Font name="Stencil" size="85.0" />
                      </font>
                   </Label>
                </children>
@@ -25,36 +25,36 @@
                <children>
                   <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="50.0" prefWidth="250.0" text="Play" textAlignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#onPlay" prefHeight="60.0" prefWidth="250.0" text="Play">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="28.0" />
                            </font>
                         </Button>
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onRules" prefHeight="50.0" prefWidth="250.0" text="Rules" textAlignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onRules" prefHeight="60.0" prefWidth="250.0" text="Rules">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="28.0" />
                            </font>
                         </Button>
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSettings" prefHeight="50.0" prefWidth="250.0" text="Settings" textAlignment="CENTER">
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onSettings" prefHeight="60.0" prefWidth="250.0" text="Settings">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="28.0" />
                            </font>
                         </Button>
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onExit" prefHeight="50.0" prefWidth="250.0" text="Exit" textAlignment="CENTER">
+                        <Button alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onExit" prefHeight="60.0" prefWidth="250.0" text="Exit">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="28.0" />
                            </font>
                         </Button>
                      </children>
@@ -65,6 +65,9 @@
                </VBox.margin>
             </VBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </VBox>
    </children>
 </AnchorPane>
