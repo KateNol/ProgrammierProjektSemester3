@@ -40,8 +40,10 @@ public class AIPlayer extends NetworkPlayer {
 
     @Override
     protected void setShips() {
+        log_debug("setting ships, map size: " + myMap.getMapSize() + ", ");
+
         Random coord = new Random();
-        ArrayList<Ship> ships = getArrayListShips();
+        ArrayList<Ship> ships = globalConfig.getShips(getNegotiatedSemester());
 
         for (Ship ship : ships) {
             boolean placed = true;
@@ -56,7 +58,7 @@ public class AIPlayer extends NetworkPlayer {
                     placed = false;
                 }
                 if (placed) {
-                    log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
+                    log_debug("successfully placed ship at " + coordinate + " aligned " + alignment + " with len " + ship.getSize());
                 }
             } while (!placed);
 

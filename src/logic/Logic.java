@@ -72,12 +72,15 @@ public class Logic implements Observer {
         // wait for both players to connect
         while (!player.getIsConnectionEstablished()) ;
         log_debug("both players connected");
+
+        player.loadGlobalConfig();
+
         switchState(State.PlayersReady);
 
         player.setShips();
         switchState(State.GameReady);
         player.setReadyToBegin();
-        while (!player.getEnemyReadyToBegin());
+        while (!player.getEnemyReadyToBegin()) ;
 
         // get info on who begins
         // TODO get actual info, for now server always begins

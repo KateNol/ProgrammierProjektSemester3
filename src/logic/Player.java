@@ -30,7 +30,6 @@ public abstract class Player extends Observable {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
         }
-        loadGlobalConfig();
         globalConfigLoaded = false;
     }
 
@@ -39,9 +38,9 @@ public abstract class Player extends Observable {
      * this method loads them and initializes the maps
      */
     public void loadGlobalConfig() {
-        mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
+        mapSize = globalConfig.getMapSize(getNegotiatedSemester());
         //ships = new ArrayList<Ship>(shipSizes.length);
-        ships = globalConfig.getShips(1 /*getCommomSemester()*/);
+        ships = globalConfig.getShips(getNegotiatedSemester());
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
@@ -349,7 +348,8 @@ public abstract class Player extends Observable {
     //FIXME delete if not needed anymore
     public void printBothMaps() {
         int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
-        System.out.print("My Map:");
+        System.out.println(mapSize + " " + getNegotiatedSemester());
+        System.out.print("My Map: ");
         // right padding
         for (int i = 0; i < mapSize * 2 - "My Map:".length(); i++) {
             System.out.print(" ");
@@ -358,7 +358,7 @@ public abstract class Player extends Observable {
 
         for (int i = 0; i < mapSize; i++) {
             // our map
-            for (int j=0; j<myMap.getMapSize(); j++) {
+            for (int j = 0; j < mapSize; j++) {
                 System.out.print(mapStateToChar(myMap.getMap()[i][j]));
                 System.out.print(" ");
             }
@@ -367,7 +367,7 @@ public abstract class Player extends Observable {
             System.out.print(" |" + String.format("%02d", i) + "|  ");
 
             // enemy map
-            for (int j=0; j<enemyMap.getMapSize(); j++) {
+            for (int j = 0; j < mapSize; j++) {
                 System.out.print(mapStateToChar(enemyMap.getMap()[i][j]));
                 System.out.print(" ");
             }

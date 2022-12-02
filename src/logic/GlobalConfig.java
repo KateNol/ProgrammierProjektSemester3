@@ -1,16 +1,19 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static logic.Util.log_debug;
 
 /**
  * This class contains all possible sizes of ships and also the map size
  */
 public class GlobalConfig {
-    private final int ships[][] = {{2, 2, 2, 2, 4, 6}, {2, 2, 2, 2, 2}, {2, 2, 2, 2, 4, 6}, {2, 2, 2, 2, 4, 6}, {2, 2, 2, 3, 3, 6}, {2, 1, 1, 1, 6}};
-    private int  mapSize = 14;
+    private final int[][] ships = {{2, 2, 2, 2, 4, 6}, {2, 2, 2, 2, 2}, {2, 2, 2, 2, 4, 6}, {2, 2, 2, 2, 4, 6}, {2, 2, 2, 3, 3, 6}, {2, 1, 1, 1, 6}};
+    private final int mapSize = 14;
 
     /**
-     *  Constructor for the GlobalConfig class
+     * Constructor for the GlobalConfig class
      */
     public GlobalConfig() {
     }
@@ -21,8 +24,7 @@ public class GlobalConfig {
      * @return the mapSize according to the semester
      */
     public int getMapSize(int commonSemester) {
-        mapSize += commonSemester - 1;
-        return mapSize;
+        return mapSize + commonSemester - 1;
     }
 
     /**
@@ -31,11 +33,7 @@ public class GlobalConfig {
      * @return neuShip the size of ships the player needs
      */
     public int[] getShipSizes(int commonSemester) {
-        int neuShip[] = new int[ships[commonSemester - 1].length];
-        for (int i = 0; i < ships[commonSemester - 1].length; i++) {
-            neuShip[i] = ships[commonSemester - 1][i];
-        }
-        return neuShip;
+        return ships[commonSemester - 1];
     }
 
     /**
@@ -45,9 +43,12 @@ public class GlobalConfig {
      */
     public ArrayList<Ship> getShips(int commonSemester) {
         ArrayList<Ship> shipHarbour = new ArrayList<>();
-        for (int i = 0;i < getShipSizes(commonSemester).length; i++) {
-            shipHarbour.add(new Ship(ships[commonSemester - 1][i]));
+
+        for (int size : getShipSizes(commonSemester)) {
+            shipHarbour.add(new Ship(size));
         }
+
+        log_debug("getShips() " + commonSemester + " -> " + (shipHarbour));
         return shipHarbour;
     }
 }

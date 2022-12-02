@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static logic.Util.log_stderr;
 
@@ -98,11 +99,15 @@ public class Ship {
     }
 
     /**
-     *
      * @return health decreased by one
      */
     public int decreaseHealth() {
         this.health -= 1;
         return this.health;
+    }
+
+    @Override
+    public String toString() {
+        return "[size: " + size + /*", pos: " + Arrays.toString(pos) + ", health: " + health +*/ "]";
     }
 }
