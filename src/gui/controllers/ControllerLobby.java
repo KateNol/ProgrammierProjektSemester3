@@ -43,9 +43,6 @@ public class ControllerLobby implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startGame.setDisable(true);
         guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame, failedshipPlacedLabel);
-        vboxLeft.setBackground(new Background(new BackgroundFill(Color.DARKORANGE,null,null)));
-        vBoxMiddle.setBackground(new Background(new BackgroundFill(Color.DARKCYAN,null,null)));
-
     }
 
     /**
