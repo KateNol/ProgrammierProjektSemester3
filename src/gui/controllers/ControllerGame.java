@@ -14,35 +14,39 @@ import java.util.ResourceBundle;
 public class ControllerGame implements Initializable {
 
     @FXML
+    private Label selfLabel;
+    @FXML
+    private Label turnLabel;
+    @FXML
+    private Label enemyLabel;
+    @FXML
     private MenuItem exit;
-
     @FXML
     private Button ff;
-
     @FXML
     private VBox enemyBoard;
-
-    @FXML
-    private VBox menuBar;
-
     @FXML
     private VBox myBoard;
-
-    @FXML
-    private Label turn;
 
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
     /**
      * Initialize Game Screen items(Player Board, Enemy Board)
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
         guiPlayer.createEnemyBoard(enemyBoard);
+        selfLabel.setText(guiPlayer.getUsername());
+        enemyLabel.setText("Enemy Name");
+    }
 
+    public void setTurnLabel(boolean turn){
+        if(turn){
+            turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
+        } else {
+            turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
+        }
     }
 
     /**

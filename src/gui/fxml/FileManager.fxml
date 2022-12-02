@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerFileManager">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerFileManager">
    <children>
-      <HBox layoutX="732.0" layoutY="220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="732.0" layoutY="220.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
          <children>
-            <HBox maxHeight="620.0" maxWidth="1180.0" minHeight="620.0" minWidth="1180.0" prefHeight="620.0" prefWidth="1180.0">
+            <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox minWidth="300.0" prefWidth="300.0" spacing="50.0">
+                  <VBox minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER_LEFT">
                            <children>
@@ -72,16 +72,16 @@
                         <Insets />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="CENTER" maxWidth="630.0" minWidth="630.0" prefWidth="630.0">
+                  <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="userInput" alignment="CENTER" spacing="50.0" visible="false">
+                        <VBox fx:id="userInput" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" visible="false">
                            <children>
-                              <TextField fx:id="nameInput" promptText="Set Username">
+                              <TextField fx:id="nameInput" minHeight="-Infinity" minWidth="-Infinity" promptText="Set Username">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </TextField>
-                              <Button fx:id="create" minHeight="40.0" minWidth="150.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Create">
+                              <Button fx:id="create" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Create">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -94,18 +94,15 @@
                               <Insets />
                            </VBox.margin>
                            <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                              <Insets left="50.0" right="50.0" />
                            </padding>
                         </VBox>
                      </children>
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
-                     <padding>
-                        <Insets left="100.0" right="100.0" />
-                     </padding>
                   </VBox>
-                  <VBox alignment="TOP_RIGHT" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="TOP_RIGHT" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                      <children>
                         <Button maxWidth="0.0" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onReturn" prefHeight="50.0" prefWidth="200.0" text="Return">
                            <font>
@@ -122,7 +119,7 @@
                   </VBox>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                  <Insets />
                </HBox.margin>
             </HBox>
          </children>

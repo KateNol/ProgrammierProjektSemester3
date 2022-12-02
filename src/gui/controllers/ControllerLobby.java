@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import logic.Alignment;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ControllerLobby implements Initializable {
@@ -22,6 +24,8 @@ public class ControllerLobby implements Initializable {
     private VBox vboxLeft;
     @FXML
     private Button startGame;
+    @FXML
+    private Label failedshipPlacedLabel;
 
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
@@ -35,7 +39,7 @@ public class ControllerLobby implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startGame.setDisable(true);
-        guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame);
+        guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame, failedshipPlacedLabel);
     }
 
     /**

@@ -3,6 +3,7 @@ package gui;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
@@ -91,9 +92,9 @@ public class GUIPlayer extends NetworkPlayer {
      * @param boardPosition   Position on Screen
      * @param harbourPosition Position on Screen
      */
-    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button) {
+    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button, Label failLabel) {
         this.startButton = startButton;
-        this.guiBoard = new GuiBoard(tileSize, false);
+        this.guiBoard = new GuiBoard(tileSize, false, failLabel);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
         this.startButton = startButton;
         guiBoard.initializeBoard(boardPosition);

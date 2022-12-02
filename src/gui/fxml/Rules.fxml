@@ -9,20 +9,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerRules">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerRules">
    <children>
-      <HBox layoutX="751.0" layoutY="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="751.0" layoutY="271.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
          <children>
-            <VBox prefHeight="1080.0" prefWidth="1600.0">
+            <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <HBox minHeight="100.0" prefHeight="100.0">
+                  <HBox maxHeight="100.0" minHeight="-Infinity" VBox.vgrow="ALWAYS">
                      <children>
                         <Label text="Rules">
                            <font>
                               <Font size="48.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
                      </children>
@@ -104,7 +104,7 @@
                               </Label>
                            </children>
                            <StackPane.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </StackPane.margin>
                         </VBox>
                         <VBox fx:id="ingame" spacing="10.0" visible="false">
@@ -157,7 +157,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Er antwortet mit „Wasser” (falls kein Schiff getroffen wurde), „Treffer” oder „Versenkt” (falls alle Kästchen des Schiffs getroffen sind).Der">
+                              <Label text="Er antwortet mit „Wasser” (falls kein Schiff getroffen wurde), „Treffer” oder „Versenkt” ">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -165,7 +165,12 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Spieler markiert sich die Koordinate ebenfalls im Spielfeld „Eigene Schiffe”, um zu verfolgen, obbzw. wann seine Schiffe versenkt sind.">
+                              <Label text="(falls alle Kästchen des Schiffs getroffen sind). Der Spieler markiert sich die Koordinate ebenfalls im">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text=" Spielfeld „Eigene Schiffe”, um zu verfolgen, obbzw. wann seine Schiffe versenkt sind.">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -199,17 +204,17 @@
                               </Label>
                            </children>
                            <StackPane.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </StackPane.margin>
                         </VBox>
                      </children>
                   </StackPane>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="50.0" top="50.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" minWidth="300.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="TOP_RIGHT" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onReturn" prefHeight="50.0" prefWidth="200.0" text="Return">
                      <VBox.margin>
@@ -219,7 +224,7 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <VBox alignment="CENTER" minHeight="520.0" prefHeight="520.0" spacing="5.0">
+                  <VBox alignment="CENTER" minHeight="520.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label text="Schiffe:">
                            <VBox.margin>
@@ -286,7 +291,7 @@
                   </Button>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" top="50.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
          </children>

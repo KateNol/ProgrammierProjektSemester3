@@ -18,7 +18,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" minHeight="40.0" prefHeight="40.0">
                      <children>
-                        <Label fx:id="turn" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" text="Your Turn">
+                        <Label fx:id="turnLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" text="Your Turn">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -36,7 +36,7 @@
                                  <children>
                                     <HBox alignment="CENTER" minWidth="490.0" prefWidth="490.0">
                                        <children>
-                                          <Label text="Your Board">
+                                          <Label fx:id="selfLabel" text="Your Board">
                                              <font>
                                                 <Font size="24.0" />
                                              </font>
@@ -45,7 +45,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER" minWidth="490.0" prefWidth="490.0">
                                        <children>
-                                          <Label text="Enemy Board">
+                                          <Label fx:id="enemyLabel" text="Enemy Board">
                                              <font>
                                                 <Font size="24.0" />
                                              </font>

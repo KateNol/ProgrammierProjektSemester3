@@ -6,12 +6,16 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.*;
 
-public class GuiBoard {
+import java.util.ArrayList;
+import java.util.Random;
 
+public class GuiBoard {
+    private Label failLabel;
     private GridPane grid;
     private int tileSize;
     private int shipPlaced = 0;
@@ -23,6 +27,12 @@ public class GuiBoard {
      * @param tileSize
      * @param isEnemyBoard
      */
+    public GuiBoard(int tileSize, boolean isEnemyBoard, Label failedLabel) {
+        this.failLabel = failedLabel;
+        this.tileSize = tileSize;
+        this.isEnemyBoard = isEnemyBoard;
+    }
+
     public GuiBoard(int tileSize, boolean isEnemyBoard) {
         this.tileSize = tileSize;
         this.isEnemyBoard = isEnemyBoard;
@@ -77,6 +87,7 @@ public class GuiBoard {
         node.setOnMouseClicked(e -> {
             if(e.getSource() instanceof TileWater){
                 if (shipPlaced == guiPlayer.getShips().size()) {
+                    //send ship placed but not start game clicked
                     node.setDisable(true);
                 } else {
                     TileWater tileWater = (TileWater) e.getSource();
@@ -90,6 +101,15 @@ public class GuiBoard {
                         if (shipPlaced == guiPlayer.getShips().size()) {
                             guiPlayer.confirmShipsPlaced(true);
                         }
+                    } else {
+                        ArrayList<String> failPrompt = new ArrayList<>();
+                        failPrompt.add("Failed Placing Ships");
+                        failPrompt.add("You suck at placing Ship's");
+                        failPrompt.add("Are you serious?");
+                        failPrompt.add("You are still failing");
+                        failPrompt.add("What is wrong with you?");
+                        Random rand = new Random();
+                        failLabel.setText(failPrompt.get(rand.nextInt(failPrompt.size()) - 1));
                     }
                 }
             }

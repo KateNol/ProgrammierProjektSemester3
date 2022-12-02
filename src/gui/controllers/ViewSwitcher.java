@@ -3,6 +3,7 @@ package gui.controllers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +14,18 @@ public class ViewSwitcher {
     private static Map<View, Parent> cache = new HashMap<>();
     private static Scene scene;
 
+    private static Stage stage;
+
     /**
      * Set scene
      * @param scene
      */
     public static void setScene(Scene scene){
         ViewSwitcher.scene = scene;
+    }
+
+    public static void setStage(Stage stage){
+        ViewSwitcher.stage = stage;
     }
 
     /**
@@ -58,5 +65,9 @@ public class ViewSwitcher {
      */
     public static Scene getScene() {
         return scene;
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 }
