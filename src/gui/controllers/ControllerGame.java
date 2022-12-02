@@ -6,13 +6,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ControllerGame implements Initializable {
 
+
+    @FXML
+    private HBox background;
     @FXML
     private Label selfLabel;
     @FXML
@@ -35,6 +39,11 @@ public class ControllerGame implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/game.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,backgroundSize);
+        background.setBackground(new Background(backgroundImage));
+
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
         guiPlayer.createEnemyBoard(enemyBoard);
         selfLabel.setText(guiPlayer.getUsername());

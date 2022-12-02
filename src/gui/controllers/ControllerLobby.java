@@ -6,9 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import logic.Alignment;
 
@@ -19,6 +18,8 @@ import java.util.ResourceBundle;
 
 public class ControllerLobby implements Initializable {
 
+    @FXML
+    private HBox background;
     @FXML
     private Button alignment;
     @FXML
@@ -41,6 +42,11 @@ public class ControllerLobby implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/setShip.jfif")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,backgroundSize);
+        background.setBackground(new Background(backgroundImage));
+
         startGame.setDisable(true);
         guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame, failedshipPlacedLabel);
     }

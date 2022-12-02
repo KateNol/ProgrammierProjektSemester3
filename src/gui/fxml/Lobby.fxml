@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,9 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancherPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerLobby">
+<AnchorPane fx:id="ancherPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerLobby">
    <children>
-      <HBox layoutX="656.0" layoutY="337.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <HBox fx:id="background" layoutX="656.0" layoutY="337.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox fx:id="vboxLeft" maxWidth="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                <children>
@@ -25,11 +26,11 @@
                </children></VBox>
             <VBox fx:id="vBoxMiddle" alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0">
+                  <HBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0">
                      <children>
                         <Button fx:id="alignment" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setMyAlignment" prefHeight="40.0" prefWidth="180.0" text="Horizontal_Right">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="Rockwell" size="16.0" />
                            </font>
                         </Button>
                      </children>
@@ -39,24 +40,27 @@
                <children>
                   <HBox alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onBack" prefHeight="50.0" prefWidth="200.0" text="Back">
+                        <Button mnemonicParsing="false" onAction="#onBack" prefHeight="50.0" prefWidth="200.0" text="Back">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="24.0" />
                            </font>
                         </Button>
                      </children>
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button fx:id="startGame" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#onStartGame" prefHeight="50.0" prefWidth="200.0" text="Start Game">
+                        <Button fx:id="startGame" mnemonicParsing="false" onAction="#onStartGame" prefHeight="50.0" prefWidth="200.0" text="Start Game">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="24.0" />
                            </font>
                         </Button>
                      </children>
                   </HBox>
                </children></VBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>

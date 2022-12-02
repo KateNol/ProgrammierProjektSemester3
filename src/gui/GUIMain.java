@@ -53,7 +53,7 @@ public class GUIMain extends Application  {
         stage.setMaxWidth(1920);
         stage.setMaxHeight(1080);
 
-        AudioPlayer.playIntro();
+        //AudioPlayer.playIntro();
         //stage.setResizable(false);
         //stage.setFullScreen(true);
 

@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
    <children>
-      <HBox AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <HBox fx:id="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                <children>
@@ -76,19 +76,22 @@
                       <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
                     </items>
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Rockwell" size="18.0" />
                      </font>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </MenuButton>
-                  <Button fx:id="ff" minHeight="40.0" minWidth="150.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Surrender">
+                  <Button fx:id="ff" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Surrender">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Rockwell" size="18.0" />
                      </font>
                   </Button>
                </children></VBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>

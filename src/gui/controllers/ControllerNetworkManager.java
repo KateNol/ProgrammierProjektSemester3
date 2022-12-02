@@ -8,7 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import logic.Logic;
 import network.ServerMode;
 import network.debug.Driver;
@@ -26,6 +27,8 @@ import static network.internal.Util.defaultPort;
  */
 public class ControllerNetworkManager implements Initializable {
 
+    @FXML
+    private HBox background;
     @FXML
     private VBox multiplayerConnectTextfield;
     @FXML
@@ -45,6 +48,11 @@ public class ControllerNetworkManager implements Initializable {
     private String host = "host";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/multiplayerImg.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,backgroundSize);
+        background.setBackground(new Background(backgroundImage));
+
         comboBoxServerMode.getItems().addAll("client", "host");
         comboBoxServerMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
