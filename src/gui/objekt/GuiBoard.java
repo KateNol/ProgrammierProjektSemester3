@@ -109,7 +109,7 @@ public class GuiBoard {
                         failPrompt.add("You are still failing");
                         failPrompt.add("What is wrong with you?");
                         Random rand = new Random();
-                        failLabel.setText(failPrompt.get(rand.nextInt(failPrompt.size()) - 1));
+                        failLabel.setText(failPrompt.get(rand.nextInt(failPrompt.size())));
                     }
                 }
             }

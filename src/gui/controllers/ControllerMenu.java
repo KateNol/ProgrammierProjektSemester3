@@ -2,6 +2,8 @@ package gui.controllers;
 
 import javafx.application.Platform;
 
+import java.io.IOException;
+
 /**
  * Controller for Menu Screen
  */
@@ -11,6 +13,13 @@ public class ControllerMenu{
      * Switch to Screen Load Game File Manager
      */
     public void onStartGame(){
+        if(!FileController.checkIfFolderExists()){
+            try {
+                FileController.createFolder();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         FileController.checkIfFileExists();
         ViewSwitcher.switchTo(View.FileManager);
     }

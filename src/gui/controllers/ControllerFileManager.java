@@ -11,7 +11,6 @@ import javafx.scene.layout.VBox;
 import logic.PlayerConfig;
 import logic.Util;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
