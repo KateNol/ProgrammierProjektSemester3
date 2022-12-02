@@ -39,6 +39,10 @@ public class ControllerGame implements Initializable {
         guiPlayer.createEnemyBoard(enemyBoard);
         selfLabel.setText(guiPlayer.getUsername());
         enemyLabel.setText("Enemy Name");
+        if(guiPlayer.getWeBegin()){
+            turnLabel.setText("Our Turn");
+        }
+
     }
 
     public void setTurnLabel(boolean turn){
