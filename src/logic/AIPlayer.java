@@ -72,10 +72,10 @@ public class AIPlayer extends NetworkPlayer {
         printBothMaps();
         Random random = new Random();
 
-        Coordinate shot = new Coordinate(random.nextInt(0, globalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, globalConfig.getMapSize(getNegotiatedSemester())));
+        Coordinate shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
 
         while (previousShots.contains(shot)) {
-            shot = new Coordinate(random.nextInt(0, globalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, globalConfig.getMapSize(getNegotiatedSemester())));
+            shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
         }
 
         previousShots.add(shot);

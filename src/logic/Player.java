@@ -17,8 +17,6 @@ public abstract class Player extends Observable {
     private int mapSize;
     private boolean globalConfigLoaded;
 
-    protected GlobalConfig globalConfig = new GlobalConfig();
-
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
@@ -39,9 +37,9 @@ public abstract class Player extends Observable {
      * this method loads them and initializes the maps
      */
     public void loadGlobalConfig() {
-        mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
+        mapSize = GlobalConfig.getMapSize(1 /*getCommonSemester()*/);
         //ships = new ArrayList<Ship>(shipSizes.length);
-        ships = globalConfig.getShips(1 /*getCommomSemester()*/);
+        ships = GlobalConfig.getShips(1 /*getCommomSemester()*/);
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
@@ -357,7 +355,7 @@ public abstract class Player extends Observable {
 
     //FIXME delete if not needed anymore
     public void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
+        int mapSize = GlobalConfig.getMapSize(getNegotiatedSemester());
         System.out.print("My Map:");
         // right padding
         for (int i = 0; i < mapSize * 2 - "My Map:".length(); i++) {

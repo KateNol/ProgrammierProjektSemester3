@@ -14,6 +14,7 @@ public class FileController {
 
     private static final File folderPath = new File("playerConfig/");
     private static ArrayList<File> listOfFiles = new ArrayList<>();
+
     private static boolean fileOne = false;
     private static boolean fileTwo = false;
     private static boolean fileThree = false;

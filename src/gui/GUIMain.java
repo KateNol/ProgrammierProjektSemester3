@@ -16,6 +16,9 @@ import java.io.IOException;
 /**
  * main gui entry point
  * also creates the logic/player instances
+ *
+ * to use javafx, add jvm args
+ * --module-path lib/lib --add-modules javafx.controls,javafx.fxml
  */
 public class GUIMain extends Application  {
     public static void main(String[] args) {
