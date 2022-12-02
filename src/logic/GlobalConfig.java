@@ -47,8 +47,6 @@ public class GlobalConfig {
         for (int size : getShipSizes(commonSemester)) {
             shipHarbour.add(new Ship(size));
         }
-
-        log_debug("getShips() " + commonSemester + " -> " + (shipHarbour));
         return shipHarbour;
     }
 }
