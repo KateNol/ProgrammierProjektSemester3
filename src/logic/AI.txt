@@ -1,0 +1,6 @@
+Smith, Agent of the System::6
+Quorra, the last ISO::5
+CLU, Ruler of the Grid::4
+Poe, Raven Hotel Manager::3
+Roy Batty, Replicant::2
+C-3PO, Protocol Droid::1

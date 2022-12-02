@@ -3,11 +3,8 @@ package logic;
 import network.NetworkPlayer;
 import network.ServerMode;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 import static logic.Util.log_debug;
 
@@ -17,6 +14,28 @@ public class AIPlayer extends NetworkPlayer {
 
     public AIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+    }
+
+    public AIPlayer(int semester) {
+        super(new PlayerConfig("ai player"));
+        try {
+            HashMap<Integer, String> semesterToName = new HashMap<>();
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/logic/AI.txt"));
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                String[] split = line.split("::");
+                String name = split[0];
+                int readSemester = Integer.parseInt(split[1]);
+                semesterToName.put(readSemester, name);
+                line = bufferedReader.readLine();
+            }
+
+            setUsername(semesterToName.get(semester));
+            setMaxSemester(semester);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -64,17 +64,20 @@ public abstract class Player extends Observable {
      */
     public abstract int getNegotiatedSemester();
 
-    /**
-     * gets our username
-     * implemented by NetworkPlayer
-     * @return
-     */
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public int getMaxSemester() {
         return maxSemester;
+    }
+
+    public void setMaxSemester(int semester) {
+        this.maxSemester = semester;
     }
 
     public ServerMode getServerMode() {

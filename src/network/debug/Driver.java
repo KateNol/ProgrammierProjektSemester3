@@ -78,13 +78,12 @@ public final class Driver {
 
         NetworkPlayer player = null;
         // TODO this info will come from the gui later on
-        String username = serverMode == ServerMode.SERVER ? "Server" : "Client";
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(new PlayerConfig(username));
+            player = new ConsolePlayer(new PlayerConfig("Console Player"));
             player.establishConnection(serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(new PlayerConfig(username));
+            player = new AIPlayer(3);
             player.establishConnection(serverMode, addr);
         }
         assert player != null;
