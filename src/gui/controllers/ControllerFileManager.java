@@ -161,13 +161,13 @@ public class ControllerFileManager implements Initializable {
         create.setOnMouseClicked(mouseEvent -> {
             switch (i){
                 case 0:
-                    fileOne.setText(nameInput.getText());
+                    fileOne.setText(nameInput.getText() + " (1)");
                     break;
                 case 1:
-                    fileTwo.setText(nameInput.getText());
+                    fileTwo.setText(nameInput.getText() + " (1)");
                     break;
                 case 2:
-                    fileThree.setText(nameInput.getText());
+                    fileThree.setText(nameInput.getText() + " (1)");
                     break;
             }
             playerConfig = new PlayerConfig(nameInput.getText());
