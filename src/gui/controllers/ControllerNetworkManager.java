@@ -102,7 +102,7 @@ public class ControllerNetworkManager implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-        enemyThread.setDaemon(false);
+        enemyThread.setDaemon(true);
         enemyThread.setName("Enemy Thread");
         enemyThread.start();
 
