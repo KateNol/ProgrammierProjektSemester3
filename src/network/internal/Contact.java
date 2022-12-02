@@ -116,7 +116,7 @@ public final class Contact extends Observable {
 
     private void init_communication() {
         Thread comm = new Thread(this::receiveLoop);
-        comm.setName("Contact comm Thread");
+        comm.setName("Contact");
         comm.setDaemon(true);
         comm.start();
 
