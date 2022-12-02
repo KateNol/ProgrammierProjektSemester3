@@ -8,7 +8,8 @@ import java.util.Collections;
 
 public class FileController {
 
-    private static final File folder = new File("playerConfig/");
+    private static final String folderName = "playerConfig/";
+    private static final File folder = new File(folderName);
     private static ArrayList<File> listOfFiles = new ArrayList<>();
 
     private static boolean fileOne = false;
@@ -19,6 +20,8 @@ public class FileController {
      * Checks if configFile exists an if save in ArrayList
      */
     public static void checkIfFileExists(){
+        new File(folderName).mkdirs();
+
         File[] loadedFiles = folder.listFiles();
         for (int i = 0; i < loadedFiles.length; i++) {
             listOfFiles.add(loadedFiles[i]);
