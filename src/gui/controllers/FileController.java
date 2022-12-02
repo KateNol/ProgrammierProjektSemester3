@@ -12,7 +12,8 @@ import java.util.Collections;
 
 public class FileController {
 
-    private static final File folderPath = new File("playerConfig/");
+    private static final File folder = new File("playerConfig/");
+    private static final File folderPath = new File(folder.getPath());
     private static ArrayList<File> listOfFiles = new ArrayList<>();
 
     private static boolean fileOne = false;
