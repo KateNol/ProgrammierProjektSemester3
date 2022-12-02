@@ -82,7 +82,7 @@ public class ControllerNetworkManager {
      */
     public void onSinglePlayer() throws IOException {
         Thread enemyThread = new Thread(() -> {
-            String[] new_args = new String[]{"player=ai", "server=client", "network=offline", "semester=6"};
+            String[] new_args = new String[]{"player=ai", "server=client", "network=offline"};
             try {
                 Driver.main(new_args);
             } catch (IOException e) {

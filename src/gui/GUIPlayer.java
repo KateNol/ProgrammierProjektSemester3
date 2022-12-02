@@ -45,8 +45,7 @@ public class GUIPlayer extends NetworkPlayer {
     //------------------------------------------------------
     @Override
     protected void setShips() {
-        while (getShips() == null || getShips().size() < globalConfig.getShips(getNegotiatedSemester()).size() || !shipsPlaced)
-            ;
+        while (getShips() == null || getShips().size() < globalConfig.getShips(1).size() || !shipsPlaced);
         startButton.setDisable(false);
     }
 
