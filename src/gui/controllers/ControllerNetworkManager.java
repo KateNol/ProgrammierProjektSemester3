@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static network.internal.Util.defaultAddress;
+import static network.internal.Util.defaultPort;
+
 /**
  * Controller for Network Manager
  */
@@ -59,9 +62,15 @@ public class ControllerNetworkManager implements Initializable {
             address = addressTextfield.getText();
             port =  Integer.parseInt(portTextfield.getText());
             return true;
-        } else if(serverMode.equals(ServerMode.SERVER)){
-            address = addressTextfield.getText();
-            port =  Integer.parseInt(portTextfield.getText());
+        } else if(serverMode.equals(ServerMode.SERVER)) {
+            if (addressTextfield.getText().isEmpty())
+                address = defaultAddress;
+            else
+                address = addressTextfield.getText();
+            if (portTextfield.getText().isEmpty())
+                port = defaultPort;
+            else
+                port = Integer.parseInt(portTextfield.getText());
             return true;
         }
         return false;
