@@ -23,6 +23,7 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
+        log_debug("establishing connection with " + serverMode);
         setServerMode(serverMode);
         switch (serverMode) {
             case SERVER -> {

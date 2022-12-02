@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.Util.log_debug;
+import static network.internal.Util.defaultAddress;
+import static network.internal.Util.defaultPort;
+
 /**
  * Controller for Network Manager
  */
@@ -55,25 +59,35 @@ public class ControllerNetworkManager implements Initializable {
     }
 
     public boolean setConnection(){
+        log_debug("set connection");
         if(serverMode.equals(ServerMode.CLIENT)){
             address = addressTextfield.getText();
             port =  Integer.parseInt(portTextfield.getText());
             return true;
-        } else if(serverMode.equals(ServerMode.SERVER)){
-            address = addressTextfield.getText();
-            port =  Integer.parseInt(portTextfield.getText());
+        } else if(serverMode.equals(ServerMode.SERVER)) {
+            if (addressTextfield.getText().isEmpty())
+                address = defaultAddress;
+            else
+                address = addressTextfield.getText();
+            if (portTextfield.getText().isEmpty())
+                port = defaultPort;
+            else
+                port = Integer.parseInt(portTextfield.getText());
             return true;
         }
         return false;
     }
 
     public void onConnect() throws IOException {
+        log_debug("on connect");
         if(setConnection()){
             multiplayerConnectTextfield.setVisible(false);
             GUIPlayer.getInstance().establishConnection(serverMode, address, port);
             new Logic(GUIPlayer.getInstance());
+            while (!GUIPlayer.getInstance().getIsConnectionEstablished()) ;
             ViewSwitcher.switchTo(View.Lobby);
         } else {
+            System.err.println("Could not establish connection!	Try again");
             connectionFaild.setText("Could not establish connection!\tTry again!");
         }
     }
@@ -95,7 +109,7 @@ public class ControllerNetworkManager implements Initializable {
      */
     public void onSinglePlayer() throws IOException {
         Thread enemyThread = new Thread(() -> {
-            String[] new_args = new String[]{"player=ai", "server=client", "network=offline"};
+            String[] new_args = new String[]{"player=ai", "server=client", "network=offline", "semester=6"};
             try {
                 Driver.main(new_args);
             } catch (IOException e) {
@@ -108,6 +122,7 @@ public class ControllerNetworkManager implements Initializable {
 
 
         GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
+        GUIPlayer.getInstance().loadGlobalConfig();
         new Logic(GUIPlayer.getInstance());
         if(multiplayerConnectTextfield.isVisible()){
             multiplayerConnectTextfield.setVisible(false);
