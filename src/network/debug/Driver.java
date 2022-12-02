@@ -44,8 +44,6 @@ public final class Driver {
         ServerMode serverMode = null;
         String addr = null;
 
-        int semester = 1;
-
         for (String arg : args) {
             arg = arg.toLowerCase();
             if (arg.startsWith("player=")) {
@@ -75,8 +73,6 @@ public final class Driver {
                 } else if (arg.endsWith("client")) {
                     serverMode = ServerMode.CLIENT;
                 }
-            } else if (arg.startsWith("semester=")) {
-                semester = Integer.parseInt(arg.substring("semester=".length()));
             }
         }
 
@@ -84,10 +80,10 @@ public final class Driver {
         // TODO this info will come from the gui later on
 
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(semester);
+            player = new ConsolePlayer(new PlayerConfig("Console Player"));
             player.establishConnection(serverMode, addr);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(semester);
+            player = new AIPlayer(3);
             player.establishConnection(serverMode, addr);
         }
         assert player != null;
@@ -104,7 +100,7 @@ public final class Driver {
                 } else {
                     enemy = "ai";
                 }
-                String[] new_args = new String[]{"player=" + enemy, "server=client", "network=offline", "semester=6"};
+                String[] new_args = new String[]{"player=" + enemy, "server=client", "network=offline"};
                 try {
                     main(new_args);
                 } catch (IOException e) {

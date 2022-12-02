@@ -521,7 +521,6 @@ public final class Contact extends Observable {
         synchronized (semesterLock) {
             if (!semesterNegotiated) {
                 log_stderr("error, trying to get negotiated semester before negotiation took place");
-                return -1;
             }
         }
         return semester;
