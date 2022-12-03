@@ -126,27 +126,17 @@ public class ControllerNetworkManager implements Initializable {
         loadBox.setVisible(true);
 
         if(setConnectionInput()){
-            Task<Integer> task = new Task<Integer>() {
-                @Override
-                protected Integer call() throws Exception {
-
-                    while (GUIPlayer.getInstance().getIsConnectionEstablished()){
-                        GUIPlayer.getInstance().establishConnection(serverMode, address, port);
-                    }
-                    if(true){
-                        new Logic(GUIPlayer.getInstance());
-                        ViewSwitcher.switchTo(View.Lobby);
-                    } else {
-                        System.err.println("Could not establish connection!	Try again");
-                        connectionFailed.setText("Could not establish connection!\tTry again!");
-                    }
-
-                    return 1;
-                }
-            };
-
-
+            multiplayerConnectTextfield.setVisible(false);
+            GUIPlayer.getInstance().establishConnection(serverMode, address, port);
+            new Logic(GUIPlayer.getInstance());
+            while (!GUIPlayer.getInstance().getIsConnectionEstablished()) ;
+            ViewSwitcher.switchTo(View.Lobby);
+        } else {
+            System.err.println("Could not establish connection!	Try again");
+            connectionFailed.setText("Could not establish connection!\tTry again!");
         }
+
+
     }
 
     /**
