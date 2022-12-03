@@ -14,6 +14,7 @@ public class AudioPlayer {
     public static void playAudio(Audio audio){
         Media sound = new Media(new File(audio.getPathName()).toURI().toString());
         MediaPlayer player = new MediaPlayer(sound);
+        player.setVolume(sfxVolume);
         player.play();
     }
 

@@ -54,25 +54,17 @@ public class ControllerSettings implements Initializable {
         resolution.getItems().addAll(hdMode);
         resolution.setPromptText("HD Mode");
 
-
         String [] screenMode = {full, window};
         windowMode.getItems().addAll(screenMode);
         windowMode.setPromptText("Choose Screen Mode");
 
-        resolution.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
-                if(s2.equals(fullHd)){
-                    Settings.setFullHDScreen();
-                } else if (s2.equals(hd)) {
-                    Settings.setHDScreen();
-
-                }
-
+        resolution.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
+            if(s2.equals(fullHd)){
+                Settings.setFullHDScreen();
+            } else if (s2.equals(hd)) {
+                Settings.setHDScreen();
             }
         });
-
-
 
         windowMode.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
             if(s2.equals(full)){
@@ -108,6 +100,7 @@ public class ControllerSettings implements Initializable {
      * Return to Scene Menu
      */
     public void onReturn(){
+        AudioPlayer.playAudio(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 }
