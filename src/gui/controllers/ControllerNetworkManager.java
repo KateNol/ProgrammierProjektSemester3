@@ -129,19 +129,23 @@ public class ControllerNetworkManager implements Initializable {
             Task<Integer> task = new Task<Integer>() {
                 @Override
                 protected Integer call() throws Exception {
-                    GUIPlayer.getInstance().establishConnection(serverMode, address, port);
-                    while (GUIPlayer.getInstance().getIsConnectionEstablished());
+
+                    while (GUIPlayer.getInstance().getIsConnectionEstablished()){
+                        GUIPlayer.getInstance().establishConnection(serverMode, address, port);
+                    }
+                    if(true){
+                        new Logic(GUIPlayer.getInstance());
+                        ViewSwitcher.switchTo(View.Lobby);
+                    } else {
+                        System.err.println("Could not establish connection!	Try again");
+                        connectionFailed.setText("Could not establish connection!\tTry again!");
+                    }
+
                     return 1;
                 }
             };
 
-            if(task.isDone()){
-                new Logic(GUIPlayer.getInstance());
-                ViewSwitcher.switchTo(View.Lobby);
-            } else {
-                System.err.println("Could not establish connection!	Try again");
-                connectionFailed.setText("Could not establish connection!\tTry again!");
-            }
+
         }
     }
 
