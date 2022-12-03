@@ -17,9 +17,13 @@ import java.util.ResourceBundle;
 public class ControllerSettings implements Initializable {
 
 
-    private String full = "1920 x 1080";
+    private final String fullHd = "1920 x 1080";
 
-    private String norm = " 1280 x 720";
+    private final String hd = "1280 x 720";
+
+    private final String full = "Full Screen";
+
+    private final String window = "Window Screen";
 
     @FXML
     private Label labelMaster;
@@ -48,16 +52,36 @@ public class ControllerSettings implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String [] screenMode = {"full screen", "normal screen"};
-        resolution.getItems().addAll(screenMode);
+        String [] hdMode = {fullHd, hd};
+        resolution.getItems().addAll(hdMode);
+        resolution.setPromptText("HD Mode");
+
+
+        String [] screenMode = {full, window};
+        windowMode.getItems().addAll(screenMode);
         windowMode.setPromptText("Choose Screen Mode");
+
+        resolution.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
+                if(s2.equals(fullHd)){
+                    Settings.setFullHDScreen();
+                } else if (s2.equals(hd)) {
+                    Settings.setHDScreen();
+
+                }
+
+            }
+        });
+
+
 
         windowMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
                 if(s2.equals(full)){
-                    Settings.setFullHDScreen();
-                } else if (s2.equals(norm)) {
+                    ViewSwitcher.getStage().setFullScreen(true);
+                } else if (s2.equals(window)) {
                     Settings.setHDScreen();
 
                 }
