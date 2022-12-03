@@ -29,6 +29,14 @@ public class ViewSwitcher {
     }
 
     /**
+     * set application stage
+     * @param stage application stage
+     */
+    public static void setStage(Stage stage){
+        ViewSwitcher.stage = stage;
+    }
+
+    /**
      * Manage switching between scenes
      * @param view enum from View
      */
