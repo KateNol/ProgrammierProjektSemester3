@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static network.internal.Util.log_debug;
 import static network.internal.Util.log_stdio;
 
 
@@ -14,6 +15,8 @@ import static network.internal.Util.log_stdio;
  *
  */
 public final class Server {
+
+    private static Thread connectionThread;
 
     // disable instantiation of this class
     private Server() {
@@ -33,7 +36,7 @@ public final class Server {
     public static Contact getContact(int port, String username, int semester) throws IOException {
         Contact contact = new Contact(null, ServerMode.SERVER, username, semester);
 
-        new Thread(() -> {
+        connectionThread = new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 log_stdio("Server starting to listen on port " + port);
                 Socket clientSocket = serverSocket.accept();
@@ -43,7 +46,16 @@ public final class Server {
             } catch (IOException ignored) {
 
             }
-        }).start();
+        });
+        connectionThread.start();
         return contact;
+    }
+
+    public static void abort() {
+        if (connectionThread != null) {
+            log_debug("interrupting connection thread");
+            connectionThread.interrupt();
+            connectionThread = null;
+        }
     }
 }

@@ -15,6 +15,9 @@ import static network.internal.Util.log_stdio;
  * assumes a server is present, fails otherwise
  */
 public final class Client {
+
+    private static Thread connectionThread;
+
     private Client() {
     }
 
@@ -27,7 +30,7 @@ public final class Client {
         Contact contact = new Contact(null, ServerMode.CLIENT, username, semester);
 
         log_debug("client trying to connect to " + address + ":" + port);
-        new Thread(() -> {
+        connectionThread = new Thread(() -> {
             Socket socket = null;
             boolean success;
 
@@ -42,8 +45,16 @@ public final class Client {
                 }
             } while (!success);
 
-        }).start();
-
+        });
+        connectionThread.start();
         return contact;
+    }
+
+    public static void abort() {
+        if (connectionThread != null) {
+            log_debug("interrupting connection thread");
+            connectionThread.interrupt();
+            connectionThread = null;
+        }
     }
 }

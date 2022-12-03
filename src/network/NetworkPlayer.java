@@ -51,6 +51,17 @@ public abstract class NetworkPlayer extends Player {
         establishConnection(ServerMode.SERVER, defaultAddress, defaultPort);
     }
 
+    public void abortEstablishConnection() {
+        switch (getServerMode()) {
+            case SERVER -> {
+                Server.abort();
+            }
+            case CLIENT -> {
+                Client.abort();
+            }
+        }
+    }
+
     public void sendMessage(String msg) {
         contact.sendRawMessage(msg);
     }
