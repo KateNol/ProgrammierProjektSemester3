@@ -3,14 +3,18 @@ package gui.controllers;
 import gui.GUIPlayer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
 import logic.Logic;
+
 import network.ServerMode;
 import network.debug.Driver;
 
@@ -27,8 +31,11 @@ import static network.internal.Util.defaultPort;
  */
 public class ControllerNetworkManager implements Initializable {
 
+    //Background
     @FXML
-    private HBox background;
+    private StackPane background;
+
+    //Multiplayer Connection Textfield
     @FXML
     private VBox multiplayerConnectTextfield;
     @FXML
@@ -38,22 +45,41 @@ public class ControllerNetworkManager implements Initializable {
     @FXML
     private ComboBox<String> comboBoxServerMode;
     @FXML
-    private Label connectionFaild;
+    private Label connectionFailed;
 
-    private boolean connectionEstablished = false;
+    //Information's to connect to Server
     private ServerMode serverMode = ServerMode.CLIENT;
     private String address;
     private int port;
-    private String client = "client";
-    private String host = "host";
+
+    //ServerMode comparison
+    private final String client = "CLIENT";
+    private final String host = "HOST";
+
+    //Loading to Join Lobby
+    @FXML
+    private VBox loadBox;
+    @FXML
+    private HBox multiplayerScene;
+    @FXML
+    private ImageView loadImage;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/multiplayerImg.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,backgroundSize);
-        background.setBackground(new Background(backgroundImage));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/multiplayerImg.jpg"));
+        setCombobox();
+    }
 
-        comboBoxServerMode.getItems().addAll("client", "host");
+    public void onCancelConnection(){
+        multiplayerScene.setMouseTransparent(false);
+        loadBox.setVisible(false);
+    }
+
+    /**
+     * Set options for combobox to choose between client or host
+     */
+    public void setCombobox(){
+        comboBoxServerMode.getItems().addAll(client, host);
         comboBoxServerMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
@@ -66,21 +92,23 @@ public class ControllerNetworkManager implements Initializable {
         });
     }
 
-    public boolean setConnection(){
+    public boolean setConnectionInput(){
         log_debug("set connection");
         if(serverMode.equals(ServerMode.CLIENT)){
             address = addressTextfield.getText();
             port =  Integer.parseInt(portTextfield.getText());
             return true;
         } else if(serverMode.equals(ServerMode.SERVER)) {
-            if (addressTextfield.getText().isEmpty())
+            if (addressTextfield.getText().isEmpty()) {
                 address = defaultAddress;
-            else
+            } else{
                 address = addressTextfield.getText();
-            if (portTextfield.getText().isEmpty())
+            }
+            if (portTextfield.getText().isEmpty()) {
                 port = defaultPort;
-            else
+            } else {
                 port = Integer.parseInt(portTextfield.getText());
+            }
             return true;
         }
         return false;
@@ -88,15 +116,32 @@ public class ControllerNetworkManager implements Initializable {
 
     public void onConnect() throws IOException {
         log_debug("on connect");
-        if(setConnection()){
-            multiplayerConnectTextfield.setVisible(false);
-            GUIPlayer.getInstance().establishConnection(serverMode, address, port);
-            new Logic(GUIPlayer.getInstance());
-            while (!GUIPlayer.getInstance().getIsConnectionEstablished()) ;
-            ViewSwitcher.switchTo(View.Lobby);
-        } else {
-            System.err.println("Could not establish connection!	Try again");
-            connectionFaild.setText("Could not establish connection!\tTry again!");
+        multiplayerConnectTextfield.setVisible(false);
+        multiplayerScene.setMouseTransparent(true);
+        Image image = new Image("file:src/gui/img/load.gif");
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(150);
+        imageView.setFitWidth(150);
+        loadBox.getChildren().add(imageView);
+        loadBox.setVisible(true);
+
+        if(setConnectionInput()){
+            Task<Integer> task = new Task<Integer>() {
+                @Override
+                protected Integer call() throws Exception {
+                    GUIPlayer.getInstance().establishConnection(serverMode, address, port);
+                    while (GUIPlayer.getInstance().getIsConnectionEstablished());
+                    return 1;
+                }
+            };
+
+            if(task.isDone()){
+                new Logic(GUIPlayer.getInstance());
+                ViewSwitcher.switchTo(View.Lobby);
+            } else {
+                System.err.println("Could not establish connection!	Try again");
+                connectionFailed.setText("Could not establish connection!\tTry again!");
+            }
         }
     }
 
@@ -106,9 +151,9 @@ public class ControllerNetworkManager implements Initializable {
     public void onReturn(){
         addressTextfield.clear();
         portTextfield.clear();
-        connectionFaild.setText("");
-        connectionEstablished = false;
+        connectionFailed.setText("");
         multiplayerConnectTextfield.setVisible(false);
+        loadBox.setVisible(false);
         ViewSwitcher.switchTo(View.FileManager);
     }
 
@@ -127,7 +172,6 @@ public class ControllerNetworkManager implements Initializable {
         enemyThread.setDaemon(true);
         enemyThread.setName("Enemy Thread");
         enemyThread.start();
-
 
         GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
         GUIPlayer.getInstance().loadGlobalConfig();
