@@ -134,6 +134,7 @@ public class ControllerNetworkManager implements Initializable {
             new Logic(GUIPlayer.getInstance());
             new Thread(() -> {
                 while (!GUIPlayer.getInstance().getIsConnectionEstablished()) ;
+                log_debug("bin kurz vorm laden der scene");
                 ViewSwitcher.switchTo(View.Lobby);
             }).start();
         } else {
