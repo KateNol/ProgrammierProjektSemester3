@@ -1,6 +1,8 @@
 package gui.controllers;
 
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -54,6 +56,7 @@ public class ControllerSettings implements Initializable {
         resolution.getItems().addAll(hdMode);
         resolution.setPromptText("HD Mode");
 
+
         String [] screenMode = {full, window};
         windowMode.getItems().addAll(screenMode);
         windowMode.setPromptText("Choose Screen Mode");
@@ -65,6 +68,8 @@ public class ControllerSettings implements Initializable {
                 Settings.setHDScreen();
             }
         });
+
+
 
         windowMode.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
             if(s2.equals(full)){
