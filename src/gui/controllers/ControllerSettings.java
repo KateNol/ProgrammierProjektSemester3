@@ -82,7 +82,8 @@ public class ControllerSettings implements Initializable {
                 if(s2.equals(full)){
                     ViewSwitcher.getStage().setFullScreen(true);
                 } else if (s2.equals(window)) {
-                    Settings.setHDScreen();
+                    ViewSwitcher.getStage().setFullScreen(false);
+
 
                 }
 
