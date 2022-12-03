@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 
 public class ControllerFileManager implements Initializable {
 
+    //File Buttons
     @FXML
     private Button fileOne;
     @FXML
@@ -33,12 +34,16 @@ public class ControllerFileManager implements Initializable {
     private Button deleteTwo;
     @FXML
     private Button deleteThree;
+
+    //CreateName
     @FXML
     private TextField nameInput;
     @FXML
     private Button create;
     @FXML
     private VBox userInput;
+
+    //Background
     @FXML
     private HBox background;
 
@@ -55,6 +60,13 @@ public class ControllerFileManager implements Initializable {
         setPicture(deleteTwo);
         setPicture(deleteThree);
 
+        setFileNamesOnButton();
+    }
+
+    /**
+     * Set FileName when Game is restarted and File exists
+     */
+    public void setFileNamesOnButton(){
         List<Integer> fileNumbers = new ArrayList<>();
         if (FileController.isFileOne())
             fileNumbers.add(0);
@@ -250,6 +262,4 @@ public class ControllerFileManager implements Initializable {
             case 2 -> fileThree.setText("New File 3");
         }
     }
-
-
 }

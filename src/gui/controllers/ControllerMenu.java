@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
  */
 public class ControllerMenu implements Initializable {
 
+    //background
     @FXML
     private VBox background;
 
