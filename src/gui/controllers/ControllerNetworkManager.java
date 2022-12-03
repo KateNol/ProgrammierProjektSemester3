@@ -72,6 +72,7 @@ public class ControllerNetworkManager implements Initializable {
     public void onCancelConnection(){
         multiplayerScene.setMouseTransparent(false);
         loadBox.setVisible(false);
+        GUIPlayer.getInstance().abortEstablishConnection();
     }
 
     /**
