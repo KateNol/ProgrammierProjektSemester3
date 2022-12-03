@@ -6,6 +6,7 @@ import network.ServerMode;
 import java.io.IOException;
 import java.net.Socket;
 
+import static network.internal.Util.log_debug;
 import static network.internal.Util.log_stdio;
 
 
@@ -23,20 +24,26 @@ public final class Client {
      * @return IOException if an I/O error occurs when creating the socket.
      */
     public static Contact getContact(String address, int port, String username, int semester) throws IOException {
-        Socket socket = null;
-        boolean success;
+        Contact contact = new Contact(null, ServerMode.CLIENT, username, semester);
 
-        do {
-            success = true;
-            try {
-                socket = new Socket(address, port);
-            } catch (IOException ignored) {
-                success = false;
-            }
-        } while (!success);
+        log_debug("client trying to connect to " + address + ":" + port);
+        new Thread(() -> {
+            Socket socket = null;
+            boolean success;
 
+            do {
+                success = true;
+                try {
+                    socket = new Socket(address, port);
+                    contact.setSocket(socket);
+                    log_stdio("Client successfully connected");
+                } catch (IOException ignored) {
+                    success = false;
+                }
+            } while (!success);
 
-        log_stdio("Client connected on port " + port);
-        return new Contact(socket, ServerMode.CLIENT, username, semester);
+        }).start();
+
+        return contact;
     }
 }
