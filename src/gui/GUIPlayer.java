@@ -3,18 +3,16 @@ package gui;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
-import network.ServerMode;
-
-import java.io.IOException;
 
 import static logic.Util.log_debug;
 
 public class GUIPlayer extends NetworkPlayer {
     private static GUIPlayer instance = null;
-    private int tileSize = 40;
+    private int tileSize;
     private GuiBoard guiBoard;
     private GuiHarbour guiHarbour;
     private GuiBoard guiEnemyBoard;
@@ -28,16 +26,11 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create a GuiPlayer
-     *
-     * @param playerConfig maxSemester & userName
-     * @param globalConfig mapSize & ship Arraylist
-     * @param serverMode
-     * @param address
-     * @param port
-     * @throws IOException
+     * @param playerConfig
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        setTileSize(playerConfig.getMaxSemester());
         instance = this;
     }
 
@@ -53,7 +46,9 @@ public class GUIPlayer extends NetworkPlayer {
     //------------------------------------------------------
     @Override
     protected void setShips() {
-        while (getShips() == null || getShips().size() < globalConfig.getShips(1).size() || !shipsPlaced);
+        if (!getIsConnectionEstablished())
+            System.exit(1);
+        while (getShips() == null || getShips().size() < GlobalConfig.getShips(1).size() || !shipsPlaced) ;
         startButton.setDisable(false);
     }
 
@@ -99,9 +94,9 @@ public class GUIPlayer extends NetworkPlayer {
      * @param boardPosition   Position on Screen
      * @param harbourPosition Position on Screen
      */
-    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button) {
+    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button, Label failLabel) {
         this.startButton = startButton;
-        this.guiBoard = new GuiBoard(tileSize, false);
+        this.guiBoard = new GuiBoard(tileSize, false, failLabel);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
         this.startButton = startButton;
         guiBoard.initializeBoard(boardPosition);
@@ -179,5 +174,16 @@ public class GUIPlayer extends NetworkPlayer {
             lock.notify();
         }
         log_debug("shot lock notify");
+    }
+
+    public void setTileSize(int tileSize) {
+        switch (tileSize){
+            case 1 -> this.tileSize = 29;
+            case 2 -> this.tileSize = 26;
+            case 3 -> this.tileSize = 25;
+            case 4 -> this.tileSize = 24;
+            case 5 -> this.tileSize = 23;
+            case 6 -> this.tileSize = 22;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
@@ -12,96 +12,187 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerSettings">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerSettings">
     <children>
-        <HBox layoutX="441.0" layoutY="194.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox layoutX="441.0" layoutY="194.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
             <children>
-                <VBox prefHeight="1080.0" prefWidth="1600.0">
+                <VBox minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="1600.0">
+                        <HBox maxHeight="100.0" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                             <children>
-                                <Label text="Settings">
+                                <Label minHeight="-Infinity" minWidth="-Infinity" text="Settings">
                                     <font>
-                                        <Font size="48.0" />
+                                        <Font name="Rockwell" size="48.0" />
                                     </font>
                                     <HBox.margin>
-                                        <Insets left="50.0" />
+                                        <Insets />
                                     </HBox.margin>
                                 </Label>
                             </children>
                         </HBox>
-                        <TabPane prefHeight="711.0" prefWidth="1600.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                        <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                             <tabs>
                                 <Tab text="Graphic">
                                     <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="1600.0">
-                                            <children>
-                                                <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="223.0" prefWidth="1550.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
-                                                    <children>
-                                                        <Label text="Resolution">
-                                                            <font>
-                                                                <Font size="24.0" />
-                                                            </font>
-                                                        </Label>
-                                                    </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" layoutX="-7.0" layoutY="287.0" prefHeight="223.0" prefWidth="1550.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-                                                    <children>
-                                                        <Label text="Fullscreen">
-                                                            <font>
-                                                                <Font size="24.0" />
-                                                            </font>
-                                                        </Label>
-                                                        <CheckBox mnemonicParsing="false">
-                                                            <HBox.margin>
-                                                                <Insets left="20.0" />
-                                                            </HBox.margin>
-                                                        </CheckBox>
-                                                    </children>
-                                                </HBox>
-                                            </children>
+                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="250.0">
+                                                   <children>
+                                                      <Label text="Window Mode">
+                                                         <font>
+                                                            <Font name="Rockwell" size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER">
+                                                   <children>
+                                                      <ComboBox fx:id="windowMode" prefHeight="40.0" prefWidth="200.0" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="250.0">
+                                                   <children>
+                                                      <Label text="Resolution">
+                                                         <font>
+                                                            <Font name="Rockwell" size="26.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER">
+                                                   <children>
+                                                      <ComboBox fx:id="resolution" prefHeight="40.0" prefWidth="200.0" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children></VBox>
+                                 </children>
                                         </AnchorPane>
                                     </content>
                                 </Tab>
                                 <Tab text="Sound">
                                     <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
                                  <children>
-                                    <VBox layoutX="324.0" layoutY="153.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                        <children>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                          <HBox prefHeight="100.0">
                                              <children>
-                                                <Slider>
-                                                   <HBox.margin>
-                                                      <Insets left="300.0" top="30.0" />
-                                                   </HBox.margin></Slider>
+                                                <VBox alignment="CENTER_LEFT" prefWidth="250.0">
+                                                   <children>
+                                                      <Label text="Master Volume">
+                                                         <font>
+                                                            <Font name="Rockwell" size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefWidth="200.0">
+                                                   <children>
+                                                      <Slider fx:id="sliderMaster" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Label fx:id="labelMaster">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
                                              </children>
                                           </HBox>
-                                       </children>
-                                    </VBox>
+                                          <HBox prefHeight="100.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT" prefWidth="250.0">
+                                                   <children>
+                                                      <Label text="Music Volume">
+                                                         <font>
+                                                            <Font name="Rockwell" size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefWidth="200.0">
+                                                   <children>
+                                                      <Slider fx:id="sliderVolume" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Label fx:id="labelMusic">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT" prefWidth="250.0">
+                                                   <children>
+                                                      <Label text="SFX Volume">
+                                                         <font>
+                                                            <Font name="Rockwell" size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefWidth="200.0">
+                                                   <children>
+                                                      <Slider fx:id="sliderSFX" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Label fx:id="labelSFX">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children></VBox>
                                  </children></AnchorPane>
                                     </content>
                                 </Tab>
                                 <Tab text="Controles">
                                     <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+                                 </children></AnchorPane>
                                     </content>
                                 </Tab>
                             </tabs>
                             <VBox.margin>
-                                <Insets bottom="50.0" left="50.0" />
+                                <Insets />
                             </VBox.margin>
                         </TabPane>
                     </children>
                 </VBox>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                <VBox alignment="TOP_RIGHT" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#onReturn" prefWidth="200.0" text="Return">
+                        <Button mnemonicParsing="false" onAction="#onReturn" prefHeight="50.0" prefWidth="200.0" text="Return">
                             <font>
                                 <Font size="24.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="50.0" />
+                                <Insets />
                             </VBox.margin>
                         </Button>
                     </children>

@@ -40,11 +40,16 @@ public final class Contact extends Observable {
     private boolean semesterNegotiated = false;
     private final Object semesterLock = new Object();
 
-    private int shipsPlaced;
+    private int shipsPlaced = 0;
+
+    private boolean ready = false;
+    private boolean peerIsReady = false;
 
     private boolean begin = false;
+    private boolean peerIsBegin = false;
     private final Object beginLock = new Object();
 
+    private boolean weBeginGame = false;
 
     Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
         this.serverMode = serverMode;
@@ -62,14 +67,6 @@ public final class Contact extends Observable {
         }
 
         System.out.println("Contact CTOR end");
-    }
-
-    Contact(Socket socket, ServerMode serverMode) throws IOException {
-        this(socket, serverMode, serverMode.name(), 1);
-    }
-
-    Contact(ServerMode serverMode) throws IOException {
-        this(null, serverMode);
     }
 
     /**
@@ -119,7 +116,7 @@ public final class Contact extends Observable {
 
     private void init_communication() {
         Thread comm = new Thread(this::receiveLoop);
-        comm.setName("Contact comm Thread");
+        comm.setName("Contact");
         comm.setDaemon(true);
         comm.start();
 
@@ -342,17 +339,13 @@ public final class Contact extends Observable {
                 sendMessage("READY_PING", String.valueOf(SHIPS_PLACED));
             }
             case RECEIVE -> {
-                // TODO forward SHIPS_PLACED to logic
-                // TODO get info from logic on how many ships we have placed to be able to respond
                 int enemyShipsPlaced = SHIPS_PLACED;      // dummy
                 // TODO get info what maxPlacedShips for current semester is (from logic?)
                 int maxPlacedShips = 5;         // dummy
 
-                // TODO does this not cause an infinite loop / spam until all ships are placed?
                 if (shipsPlaced == maxPlacedShips) {
                     READY_CHK(SEND);
                 } else {
-                    // FIXME maybe the api gets changed?
                     // if we received READY_PING, wait before sending response to avoid spam
                     new java.util.Timer().schedule(
                             new java.util.TimerTask() {
@@ -374,21 +367,29 @@ public final class Contact extends Observable {
                 sendMessage("READY_CHK");
             }
             case RECEIVE -> {
-                // TODO forward this info to logic
+                peerIsReady = true;
             }
         }
     }
 
     private void BEGIN(MessageMode mode, String WHO) {
-        // TODO set a boolean here?
         switch (mode) {
             case SEND -> {
-                // TODO expose this to logic
-                // TODO decide who rolls the random value
                 sendMessage("BEGIN", WHO);
             }
             case RECEIVE -> {
-                // TODO forward this info to logic
+                synchronized (beginLock) {
+                    peerIsBegin = true;
+                    log_debug("begin: WHO: " + WHO + " servermode: " + serverMode);
+                    if (WHO.equalsIgnoreCase("host") && serverMode == ServerMode.SERVER)
+                        weBeginGame = true;
+                    else if (WHO.equalsIgnoreCase("host") && serverMode == ServerMode.CLIENT)
+                        weBeginGame = false;
+                    else if (WHO.equalsIgnoreCase("client") && serverMode == ServerMode.SERVER)
+                        weBeginGame = false;
+                    else if (WHO.equalsIgnoreCase("client") && serverMode == ServerMode.CLIENT)
+                        weBeginGame = true;
+                }
                 String whoInverse = WHO.equalsIgnoreCase("host") ? "client" : "host";
                 BEGIN_ACK(SEND, whoInverse);
             }
@@ -401,11 +402,10 @@ public final class Contact extends Observable {
                 sendMessage("BEGIN_ACK", WHO);
             }
             case RECEIVE -> {
-                // TODO do we need to do anything here?
+                synchronized (beginLock) {
+                    peerIsBegin = true;
+                }
             }
-        }
-        synchronized (beginLock) {
-            begin = true;
         }
     }
 
@@ -526,11 +526,22 @@ public final class Contact extends Observable {
         return semester;
     }
 
-    public void setShipsPlaced(int i) {
-        shipsPlaced = i;
-        synchronized (beginLock) {
-            if (!begin)
-                BEGIN(SEND, username.equals("SERVER") ? "host" : "client");
+    public void setReady() {
+        ready = true;
+        READY_CHK(SEND);
+    }
+
+    public void setBegin() {
+        begin = true;
+
+        if (serverMode == ServerMode.SERVER) {
+            Random random = new Random();
+            boolean beginnerBoolean = random.nextBoolean();
+            String beginner = beginnerBoolean ? "host" : "client";
+            synchronized (beginLock) {
+                weBeginGame = beginnerBoolean;
+            }
+            BEGIN(SEND, beginner);
         }
     }
 
@@ -538,6 +549,13 @@ public final class Contact extends Observable {
         synchronized (beginLock) {
             return begin;
         }
+    }
+
+    public boolean getEnemyReady() {
+        return peerIsReady;
+    }
+    public boolean getEnemyBegin() {
+        return peerIsBegin;
     }
 
     /**
@@ -557,17 +575,17 @@ public final class Contact extends Observable {
     @Override
     public void notifyObservers(Object arg) {
         setChanged();
-        log_debug("trying to notify " + countObservers());
         super.notifyObservers(arg);
         clearChanged();
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getPeerUsername() {
         return peerUsername;
     }
 
+    public boolean getWeBeginGame() {
+        synchronized (beginLock) {
+            return weBeginGame;
+        }
+    }
 }

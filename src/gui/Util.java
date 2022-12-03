@@ -1,4 +1,7 @@
-package logic;
+package gui;
+
+
+import logic.MapState;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +16,7 @@ public class Util {
         return dtFormatter.format(LocalDateTime.now());
     }
 
-    private static final String logPrefix = "Logic";
+    private static final String logPrefix = "GUI";
 
     public static void log_stdio(String msg) {
         System.out.println(getDateTimePrefix() + " :: " + Thread.currentThread().getName() + " :: " + logPrefix + " :: " + msg);
@@ -29,25 +32,5 @@ public class Util {
         System.err.println(getDateTimePrefix() + logPrefix + msg);
     }
 
-    public static char mapStateToChar(MapState mapState) {
-        switch (mapState) {
-            case W -> {
-                return '~';
-            }
-            case S -> {
-                return 'S';
-            }
-            case H -> {
-                return 'x';
-            }
-            case M -> {
-                return 'o';
-            }
-            case D -> {
-                return 'X';
-            }
-        }
-        return '.';
-    }
 
 }

@@ -1,0 +1,50 @@
+.button {
+    -fx-text-fill: BLACk;
+
+    -fx-background-color: #B2B2B2;
+    -fx-background-radius: 5;
+    -fx-background-insets: 1;
+
+    -fx-border-color: Black;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #EAEAEA;
+    -fx-background-radius: 5;
+    -fx-background-insets: 1;
+    -fx-translate-y: -2px;
+
+}
+
+.button:pressed {
+    -fx-background-color: #3C4048;
+    -fx-background-radius: 5;
+    -fx-background-insets: 1;
+}
+
+.label {
+    -fx-text-fill: BLACK;
+}
+
+#userInput {
+    -fx-border-color: Black;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
+
+    -fx-background-color: #EAEAEA;
+    -fx-background-radius: 5;
+    -fx-background-insets: 1;
+}
+
+#multiplayerConnectTextfield {
+    -fx-border-color: Black;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
+
+    -fx-background-color: #EAEAEA;
+    -fx-background-radius: 5;
+    -fx-background-insets: 1;
+}
+

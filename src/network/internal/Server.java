@@ -30,8 +30,8 @@ public final class Server {
      * @return a Contact to a connected network target
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    public static Contact getContact(int port) throws IOException {
-        Contact contact = new Contact(ServerMode.SERVER);
+    public static Contact getContact(int port, String username, int semester) throws IOException {
+        Contact contact = new Contact(null, ServerMode.SERVER, username, semester);
 
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(port)) {

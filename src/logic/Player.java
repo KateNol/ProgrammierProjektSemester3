@@ -1,5 +1,7 @@
 package logic;
 
+import network.ServerMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -12,23 +14,20 @@ public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
 
-    private int[] shipSizes; //FIXME deprecated
     private int mapSize;
     private boolean globalConfigLoaded;
-
-    protected GlobalConfig globalConfig = new GlobalConfig();
 
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss
 
+    private ServerMode serverMode = null;
 
     public Player(PlayerConfig playerConfig) {
         if (playerConfig != null) {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
         }
-        loadGlobalConfig();
         globalConfigLoaded = false;
     }
 
@@ -37,10 +36,10 @@ public abstract class Player extends Observable {
      * this method loads them and initializes the maps
      */
     public void loadGlobalConfig() {
-        shipSizes = globalConfig.getShipSizes(1 /*getCommonSemester()*/);
-        mapSize = globalConfig.getMapSize(1 /*getCommonSemester()*/);
+        assert getIsConnectionEstablished();
+        mapSize = GlobalConfig.getMapSize(getNegotiatedSemester());
         //ships = new ArrayList<Ship>(shipSizes.length);
-        ships = globalConfig.getShips(1 /*getCommomSemester()*/);
+        ships = GlobalConfig.getShips(getNegotiatedSemester());
         myMap = new Map(mapSize);
         enemyMap = new Map(mapSize);
 
@@ -68,12 +67,35 @@ public abstract class Player extends Observable {
      * implemented by NetworkPlayer
      * @return
      */
-    public abstract String getUsername();
-
-    @Deprecated
-    protected int[] getShipSizes() {
-        return shipSizes;
+    public String getUsername() {
+        return username;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getMaxSemester() {
+        return maxSemester;
+    }
+
+    public Map getEnemyMap() {
+        return enemyMap;
+    }
+
+    public void setMaxSemester(int semester) {
+        this.maxSemester = semester;
+    }
+
+    public ServerMode getServerMode() {
+        return serverMode;
+    }
+
+    public void setServerMode(ServerMode serverMode) {
+        this.serverMode = serverMode;
+    }
+
+    public abstract boolean getWeBegin();
 
     /**
      * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method
@@ -81,30 +103,6 @@ public abstract class Player extends Observable {
      */
     protected abstract void setShips();
 
-    /**
-     * Creates a ship with check, if the position is legal and adds it either to the ships-Array and to the Map
-     * @deprecated shoud not be used, will cause failure
-     * @param size int
-     * @param pivot Coordinate
-     * @param alignment Alignment
-     */
-    //FIXME deprecated
-    @Deprecated
-    protected boolean addShip(int size, Coordinate pivot, Alignment alignment) {
-        boolean check = false;
-        Coordinate[] position = createArray(size, pivot, alignment);
-        if(checkLegal(position)) {
-            ships.add(new Ship(position));
-            for(Coordinate c: position) {
-                myMap.setState(c, MapState.S);
-            }
-            for(Coordinate c: position) {
-                myMap.setState(c, MapState.S);
-            }
-            check = true;
-        }
-        return check;
-    }
 
     /**
      * Sets the position of the ship handed over with check if position is legal
@@ -357,8 +355,8 @@ public abstract class Player extends Observable {
 
     //FIXME delete if not needed anymore
     public void printBothMaps() {
-        int mapSize = globalConfig.getMapSize(getNegotiatedSemester());
-        System.out.print("My Map:");
+        int mapSize = GlobalConfig.getMapSize(getNegotiatedSemester());
+        System.out.print("My Map: " + mapSize);
         // right padding
         for (int i = 0; i < mapSize * 2 - "My Map:".length(); i++) {
             System.out.print(" ");
@@ -367,7 +365,7 @@ public abstract class Player extends Observable {
 
         for (int i = 0; i < mapSize; i++) {
             // our map
-            for (int j=0; j<myMap.getMapSize(); j++) {
+            for (int j = 0; j < mapSize; j++) {
                 System.out.print(mapStateToChar(myMap.getMap()[i][j]));
                 System.out.print(" ");
             }
@@ -376,7 +374,7 @@ public abstract class Player extends Observable {
             System.out.print(" |" + String.format("%02d", i) + "|  ");
 
             // enemy map
-            for (int j=0; j<enemyMap.getMapSize(); j++) {
+            for (int j = 0; j < mapSize; j++) {
                 System.out.print(mapStateToChar(enemyMap.getMap()[i][j]));
                 System.out.print(" ");
             }
@@ -384,20 +382,20 @@ public abstract class Player extends Observable {
             System.out.println();
         }
 
-        for (int i=0; i<myMap.getMapSize(); i++) {
-            System.out.print(i/10 + "|");
+        for (int i = 0; i < mapSize; i++) {
+            System.out.print(i / 10 + "|");
         }
         System.out.print(" ++++  ");
-        for (int i=0; i<myMap.getMapSize(); i++) {
-            System.out.print(i/10 + "|");
+        for (int i = 0; i < mapSize; i++) {
+            System.out.print(i / 10 + "|");
         }
         System.out.println();
-        for (int i=0; i<myMap.getMapSize(); i++) {
-            System.out.print(i%10 + "|");
+        for (int i = 0; i < mapSize; i++) {
+            System.out.print(i % 10 + "|");
         }
         System.out.print(" ++++  ");
-        for (int i=0; i<myMap.getMapSize(); i++) {
-            System.out.print(i%10 + "|");
+        for (int i = 0; i < mapSize; i++) {
+            System.out.print(i % 10 + "|");
         }
         System.out.println();
     }

@@ -7,12 +7,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import logic.PlayerConfig;
 import logic.Util;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerFileManager implements Initializable {
@@ -36,6 +38,8 @@ public class ControllerFileManager implements Initializable {
     private Button create;
     @FXML
     private VBox userInput;
+    @FXML
+    private HBox background;
 
     private PlayerConfig playerConfig;
 
@@ -46,18 +50,32 @@ public class ControllerFileManager implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/FileManager.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,backgroundSize);
+        background.setBackground(new Background(backgroundImage));
+
         setPicture(deleteOne);
         setPicture(deleteTwo);
         setPicture(deleteThree);
 
-        if(FileController.isFileOne()){
-            fileOne.setText(FileController.getFileName(0));
-        }
-        if(FileController.isFileTwo()) {
-            fileTwo.setText(FileController.getFileName(1));
-        }
-        if (FileController.isFileThree()) {
-            fileThree.setText(FileController.getFileName(2));
+        List<Integer> fileNumbers = new ArrayList<>();
+        if (FileController.isFileOne())
+            fileNumbers.add(0);
+        if (FileController.isFileTwo())
+            fileNumbers.add(1);
+        if (FileController.isFileThree())
+            fileNumbers.add(2);
+
+        for (int fileNumber : fileNumbers) {
+            Button file = fileNumber == 0 ? fileOne : fileNumber == 1 ? fileTwo : fileNumber == 2 ? fileThree : null;
+            try {
+                PlayerConfig player = FileController.loadFromFile(fileNumber);
+                String semester = " (" + player.getMaxSemester() + ")";
+                file.setText(FileController.getFileName(fileNumber) + semester);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -150,13 +168,13 @@ public class ControllerFileManager implements Initializable {
         create.setOnMouseClicked(mouseEvent -> {
             switch (i){
                 case 0:
-                    fileOne.setText(nameInput.getText());
+                    fileOne.setText(nameInput.getText() + " (1)");
                     break;
                 case 1:
-                    fileTwo.setText(nameInput.getText());
+                    fileTwo.setText(nameInput.getText() + " (1)");
                     break;
                 case 2:
-                    fileThree.setText(nameInput.getText());
+                    fileThree.setText(nameInput.getText() + " (1)");
                     break;
             }
             playerConfig = new PlayerConfig(nameInput.getText());

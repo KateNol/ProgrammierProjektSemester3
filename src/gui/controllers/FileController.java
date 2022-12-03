@@ -3,12 +3,17 @@ package gui.controllers;
 import logic.PlayerConfig;
 
 import java.io.*;
+
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class FileController {
 
     private static final File folder = new File("playerConfig/");
+    private static final File folderPath = new File(folder.getPath());
     private static ArrayList<File> listOfFiles = new ArrayList<>();
 
     private static boolean fileOne = false;
@@ -16,10 +21,26 @@ public class FileController {
     private static boolean fileThree = false;
 
     /**
+     * Check if playerConfig Folder exists
+     * @return folderPath exists
+     */
+    public static boolean checkIfFolderExists(){
+        return folderPath.exists();
+    }
+
+    /**
+     * Create new playerConfig Folder
+     * @throws IOException
+     */
+    public static void createFolder() throws IOException {
+        Files.createDirectories(Paths.get("playerConfig/"));
+    }
+
+    /**
      * Checks if configFile exists an if save in ArrayList
      */
     public static void checkIfFileExists(){
-        File[] loadedFiles = folder.listFiles();
+        File[] loadedFiles = folderPath.listFiles();
         for (int i = 0; i < loadedFiles.length; i++) {
             listOfFiles.add(loadedFiles[i]);
             if(i == 0){
