@@ -1,6 +1,7 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
+import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -54,7 +55,10 @@ public class ControllerGame implements Initializable {
         setTurnLabel();
 
         turnLabel.textProperty().addListener((observableValue, s1, s2) -> {
+            Util.log_debug(s2);
+            Util.log_debug(s1);
             if(guiPlayer.isGameOver()) {
+                Util.log_debug("never here");
                 openEndScreen();
             }
         });
@@ -65,6 +69,10 @@ public class ControllerGame implements Initializable {
             turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
         } else {
             turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
+        }
+        if(guiPlayer.isGameOver()){
+            Util.log_debug("game over set in label");
+            turnLabel.setText("game over");
         }
     }
 
