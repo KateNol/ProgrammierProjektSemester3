@@ -3,38 +3,31 @@ package gui.controllers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static gui.Util.log_debug;
 
 public class ViewSwitcher {
 
     //Caching for Screens
-    private static Map<View, Parent> cache = new HashMap<>();
+    private static final Map<View, Parent> cache = new HashMap<>();
     private static Scene scene;
-    private static Stage stage;
-
     private static View lastView = null;
 
     /**
      * Set scene
-     *
-     * @param scene
+     * @param scene scene you want to set
      */
     public static void setScene(Scene scene) {
         ViewSwitcher.scene = scene;
     }
 
-    public static void setStage(Stage stage) {
-        ViewSwitcher.stage = stage;
-    }
-
     /**
      * Manage switching between scenes
-     * @param view
+     * @param view enum from View
      */
     public static void switchTo(View view) {
         if (scene == null) {
@@ -53,9 +46,9 @@ public class ViewSwitcher {
             } else {
                 //Filer Lobby and Game Scene
                 if (view == View.Lobby || view == View.Game) {
-                    root = FXMLLoader.load(ViewSwitcher.class.getResource(view.getFileName()));
+                    root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
                 } else {
-                    root = FXMLLoader.load(ViewSwitcher.class.getResource(view.getFileName()));
+                    root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
                     cache.put(view, root);
                     //System.out.println("Loading from FXML");
                 }
@@ -63,7 +56,7 @@ public class ViewSwitcher {
             scene.setRoot(root);
             lastView = view;
         } catch (Exception e){
-            e.getMessage();
+            log_debug("failed to Switch to " + view.toString());
         }
     }
 
@@ -73,9 +66,5 @@ public class ViewSwitcher {
      */
     public static Scene getScene() {
         return scene;
-    }
-
-    public static Stage getStage() {
-        return stage;
     }
 }
