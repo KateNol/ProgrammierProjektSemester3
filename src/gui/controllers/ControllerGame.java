@@ -36,6 +36,9 @@ public class ControllerGame implements Initializable {
     @FXML
     private VBox myBoard;
 
+
+    private boolean myTurn;
+
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
     /**
@@ -52,27 +55,34 @@ public class ControllerGame implements Initializable {
         guiPlayer.createEnemyBoard(enemyBoard);
         selfLabel.setText(guiPlayer.getUsername());
         enemyLabel.setText(guiPlayer.getEnemyUsername());
-        setTurnLabel();
 
-        turnLabel.textProperty().addListener((observableValue, s1, s2) -> {
-            Util.log_debug(s2);
-            Util.log_debug(s1);
-            if(guiPlayer.isGameOver()) {
-                Util.log_debug("never here");
+        if (guiPlayer.getWeBegin()) {
+            turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
+            myTurn = false;
+        } else {
+            turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
+        }
+
+        turnLabel.textProperty().addListener((observableValue, oldVal, newVal) -> {
+            Util.log_debug(oldVal);
+            Util.log_debug(newVal);
+            if(guiPlayer.isGameOver()){
                 openEndScreen();
             }
         });
     }
 
     public void setTurnLabel(){
-        if(guiPlayer.getWeBegin()){
+        if(myTurn){
             turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
+            myTurn = false;
         } else {
             turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
         }
         if(guiPlayer.isGameOver()){
             Util.log_debug("game over set in label");
             turnLabel.setText("game over");
+            openEndScreen();
         }
     }
 
