@@ -14,9 +14,12 @@ import java.util.ResourceBundle;
 
 public class ControllerGame implements Initializable {
 
-
     @FXML
-    private HBox background;
+    private HBox gamefield;
+    @FXML
+    private VBox gameEnd;
+    @FXML
+    private StackPane background;
     @FXML
     private Label selfLabel;
     @FXML
@@ -64,6 +67,20 @@ public class ControllerGame implements Initializable {
      * Return to Screen Menu
      */
     public void onExit(){
+        ViewSwitcher.switchTo(View.Menu);
+    }
+
+    public void openEndScreen(){
+        //information that gameOver
+        gamefield.setMouseTransparent(true);
+        gameEnd.setVisible(true);
+    }
+
+    public void onPlayAgain(){
+        ViewSwitcher.switchTo(View.Lobby);
+    }
+
+    public void onSwitchToMenu(){
         ViewSwitcher.switchTo(View.Menu);
     }
 }

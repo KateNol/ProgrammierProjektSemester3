@@ -3,7 +3,6 @@ package gui.controllers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
@@ -20,11 +19,7 @@ public class ControllerMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Set Background
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/Menu_Background.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,backgroundSize);
-        background.setBackground(new Background(backgroundImage));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/Menu_Background.jpg"));
     }
 
     /**
