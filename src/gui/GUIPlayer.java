@@ -22,6 +22,8 @@ public class GUIPlayer extends NetworkPlayer {
     private boolean shipsPlaced = false;
     private Coordinate shotCoordinate = null;
 
+    private boolean gameOver;
+
     private final Object lock = new Object();
 
     /**
@@ -43,6 +45,19 @@ public class GUIPlayer extends NetworkPlayer {
         return instance;
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    @Override
+    public void notifyObservers(Object arg){
+        super.notifyObservers(arg);
+        if(arg instanceof String argsString){
+            if(argsString.equals("game over")){
+                gameOver = true;
+            }
+        }
+    }
     //------------------------------------------------------
     @Override
     protected void setShips() {

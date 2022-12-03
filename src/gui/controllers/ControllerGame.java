@@ -53,6 +53,11 @@ public class ControllerGame implements Initializable {
         enemyLabel.setText(guiPlayer.getEnemyUsername());
         setTurnLabel();
 
+        turnLabel.textProperty().addListener((observableValue, s1, s2) -> {
+            if(guiPlayer.isGameOver()) {
+                openEndScreen();
+            }
+        });
     }
 
     public void setTurnLabel(){
@@ -71,7 +76,6 @@ public class ControllerGame implements Initializable {
     }
 
     public void openEndScreen(){
-        //information that gameOver
         gamefield.setMouseTransparent(true);
         gameEnd.setVisible(true);
     }

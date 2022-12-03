@@ -3,7 +3,6 @@ package gui.controllers;
 import gui.GUIPlayer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -80,14 +79,11 @@ public class ControllerNetworkManager implements Initializable {
      */
     public void setCombobox(){
         comboBoxServerMode.getItems().addAll(client, host);
-        comboBoxServerMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
-                if(s2.equals(client)){
-                    serverMode = ServerMode.CLIENT;
-                } else if (s2.equals(host)) {
-                    serverMode = ServerMode.SERVER;
-                }
+        comboBoxServerMode.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
+            if(s2.equals(client)){
+                serverMode = ServerMode.CLIENT;
+            } else if (s2.equals(host)) {
+                serverMode = ServerMode.SERVER;
             }
         });
     }
@@ -133,8 +129,8 @@ public class ControllerNetworkManager implements Initializable {
             GUIPlayer.getInstance().establishConnection(serverMode, address, port);
             new Logic(GUIPlayer.getInstance());
             new Thread(() -> {
-                while (!GUIPlayer.getInstance().getIsConnectionEstablished()) ;
                 log_debug("bin kurz vorm laden der scene");
+                while (!GUIPlayer.getInstance().getIsConnectionEstablished());
                 ViewSwitcher.switchTo(View.Lobby);
             }).start();
         } else {
