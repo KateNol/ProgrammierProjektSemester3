@@ -1,6 +1,7 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
 import logic.PlayerConfig;
 import logic.Util;
 
@@ -19,7 +21,6 @@ import java.util.ResourceBundle;
 
 public class ControllerFileManager implements Initializable {
 
-    private String deletePicturePath = "file:src/gui/img/RecBin.png";
     @FXML
     private Button fileOne;
     @FXML
@@ -45,15 +46,10 @@ public class ControllerFileManager implements Initializable {
 
     /**
      * Initialize Names on Buttons and load if Name is available
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/FileManager.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,backgroundSize);
-        background.setBackground(new Background(backgroundImage));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FileManager.jpg"));
 
         setPicture(deleteOne);
         setPicture(deleteTwo);
@@ -72,6 +68,7 @@ public class ControllerFileManager implements Initializable {
             try {
                 PlayerConfig player = FileController.loadFromFile(fileNumber);
                 String semester = " (" + player.getMaxSemester() + ")";
+                assert file != null;
                 file.setText(FileController.getFileName(fileNumber) + semester);
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -81,15 +78,17 @@ public class ControllerFileManager implements Initializable {
 
     /**
      * Set Picture on a Button
-     * @param b
+     * @param deleteButton button where to set Picture
      */
-    public void setPicture(Button b){
+    public void setPicture(Button deleteButton){
+        String deletePicturePath = "file:src/gui/img/RecBin.png";
         ImageView view = new ImageView(new Image(deletePicturePath));
         view.setFitHeight(40);
         view.setFitWidth(40);
         view.setPreserveRatio(true);
-        b.setGraphic(view);
+        deleteButton.setGraphic(view);
     }
+
     /**
      * Return to Screen Menu
      */
@@ -166,36 +165,33 @@ public class ControllerFileManager implements Initializable {
      */
     public void setUsername(int i){
         create.setOnMouseClicked(mouseEvent -> {
-            switch (i){
-                case 0:
-                    fileOne.setText(nameInput.getText() + " (1)");
-                    break;
-                case 1:
-                    fileTwo.setText(nameInput.getText() + " (1)");
-                    break;
-                case 2:
-                    fileThree.setText(nameInput.getText() + " (1)");
-                    break;
+            if(isValidInput(nameInput.getText())){
+                switch (i) {
+                    case 0 -> fileOne.setText(nameInput.getText() + " (1)");
+                    case 1 -> fileTwo.setText(nameInput.getText() + " (1)");
+                    case 2 -> fileThree.setText(nameInput.getText() + " (1)");
+                }
+                playerConfig = new PlayerConfig(nameInput.getText());
+                new GUIPlayer(playerConfig);
+                try {
+                    FileController.writeToFile(playerConfig, i);
+                } catch (IOException e){
+                    Util.log_debug("Could not create PlayerConfig File");
+                }
+                nameInput.clear();
+                userInput.setVisible(false);
+            } else {
+                System.out.println("try again");
             }
-            playerConfig = new PlayerConfig(nameInput.getText());
-            new GUIPlayer(playerConfig);
-            try {
-                FileController.writeToFile(playerConfig, i);
-            } catch (IOException e){
-                Util.log_debug("Could not create PlayerConfig File");
-            }
-            nameInput.clear();
-            userInput.setVisible(false);
         });
     }
 
     /**
      * Valid input for Player Name
-     * @return valid
+     * @return validInput for Name
      */
-    public boolean isValidInput(){
-        boolean valid = false;
-        return valid;
+    public boolean isValidInput(String nameInput){
+        return !nameInput.equals("");
     }
 
     /**
@@ -245,19 +241,13 @@ public class ControllerFileManager implements Initializable {
 
     /**
      * Delete Name on Button where Name is set
-     * @param i
+     * @param fileSlot witch file to delete
      */
-    private void deleteUserName(int i) {
-        switch (i){
-            case 0:
-                fileOne.setText("New File 1");
-                break;
-            case 1:
-                fileTwo.setText("New File 2");
-                break;
-            case 2:
-                fileThree.setText("New File 3");
-                break;
+    private void deleteUserName(int fileSlot) {
+        switch (fileSlot) {
+            case 0 -> fileOne.setText("New File 1");
+            case 1 -> fileTwo.setText("New File 2");
+            case 2 -> fileThree.setText("New File 3");
         }
     }
 
