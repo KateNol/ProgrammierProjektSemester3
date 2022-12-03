@@ -61,8 +61,7 @@ public class ControllerNetworkManager implements Initializable {
     private VBox loadBox;
     @FXML
     private HBox multiplayerScene;
-    @FXML
-    private ImageView loadImage;
+    private boolean pictureSet;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -118,11 +117,14 @@ public class ControllerNetworkManager implements Initializable {
         log_debug("on connect");
         multiplayerConnectTextfield.setVisible(false);
         multiplayerScene.setMouseTransparent(true);
-        Image image = new Image("file:src/gui/img/load.gif");
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(150);
-        imageView.setFitWidth(150);
-        loadBox.getChildren().add(imageView);
+        if(!pictureSet){
+            Image image = new Image("file:src/gui/img/load.gif");
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            loadBox.getChildren().add(imageView);
+            pictureSet = true;
+        }
         loadBox.setVisible(true);
 
         if(setConnectionInput()){
