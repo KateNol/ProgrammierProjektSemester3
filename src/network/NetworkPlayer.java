@@ -60,6 +60,7 @@ public abstract class NetworkPlayer extends Player {
                 Client.abort();
             }
         }
+        this.contact = null;
     }
 
     public void sendMessage(String msg) {
