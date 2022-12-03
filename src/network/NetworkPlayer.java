@@ -20,6 +20,7 @@ public abstract class NetworkPlayer extends Player {
      */
     public NetworkPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        contact = null;
     }
 
     public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
@@ -69,6 +70,8 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public boolean getIsConnectionEstablished() {
+        if (contact == null)
+            return false;
         return contact.getIsConnectionEstablished();
     }
 
