@@ -1,14 +1,12 @@
 package gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import network.ServerMode;
+import javafx.scene.media.MediaPlayer;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -76,19 +74,33 @@ public class ControllerSettings implements Initializable {
 
 
 
-        windowMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s1, String s2) {
-                if(s2.equals(full)){
-                    ViewSwitcher.getStage().setFullScreen(true);
-                } else if (s2.equals(window)) {
-                    ViewSwitcher.getStage().setFullScreen(false);
-
-
-                }
-
+        windowMode.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
+            if(s2.equals(full)){
+                ViewSwitcher.getStage().setFullScreen(true);
+            } else if (s2.equals(window)) {
+                ViewSwitcher.getStage().setFullScreen(false);
             }
         });
+
+        sliderSFX.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            double d = Math.round((double) newValue);
+            labelSFX.setText(Double.toString(d));
+            AudioPlayer.setSFXVolume(d);
+        });
+
+        sliderMaster.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            double d = Math.round((double) newValue);
+            labelMaster.setText(Double.toString(d));
+            AudioPlayer.setMasterVolume(d);
+
+        });
+
+        sliderVolume.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            double d = Math.round((double) newValue);
+            labelMusic.setText(Double.toString(d));
+            AudioPlayer.setMusicVolume(d);
+        });
+
 
     }
 
