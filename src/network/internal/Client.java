@@ -51,7 +51,7 @@ public final class Client {
                 } catch (IOException ignored) {
                     success = false;
                 }
-            } while (!success && !connectionThread.isInterrupted());
+            } while (!success && (connectionThread != null && !connectionThread.isInterrupted()));
 
         });
         connectionThread.setName("Server connection");
