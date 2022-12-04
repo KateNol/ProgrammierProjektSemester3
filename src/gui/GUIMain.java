@@ -28,6 +28,7 @@ public class GUIMain extends Application  {
 
     @Override
     public void start(Stage stage) throws IOException {
+        ViewSwitcher.setStage(stage);
         Scene scene = new Scene(new Pane());
         //Load Scene
         ViewSwitcher.setScene(scene);

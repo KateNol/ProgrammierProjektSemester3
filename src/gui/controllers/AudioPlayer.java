@@ -7,10 +7,26 @@ import java.io.File;
 
 public class AudioPlayer {
 
-    public static void playIntro(){
-        System.out.println(Audio.Intro.getPathName());
-        Media sound = new Media(new File(Audio.Intro.getPathName()).toURI().toString());
+  private static double sfxVolume;
+  private static double masterVolume;
+  private static double musicVolume;
+
+    public static void playAudio(Audio audio){
+        Media sound = new Media(new File(audio.getPathName()).toURI().toString());
         MediaPlayer player = new MediaPlayer(sound);
+        player.setVolume(sfxVolume);
         player.play();
+    }
+
+    public static void setSFXVolume(double sfxVolume){
+        AudioPlayer.sfxVolume = sfxVolume;
+    }
+
+    public static void setMasterVolume(double masterVolume){
+        AudioPlayer.masterVolume = masterVolume;
+    }
+
+    public static void setMusicVolume(double musicVolume){
+        AudioPlayer.musicVolume = musicVolume;
     }
 }
