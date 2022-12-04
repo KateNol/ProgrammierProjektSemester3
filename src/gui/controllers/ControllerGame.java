@@ -28,10 +28,6 @@ public class ControllerGame implements Initializable {
     @FXML
     private Label enemyLabel;
     @FXML
-    private MenuItem exit;
-    @FXML
-    private Button ff;
-    @FXML
     private VBox enemyBoard;
     @FXML
     private VBox myBoard;
@@ -96,6 +92,14 @@ public class ControllerGame implements Initializable {
     public void openEndScreen(){
         gamefield.setMouseTransparent(true);
         gameEnd.setVisible(true);
+    }
+
+    /**
+     * Return to Menu Scene when you want to stop play
+     */
+    public void onSurrender(){
+        guiPlayer.abortEstablishConnection();
+        ViewSwitcher.switchTo(View.Menu);
     }
 
     public void onPlayAgain(){

@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -75,9 +74,6 @@
                   <VBox fx:id="menuBar" alignment="TOP_RIGHT" maxWidth="-Infinity" prefWidth="200.0" spacing="40.0" HBox.hgrow="ALWAYS">
                      <children>
                         <MenuButton minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Options">
-                          <items>
-                            <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
-                          </items>
                            <font>
                               <Font name="Rockwell" size="18.0" />
                            </font>
@@ -85,7 +81,7 @@
                               <Insets />
                            </VBox.margin>
                         </MenuButton>
-                        <Button fx:id="ff" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Surrender">
+                        <Button mnemonicParsing="false" onAction="#onSurrender" prefHeight="40.0" prefWidth="150.0" text="Surrender">
                            <font>
                               <Font name="Rockwell" size="18.0" />
                            </font>
