@@ -47,9 +47,6 @@ public class GUIMain extends Application  {
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
 
-        stage.setMaxWidth(1920);
-        stage.setMaxHeight(1080);
-
         //Start application
         stage.show();
     }
