@@ -1,7 +1,16 @@
 package gui.controllers;
 
 public enum Audio {
-    Intro("src/gui/audio/intro.mp3");
+    PlaceShip(""),
+    Hit(""),
+    Sink(""),
+    Miss(""),
+    Lose("" ),
+    Win(""),
+    Click("src/gui/audio/intro.mp3"),
+    MenuScreen(""),
+    GameScene("");
+
 
     private String pathName;
     Audio(String pathName) {

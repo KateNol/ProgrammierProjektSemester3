@@ -28,6 +28,7 @@ public class GUIMain extends Application  {
 
     @Override
     public void start(Stage stage) throws IOException {
+        ViewSwitcher.setStage(stage);
         Scene scene = new Scene(new Pane());
         //Load Scene
         ViewSwitcher.setScene(scene);
@@ -45,9 +46,6 @@ public class GUIMain extends Application  {
 
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
-
-        stage.setMaxWidth(1920);
-        stage.setMaxHeight(1080);
 
         //Start application
         stage.show();
