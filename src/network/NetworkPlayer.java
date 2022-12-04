@@ -146,8 +146,10 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public void notifyObservers(Object arg) {
-        new Thread(() -> {
+        Thread notifyThread = new Thread(() -> {
             super.notifyObservers(arg);
-        }).start();
+        });
+        notifyThread.setName("NetworkNotify");
+        notifyThread.start();
     }
 }
