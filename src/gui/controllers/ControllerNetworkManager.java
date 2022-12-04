@@ -62,16 +62,12 @@ public class ControllerNetworkManager implements Initializable {
     private HBox multiplayerScene;
     private boolean pictureSet;
 
+    Thread connectionWaitThread = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/multiplayerImg.jpg"));
         setCombobox();
-    }
-
-    public void onCancelConnection(){
-        multiplayerScene.setMouseTransparent(false);
-        loadBox.setVisible(false);
-        GUIPlayer.getInstance().abortEstablishConnection();
     }
 
     /**
@@ -124,25 +120,34 @@ public class ControllerNetworkManager implements Initializable {
         }
         loadBox.setVisible(true);
 
-        if(setConnectionInput()){
+        if(setConnectionInput()) {
             multiplayerConnectTextfield.setVisible(false);
             GUIPlayer.getInstance().establishConnection(serverMode, address, port);
             new Logic(GUIPlayer.getInstance());
-            new Thread(() -> {
+            connectionWaitThread = new Thread(() -> {
                 log_debug("bin kurz vorm laden der scene");
-                while (!GUIPlayer.getInstance().getIsConnectionEstablished());
+                while (!connectionWaitThread.isInterrupted() && !GUIPlayer.getInstance().getIsConnectionEstablished()) ;
                 ViewSwitcher.switchTo(View.Lobby);
-            }).start();
+            });
+            connectionWaitThread.setName("GUI Conn wait");
+            connectionWaitThread.start();
         } else {
             System.err.println("Could not establish connection!	Try again");
             connectionFailed.setText("Could not establish connection!\tTry again!");
         }
     }
 
+    public void onCancelConnection() {
+        multiplayerScene.setMouseTransparent(false);
+        loadBox.setVisible(false);
+        GUIPlayer.getInstance().abortEstablishConnection();
+        connectionWaitThread.interrupt();
+    }
+
     /**
      * Return to File Manager
      */
-    public void onReturn(){
+    public void onReturn() {
         addressTextfield.clear();
         portTextfield.clear();
         connectionFailed.setText("");

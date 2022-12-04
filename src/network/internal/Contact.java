@@ -24,7 +24,7 @@ import static network.internal.Util.*;
  * network protocol methods are named in CAPSLOCK
  */
 public final class Contact extends Observable {
-    private Socket socket;
+    private Socket socket = null;
     private ServerMode serverMode;
 
     private PrintWriter outWriter;
@@ -59,12 +59,7 @@ public final class Contact extends Observable {
         // fallback as per spec
         this.protocolVersion = 1;
 
-        if (socket != null) {
-            setSocket(socket);
-            init_communication();
-        } else {
-            this.socket = null;
-        }
+        setSocket(socket);
 
         System.out.println("Contact CTOR end");
     }
@@ -100,13 +95,18 @@ public final class Contact extends Observable {
         System.exit(error);
     }
 
-    public void setSocket(@NotNull Socket clientSocket) throws IOException {
+    public void setSocket(Socket clientSocket) throws IOException {
+        if (clientSocket == null) {
+            log_debug("Contact got null socket, not initiating comm yet");
+            return;
+        }
         if (socket != null) {
-            log_stderr("Attempting to overwrite socket");
+            log_stderr("Attempting to overwrite non-null socket, fatal error! " + serverMode);
             System.exit(1);
         }
 
         this.socket = clientSocket;
+        log_debug("Set socket");
 
         this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
         this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
