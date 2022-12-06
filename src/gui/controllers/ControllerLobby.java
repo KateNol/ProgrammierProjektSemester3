@@ -38,8 +38,6 @@ public class ControllerLobby implements Initializable {
 
     /**
      * Initialize Lobby Screen items(Board, Ship)
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

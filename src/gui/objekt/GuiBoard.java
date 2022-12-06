@@ -21,10 +21,11 @@ import java.util.Random;
 public class GuiBoard {
     private Label failLabel;
     private GridPane grid;
-    private int tileSize;
+    private final int tileSize;
     private int shipPlaced = 0;
-    private boolean isEnemyBoard;
-    private GUIPlayer guiPlayer = GUIPlayer.getInstance();
+    private final boolean isEnemyBoard;
+    private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
+    private ControllerGame controllerGame = null;
     private Label turnLabel;
 
     /**
@@ -136,59 +137,60 @@ public class GuiBoard {
         });
     }
 
+    public void setControllerGame(){
+        if(controllerGame == null){
+            controllerGame = ControllerGame.getInstance();
+            turnLabel = controllerGame.getTurnLabel();
+        }
+    }
+
+    public void setTurn(){
+        setControllerGame();
+        if(GUIPlayer.getInstance().getTurn()){
+            turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
+            guiPlayer.setTurn(false);
+        } else {
+            turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
+            guiPlayer.setTurn(true);
+        }
+    }
+
     public void updateBoard(ShotResult shotResult, Coordinate coordinate) {
         Platform.runLater(() -> {
-            ControllerGame controllerGame = ControllerGame.getInstance();
-            turnLabel = controllerGame.getTurnLabel();
-            if(GUIPlayer.getInstance().getTurn()){
-                turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
-                guiPlayer.setTurn(false);
-            } else {
-                turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
-                guiPlayer.setTurn(true);
-            }
-
             switch (shotResult) {
-                case HIT: {
+                case HIT -> {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    break;
+                    setTurn();
                 }
-                case MISS: {
+                case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    break;
+                    setTurn();
                 }
-                case SUNK: {
-                    if(isEnemyBoard){
+                case SUNK -> {
+                    if (isEnemyBoard) {
+                        setTurn();
                         MapState[][] map = guiPlayer.getEnemyMap().getMap();
-                        for(int row = 0; row < guiPlayer.getMapSize(); row++) {
+                        for (int row = 0; row < guiPlayer.getMapSize(); row++) {
                             for (int col = 0; col < guiPlayer.getMapSize(); col++) {
-                                switch (map[row][col]){
-                                    case W: {
+                                switch (map[row][col]) {
+                                    case W -> {
                                         TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
-                                        grid.add(tileWater,col + 1, row + 1, 1, 1);
+                                        grid.add(tileWater, col + 1, row + 1, 1, 1);
                                         this.sendShot(tileWater);
-                                        break;
                                     }
-                                    case S: {
+                                    case S -> {
                                         TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);
                                         grid.add(tileShip, col + 1, row + 1, 1, 1);
-                                        break;
                                     }
-                                    case H: {
+                                    case H, D -> {
                                         TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
                                         grid.add(tileHit, col + 1, row + 1, 1, 1);
-                                        break;
                                     }
-                                    case M: {
+                                    case M -> {
                                         TileMiss tileMiss = new TileMiss(new Coordinate(row + 1, col + 1), tileSize);
                                         grid.add(tileMiss, col + 1, row + 1, 1, 1);
-                                        break;
-                                    }
-                                    case D: {
-                                        TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
-                                        grid.add(tileHit, col + 1, row + 1, 1, 1);
                                     }
                                 }
                             }
@@ -196,7 +198,7 @@ public class GuiBoard {
                     } else {
                         TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                         grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                        break;
+                        setTurn();
                     }
                 }
             }

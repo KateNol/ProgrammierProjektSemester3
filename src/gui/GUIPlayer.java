@@ -1,6 +1,5 @@
 package gui;
 
-import gui.controllers.ControllerGame;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.scene.control.Button;
@@ -33,7 +32,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create a GuiPlayer
-     * @param playerConfig
+     * @param playerConfig Save file from the player
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
@@ -134,7 +133,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create enemy Board
-     * @param enemyBoard
+     * @param enemyBoard play field from the enemy
      */
     public void createEnemyBoard(VBox enemyBoard){
         guiEnemyBoard = new GuiBoard(tileSize, true);
@@ -183,7 +182,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Set alignment
-     * @param alignment
+     * @param alignment direction from the ship
      */
     public void setAlignment(Alignment alignment) {
         this.alignment = alignment;
@@ -191,7 +190,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * notify when all Ships are placed or reset
-     * @param b
+     * @param b if all ships where placed
      */
     public void confirmShipsPlaced(Boolean b){
         this.shipsPlaced = b;
