@@ -2,6 +2,7 @@ package gui.controllers;
 
 import gui.GUIPlayer;
 import gui.Util;
+import gui.objekt.GuiBoard;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -32,8 +33,7 @@ public class ControllerGame implements Initializable {
     @FXML
     private VBox myBoard;
 
-
-    private boolean myTurn;
+    private static ControllerGame instance = null;
 
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
@@ -42,23 +42,18 @@ public class ControllerGame implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/game.jpg")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,backgroundSize);
-        background.setBackground(new Background(backgroundImage));
+        instance = this;
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/game.jpg"));
 
+        //Set Boards
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
         guiPlayer.createEnemyBoard(enemyBoard);
+
+        //Set Usernames over Board
         selfLabel.setText(guiPlayer.getUsername());
         enemyLabel.setText(guiPlayer.getEnemyUsername());
 
-        if (guiPlayer.getWeBegin()) {
-            turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
-            myTurn = false;
-        } else {
-            turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
-        }
-
+        //Control if Game over
         turnLabel.textProperty().addListener((observableValue, oldVal, newVal) -> {
             Util.log_debug(oldVal);
             Util.log_debug(newVal);
@@ -68,18 +63,12 @@ public class ControllerGame implements Initializable {
         });
     }
 
-    public void setTurnLabel(){
-        if(myTurn){
-            turnLabel.setText("It's "+ enemyLabel.getText() +"'s Turn");
-            myTurn = false;
-        } else {
-            turnLabel.setText("It's "+ guiPlayer.getUsername() +"'s Turn");
-        }
-        if(guiPlayer.isGameOver()){
-            Util.log_debug("game over set in label");
-            turnLabel.setText("game over");
-            openEndScreen();
-        }
+    public static ControllerGame getInstance(){
+        return instance;
+    }
+
+    public Label getTurnLabel(){
+        return turnLabel;
     }
 
     /**

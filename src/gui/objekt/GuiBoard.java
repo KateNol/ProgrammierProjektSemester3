@@ -1,9 +1,11 @@
 package gui.objekt;
 
 import gui.GUIPlayer;
+import gui.controllers.ControllerGame;
 import gui.tile.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -11,7 +13,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class GuiBoard {
@@ -21,6 +25,7 @@ public class GuiBoard {
     private int shipPlaced = 0;
     private boolean isEnemyBoard;
     private GUIPlayer guiPlayer = GUIPlayer.getInstance();
+    private Label turnLabel;
 
     /**
      * Gui object for the board
@@ -133,6 +138,16 @@ public class GuiBoard {
 
     public void updateBoard(ShotResult shotResult, Coordinate coordinate) {
         Platform.runLater(() -> {
+            ControllerGame controllerGame = ControllerGame.getInstance();
+            turnLabel = controllerGame.getTurnLabel();
+            if(GUIPlayer.getInstance().getTurn()){
+                turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
+                guiPlayer.setTurn(false);
+            } else {
+                turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
+                guiPlayer.setTurn(true);
+            }
+
             switch (shotResult) {
                 case HIT: {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
@@ -178,6 +193,10 @@ public class GuiBoard {
                                 }
                             }
                         }
+                    } else {
+                        TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
+                        grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                        break;
                     }
                 }
             }

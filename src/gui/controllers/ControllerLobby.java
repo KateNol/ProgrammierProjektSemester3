@@ -2,6 +2,7 @@ package gui.controllers;
 
 import gui.GUIPlayer;
 
+import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -42,10 +43,12 @@ public class ControllerLobby implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage((new Image("file:src/gui/img/setShip.jfif")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,backgroundSize);
-        background.setBackground(new Background(backgroundImage));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/setShip.jfif"));
+        if(guiPlayer.getWeBegin()){
+            guiPlayer.setTurn(true);
+        } else {
+            guiPlayer.setTurn(false);
+        }
 
         startGame.setDisable(true);
         guiPlayer.creatBoard(startGame, vBoxMiddle, vboxLeft, startGame, failedshipPlacedLabel);
@@ -74,29 +77,26 @@ public class ControllerLobby implements Initializable {
     public void setMyAlignment(){
         alignment.setOnMouseClicked(actionEvent -> {
             switch (alignmentCounter) {
-                case 0: {
-                    System.out.println("Horizontal_Right");
+                case 0 -> {
+                    Util.log_debug("Horizontal_Right");
                     alignment.setText("Horizontal_Right");
                     guiPlayer.setAlignment(Alignment.HOR_RIGHT);
                     alignmentCounter++;
-                    break;
                 }
-                case 1: {
-                    System.out.println("Horizontal_Left");
+                case 1 -> {
+                    Util.log_debug("Horizontal_Left");
                     alignment.setText("Horizontal_Left");
                     guiPlayer.setAlignment(Alignment.HOR_LEFT);
                     alignmentCounter++;
-                    break;
                 }
-                case 2: {
-                    System.out.println("Vertical_Down");
+                case 2 -> {
+                    Util.log_debug("Vertical_Down");
                     alignment.setText("Vertical_Down");
                     guiPlayer.setAlignment(Alignment.VERT_DOWN);
                     alignmentCounter++;
-                    break;
                 }
-                case 3: {
-                    System.out.println("Vertical_Up");
+                case 3 -> {
+                    Util.log_debug("Vertical_Up");
                     alignment.setText("Vertical_Up");
                     guiPlayer.setAlignment(Alignment.VERT_UP);
                     alignmentCounter = 0;

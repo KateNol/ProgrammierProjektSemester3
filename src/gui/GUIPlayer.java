@@ -1,5 +1,6 @@
 package gui;
 
+import gui.controllers.ControllerGame;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.scene.control.Button;
@@ -13,9 +14,12 @@ import static logic.Util.log_debug;
 public class GUIPlayer extends NetworkPlayer {
     private static GUIPlayer instance = null;
     private int tileSize;
-    private GuiBoard guiBoard;
+
+    //Board and Ships
     private GuiHarbour guiHarbour;
+    private GuiBoard guiBoard;
     private GuiBoard guiEnemyBoard;
+
     private Button startButton;
 
     private Alignment alignment = Alignment.HOR_RIGHT;
@@ -23,6 +27,7 @@ public class GUIPlayer extends NetworkPlayer {
     private Coordinate shotCoordinate = null;
 
     private boolean gameOver;
+    private boolean turn;
 
     private final Object lock = new Object();
 
@@ -49,6 +54,14 @@ public class GUIPlayer extends NetworkPlayer {
         return gameOver;
     }
 
+    public boolean getTurn(){
+        return turn;
+    }
+
+    public void setTurn(boolean turn){
+        this.turn = turn;
+    }
+
     @Override
     public void notifyObservers(Object arg){
         super.notifyObservers(arg);
@@ -69,6 +82,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     @Override
     public Coordinate getShot() {
+        turn = false;
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
         try {
