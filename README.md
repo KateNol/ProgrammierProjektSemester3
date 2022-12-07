@@ -43,7 +43,7 @@ Links
 #### ai
 
 - [x] setships mergen
-- [ ] shooten bauen
+- [x] shooten bauen
 
 ## Anforderungen
 
