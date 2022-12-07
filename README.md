@@ -19,16 +19,21 @@ Links
 
 - [x] update auch tiles neben versenktem schiff
 - [ ] game_over: save player state, destroy player/logic
+- [ ] logic.Coordinate.row()" because "coordinate[i]" is null
 
 #### gui
 
 - [ ] sounds
-- [x] schiffe versenkt gui
+- [x] schiffe versenken gui
 - [x] buttons anpassen / removen
 - [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat)
 - [x] einige tiles sind dead?
 - [ ] höhere semester start button geht nicht
-- [x] alle tiles updaten, nicht nur shots
+- [x] alle tiles updaten, nicht nur shots bei versunkenem schiff
+- [ ] GameOver sceen wohin man kommt
+- [ ] Chat einbauen
+- [ ] Button für Random Schiffe plazieren
+- [ ] turnLabel anpassen ohne flimmern
 
 #### network
 
