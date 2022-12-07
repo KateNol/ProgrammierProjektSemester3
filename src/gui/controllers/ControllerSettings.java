@@ -1,14 +1,11 @@
 package gui.controllers;
 
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.media.MediaPlayer;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -105,7 +102,7 @@ public class ControllerSettings implements Initializable {
      * Return to Scene Menu
      */
     public void onReturn(){
-        AudioPlayer.playAudio(Audio.Click);
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 }

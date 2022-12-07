@@ -3,11 +3,9 @@ package gui.objekt;
 import gui.GUIPlayer;
 import gui.controllers.Audio;
 import gui.controllers.AudioPlayer;
-import gui.controllers.ControllerGame;
 import gui.tile.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -15,9 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import logic.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class GuiBoard {
@@ -143,14 +139,20 @@ public class GuiBoard {
                 case HIT -> {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                    if(isEnemyBoard){
+                        AudioPlayer.playSFX(Audio.Hit);
+                    }
                 }
                 case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    AudioPlayer.playAudio(Audio.Miss);
+                    if(isEnemyBoard){
+                        AudioPlayer.playSFX(Audio.Miss);
+                    }
                 }
                 case SUNK -> {
                     if (isEnemyBoard) {
+                        AudioPlayer.playSFX(Audio.Sink);
                         MapState[][] map = guiPlayer.getEnemyMap().getMap();
                         for (int row = 0; row < guiPlayer.getMapSize(); row++) {
                             for (int col = 0; col < guiPlayer.getMapSize(); col++) {
@@ -158,7 +160,7 @@ public class GuiBoard {
                                     case W -> {
                                         TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
                                         grid.add(tileWater, col + 1, row + 1, 1, 1);
-                                        this.sendShot(tileWater);
+                                        this.sendShot(tileWater);//??
                                     }
                                     case S -> {
                                         TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);

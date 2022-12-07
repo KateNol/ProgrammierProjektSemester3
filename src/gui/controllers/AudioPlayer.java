@@ -7,14 +7,21 @@ import java.io.File;
 
 public class AudioPlayer {
 
-  private static double sfxVolume;
-  private static double masterVolume;
-  private static double musicVolume;
+  private static double sfxVolume = 1.0;
+  private static double masterVolume = 1.0;
+  private static double musicVolume = 1.0;
 
-    public static void playAudio(Audio audio){
+    public static void playSFX(Audio audio){
         Media sound = new Media(new File(audio.getPathName()).toURI().toString());
         MediaPlayer player = new MediaPlayer(sound);
-        player.setVolume(sfxVolume);
+        player.setVolume(sfxVolume * masterVolume);
+        player.play();
+    }
+
+    public static void playMusic(Audio audio){
+        Media sound = new Media(new File(audio.getPathName()).toURI().toString());
+        MediaPlayer player = new MediaPlayer(sound);
+        player.setVolume(musicVolume * masterVolume);
         player.play();
     }
 

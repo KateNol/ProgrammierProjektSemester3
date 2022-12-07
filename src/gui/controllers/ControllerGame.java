@@ -3,6 +3,9 @@ package gui.controllers;
 import gui.GUIPlayer;
 import gui.Util;
 import gui.objekt.GuiBoard;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -44,6 +47,8 @@ public class ControllerGame implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        AudioPlayer.playMusic(Audio.BattleMusic2);
+
         instance = this;
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/game.jpg"));
 
