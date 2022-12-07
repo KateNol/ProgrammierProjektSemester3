@@ -50,6 +50,7 @@ public final class Contact extends Observable {
     private final Object beginLock = new Object();
 
     private boolean weBeginGame = false;
+    Thread commThread = null;
 
     Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
         this.serverMode = serverMode;
@@ -115,10 +116,10 @@ public final class Contact extends Observable {
     }
 
     private void init_communication() {
-        Thread comm = new Thread(this::receiveLoop);
-        comm.setName("Contact");
-        comm.setDaemon(true);
-        comm.start();
+        commThread = new Thread(this::receiveLoop);
+        commThread.setName("Contact");
+        commThread.setDaemon(true);
+        commThread.start();
 
         // if hosted, send HELLO
         if (serverMode == ServerMode.SERVER) {
@@ -131,7 +132,7 @@ public final class Contact extends Observable {
 
     private void receiveLoop() {
         try {
-            while (true) {
+            while (!commThread.isInterrupted()) {
                 String input = inReader.readLine();
                 if (input == null) {
                     throw new IOException("Network received null input, peer seems to have disconnected");
@@ -587,5 +588,9 @@ public final class Contact extends Observable {
         synchronized (beginLock) {
             return weBeginGame;
         }
+    }
+
+    public void endConnection() {
+        commThread.interrupt();
     }
 }
