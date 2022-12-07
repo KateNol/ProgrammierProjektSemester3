@@ -1,6 +1,8 @@
 package gui.objekt;
 
 import gui.GUIPlayer;
+import gui.controllers.Audio;
+import gui.controllers.AudioPlayer;
 import gui.controllers.ControllerGame;
 import gui.tile.*;
 import javafx.application.Platform;
@@ -145,6 +147,7 @@ public class GuiBoard {
                 case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                    AudioPlayer.playAudio(Audio.Miss);
                 }
                 case SUNK -> {
                     if (isEnemyBoard) {
