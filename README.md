@@ -10,25 +10,25 @@ Links
 #### all
 
 - [ ] genaue anforderungen herausarbeiten
-- [x] semester implementieren und testen
+- [ ] semester implementieren und testen (semester increase/decrease, testen)
 - [ ] überraschung
-- [ ] game_over: save player state, destroy player/logic
 - [x] ordner playerConfig erstellen wenn nicht vorhanden
-- [ ] bei beenden alle threads mitbeenden
+- [ ] mehrere spiele hintereinander spielen fixen
 
 #### logic/player
 
 - [x] update auch tiles neben versenktem schiff
+- [ ] game_over: save player state, destroy player/logic
 
 #### gui
 
 - [ ] sounds
-- [ ] schiffe versenkt gui
-- [ ] buttons anpassen / removen
+- [x] schiffe versenkt gui
+- [x] buttons anpassen / removen
 - [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat)
-- [ ] einige tiles sind dead?
+- [x] einige tiles sind dead?
 - [ ] höhere semester start button geht nicht
-- [ ] alle tiles updaten, nicht nur shots
+- [x] alle tiles updaten, nicht nur shots
 
 #### network
 
