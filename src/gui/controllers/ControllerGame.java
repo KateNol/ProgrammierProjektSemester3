@@ -32,6 +32,8 @@ public class ControllerGame implements Initializable {
     private VBox enemyBoard;
     @FXML
     private VBox myBoard;
+    @FXML
+    private Label winnerLabel;
 
     private static ControllerGame instance = null;
 
@@ -53,11 +55,18 @@ public class ControllerGame implements Initializable {
         selfLabel.setText(guiPlayer.getUsername());
         enemyLabel.setText(guiPlayer.getEnemyUsername());
 
+        if(guiPlayer.getWeBegin()){
+            turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
+        } else {
+            turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
+        }
+
         //Control if Game over
         turnLabel.textProperty().addListener((observableValue, oldVal, newVal) -> {
             Util.log_debug(oldVal);
             Util.log_debug(newVal);
-            if(guiPlayer.isGameOver()){
+            if(false){
+                Util.log_debug("game over");
                 openEndScreen();
             }
         });
@@ -69,6 +78,10 @@ public class ControllerGame implements Initializable {
 
     public Label getTurnLabel(){
         return turnLabel;
+    }
+
+    public Label getWinnerLabel(){
+        return winnerLabel;
     }
 
     /**

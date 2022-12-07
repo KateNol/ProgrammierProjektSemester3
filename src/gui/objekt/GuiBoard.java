@@ -25,8 +25,6 @@ public class GuiBoard {
     private int shipPlaced = 0;
     private final boolean isEnemyBoard;
     private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
-    private ControllerGame controllerGame = null;
-    private Label turnLabel;
 
     /**
      * Gui object for the board
@@ -137,40 +135,19 @@ public class GuiBoard {
         });
     }
 
-    public void setControllerGame(){
-        if(controllerGame == null){
-            controllerGame = ControllerGame.getInstance();
-            turnLabel = controllerGame.getTurnLabel();
-        }
-    }
-
-    public void setTurn(){
-        setControllerGame();
-        if(GUIPlayer.getInstance().getTurn()){
-            turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
-            guiPlayer.setTurn(false);
-        } else {
-            turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
-            guiPlayer.setTurn(true);
-        }
-    }
-
     public void updateBoard(ShotResult shotResult, Coordinate coordinate) {
         Platform.runLater(() -> {
             switch (shotResult) {
                 case HIT -> {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    setTurn();
                 }
                 case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    setTurn();
                 }
                 case SUNK -> {
                     if (isEnemyBoard) {
-                        setTurn();
                         MapState[][] map = guiPlayer.getEnemyMap().getMap();
                         for (int row = 0; row < guiPlayer.getMapSize(); row++) {
                             for (int col = 0; col < guiPlayer.getMapSize(); col++) {
@@ -198,7 +175,6 @@ public class GuiBoard {
                     } else {
                         TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                         grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                        setTurn();
                     }
                 }
             }

@@ -97,6 +97,8 @@ public abstract class Player extends Observable {
 
     public abstract boolean getWeBegin();
 
+    public abstract void onGameOver(String winner);
+
     /**
      * method for setting ships on the map. Helpermethods for this method is the addShip(...)-Method
      * has to be implemented by ai/gui-player

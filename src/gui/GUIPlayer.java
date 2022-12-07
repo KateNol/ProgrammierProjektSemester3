@@ -1,7 +1,9 @@
 package gui;
 
+import gui.controllers.ControllerGame;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -49,12 +51,12 @@ public class GUIPlayer extends NetworkPlayer {
         return instance;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean getTurn(){
-        return turn;
+    public void onGameOver(String winner) {
+        super.onGameOver(winner);
+        Platform.runLater(() -> {
+            ControllerGame.getInstance().openEndScreen();
+            ControllerGame.getInstance().getWinnerLabel().setText(winner);
+        });
     }
 
     public void setTurn(boolean turn){
@@ -64,8 +66,9 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     public void notifyObservers(Object arg){
         super.notifyObservers(arg);
-        if(arg instanceof String argsString){
-            if(argsString.equals("game over")){
+        if(arg instanceof String argStr){
+            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover")) {
+                log_debug("GUI game over");
                 gameOver = true;
             }
         }
@@ -81,6 +84,10 @@ public class GUIPlayer extends NetworkPlayer {
 
     @Override
     public Coordinate getShot() {
+        Platform.runLater(() -> {
+            if (ControllerGame.getInstance() != null)
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
+        });
         turn = false;
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
@@ -99,6 +106,10 @@ public class GUIPlayer extends NetworkPlayer {
         }
         log_debug("got shot from GUIPlayer at " + shotCopy);
 
+        Platform.runLater(() -> {
+            if (ControllerGame.getInstance() != null)
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
+        });
         return shotCopy;
     }
 

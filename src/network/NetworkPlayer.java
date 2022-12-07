@@ -129,6 +129,11 @@ public abstract class NetworkPlayer extends Player {
         sendMessage("BYE");
     }
 
+    public void onGameOver(String winner) {
+        sendEnd(winner);
+        sendBye();
+    }
+
     /**
      * Adds an observer to the set of observers for this object, provided
      * that it is not the same as some observer already in the set.
