@@ -13,10 +13,8 @@ import static network.internal.Util.log_debug;
 public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
-
     private int mapSize;
     private boolean globalConfigLoaded;
-
     private ArrayList<Ship> ships = null; // List of ships the player has
     protected Map myMap = null; // own map, that contains the state of the ships and the shots the enemy took
     protected Map enemyMap = null; // enemy map, contains information about whether the shot was a hit or miss

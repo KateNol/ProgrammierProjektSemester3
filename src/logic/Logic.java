@@ -1,10 +1,13 @@
 package logic;
 
+import gui.controllers.FileController;
 import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
 import network.NetworkPlayer;
 import network.ServerMode;
 
+import java.io.File;
+import java.io.ObjectOutputStream;
 import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
@@ -89,11 +92,11 @@ public class Logic implements Observer {
         } else {
             switchState(State.EnemyTurn);
         }
-
+        //TODO get actual winner
         String winner = player.getServerMode() != ServerMode.SERVER ? "host" : "client";
 
         // begin loop
-        while (state != State.GameOver) {
+        do {
             switch (state) {
                 case OurTurn -> {
                     // our turn, ask our player for a move
@@ -136,14 +139,25 @@ public class Logic implements Observer {
                         switchState(State.OurTurn);
                     }
                 }
+                case GameOver -> {
+                    log_debug(winner);
+                    //TODO in-/decrease maxSemester
+                    for(int i = 0; i < 3; i++) {
+                        String fileName = FileController.getFileName(i);
+                        if(fileName.contains(player.getUsername())) {
+                            int number = fileName.charAt(0);
+                        }
+                    }
+                    player.onGameOver(winner);
+
+                }
             }
-        }
-        player.onGameOver(winner);
+        } while (state != State.GameOver);
     }
 
     private synchronized void switchState(State newState) {
-        if (state == State.GameOver)
-            return;
+        /*if (state == State.GameOver)
+            return;*/
         log_debug("switching state: " + state + " -> " + newState);
         state = newState;
     }

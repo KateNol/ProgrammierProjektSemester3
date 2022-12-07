@@ -76,8 +76,11 @@ public class FileController {
      */
     public static void writeToFile(PlayerConfig playerConfig, int slot) throws IOException {
         String absolutePath = "playerConfig/" + slot + "" +playerConfig.getUsername() + ".bin";
-        listOfFiles.add(new File(absolutePath));
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
+        File f = new File(absolutePath);
+        if(f.createNewFile()) {
+            listOfFiles.add(f);
+        }
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
         oos.writeObject(playerConfig);
         oos.close();
     }
