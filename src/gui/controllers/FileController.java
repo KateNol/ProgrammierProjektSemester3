@@ -68,6 +68,17 @@ public class FileController {
         return s.substring(1, s.length() - 4);
     }
 
+    public static Character getSlot(String name){
+        for (File filename: listOfFiles) {
+            String fileName = filename.getName();
+            String tempName = fileName.substring(1, fileName.length() - 4);
+            if(name.equals(tempName)){
+                return fileName.charAt(0);
+            }
+        }
+        return null;
+    }
+
     /**
      * writes the current Player state and saves it in a Binary file
      * @param playerConfig playerConfig from Player
@@ -81,6 +92,14 @@ public class FileController {
             listOfFiles.add(f);
         }
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+        oos.writeObject(playerConfig);
+        oos.close();
+    }
+
+    public static void updateFile(PlayerConfig playerConfig) throws IOException {
+        String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
+        listOfFiles.add(new File(absolutePath));
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
         oos.writeObject(playerConfig);
         oos.close();
     }
