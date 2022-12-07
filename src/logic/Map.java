@@ -32,6 +32,16 @@ public class Map {
         return map[c.row()][c.col()];
     }
 
+    public MapState getState(int i, int j) {
+        return map[i][j];
+    }
+    public boolean inBounds(Coordinate c) {
+        return inBounds(c.row(), c.col());
+    }
+    public boolean inBounds(int i, int j) {
+        return i>=0 && j>=0 && i<getMapSize() && j<getMapSize();
+    }
+
     public MapState[][] getMap() {
         return map;
     }
@@ -50,4 +60,5 @@ public class Map {
     }
 
     public int getMapSize() {return boardSize;}
+
 }

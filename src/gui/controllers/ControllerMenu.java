@@ -35,6 +35,7 @@ public class ControllerMenu implements Initializable {
             }
         }
         FileController.checkIfFileExists();
+        AudioPlayer.playAudio(Audio.Click);
         ViewSwitcher.switchTo(View.FileManager);
     }
 
@@ -42,6 +43,7 @@ public class ControllerMenu implements Initializable {
      * Switch to Screen Rule
      */
     public void onRules(){
+        AudioPlayer.playAudio(Audio.Click);
         ViewSwitcher.switchTo(View.Rules);
     }
 
@@ -49,6 +51,7 @@ public class ControllerMenu implements Initializable {
      * Switch to Screen Settings
      */
     public void onSettings(){
+        AudioPlayer.playAudio(Audio.Click);
         ViewSwitcher.switchTo(View.Settings);
     }
 
@@ -56,6 +59,7 @@ public class ControllerMenu implements Initializable {
      * Close Game
      */
     public void onExit(){
+        AudioPlayer.playAudio(Audio.Click);
         Platform.exit();
     }
 }

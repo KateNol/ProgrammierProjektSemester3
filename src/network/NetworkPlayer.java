@@ -132,6 +132,7 @@ public abstract class NetworkPlayer extends Player {
     public void onGameOver(String winner) {
         sendEnd(winner);
         sendBye();
+        contact.endConnection();
     }
 
     /**
