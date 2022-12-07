@@ -226,7 +226,7 @@ public abstract class Player extends Observable {
         switch(res) {
             case HIT -> {enemyMap.setState(c, MapState.H);}
             case MISS -> {enemyMap.setState(c, MapState.M);}
-            case SUNK -> {enemyMap.setState(c, MapState.H); shipSunk(enemyMap, c);}
+            case SUNK -> {enemyMap.setState(c, MapState.H); shipSunk(c);}
         }
     }
 
@@ -234,49 +234,48 @@ public abstract class Player extends Observable {
      * helper for updateMapState(...) to handle the changes on enemymap in case the response is sunk
      * @param c
      */
-    //TODO update tiles around
-    private void shipSunk(Map map, Coordinate c) {
+    private void shipSunk(Coordinate c) {
         log_debug("Pathfinding shipSunk");
-        if(map.getState(c) == MapState.H) {
-            map.setState(c, MapState.D);
+        if(enemyMap.getState(c) == MapState.H) {
+            enemyMap.setState(c, MapState.D);
             if (c.row() - 1 > 0)
-                shipSunk(map, new Coordinate(c.row() - 1, c.col())); //look west
+                shipSunk(new Coordinate(c.row() - 1, c.col())); //look west
             if (c.col() - 1 > 0)
-                shipSunk(map, new Coordinate(c.row(), c.col() - 1)); //look north
+                shipSunk(new Coordinate(c.row(), c.col() - 1)); //look north
             if (c.row() + 1 < mapSize)
-                shipSunk(map, new Coordinate(c.row() + 1, c.col())); //look east
+                shipSunk(new Coordinate(c.row() + 1, c.col())); //look east
             if (c.col() + 1 < mapSize)
-                shipSunk(map, new Coordinate(c.row(), c.col() + 1)); //look south
+                shipSunk(new Coordinate(c.row(), c.col() + 1)); //look south
 
             // mark all surrounding tiles as miss
             int i = c.row();
             int j = c.col();
-            int mapMax = map.getMapSize() - 1;
+            int mapMax = enemyMap.getMapSize() - 1;
             Coordinate coordinate;
             // up
-            if (map.getState(new Coordinate(i, Math.min(j + 1, mapMax))) == MapState.W)
-                map.setState(new Coordinate(i, Math.min(j + 1, mapMax)), MapState.M);
+            if (enemyMap.getState(new Coordinate(i, Math.min(j + 1, mapMax))) == MapState.W)
+                enemyMap.setState(new Coordinate(i, Math.min(j + 1, mapMax)), MapState.M);
             // up right
-            if (map.getState(new Coordinate(Math.min(i + 1, mapMax), Math.min(j + 1, mapMax))) == MapState.W)
-                map.setState(new Coordinate(Math.min(i + 1, mapMax), Math.min(j + 1, mapMax)), MapState.M);
+            if (enemyMap.getState(new Coordinate(Math.min(i + 1, mapMax), Math.min(j + 1, mapMax))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.min(i + 1, mapMax), Math.min(j + 1, mapMax)), MapState.M);
             // up left
-            if (map.getState(new Coordinate(Math.max(i - 1, 0), Math.min(j + 1, mapMax))) == MapState.W)
-                map.setState(new Coordinate(Math.max(i - 1, 0), Math.min(j + 1, mapMax)), MapState.M);
+            if (enemyMap.getState(new Coordinate(Math.max(i - 1, 0), Math.min(j + 1, mapMax))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.max(i - 1, 0), Math.min(j + 1, mapMax)), MapState.M);
             // down
-            if (map.getState(new Coordinate(i, Math.max(j - 1, 0))) == MapState.W)
-                map.setState(new Coordinate(i, Math.max(j - 1, 0)), MapState.M);
+            if (enemyMap.getState(new Coordinate(i, Math.max(j - 1, 0))) == MapState.W)
+                enemyMap.setState(new Coordinate(i, Math.max(j - 1, 0)), MapState.M);
             // down right
-            if (map.getState(new Coordinate(Math.min(i + 1, mapMax), Math.max(j - 1, 0))) == MapState.W)
-                map.setState(new Coordinate(Math.min(i + 1, mapMax), Math.max(j - 1, 0)), MapState.M);
+            if (enemyMap.getState(new Coordinate(Math.min(i + 1, mapMax), Math.max(j - 1, 0))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.min(i + 1, mapMax), Math.max(j - 1, 0)), MapState.M);
             // down left
-            if (map.getState(new Coordinate(Math.max(i - 1, 0), Math.max(j - 1, 0))) == MapState.W)
-                map.setState(new Coordinate(Math.max(i - 1, 0), Math.max(j - 1, 0)), MapState.M);
+            if (enemyMap.getState(new Coordinate(Math.max(i - 1, 0), Math.max(j - 1, 0))) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.max(i - 1, 0), Math.max(j - 1, 0)), MapState.M);
             // right
-            if (map.getState(new Coordinate(Math.min(i + 1, mapMax), j)) == MapState.W)
-                map.setState(new Coordinate(Math.min(i + 1, mapMax), j), MapState.M);
+            if (enemyMap.getState(new Coordinate(Math.min(i + 1, mapMax), j)) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.min(i + 1, mapMax), j), MapState.M);
             // left
-            if (map.getState(new Coordinate(Math.max(i - 1, 0), j)) == MapState.W)
-                map.setState(new Coordinate(Math.max(i - 1, 0), j), MapState.M);
+            if (enemyMap.getState(new Coordinate(Math.max(i - 1, 0), j)) == MapState.W)
+                enemyMap.setState(new Coordinate(Math.max(i - 1, 0), j), MapState.M);
 
         }
     }
@@ -330,7 +329,9 @@ public abstract class Player extends Observable {
                         shotResult =  ShotResult.HIT;
                     }
                     if (shipHealth == 0) {
-                        shipSunk(myMap, shot);
+                        for(Coordinate c: s.getPos()) {
+                            myMap.setState(c, MapState.D);
+                        }
                         destroyedShip = s;
                         shotResult = ShotResult.SUNK;
                     }
