@@ -1,14 +1,49 @@
 # Gruppe07
 
-Links 
+Links
+
 - [Netzwerk Protokoll Repo](https://lab.it.hs-hannover.de/tcm-ss5-u1/progpr22-23-api)
 - [Academic Cloud Ordner](https://sync.academiccloud.de/index.php/apps/files/?dir=/ProgProj2223)
 
+## ToDo - bis 07.12
 
+#### all
+
+- [ ] genaue anforderungen herausarbeiten
+- [ ] semester implementieren und testen (semester increase/decrease, testen)
+- [ ] überraschung
+- [x] ordner playerConfig erstellen wenn nicht vorhanden
+- [ ] mehrere spiele hintereinander spielen fixen
+
+#### logic/player
+
+- [x] update auch tiles neben versenktem schiff
+- [ ] game_over: save player state, destroy player/logic
+
+#### gui
+
+- [ ] sounds
+- [x] schiffe versenkt gui
+- [x] buttons anpassen / removen
+- [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat)
+- [x] einige tiles sind dead?
+- [ ] höhere semester start button geht nicht
+- [x] alle tiles updaten, nicht nur shots
+
+#### network
+
+- [ ] verbindungsabbruch was tun
+- [ ] mit begin warten bis gui go gibt
+
+#### ai
+
+- [x] setships mergen
+- [ ] shooten bauen
 
 ## Anforderungen
 
 ### Anforderungen an den Einzelnen
+
 - [x] klar definierte Aufgabe im Team und absolute Ergebnisverantwortung
 - [ ] Mindestens 1000 Zeilen Code
 - [ ] Sorgfältige Kommentierung und Dokumentation seines Codes

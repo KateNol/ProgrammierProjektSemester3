@@ -3,6 +3,7 @@ package logic;
 import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
 import network.NetworkPlayer;
+import network.ServerMode;
 
 import java.util.Deque;
 import java.util.Observable;
@@ -68,16 +69,18 @@ public class Logic implements Observer {
      */
     private void logicGameLoop() {
         switchState(State.Start);
-
         // wait for both players to connect
         while (!player.getIsConnectionEstablished()) ;
         log_debug("both players connected");
+        log_debug("the game will be played in semester " + player.getNegotiatedSemester());
+        player.loadGlobalConfig();
+        player.setMaxSemester(player.getNegotiatedSemester());
         switchState(State.PlayersReady);
 
         player.setShips();
         switchState(State.GameReady);
         player.setReadyToBegin();
-        while (!player.getEnemyReadyToBegin());
+        while (!player.getEnemyReadyToBegin()) ;
 
         // get info on who begins
         // TODO get actual info, for now server always begins
@@ -87,7 +90,7 @@ public class Logic implements Observer {
             switchState(State.EnemyTurn);
         }
 
-        String winner = player.getUsername().equalsIgnoreCase("host") ? "host" : "client";
+        String winner = player.getServerMode() != ServerMode.SERVER ? "host" : "client";
 
         // begin loop
         while (state != State.GameOver) {
@@ -125,9 +128,8 @@ public class Logic implements Observer {
                     player.sendShotResponse(shotResult, gameOver);
                     if (gameOver) {
                         log_debug("game over, we lost!");
-                        winner = player.getUsername().equalsIgnoreCase("host") ? "host" : "client";
+                        winner = player.getServerMode() == ServerMode.SERVER ? "host" : "client";
                         switchState(State.GameOver);
-                        ViewSwitcher.switchTo(View.Menu);
                     } else if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                         switchState(State.EnemyTurn);
                     } else {
@@ -136,8 +138,7 @@ public class Logic implements Observer {
                 }
             }
         }
-        player.sendEnd(winner);
-        player.sendBye();
+        player.onGameOver(winner);
     }
 
     private synchronized void switchState(State newState) {

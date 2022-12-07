@@ -20,9 +20,11 @@ public abstract class NetworkPlayer extends Player {
      */
     public NetworkPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        contact = null;
     }
 
     public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
+        log_debug("establishing connection with " + serverMode);
         setServerMode(serverMode);
         switch (serverMode) {
             case SERVER -> {
@@ -50,12 +52,26 @@ public abstract class NetworkPlayer extends Player {
         establishConnection(ServerMode.SERVER, defaultAddress, defaultPort);
     }
 
+    public void abortEstablishConnection() {
+        switch (getServerMode()) {
+            case SERVER -> {
+                Server.abort();
+            }
+            case CLIENT -> {
+                Client.abort();
+            }
+        }
+        this.contact = null;
+    }
+
     public void sendMessage(String msg) {
         contact.sendRawMessage(msg);
     }
 
     @Override
     public boolean getIsConnectionEstablished() {
+        if (contact == null)
+            return false;
         return contact.getIsConnectionEstablished();
     }
 
@@ -113,6 +129,11 @@ public abstract class NetworkPlayer extends Player {
         sendMessage("BYE");
     }
 
+    public void onGameOver(String winner) {
+        sendEnd(winner);
+        sendBye();
+    }
+
     /**
      * Adds an observer to the set of observers for this object, provided
      * that it is not the same as some observer already in the set.
@@ -130,8 +151,10 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public void notifyObservers(Object arg) {
-        new Thread(() -> {
+        Thread notifyThread = new Thread(() -> {
             super.notifyObservers(arg);
-        }).start();
+        });
+        notifyThread.setName("NetworkNotify");
+        notifyThread.start();
     }
 }

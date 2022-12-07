@@ -7,7 +7,10 @@ import network.NetworkPlayer;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
+import static logic.Util.log_debug;
 import static network.debug.Driver.scanner;
 
 /**
@@ -21,17 +24,39 @@ public final class ConsolePlayer extends NetworkPlayer {
         super(playerConfig);
     }
 
+    public ConsolePlayer(String name, int semester) {
+        this(new PlayerConfig(""));
+        setUsername(name);
+        setMaxSemester(semester);
+    }
+
     /**
      * gets userinput from console to set the ships
      */
     @Override
     protected void setShips() {
-        addShip(getShips().get(0), new Coordinate(5, 4), Alignment.VERT_DOWN);
-        addShip(getShips().get(1), new Coordinate(12, 2), Alignment.VERT_DOWN);
-        addShip(getShips().get(2), new Coordinate(8, 6), Alignment.HOR_LEFT);
-        addShip(getShips().get(3), new Coordinate(4, 8), Alignment.VERT_UP);
-        addShip(getShips().get(4), new Coordinate(9, 9), Alignment.VERT_DOWN);
-        addShip(getShips().get(5), new Coordinate(4, 13), Alignment.VERT_DOWN);
+        Random coord = new Random();
+        ArrayList<Ship> ships = getArrayListShips();
+
+        for (Ship ship : ships) {
+            boolean placed = true;
+            do {
+                int x = coord.nextInt(myMap.getMapSize() - 1);
+                int y = coord.nextInt(myMap.getMapSize() - 1);
+                Coordinate coordinate = new Coordinate(x, y);
+                Alignment alignment = coord.nextBoolean() ? Alignment.VERT_DOWN : Alignment.HOR_RIGHT;
+                try {
+                    placed = addShip(ship, coordinate, alignment);
+                } catch (IllegalArgumentException e) {
+                    placed = false;
+                }
+                if (placed) {
+                    log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
+                }
+            } while (!placed);
+
+        }
+
     }
 
     /**

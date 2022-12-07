@@ -1,8 +1,11 @@
 package gui;
 
+import gui.controllers.ControllerGame;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
@@ -12,20 +15,26 @@ import static logic.Util.log_debug;
 public class GUIPlayer extends NetworkPlayer {
     private static GUIPlayer instance = null;
     private int tileSize;
-    private GuiBoard guiBoard;
+
+    //Board and Ships
     private GuiHarbour guiHarbour;
+    private GuiBoard guiBoard;
     private GuiBoard guiEnemyBoard;
+
     private Button startButton;
 
     private Alignment alignment = Alignment.HOR_RIGHT;
     private boolean shipsPlaced = false;
     private Coordinate shotCoordinate = null;
 
+    private boolean gameOver;
+    private boolean turn;
+
     private final Object lock = new Object();
 
     /**
      * Create a GuiPlayer
-     * @param playerConfig
+     * @param playerConfig Save file from the player
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
@@ -42,15 +51,44 @@ public class GUIPlayer extends NetworkPlayer {
         return instance;
     }
 
+    public void onGameOver(String winner) {
+        super.onGameOver(winner);
+        Platform.runLater(() -> {
+            ControllerGame.getInstance().openEndScreen();
+            ControllerGame.getInstance().getWinnerLabel().setText(winner);
+        });
+    }
+
+    public void setTurn(boolean turn){
+        this.turn = turn;
+    }
+
+    @Override
+    public void notifyObservers(Object arg){
+        super.notifyObservers(arg);
+        if(arg instanceof String argStr){
+            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover")) {
+                log_debug("GUI game over");
+                gameOver = true;
+            }
+        }
+    }
     //------------------------------------------------------
     @Override
     protected void setShips() {
-        while (getShips() == null || getShips().size() < globalConfig.getShips(1).size() || !shipsPlaced);
+        if (!getIsConnectionEstablished())
+            System.exit(1);
+        while (getShips() == null || getShips().size() < GlobalConfig.getShips(1).size() || !shipsPlaced) ;
         startButton.setDisable(false);
     }
 
     @Override
     public Coordinate getShot() {
+        Platform.runLater(() -> {
+            if (ControllerGame.getInstance() != null)
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
+        });
+        turn = false;
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
         try {
@@ -68,6 +106,10 @@ public class GUIPlayer extends NetworkPlayer {
         }
         log_debug("got shot from GUIPlayer at " + shotCopy);
 
+        Platform.runLater(() -> {
+            if (ControllerGame.getInstance() != null)
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
+        });
         return shotCopy;
     }
 
@@ -91,9 +133,9 @@ public class GUIPlayer extends NetworkPlayer {
      * @param boardPosition   Position on Screen
      * @param harbourPosition Position on Screen
      */
-    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button) {
+    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button, Label failLabel) {
         this.startButton = startButton;
-        this.guiBoard = new GuiBoard(tileSize, false);
+        this.guiBoard = new GuiBoard(tileSize, false, failLabel);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
         this.startButton = startButton;
         guiBoard.initializeBoard(boardPosition);
@@ -102,7 +144,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create enemy Board
-     * @param enemyBoard
+     * @param enemyBoard play field from the enemy
      */
     public void createEnemyBoard(VBox enemyBoard){
         guiEnemyBoard = new GuiBoard(tileSize, true);
@@ -151,7 +193,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Set alignment
-     * @param alignment
+     * @param alignment direction from the ship
      */
     public void setAlignment(Alignment alignment) {
         this.alignment = alignment;
@@ -159,7 +201,7 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * notify when all Ships are placed or reset
-     * @param b
+     * @param b if all ships where placed
      */
     public void confirmShipsPlaced(Boolean b){
         this.shipsPlaced = b;

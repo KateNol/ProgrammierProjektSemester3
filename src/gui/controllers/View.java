@@ -9,7 +9,7 @@ public enum View {
     Lobby("/gui/fxml/Lobby.fxml"), //Lobby Screen
     Game("/gui/fxml/Game.fxml"); //Game Screen
 
-    private String fileName;
+    private final String fileName;
 
     /**
      * Manage Screen handling

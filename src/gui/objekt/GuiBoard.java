@@ -1,31 +1,42 @@
 package gui.objekt;
 
 import gui.GUIPlayer;
+import gui.controllers.ControllerGame;
 import gui.tile.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import logic.Alignment;
-import logic.Coordinate;
-import logic.ShotResult;
-import logic.Util;
+import logic.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 public class GuiBoard {
-
+    private Label failLabel;
     private GridPane grid;
-    private int tileSize;
+    private final int tileSize;
     private int shipPlaced = 0;
-    private boolean isEnemyBoard;
-    private GUIPlayer guiPlayer = GUIPlayer.getInstance();
+    private final boolean isEnemyBoard;
+    private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
     /**
      * Gui object for the board
      * @param tileSize
      * @param isEnemyBoard
      */
+    public GuiBoard(int tileSize, boolean isEnemyBoard, Label failedLabel) {
+        this.failLabel = failedLabel;
+        this.tileSize = tileSize;
+        this.isEnemyBoard = isEnemyBoard;
+    }
+
     public GuiBoard(int tileSize, boolean isEnemyBoard) {
         this.tileSize = tileSize;
         this.isEnemyBoard = isEnemyBoard;
@@ -44,18 +55,18 @@ public class GuiBoard {
                 if(row == 0 && col == 0){
                     TileBoardText tbt = new TileBoardText(new Coordinate(row, col),tileSize,"");
                     grid.add(tbt, row, col, 1, 1);
-                    Node node = getNodeByRowColumnIndex(row, col, grid);
+                    Node node = getNodeByRowColumnIndex(row, col);
                     node.setDisable(true);
                 } else {
                     if(row == 0){
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + (char) ('A' + col - 1));
                         grid.add(tbt, col, row, 1, 1);
-                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        Node node = getNodeByRowColumnIndex(row, col);
                         node.setDisable(true);
                     } else if (col == 0) {
                         TileBoardText tbt = new TileBoardText(new Coordinate(row, col), tileSize,"" + row);
                         grid.add(tbt, col, row, 1, 1);
-                        Node node = getNodeByRowColumnIndex(row, col, grid);
+                        Node node = getNodeByRowColumnIndex(row, col);
                         node.setDisable(true);
                     } else {
                         TileWater tile = new TileWater(new Coordinate(row, col), tileSize);
@@ -80,6 +91,7 @@ public class GuiBoard {
         node.setOnMouseClicked(e -> {
             if(e.getSource() instanceof TileWater){
                 if (shipPlaced == guiPlayer.getShips().size()) {
+                    //send ship placed but not start game clicked
                     node.setDisable(true);
                 } else {
                     TileWater tileWater = (TileWater) e.getSource();
@@ -93,6 +105,15 @@ public class GuiBoard {
                         if (shipPlaced == guiPlayer.getShips().size()) {
                             guiPlayer.confirmShipsPlaced(true);
                         }
+                    } else {
+                        ArrayList<String> failPrompt = new ArrayList<>();
+                        failPrompt.add("Failed Placing Ships");
+                        failPrompt.add("You suck at placing Ship's");
+                        failPrompt.add("Are you serious?");
+                        failPrompt.add("You are still failing");
+                        failPrompt.add("What is wrong with you?");
+                        Random rand = new Random();
+                        failLabel.setText(failPrompt.get(rand.nextInt(failPrompt.size())));
                     }
                 }
             }
@@ -117,20 +138,44 @@ public class GuiBoard {
     public void updateBoard(ShotResult shotResult, Coordinate coordinate) {
         Platform.runLater(() -> {
             switch (shotResult) {
-                case HIT: {
+                case HIT -> {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    break;
                 }
-                case MISS: {
+                case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    break;
                 }
-                case SUNK: {
-                    TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
-                    grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
-                    break;
+                case SUNK -> {
+                    if (isEnemyBoard) {
+                        MapState[][] map = guiPlayer.getEnemyMap().getMap();
+                        for (int row = 0; row < guiPlayer.getMapSize(); row++) {
+                            for (int col = 0; col < guiPlayer.getMapSize(); col++) {
+                                switch (map[row][col]) {
+                                    case W -> {
+                                        TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileWater, col + 1, row + 1, 1, 1);
+                                        this.sendShot(tileWater);
+                                    }
+                                    case S -> {
+                                        TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileShip, col + 1, row + 1, 1, 1);
+                                    }
+                                    case H, D -> {
+                                        TileHit tileHit = new TileHit(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileHit, col + 1, row + 1, 1, 1);
+                                    }
+                                    case M -> {
+                                        TileMiss tileMiss = new TileMiss(new Coordinate(row + 1, col + 1), tileSize);
+                                        grid.add(tileMiss, col + 1, row + 1, 1, 1);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
+                        grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
+                    }
                 }
             }
         });
@@ -313,15 +358,14 @@ public class GuiBoard {
      * Get Node by Row, Column Index
      * @param row
      * @param column
-     * @param gridPane
      * @return
      */
-    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+    public Node getNodeByRowColumnIndex (final int row, final int column) {
         Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
+        ObservableList<Node> childrens = grid.getChildren();
 
         for (Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+            if(grid.getRowIndex(node) == row && grid.getColumnIndex(node) == column) {
                 result = node;
                 break;
             }
