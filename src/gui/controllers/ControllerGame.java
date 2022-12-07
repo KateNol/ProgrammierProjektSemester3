@@ -63,8 +63,8 @@ public class ControllerGame implements Initializable {
 
         //Control if Game over
         turnLabel.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            Util.log_debug(oldVal);
-            Util.log_debug(newVal);
+            Util.log_debug("oldVal: " +oldVal);
+            Util.log_debug("newVal: " +newVal);
             if(false){
                 Util.log_debug("game over");
                 openEndScreen();
