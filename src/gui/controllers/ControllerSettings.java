@@ -13,42 +13,42 @@ import java.util.ResourceBundle;
 
 public class ControllerSettings implements Initializable {
 
+    private static ControllerSettings instance = null;
 
     private final String fullHd = "1920 x 1080";
-
     private final String hd = "1280 x 720";
-
     private final String full = "Full Screen";
-
     private final String window = "Window Screen";
 
     @FXML
-    private Label labelMaster;
-
-    @FXML
-    private Label labelMusic;
-
-    @FXML
-    private Label labelSFX;
-
+    private ComboBox<String> windowMode;
     @FXML
     private ComboBox<String> resolution;
 
     @FXML
-    private Slider sliderMaster;
-
+    private Slider sliderMaster, sliderSFX, sliderVolume;
     @FXML
-    private Slider sliderSFX;
+    private Label labelMaster, labelMusic, labelSFX;
 
-    @FXML
-    private Slider sliderVolume;
+    public static ControllerSettings getInstance(){
+        return instance;
+    }
 
-    @FXML
-    private ComboBox<String> windowMode;
+    public Slider getSliderMaster() {
+        return sliderMaster;
+    }
 
+    public Slider getSliderSFX() {
+        return sliderSFX;
+    }
+
+    public Slider getSliderVolume() {
+        return sliderVolume;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        instance= this;
         String [] hdMode = {fullHd, hd};
         resolution.getItems().addAll(hdMode);
         resolution.setPromptText("HD Mode");
@@ -77,22 +77,25 @@ public class ControllerSettings implements Initializable {
         });
 
         sliderSFX.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-            double d = Math.round((double) newValue);
-            labelSFX.setText(Double.toString(d));
-            AudioPlayer.setSFXVolume(d);
+            double d = (double) newValue;
+            int volume = (int) (Math.round(d * Math.pow(10, 2)));
+            labelSFX.setText(Integer.toString(volume));
+            //AudioPlayer.setSFXVolume((double) volume/100);
         });
 
         sliderMaster.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-            double d = Math.round((double) newValue);
-            labelMaster.setText(Double.toString(d));
-            AudioPlayer.setMasterVolume(d);
+            double d = (double) newValue;
+            int volume = (int) (Math.round(d * Math.pow(10, 2)));
+            labelMaster.setText(Integer.toString(volume));
+            //AudioPlayer.setMasterVolume((double) volume/100);
 
         });
 
         sliderVolume.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-            double d = Math.round((double) newValue);
-            labelMusic.setText(Double.toString(d));
-            AudioPlayer.setMusicVolume(d);
+            double d = (double) newValue;
+            int volume = (int) (Math.round(d * Math.pow(10, 2)));
+            labelMusic.setText(Integer.toString(volume));
+            //AudioPlayer.setMasterVolume((double) volume/100);
         });
 
 

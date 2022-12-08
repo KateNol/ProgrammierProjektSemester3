@@ -7,22 +7,22 @@ import java.io.File;
 
 public class AudioPlayer {
 
-  private static double sfxVolume = 1.0;
-  private static double masterVolume = 1.0;
-  private static double musicVolume = 1.0;
+  private static double sfxVolume = 0.5;
+  private static double masterVolume = 0.5;
+  private static double musicVolume = 0.5;
+
+  private static ControllerSettings cs = ControllerSettings.getInstance();
 
     public static void playSFX(Audio audio){
-        Media sound = new Media(new File(audio.getPathName()).toURI().toString());
-        MediaPlayer player = new MediaPlayer(sound);
-        player.setVolume(sfxVolume * masterVolume);
-        player.play();
+        MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File(audio.getPathName()).toURI().toString()));
+        mediaPlayer.volumeProperty().bindBidirectional(cs.getSliderSFX().valueProperty());
+        mediaPlayer.play();
     }
 
     public static void playMusic(Audio audio){
-        Media sound = new Media(new File(audio.getPathName()).toURI().toString());
-        MediaPlayer player = new MediaPlayer(sound);
-        player.setVolume(musicVolume * masterVolume);
-        player.play();
+        MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File(audio.getPathName()).toURI().toString()));
+        mediaPlayer.volumeProperty().bindBidirectional(cs.getSliderVolume().valueProperty());
+        mediaPlayer.play();
     }
 
     public static void setSFXVolume(double sfxVolume){

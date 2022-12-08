@@ -98,12 +98,12 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER" prefWidth="200.0">
                                                    <children>
-                                                      <Slider fx:id="sliderMaster" majorTickUnit="50.0" showTickLabels="true" showTickMarks="true" value="50.0" />
+                                                      <Slider fx:id="sliderMaster" blockIncrement="0.01" majorTickUnit="50.0" max="1.0" value="0.5" />
                                                    </children>
                                                 </VBox>
                                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                                    <children>
-                                                      <Label fx:id="labelMaster">
+                                                      <Label fx:id="labelMaster" text="50">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -125,12 +125,12 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER" prefWidth="200.0">
                                                    <children>
-                                                      <Slider fx:id="sliderVolume" majorTickUnit="50.0" showTickLabels="true" showTickMarks="true" value="50.0" />
+                                                      <Slider fx:id="sliderVolume" blockIncrement="0.01" majorTickUnit="1.0" max="1.0" minorTickCount="1" value="0.5" />
                                                    </children>
                                                 </VBox>
                                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                                    <children>
-                                                      <Label fx:id="labelMusic">
+                                                      <Label fx:id="labelMusic" text="50">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -152,12 +152,12 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER" prefWidth="200.0">
                                                    <children>
-                                                      <Slider fx:id="sliderSFX" majorTickUnit="50.0" showTickLabels="true" showTickMarks="true" value="50.0" />
+                                                      <Slider fx:id="sliderSFX" blockIncrement="0.01" majorTickUnit="50.0" max="1.0" value="0.5" />
                                                    </children>
                                                 </VBox>
                                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                                    <children>
-                                                      <Label fx:id="labelSFX">
+                                                      <Label fx:id="labelSFX" text="50">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>

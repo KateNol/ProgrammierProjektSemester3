@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -69,6 +70,11 @@ public class ViewSwitcher {
         } catch (Exception e){
             log_debug("failed to Switch to " + view.toString());
         }
+    }
+
+    public static void setCache(View view) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
+        cache.put(view, root);
     }
 
     /**

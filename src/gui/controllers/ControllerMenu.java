@@ -20,7 +20,6 @@ public class ControllerMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        AudioPlayer.playMusic(Audio.MenuScreen);
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/Menu_Background.jpg"));
     }
 

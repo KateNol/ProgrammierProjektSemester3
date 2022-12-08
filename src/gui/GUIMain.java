@@ -1,5 +1,7 @@
 package gui;
 
+import gui.controllers.Audio;
+import gui.controllers.AudioPlayer;
 import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
 
@@ -31,6 +33,7 @@ public class GUIMain extends Application  {
         ViewSwitcher.setStage(stage);
         Scene scene = new Scene(new Pane());
         //Load Scene
+        ViewSwitcher.setCache(View.Settings);
         ViewSwitcher.setScene(scene);
         ViewSwitcher.switchTo(View.Menu);
 
@@ -46,6 +49,7 @@ public class GUIMain extends Application  {
 
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
+        AudioPlayer.playMusic(Audio.BattleMusic5);
 
         //Start application
         stage.show();

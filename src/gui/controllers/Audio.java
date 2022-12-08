@@ -9,11 +9,11 @@ public enum Audio {
     Lose("src/gui/audio/Lose.wav" ),
     Win("src/gui/audio/Victory.wav"),
     Click("src/gui/audio/mouseclick.wav"),
-    BattleMusic1("src/gui/audio/BattleTheme1.mp3"),
-    BattleMusic2("src/gui/audio/BattleTheme2.mp3"),
-    BattleMusic3("src/gui/audio/BattleTheme3.mp3"),
-    BattleMusic4("src/gui/audio/BattleTheme4.mp3"),
-    BattleMusic5("src/gui/audio/BattleTheme5.mp3"),
+    BattleMusic1("src/gui/audio/background/BattleTheme1.mp3"),
+    BattleMusic2("src/gui/audio/background/BattleTheme2.mp3"),
+    BattleMusic3("src/gui/audio/background/BattleTheme3.mp3"),
+    BattleMusic4("src/gui/audio/background/BattleTheme4.mp3"),
+    BattleMusic5("src/gui/audio/background/BattleTheme5.mp3"),
     MenuScreen("src/gui/audio/Background.wav");
 
 
