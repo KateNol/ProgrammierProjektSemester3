@@ -107,6 +107,7 @@ public class ControllerNetworkManager implements Initializable {
     }
 
     public void onConnect() throws IOException {
+        AudioPlayer.playSFX(Audio.Click);
         log_debug("on connect");
         multiplayerConnectTextfield.setVisible(false);
         multiplayerScene.setMouseTransparent(true);
@@ -138,6 +139,7 @@ public class ControllerNetworkManager implements Initializable {
     }
 
     public void onCancelConnection() {
+        AudioPlayer.playSFX(Audio.Click);
         multiplayerScene.setMouseTransparent(false);
         loadBox.setVisible(false);
         GUIPlayer.getInstance().abortEstablishConnection();
@@ -148,6 +150,7 @@ public class ControllerNetworkManager implements Initializable {
      * Return to File Manager
      */
     public void onReturn() {
+        AudioPlayer.playSFX(Audio.Click);
         addressTextfield.clear();
         portTextfield.clear();
         connectionFailed.setText("");
@@ -178,6 +181,7 @@ public class ControllerNetworkManager implements Initializable {
         if(multiplayerConnectTextfield.isVisible()){
             multiplayerConnectTextfield.setVisible(false);
         }
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Lobby);
     }
 
@@ -185,6 +189,7 @@ public class ControllerNetworkManager implements Initializable {
      * Choose MultiPlayer Mode
      */
     public void onMultiPlayer() {
+        AudioPlayer.playSFX(Audio.Click);
         multiplayerConnectTextfield.setVisible(true);
     }
 }

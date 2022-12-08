@@ -108,6 +108,7 @@ public class ControllerFileManager implements Initializable {
         if(userInput.isVisible()){
             userInput.setVisible(false);
         }
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 
@@ -115,6 +116,7 @@ public class ControllerFileManager implements Initializable {
      * Create or load File 1
      */
     public void onFile1() {
+        AudioPlayer.playSFX(Audio.Click);
         if (FileController.isFileOne()){
             loadPlayerFile(0);
             ViewSwitcher.switchTo(View.NetworkManager);
@@ -128,6 +130,7 @@ public class ControllerFileManager implements Initializable {
      * Create or load File 2
      */
     public void onFile2() {
+        AudioPlayer.playSFX(Audio.Click);
         if (FileController.isFileTwo()){
             loadPlayerFile(1);
             ViewSwitcher.switchTo(View.NetworkManager);
@@ -141,6 +144,7 @@ public class ControllerFileManager implements Initializable {
      * Create or load File 3
      */
     public void onFile3() {
+        AudioPlayer.playSFX(Audio.Click);
         if (FileController.isFileThree()){
             loadPlayerFile(2);
             ViewSwitcher.switchTo(View.NetworkManager);
@@ -177,6 +181,7 @@ public class ControllerFileManager implements Initializable {
      */
     public void setUsername(int i){
         create.setOnMouseClicked(mouseEvent -> {
+            AudioPlayer.playSFX(Audio.Click);
             if(isValidInput(nameInput.getText())){
                 switch (i) {
                     case 0 -> fileOne.setText(nameInput.getText() + " (1)");
@@ -210,6 +215,7 @@ public class ControllerFileManager implements Initializable {
      * Delete configFile
      */
     public void onDelete1(){
+        AudioPlayer.playSFX(Audio.Click);
         deleteOne.setOnMouseClicked(e -> {
             if(FileController.isFileOne()){
                 FileController.configDelete(0);
@@ -225,6 +231,7 @@ public class ControllerFileManager implements Initializable {
      * Delete configFile
      */
     public void onDelete2(){
+        AudioPlayer.playSFX(Audio.Click);
         deleteTwo.setOnMouseClicked(e -> {
             if(FileController.isFileTwo()){
                 FileController.configDelete(0);
@@ -240,6 +247,7 @@ public class ControllerFileManager implements Initializable {
      * Delete configFile
      */
     public void onDelete3(){
+        AudioPlayer.playSFX(Audio.Click);
         deleteThree.setOnMouseClicked(e -> {
             if(FileController.isFileThree()){
                 FileController.configDelete(0);

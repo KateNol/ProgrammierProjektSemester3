@@ -22,10 +22,12 @@ public class ControllerRules {
      * Return to Scene Menu
      */
     public void onReturn(){
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 
     public void changeRuleSite(){
+        AudioPlayer.playSFX(Audio.Click);
         if (switchPage){
             prepare.setVisible(false);
             ingame.setVisible(true);

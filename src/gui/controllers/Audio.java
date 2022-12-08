@@ -1,7 +1,7 @@
 package gui.controllers;
 
 public enum Audio {
-    PlaceShip(""),
+    PlaceShip("src/gui/audio/Splash.wav"),
     Shot("src/gui/audio/GunShot.wav"),
     Hit("src/gui/audio/HitExplosion.wav"),
     Sink("src/gui/audio/Sunk.wav"),

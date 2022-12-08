@@ -97,6 +97,7 @@ public class GuiBoard {
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
                     Util.log_debug("SetShipGUI = row: " + coordinate.row()  + " col: " + coordinate.col() + " " + "SetShipMapLogic = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
                     if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())) {
+                        AudioPlayer.playSFX(Audio.PlaceShip);
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
                         shipPlaced++;

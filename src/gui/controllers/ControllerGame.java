@@ -93,6 +93,7 @@ public class ControllerGame implements Initializable {
      * Return to Screen Menu
      */
     public void onExit(){
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 
@@ -106,14 +107,17 @@ public class ControllerGame implements Initializable {
      */
     public void onSurrender(){
         guiPlayer.abortEstablishConnection();
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 
     public void onPlayAgain(){
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Lobby);
     }
 
     public void onSwitchToMenu(){
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 }

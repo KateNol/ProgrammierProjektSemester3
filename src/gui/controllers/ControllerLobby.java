@@ -58,6 +58,7 @@ public class ControllerLobby implements Initializable {
     public void onBack(){
         guiPlayer.getGuiBoard().setShipPlaced();
         guiPlayer.confirmShipsPlaced(false);
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
 
@@ -65,6 +66,7 @@ public class ControllerLobby implements Initializable {
      * Switch to Screen Game
      */
     public void onStartGame(){
+        AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Game);
     }
 
@@ -74,6 +76,7 @@ public class ControllerLobby implements Initializable {
 
     public void setMyAlignment(){
         alignment.setOnMouseClicked(actionEvent -> {
+            AudioPlayer.playSFX(Audio.Click);
             switch (alignmentCounter) {
                 case 0 -> {
                     Util.log_debug("Horizontal_Right");
