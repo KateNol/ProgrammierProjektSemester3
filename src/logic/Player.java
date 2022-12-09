@@ -238,9 +238,9 @@ public abstract class Player extends Observable {
         log_debug("Pathfinding shipSunk");
         if(enemyMap.getState(c) == MapState.H) {
             enemyMap.setState(c, MapState.D);
-            if (c.row() - 1 > 0)
+            if (c.row() - 1 >= 0)
                 shipSunk(new Coordinate(c.row() - 1, c.col())); //look west
-            if (c.col() - 1 > 0)
+            if (c.col() - 1 >= 0)
                 shipSunk(new Coordinate(c.row(), c.col() - 1)); //look north
             if (c.row() + 1 < mapSize)
                 shipSunk(new Coordinate(c.row() + 1, c.col())); //look east

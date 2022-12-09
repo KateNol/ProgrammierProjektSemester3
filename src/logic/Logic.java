@@ -77,7 +77,6 @@ public class Logic implements Observer {
         log_debug("both players connected");
         log_debug("the game will be played in semester " + player.getNegotiatedSemester());
         player.loadGlobalConfig();
-        player.setMaxSemester(player.getNegotiatedSemester());
         switchState(State.PlayersReady);
 
         player.setShips();
@@ -96,7 +95,7 @@ public class Logic implements Observer {
         String winner = player.getServerMode() != ServerMode.SERVER ? "host" : "client";
 
         // begin loop
-        do {
+        while (state != State.GameOver) {
             switch (state) {
                 case OurTurn -> {
                     // our turn, ask our player for a move
@@ -140,24 +139,21 @@ public class Logic implements Observer {
                     }
                 }
                 case GameOver -> {
-                    log_debug(winner);
-                    //TODO in-/decrease maxSemester
-                    for(int i = 0; i < 3; i++) {
-                        String fileName = FileController.getFileName(i);
-                        if(fileName.contains(player.getUsername())) {
-                            int number = fileName.charAt(0);
-                        }
-                    }
-                    player.onGameOver(winner);
+
 
                 }
             }
-        } while (state != State.GameOver);
+        }
+
+        log_debug(winner);
+        //TODO in-/decrease maxSemester
+        player.getServerMode()
+        player.onGameOver(winner);
     }
 
     private synchronized void switchState(State newState) {
-        /*if (state == State.GameOver)
-            return;*/
+        if (state == State.GameOver)
+            return;
         log_debug("switching state: " + state + " -> " + newState);
         state = newState;
     }
