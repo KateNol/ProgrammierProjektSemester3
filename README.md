@@ -7,41 +7,39 @@ Links
 
 ## ToDo - bis 07.12
 
+### geordnet nach prioritaet
 #### all
-
-- [ ] genaue anforderungen herausarbeiten
-- [ ] semester implementieren und testen (semester increase/decrease, testen)
-- [ ] überraschung
-- [x] ordner playerConfig erstellen wenn nicht vorhanden
-- [ ] mehrere spiele hintereinander spielen fixen
+- [ ] semester implementieren und testen (semester increase/decrease, testen) (lukas) 12.
+- [ ] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
+- [ ] mehrere spiele hintereinander spielen fixen (jannik) 12.
+- [ ] game over winner message ist falsch (jannik) 12.
 
 #### logic/player
-
-- [x] update auch tiles neben versenktem schiff
-- [ ] game_over: save player state, destroy player/logic
-- [ ] logic.Coordinate.row()" because "coordinate[i]" is null
+- [ ] game_over: save player state (lukas) 12.
 
 #### gui
-
-- [ ] sounds
+- [ ] ki in gui spielen lassen (stefan, jannik, lukas) 14.
+- [ ] höhere semester start button geht nicht (stefan) 12.
+- [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat) (stefan)
+- [ ] design / schriftart (kat) 14.
+- [ ] (optional) Chat einbauen
+- [ ] (optional) Button für Random Schiffe plazieren
+- [ ] (optional) turnLabel anpassen ohne flimmern- 
+- [x] sounds
+- [x] GameOver sceen wohin man kommt
 - [x] schiffe versenken gui
 - [x] buttons anpassen / removen
-- [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat)
 - [x] einige tiles sind dead?
-- [ ] höhere semester start button geht nicht
 - [x] alle tiles updaten, nicht nur shots bei versunkenem schiff
-- [ ] GameOver sceen wohin man kommt
-- [ ] Chat einbauen
-- [ ] Button für Random Schiffe plazieren
-- [ ] turnLabel anpassen ohne flimmern
+
 
 #### network
-
-- [ ] verbindungsabbruch was tun
-- [ ] mit begin warten bis gui go gibt
+- [ ] verbindungsabbruch was tun (stefan, jannik) 12.
+- [ ] (optional) mit begin warten bis gui go gibt
 
 #### ai
-
+- [ ] shoot schlauer machen (kat)
+- [ ] delay (kat)
 - [x] setships mergen
 - [x] shooten bauen
 
