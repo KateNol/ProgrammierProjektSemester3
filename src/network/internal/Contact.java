@@ -64,8 +64,6 @@ public final class Contact extends Observable {
         this.protocolVersion = 1;
 
         setSocket(socket);
-
-        System.out.println("Contact CTOR end");
     }
 
     /**
@@ -121,7 +119,7 @@ public final class Contact extends Observable {
     private void init_communication() {
         commThread = new Thread(this::receiveLoop);
         commThread.setName("Contact");
-        commThread.setDaemon(true);
+        commThread.setDaemon(false);
         commThread.start();
 
         // if hosted, send HELLO
