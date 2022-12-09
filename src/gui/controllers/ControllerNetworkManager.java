@@ -87,9 +87,16 @@ public class ControllerNetworkManager implements Initializable {
     public boolean setConnectionInput(){
         log_debug("set connection");
         if(serverMode.equals(ServerMode.CLIENT)){
-            address = addressTextfield.getText();
-            port =  Integer.parseInt(portTextfield.getText());
-            return true;
+            if (addressTextfield.getText().isEmpty()) {
+                address = defaultAddress;
+            } else{
+                address = addressTextfield.getText();
+            }
+            if (portTextfield.getText().isEmpty()) {
+                port = defaultPort;
+            } else {
+                port = Integer.parseInt(portTextfield.getText());
+            }            return true;
         } else if(serverMode.equals(ServerMode.SERVER)) {
             if (addressTextfield.getText().isEmpty()) {
                 address = defaultAddress;
