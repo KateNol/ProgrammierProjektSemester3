@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Observable;
 
 import static logic.Util.mapStateToChar;
-import static network.internal.Util.log_debug;
+import static logic.Util.log_debug;
 
 
 public abstract class Player extends Observable {
@@ -46,7 +46,9 @@ public abstract class Player extends Observable {
         globalConfigLoaded = true;
     }
 
-    public abstract void destroy();
+    public void destroy() {
+        log_debug("destroying player");
+    }
 
     /**
      * returns true when both players are connected

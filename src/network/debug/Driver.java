@@ -1,15 +1,13 @@
 package network.debug;
 
-import internal.LocalEnemyMode;
-import internal.NetworkMode;
-import internal.PlayerMode;
+import shared.LocalEnemyMode;
+import shared.NetworkMode;
+import shared.PlayerMode;
 import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Scanner;
 
 import static network.internal.Util.log_debug;

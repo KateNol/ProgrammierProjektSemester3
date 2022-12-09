@@ -1,4 +1,4 @@
-package internal;
+package shared;
 
 public enum PlayerMode {
     HUMAN,

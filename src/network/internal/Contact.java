@@ -14,6 +14,7 @@ import java.util.*;
 import static network.internal.MessageMode.RECEIVE;
 import static network.internal.MessageMode.SEND;
 import static network.internal.Util.*;
+import static shared.Util.debug;
 
 /**
  * this class communicates with the other player via a socket

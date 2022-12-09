@@ -54,19 +54,18 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void abortEstablishConnection() {
-        switch (getServerMode()) {
-            case SERVER -> {
+        if (getServerMode() != null) {
+            if (getServerMode() == ServerMode.SERVER)
                 Server.abort();
-            }
-            case CLIENT -> {
+            else if (getServerMode() == ServerMode.CLIENT)
                 Client.abort();
-            }
         }
         this.contact = null;
     }
 
     @Override
     public void destroy() {
+        super.destroy();
         abortEstablishConnection();
         if (contact != null) {
             contact.endConnection();
