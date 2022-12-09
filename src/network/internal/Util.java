@@ -50,7 +50,7 @@ public final class Util {
     }
 
     public static void log_stderr(String msg) {
-        System.err.println(getDateTimePrefix() + logPrefix + msg);
+        System.err.println(getDateTimePrefix() + " :: " + Thread.currentThread().getName() + " :: " + logPrefix + " :: " + msg);
     }
 
 }
