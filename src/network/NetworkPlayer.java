@@ -130,6 +130,8 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void onGameOver(String winner) {
+        if (contact.getConnectionTerminated())
+            return;
         sendEnd(winner);
         sendBye();
         contact.endConnection();

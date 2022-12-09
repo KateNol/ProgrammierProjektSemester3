@@ -3,7 +3,6 @@ package network.internal;
 import logic.Coordinate;
 import logic.ShotResult;
 import network.ServerMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,6 +50,8 @@ public final class Contact extends Observable {
 
     private boolean weBeginGame = false;
     Thread commThread = null;
+
+    boolean connectionTerminated = false;
 
     Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
         this.serverMode = serverMode;
@@ -151,7 +152,8 @@ public final class Contact extends Observable {
             }
         } catch (IOException e) {
             log_stderr(e.getMessage());
-            System.exit(0);
+            connectionTerminated = true;
+            notifyObservers(Notification.PeerDisconnected);
         } catch (IndexOutOfBoundsException e) {
             exitWithError(1, e.getMessage());
         }
@@ -439,7 +441,7 @@ public final class Contact extends Observable {
                     default -> null;
                 };
                 if (GAME_OVER)
-                    notifyObservers("game over");
+                    notifyObservers(Notification.GameOver);
                 notifyObservers(shotResult);
             }
         }
@@ -592,5 +594,9 @@ public final class Contact extends Observable {
 
     public void endConnection() {
         commThread.interrupt();
+    }
+
+    public boolean getConnectionTerminated() {
+        return connectionTerminated;
     }
 }

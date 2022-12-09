@@ -4,6 +4,7 @@ import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
 import network.NetworkPlayer;
 import network.ServerMode;
+import network.internal.Notification;
 
 import java.util.Deque;
 import java.util.Observable;
@@ -52,12 +53,13 @@ public class Logic implements Observer {
     private Coordinate shot = new Coordinate(-1, -1);
     private ShotResult shotResult = ShotResult.SUNK;
 
+    private Thread logicThread = null;
 
     public Logic(NetworkPlayer player) {
         this.player = player;
         player.addObserver(this);
 
-        Thread logicThread = new Thread(this::logicGameLoop);
+        logicThread = new Thread(this::logicGameLoop);
         logicThread.setName("Logic Game Loop");
         logicThread.setDaemon(false);
         logicThread.start();
@@ -93,7 +95,7 @@ public class Logic implements Observer {
         String winner = player.getServerMode() != ServerMode.SERVER ? "host" : "client";
 
         // begin loop
-        while (state != State.GameOver) {
+        while (!logicThread.isInterrupted() && state != State.GameOver) {
             switch (state) {
                 case OurTurn -> {
                     // our turn, ask our player for a move
@@ -105,7 +107,7 @@ public class Logic implements Observer {
                 case WaitForShotResponse -> {
                     // we just shot somewhere, now we wait for a response, this means
                     // we have to wait for notify() to get called
-                    while (shotResultStack.isEmpty());
+                    while (!logicThread.isInterrupted() && shotResultStack.isEmpty());
                     shotResult = shotResultStack.pop();
                     //TODO update enemyMap with shotResponse. Get coordinate somewhere
                     player.updateMapState(shot, shotResult);
@@ -118,7 +120,7 @@ public class Logic implements Observer {
                 }
                 case EnemyTurn -> {
                     // its the enemies turn, wait until notify() tells us where the enemy shot
-                    while (shotStack.isEmpty()) ;
+                    while (!logicThread.isInterrupted() && shotStack.isEmpty()) ;
                     shot = shotStack.pop();
                     assert shot != null;
                     ShotResult shotResult = player.receiveShot(shot);
@@ -157,10 +159,15 @@ public class Logic implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof String argStr) {
-            log_debug("got notified of GAME OVER, we seem to have won");
-            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover"))
+        if (arg instanceof Notification argNotification) {
+            if (argNotification == Notification.GameOver) {
+                log_debug("got notified of GAME OVER, we seem to have won");
                 switchState(State.GameOver);
+            } else if (argNotification == Notification.PeerDisconnected) {
+                log_debug("got notified of peer disconnect");
+                switchState(State.GameOver);
+                logicThread.interrupt();
+            }
         } else if (arg instanceof ShotResult recvShotResult) {
             shotResultStack.push(recvShotResult);
         } else if (arg instanceof Coordinate recvShot) {

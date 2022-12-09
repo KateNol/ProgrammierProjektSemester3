@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
+import network.internal.Notification;
 
 import static logic.Util.log_debug;
 
@@ -66,8 +67,8 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     public void notifyObservers(Object arg){
         super.notifyObservers(arg);
-        if(arg instanceof String argStr){
-            if (argStr.equalsIgnoreCase("game over") || argStr.equalsIgnoreCase("gameover")) {
+        if(arg instanceof Notification argNotification){
+            if (argNotification == Notification.GameOver) {
                 log_debug("GUI game over");
                 gameOver = true;
             }
