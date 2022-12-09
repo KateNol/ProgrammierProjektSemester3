@@ -402,4 +402,6 @@ public abstract class Player extends Observable {
         System.out.println();
     }
 
+    public abstract boolean getStart();
+
 }

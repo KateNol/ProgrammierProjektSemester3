@@ -111,7 +111,7 @@ public final class Driver {
                     throw new RuntimeException(e);
                 }
             });
-            enemyThread.setDaemon(false);
+            enemyThread.setDaemon(true);
             enemyThread.setName("Enemy Thread");
             enemyThread.start();
         }

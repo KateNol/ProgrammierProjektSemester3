@@ -51,6 +51,7 @@ public final class Contact extends Observable {
     private boolean weBeginGame = false;
     Thread commThread = null;
 
+    boolean start = false;
     boolean connectionTerminated = false;
 
     Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
@@ -333,6 +334,7 @@ public final class Contact extends Observable {
             case RECEIVE -> {
             }
         }
+        start = true;
     }
 
     private void READY_PING(MessageMode mode, int SHIPS_PLACED) {
@@ -598,5 +600,9 @@ public final class Contact extends Observable {
 
     public boolean getConnectionTerminated() {
         return connectionTerminated;
+    }
+
+    public boolean getStart() {
+        return start;
     }
 }

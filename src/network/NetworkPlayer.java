@@ -160,4 +160,11 @@ public abstract class NetworkPlayer extends Player {
         notifyThread.setName("NetworkNotify");
         notifyThread.start();
     }
+
+    @Override
+    public boolean getStart() {
+        if (contact == null)
+            return false;
+        return contact.getStart();
+    }
 }
