@@ -72,18 +72,18 @@ public class Logic implements Observer {
     private void logicGameLoop() {
         switchState(State.Start);
         // wait for both players to connect
-        while (!player.getIsConnectionEstablished()) ;
+        while (!logicThread.isInterrupted() && !player.getIsConnectionEstablished()) ;
         log_debug("both players connected");
         log_debug("the game will be played in semester " + player.getNegotiatedSemester());
         player.loadGlobalConfig();
         player.setMaxSemester(player.getNegotiatedSemester());
         switchState(State.PlayersReady);
 
-        while(!player.getStart());
+        while(!logicThread.isInterrupted() && !player.getStart());
         player.setShips();
         switchState(State.GameReady);
         player.setReadyToBegin();
-        while (!player.getEnemyReadyToBegin()) ;
+        while (!logicThread.isInterrupted() && !player.getEnemyReadyToBegin()) ;
 
         // get info on who begins
         // TODO get actual info, for now server always begins
