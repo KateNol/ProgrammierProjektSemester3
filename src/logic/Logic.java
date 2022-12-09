@@ -121,7 +121,7 @@ public class Logic implements Observer {
                 }
                 case EnemyTurn -> {
                     // its the enemies turn, wait until notify() tells us where the enemy shot
-                    while (!logicThread.isInterrupted() && shotStack.isEmpty()) ;
+                    while (!logicThread.isInterrupted() && shotStack.isEmpty());
                     shot = shotStack.pop();
                     assert shot != null;
                     ShotResult shotResult = player.receiveShot(shot);
@@ -131,7 +131,7 @@ public class Logic implements Observer {
                     player.sendShotResponse(shotResult, gameOver);
                     if (gameOver) {
                         log_debug("game over, we lost!");
-                        winner = player.getServerMode() == ServerMode.SERVER ? "host" : "client";
+                        winner = player.getServerMode() == ServerMode.SERVER ? "client" : "host";
                         switchState(State.GameOver);
                     } else if (shotResult == ShotResult.HIT || shotResult == ShotResult.SUNK) {
                         switchState(State.EnemyTurn);
