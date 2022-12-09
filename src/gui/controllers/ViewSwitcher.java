@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import gui.GUIPlayer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -49,6 +50,12 @@ public class ViewSwitcher {
 
         if (lastView != null)
             log_debug("switching view from " + lastView.name() + " to " + view.name());
+
+        // if switching from a game view to a non-game view, destroy the player
+        if ((lastView == View.NetworkManager || lastView == View.Lobby || lastView == View.Game)
+            && (view == View.Menu || view == View.Rules || view == View.Settings || view == View.FileManager)) {
+            GUIPlayer.getInstance().destroy();
+        }
 
         try {
             Parent root;
