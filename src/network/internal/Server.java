@@ -36,7 +36,7 @@ public final class Server {
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
     public static Contact getContact(int port, String username, int semester) throws IOException {
-        if (connectionThread != null) {
+        if (connectionThread != null && connectionThread.isAlive()) {
             log_stderr("there is another connectionThread already running");
             return null;
         }

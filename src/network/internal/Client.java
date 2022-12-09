@@ -29,7 +29,7 @@ public final class Client {
      * @return IOException if an I/O error occurs when creating the socket.
      */
     public static Contact getContact(String address, int port, String username, int semester) throws IOException {
-        if (connectionThread != null) {
+        if (connectionThread != null && connectionThread.isAlive()) {
             log_stderr("there is another connectionThread already running");
             return null;
         }

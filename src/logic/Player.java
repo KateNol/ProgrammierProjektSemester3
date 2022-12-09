@@ -46,6 +46,8 @@ public abstract class Player extends Observable {
         globalConfigLoaded = true;
     }
 
+    public abstract void destroy();
+
     /**
      * returns true when both players are connected
      * implemented by NetworkPlayer

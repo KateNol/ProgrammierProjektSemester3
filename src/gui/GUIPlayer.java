@@ -43,6 +43,12 @@ public class GUIPlayer extends NetworkPlayer {
         instance = this;
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        instance = null;
+    }
+
     /**
      * Returning the instance of a GuiPlayer
      *

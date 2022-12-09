@@ -3,6 +3,7 @@ package network;
 import logic.*;
 import network.internal.Client;
 import network.internal.Contact;
+import network.internal.Notification;
 import network.internal.Server;
 //import org.jetbrains.annotations.NotNull;
 
@@ -62,6 +63,16 @@ public abstract class NetworkPlayer extends Player {
             }
         }
         this.contact = null;
+    }
+
+    @Override
+    public void destroy() {
+        abortEstablishConnection();
+        if (contact != null) {
+            contact.endConnection();
+            contact = null;
+        }
+        notifyObservers(Notification.PeerDisconnected);
     }
 
     public void sendMessage(String msg) {
