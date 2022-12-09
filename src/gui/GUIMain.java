@@ -23,6 +23,12 @@ import java.io.IOException;
  */
 public class GUIMain extends Application  {
     public static void main(String[] args) {
+        for (String arg : args) {
+            if (arg.startsWith("nosound")) {
+                AudioPlayer.disableSound = true;
+            }
+        }
+
         launch(args);
     }
 
