@@ -61,7 +61,7 @@ public class Logic implements Observer {
 
         logicThread = new Thread(this::logicGameLoop);
         logicThread.setName("Logic Game Loop");
-        logicThread.setDaemon(false);
+        logicThread.setDaemon(true);
         logicThread.start();
     }
 
@@ -79,6 +79,7 @@ public class Logic implements Observer {
         player.setMaxSemester(player.getNegotiatedSemester());
         switchState(State.PlayersReady);
 
+        while(!player.getStart());
         player.setShips();
         switchState(State.GameReady);
         player.setReadyToBegin();
