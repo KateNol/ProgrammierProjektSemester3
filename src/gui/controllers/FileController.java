@@ -1,15 +1,19 @@
 package gui.controllers;
 
 import gui.Util;
+
 import logic.PlayerConfig;
 
 import java.io.*;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author Stefan
+ * This class is responsible for saving, updating, deleting or loading playerConfigs
+ */
 public class FileController {
 
     private static final File folder = new File("playerConfig/");
@@ -68,6 +72,11 @@ public class FileController {
         return s.substring(1, s.length() - 4);
     }
 
+    /**
+     * find the slot to given username
+     * @param name username from player
+     * @return slot saved in ControllerFileManager and null if username doesn't exist
+     */
     public static Character getSlot(String name){
         for (File filename: listOfFiles) {
             String fileName = filename.getName();
@@ -93,6 +102,11 @@ public class FileController {
         oos.close();
     }
 
+    /**
+     * update the playerConfig and write the updated Player in a Binary file
+     * @param playerConfig playerConfig from Player
+     * @throws IOException In case there is an input/output exception
+     */
     public static void updateFile(PlayerConfig playerConfig) throws IOException {
         String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
         listOfFiles.add(new File(absolutePath));
@@ -145,7 +159,7 @@ public class FileController {
 
     /**
      * Get boolean if FileThree exists or not
-     * @return filethree
+     * @return fileThree
      */
     public static boolean isFileThree() {
         return fileThree;

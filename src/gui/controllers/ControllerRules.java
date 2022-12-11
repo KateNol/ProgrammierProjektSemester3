@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 /**
+ * @author Stefan
  * Controller for Rule Scene
  */
 public class ControllerRules {

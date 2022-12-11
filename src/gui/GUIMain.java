@@ -1,6 +1,5 @@
 package gui;
 
-import gui.controllers.Audio;
 import gui.controllers.AudioPlayer;
 import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
@@ -12,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
 
 /**
  * main gui entry point
@@ -28,7 +26,6 @@ public class GUIMain extends Application  {
                 AudioPlayer.disableSound = true;
             }
         }
-
         launch(args);
     }
 
@@ -53,10 +50,8 @@ public class GUIMain extends Application  {
         stage.setTitle("Battleship");
 
         //stage Property's
-
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
-        AudioPlayer.playMusic(Audio.BattleMusic5);
 
         //Start application
         stage.show();

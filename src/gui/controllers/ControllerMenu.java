@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
+ * @author Stefan
  * Controller for Menu Screen
  */
 public class ControllerMenu implements Initializable {
