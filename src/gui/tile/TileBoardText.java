@@ -9,7 +9,6 @@ import logic.Coordinate;
  * @author Stefan
  */
 public class TileBoardText extends StackPane {
-    private Tile tile;
 
     /**
      * Outer Tile for labeling the board
@@ -18,7 +17,7 @@ public class TileBoardText extends StackPane {
      * @param s Labeling from the board
      */
     public TileBoardText(Coordinate coordinate, int tileSize, String s) {
-        this.tile = new Tile(coordinate, tileSize);
+        Tile tile = new Tile(coordinate, tileSize);
         tile.setFill(Color.WHITE);
 
         Text text = new Text(s);

@@ -1,8 +1,6 @@
 package gui.controllers;
-
 import gui.GUIPlayer;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;

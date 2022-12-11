@@ -8,8 +8,8 @@ import logic.Coordinate;
  * @author Stefan
  */
 public class Tile extends Rectangle {
-    private Coordinate coordinate;
-    private int tileSize;
+    private final Coordinate coordinate;
+    private final int tileSize;
 
     /**
      * Base Tile is a Rectangle
