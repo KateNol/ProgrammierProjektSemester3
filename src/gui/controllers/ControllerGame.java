@@ -42,7 +42,7 @@ public class ControllerGame implements Initializable {
 
     private static ControllerGame instance = null;
 
-    private GUIPlayer guiPlayer = GUIPlayer.getInstance();
+    private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
     /**
      * Initialize Game Screen items(Player Board, Enemy Board)
@@ -100,15 +100,6 @@ public class ControllerGame implements Initializable {
     public void openEndScreen() {
         gamefield.setMouseTransparent(true);
         gameEnd.setVisible(true);
-        if(gameEnd.isVisible()){
-            PlayerConfig newPlayerConfig = guiPlayer.getPlayerConfig();
-            newPlayerConfig.increaseMaxSemester();
-            try {
-                FileController.updateFile(newPlayerConfig);
-            } catch (Exception e){
-                System.out.println("fucked up..-------------------------");
-            }
-        }
     }
 
     /**

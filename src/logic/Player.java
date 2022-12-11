@@ -14,7 +14,6 @@ import static logic.Util.log_debug;
 public abstract class Player extends Observable {
     private String username;
     private int maxSemester;
-    private PlayerConfig playerConfig;
 
     private int mapSize;
     private boolean globalConfigLoaded;
@@ -29,13 +28,8 @@ public abstract class Player extends Observable {
         if (playerConfig != null) {
             maxSemester = playerConfig.getMaxSemester();
             username = playerConfig.getUsername();
-            this.playerConfig = playerConfig;
         }
         globalConfigLoaded = false;
-    }
-
-    public PlayerConfig getPlayerConfig() {
-        return playerConfig;
     }
 
     /**

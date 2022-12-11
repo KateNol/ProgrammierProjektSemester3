@@ -1,6 +1,8 @@
 package gui;
 
 import gui.controllers.ControllerGame;
+import gui.controllers.ControllerLobby;
+import gui.controllers.FileController;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.application.Platform;
@@ -14,7 +16,11 @@ import shared.Notification;
 import static logic.Util.log_debug;
 
 public class GUIPlayer extends NetworkPlayer {
+    //instance
     private static GUIPlayer instance = null;
+    private final PlayerConfig playerConfig;
+
+    //tile
     private int tileSize;
 
     //Board and Ships
@@ -22,15 +28,17 @@ public class GUIPlayer extends NetworkPlayer {
     private GuiBoard guiBoard;
     private GuiBoard guiEnemyBoard;
 
-    private Button startButton;
-
+    //alignment
     private Alignment alignment = Alignment.HOR_RIGHT;
-    private boolean shipsPlaced = false;
-    private Coordinate shotCoordinate = null;
 
-    private boolean gameOver;
+    //states
+    private boolean isShipsPlaced;
     private boolean turn;
 
+    //shotCoordinate
+    private Coordinate shotCoordinate = null;
+
+    //lock object
     private final Object lock = new Object();
 
     /**
@@ -39,10 +47,14 @@ public class GUIPlayer extends NetworkPlayer {
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        this.playerConfig = playerConfig;
         setTileSize(playerConfig.getMaxSemester());
         instance = this;
     }
 
+    /**
+     * Destroy Player
+     */
     @Override
     public void destroy() {
         super.destroy();
@@ -51,42 +63,50 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Returning the instance of a GuiPlayer
-     *
      * @return instance
      */
     public static GUIPlayer getInstance() {
         return instance;
     }
 
-    public void onGameOver(String winner) {
-        super.onGameOver(winner);
-        Platform.runLater(() -> {
-            ControllerGame.getInstance().openEndScreen();
-            ControllerGame.getInstance().getWinnerLabel().setText(winner);
-        });
-    }
-
+    /**
+     * set turn
+     * @param turn to shoot
+     */
     public void setTurn(boolean turn){
         this.turn = turn;
     }
 
-    @Override
-    public void notifyObservers(Object arg){
-        super.notifyObservers(arg);
-        if(arg instanceof Notification argNotification){
-            if (argNotification == Notification.GameOver) {
-                log_debug("GUI game over");
-                gameOver = true;
+    /**
+     * Open end screen if game is over
+     * @param winner client or host
+     */
+    public void onGameOver(String winner) {
+        super.onGameOver(winner);
+        Platform.runLater(() -> {
+            ControllerGame.getInstance().getTurnLabel().setText("GAME OVER");
+            ControllerGame.getInstance().openEndScreen();
+            ControllerGame.getInstance().getWinnerLabel().setText(winner);
+            if(winner.equals(getUsername())){
+                playerConfig.increaseMaxSemester();
+            } else {
+                playerConfig.decreaseMaxSemester();
             }
-        }
+            try {
+                FileController.updateFile(playerConfig);
+            } catch (Exception e){
+                Util.log_debug("failed update playerConfig");
+            }
+        });
     }
+
     //------------------------------------------------------
     @Override
     protected void setShips() {
         if (!getIsConnectionEstablished())
             System.exit(1);
-        while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(getNegotiatedSemester()).size() || !shipsPlaced)) ;
-        startButton.setDisable(false);
+        while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(getNegotiatedSemester()).size() || !isShipsPlaced)) ;
+        ControllerLobby.getInstance().enableStartButton();
     }
 
     @Override
@@ -95,7 +115,6 @@ public class GUIPlayer extends NetworkPlayer {
             if (ControllerGame.getInstance() != null)
                 ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
         });
-        turn = false;
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
         try {
@@ -136,15 +155,12 @@ public class GUIPlayer extends NetworkPlayer {
 
     /**
      * Create Gui Objects off GuiBoard and GuiHarbour
-     *
      * @param boardPosition   Position on Screen
      * @param harbourPosition Position on Screen
      */
-    public void creatBoard(Button startButton, VBox boardPosition, VBox harbourPosition, Button button, Label failLabel) {
-        this.startButton = startButton;
-        this.guiBoard = new GuiBoard(tileSize, false, failLabel);
+    public void creatBoard(VBox boardPosition, VBox harbourPosition) {
+        this.guiBoard = new GuiBoard(tileSize, false);
         this.guiHarbour = new GuiHarbour(tileSize, this.getShips());
-        this.startButton = startButton;
         guiBoard.initializeBoard(boardPosition);
         guiHarbour.initializeShip(harbourPosition);
     }
@@ -164,14 +180,6 @@ public class GUIPlayer extends NetworkPlayer {
      */
     public GuiBoard getGuiBoard() {
         return guiBoard;
-    }
-
-    /**
-     * Get guiEnemyBoard
-     * @return guiEnemyBoard
-     */
-    public GuiBoard getGuiEnemyBoard() {
-        return guiEnemyBoard;
     }
 
     /**
@@ -211,7 +219,7 @@ public class GUIPlayer extends NetworkPlayer {
      * @param b if all ships where placed
      */
     public void confirmShipsPlaced(Boolean b){
-        this.shipsPlaced = b;
+        this.isShipsPlaced = b;
     }
 
     public void setShotCoordinate(Coordinate shotCoordinate) {

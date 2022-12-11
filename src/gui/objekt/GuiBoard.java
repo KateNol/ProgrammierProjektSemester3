@@ -3,6 +3,7 @@ package gui.objekt;
 import gui.GUIPlayer;
 import gui.controllers.Audio;
 import gui.controllers.AudioPlayer;
+import gui.controllers.ControllerLobby;
 import gui.tile.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GuiBoard {
-    private Label failLabel;
+
     private GridPane grid;
     private final int tileSize;
     private int shipPlaced = 0;
@@ -29,12 +30,6 @@ public class GuiBoard {
      * @param tileSize
      * @param isEnemyBoard
      */
-    public GuiBoard(int tileSize, boolean isEnemyBoard, Label failedLabel) {
-        this.failLabel = failedLabel;
-        this.tileSize = tileSize;
-        this.isEnemyBoard = isEnemyBoard;
-    }
-
     public GuiBoard(int tileSize, boolean isEnemyBoard) {
         this.tileSize = tileSize;
         this.isEnemyBoard = isEnemyBoard;
@@ -115,7 +110,7 @@ public class GuiBoard {
                         failPrompt.add("You are still failing");
                         failPrompt.add("What is wrong with you?");
                         Random rand = new Random();
-                        failLabel.setText(failPrompt.get(rand.nextInt(failPrompt.size())));
+                        ControllerLobby.getInstance().getFailedShipPlacedLabel().setText(failPrompt.get(rand.nextInt(failPrompt.size())));
                     }
                 }
             }

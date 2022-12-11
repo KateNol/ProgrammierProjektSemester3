@@ -8,7 +8,7 @@ import java.io.*;
  */
 public class PlayerConfig implements Serializable {
 
-    private String userName;
+    private final String userName;
     private int maxSemester;
 
 
@@ -41,11 +41,13 @@ public class PlayerConfig implements Serializable {
         if (maxSemester < 6) {
             maxSemester++;
         }
+        Util.log_debug("increaseMaxSemester");
     }
 
     public void decreaseMaxSemester(){
         if (maxSemester > 1) {
             maxSemester--;
         }
+        Util.log_debug("decreaseMaxSemester");
     }
 }
