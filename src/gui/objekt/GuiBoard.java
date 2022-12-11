@@ -101,7 +101,9 @@ public class GuiBoard {
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
                         shipPlaced++;
+                        System.out.println(shipPlaced);
                         if (shipPlaced == guiPlayer.getShips().size()) {
+                            System.out.println(shipPlaced);
                             guiPlayer.confirmShipsPlaced(true);
                         }
                     } else {

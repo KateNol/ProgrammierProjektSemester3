@@ -42,6 +42,7 @@ public class ControllerLobby implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/setShip.jfif"));
+
         if(guiPlayer.getWeBegin()){
             guiPlayer.setTurn(true);
         } else {
@@ -66,6 +67,8 @@ public class ControllerLobby implements Initializable {
      * Switch to Screen Game
      */
     public void onStartGame(){
+        guiPlayer.getGuiBoard().setShipPlaced();
+        guiPlayer.confirmShipsPlaced(false);
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Game);
     }
