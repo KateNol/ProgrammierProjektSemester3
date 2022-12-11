@@ -13,7 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import logic.PlayerConfig;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -97,9 +99,18 @@ public class ControllerGame implements Initializable {
         ViewSwitcher.switchTo(View.Menu);
     }
 
-    public void openEndScreen(){
+    public void openEndScreen() {
         gamefield.setMouseTransparent(true);
         gameEnd.setVisible(true);
+        if(gameEnd.isVisible()){
+            PlayerConfig newPlayerConfig = guiPlayer.getPlayerConfig();
+            newPlayerConfig.increaseMaxSemester();
+            try {
+                FileController.updateFile(newPlayerConfig);
+            } catch (Exception e){
+                System.out.println("fucked up..-------------------------");
+            }
+        }
     }
 
     /**
