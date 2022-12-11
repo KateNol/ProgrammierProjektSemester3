@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
-import network.internal.Notification;
+import shared.Notification;
 
 import static logic.Util.log_debug;
 

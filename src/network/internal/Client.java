@@ -49,12 +49,18 @@ public final class Client {
                     contact.setSocket(socket);
                     log_stdio("Client successfully connected");
                 } catch (IOException ignored) {
+                    log_debug(ignored.getMessage());
                     success = false;
+                    try {
+                        Thread.sleep(connectionWaitInterval);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            } while (!success && (connectionThread != null && !connectionThread.isInterrupted()));
+            } while (!success && !connectionThread.isInterrupted());
 
         });
-        connectionThread.setName("Server connection");
+        connectionThread.setName("Client connection");
         connectionThread.start();
         return contact;
     }

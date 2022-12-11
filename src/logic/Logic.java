@@ -1,15 +1,12 @@
 package logic;
 
-import gui.controllers.View;
-import gui.controllers.ViewSwitcher;
 import network.NetworkPlayer;
 import network.ServerMode;
-import network.internal.Notification;
+import shared.Notification;
 
 import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static logic.Util.*;

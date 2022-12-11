@@ -1,4 +1,4 @@
-package network.internal;
+package shared;
 
 public enum Notification {
     GameOver,
