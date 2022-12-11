@@ -107,7 +107,7 @@
                               <Insets />
                            </StackPane.margin>
                         </VBox>
-                        <VBox fx:id="ingame" spacing="10.0" visible="false">
+                        <VBox fx:id="inGame" spacing="10.0" visible="false">
                            <children>
                               <Label text="Spielregeln Spielverlauf:">
                                  <font>

@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 public class ControllerRules {
 
     @FXML
-    private VBox ingame;
+    private VBox inGame;
     @FXML
     private VBox prepare;
     @FXML
@@ -31,12 +31,12 @@ public class ControllerRules {
         AudioPlayer.playSFX(Audio.Click);
         if (switchPage){
             prepare.setVisible(false);
-            ingame.setVisible(true);
+            inGame.setVisible(true);
             switchPage = false;
             page.setText("Previous Page");
         } else {
             prepare.setVisible(true);
-            ingame.setVisible(false);
+            inGame.setVisible(false);
             switchPage = true;
             page.setText("Next Page");
         }
