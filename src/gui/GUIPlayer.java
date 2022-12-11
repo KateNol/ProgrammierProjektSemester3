@@ -102,7 +102,6 @@ public class GUIPlayer extends NetworkPlayer {
     }
 
     //-------------------methods logic calls-------------------
-
     /**
      * logic calls for setShips
      */
