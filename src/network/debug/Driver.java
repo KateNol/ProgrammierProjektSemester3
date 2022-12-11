@@ -10,8 +10,7 @@ import network.ServerMode;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static network.internal.Util.log_debug;
-import static network.internal.Util.log_stderr;
+import static network.internal.Util.*;
 
 
 /**
@@ -31,7 +30,7 @@ public final class Driver {
 
         if (args.length == 0) {
             log_stderr("missing arguments");
-            log_stderr("valid args are: player=[human,ai], network=[online/offline], enemy=[human/ai], address=$address, port=$port, name=$name, semester=[1..6]");
+            log_stderr("valid args are: player=[human,ai], network=[online/offline], enemy=[human/ai], address=$address, port=$port, semester=[1..6]");
             System.exit(1);
         }
 
@@ -39,8 +38,8 @@ public final class Driver {
         NetworkMode networkMode = null;
         LocalEnemyMode localEnemyMode = null;
         ServerMode serverMode = null;
-        String addr = null;
-        String name = null;
+        String addr = defaultAddress;
+        int port = defaultPort;
         int semester = 1;
 
         for (String arg : args) {
@@ -66,14 +65,14 @@ public final class Driver {
                 }
             } else if (arg.startsWith("address=")) {
                 addr = arg.substring("address=".length());
+            } else if (arg.startsWith("port=")) {
+                port = Integer.parseInt(arg.substring("port=".length()));
             } else if (arg.startsWith("server=")) {
                 if (arg.endsWith("host")) {
                     serverMode = ServerMode.SERVER;
                 } else if (arg.endsWith("client")) {
                     serverMode = ServerMode.CLIENT;
                 }
-            } else if (arg.startsWith("name=")) {
-                name = arg.substring("name=".length());
             } else if (arg.startsWith("semester=")) {
                 semester = Integer.parseInt(arg.substring("semester=".length()));
             }
@@ -82,10 +81,10 @@ public final class Driver {
         NetworkPlayer player = null;
         if (playerMode == PlayerMode.HUMAN) {
             player = new ConsolePlayer("Console Player", semester);
-            player.establishConnection(serverMode, addr);
+            player.establishConnection(serverMode, addr, port);
         } else if (playerMode == PlayerMode.COMPUTER) {
             player = new AIPlayer(semester);
-            player.establishConnection(serverMode, addr);
+            player.establishConnection(serverMode, addr, port);
         }
 
         assert player != null;

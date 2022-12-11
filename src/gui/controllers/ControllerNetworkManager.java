@@ -138,6 +138,7 @@ public class ControllerNetworkManager implements Initializable {
                 ViewSwitcher.switchTo(View.Lobby);
             });
             connectionWaitThread.setName("GUI Conn wait");
+            connectionWaitThread.setDaemon(true);
             connectionWaitThread.start();
         } else {
             System.err.println("Could not establish connection!	Try again");
