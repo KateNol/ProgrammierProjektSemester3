@@ -1,47 +1,52 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
-import gui.Util;
-import gui.objekt.GuiBoard;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import logic.PlayerConfig;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * @author Stefan
+ * Controller for game scene
+ */
 public class ControllerGame implements Initializable {
 
+    //background
     @FXML
-    private HBox gamefield;
+    private StackPane background;
+
+    //game scene
+    @FXML
+    private HBox gameField;
+
+    //end scene
     @FXML
     private VBox gameEnd;
     @FXML
-    private StackPane background;
+    private Label winnerLabel;
+
+    //names display
     @FXML
     private Label selfLabel;
     @FXML
-    private Label turnLabel;
-    @FXML
     private Label enemyLabel;
+
+    //turn display
+    @FXML
+    private Label turnLabel;
+
+    //boards
     @FXML
     private VBox enemyBoard;
     @FXML
     private VBox myBoard;
-    @FXML
-    private Label winnerLabel;
+
 
     private static ControllerGame instance = null;
-
     private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
     /**
@@ -49,9 +54,10 @@ public class ControllerGame implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        AudioPlayer.playMusic(Audio.BattleMusic2);
-
         instance = this;
+
+        //background music & picture
+        AudioPlayer.playMusic(Audio.BattleMusic2);
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/game.jpg"));
 
         //Set Boards
@@ -64,41 +70,42 @@ public class ControllerGame implements Initializable {
 
         if(guiPlayer.getWeBegin()){
             turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
+            guiPlayer.setTurn(true);
         } else {
             turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
+            guiPlayer.setTurn(false);
         }
-
-        //Control if Game over
-        turnLabel.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            if(false){
-                Util.log_debug("game over");
-                openEndScreen();
-            }
-        });
     }
 
+    /**
+     * Returning the instance of ControllerGame
+     * @return instance
+     */
     public static ControllerGame getInstance(){
         return instance;
     }
 
+    /**
+     * Get turnLabel to set player turn
+     * @return turnLabel
+     */
     public Label getTurnLabel(){
         return turnLabel;
     }
 
+    /**
+     * Get winnerLabel to set who won
+     * @return winnerLabel
+     */
     public Label getWinnerLabel(){
         return winnerLabel;
     }
 
     /**
-     * Return to Screen Menu
+     * Open endScreen after game complete
      */
-    public void onExit(){
-        AudioPlayer.playSFX(Audio.Click);
-        ViewSwitcher.switchTo(View.Menu);
-    }
-
     public void openEndScreen() {
-        gamefield.setMouseTransparent(true);
+        gameField.setMouseTransparent(true);
         gameEnd.setVisible(true);
     }
 
@@ -111,11 +118,17 @@ public class ControllerGame implements Initializable {
         ViewSwitcher.switchTo(View.Menu);
     }
 
+    /**
+     * to play with same player again
+     */
     public void onPlayAgain(){
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Lobby);
     }
 
+    /**
+     * finish to player with player
+     */
     public void onSwitchToMenu(){
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);

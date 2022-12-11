@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 /**
  * @author Stefan
- * Controller for lobby sceene
+ * Controller for lobby scene
  */
 public class ControllerLobby implements Initializable {
 
@@ -88,7 +88,7 @@ public class ControllerLobby implements Initializable {
      * Return to Screen Menu
      */
     public void onBack(){
-        guiPlayer.getGuiBoard().setShipPlaced();
+        guiPlayer.getGuiBoard().resetShipPlaced();
         guiPlayer.confirmShipsPlaced(false);
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
@@ -98,7 +98,7 @@ public class ControllerLobby implements Initializable {
      * Switch to Screen Game
      */
     public void onStartGame(){
-        guiPlayer.getGuiBoard().setShipPlaced();
+        guiPlayer.getGuiBoard().resetShipPlaced();
         guiPlayer.confirmShipsPlaced(false);
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Game);

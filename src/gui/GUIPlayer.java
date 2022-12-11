@@ -87,10 +87,11 @@ public class GUIPlayer extends NetworkPlayer {
         Platform.runLater(() -> {
             ControllerGame.getInstance().getTurnLabel().setText("GAME OVER");
             ControllerGame.getInstance().openEndScreen();
-            ControllerGame.getInstance().getWinnerLabel().setText(winner);
-            if(getServerMode().equals(winner)){
+            if(getServerMode().toString().equals(winner)){
+                ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
                 playerConfig.increaseMaxSemester();
             } else {
+                ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
                 playerConfig.decreaseMaxSemester();
             }
             try {
@@ -120,12 +121,13 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     public Coordinate getShot() {
         Platform.runLater(() -> {
-            if (ControllerGame.getInstance() != null)
-                ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
-                if(turn){
-
+            if (ControllerGame.getInstance() != null) {
+                //TODO
+                if (turn) {
+                    ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
                     turn = false;
                 }
+            }
 
         });
         log_debug("getting shot from GUIPlayer");
@@ -146,12 +148,13 @@ public class GUIPlayer extends NetworkPlayer {
         log_debug("got shot from GUIPlayer at " + shotCopy);
 
         Platform.runLater(() -> {
-            if (ControllerGame.getInstance() != null)
-                ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
-                if(!turn){
-
+            if (ControllerGame.getInstance() != null) {
+                //TODO
+                if (!turn) {
+                    ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
                     turn = false;
                 }
+            }
 
         });
         return shotCopy;

@@ -16,7 +16,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="failedShipPlacedLabel">
+                        <Label fx:id="failedShipPlacedLabel" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
