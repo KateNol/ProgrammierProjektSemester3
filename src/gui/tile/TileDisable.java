@@ -3,6 +3,9 @@ package gui.tile;
 import javafx.scene.paint.Color;
 import logic.Coordinate;
 
+/**
+ * @author Stefan
+ */
 public class TileDisable extends Tile{
 
     /**
