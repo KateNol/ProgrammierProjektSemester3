@@ -50,13 +50,19 @@ public class Logic implements Observer {
     private Coordinate shot = new Coordinate(-1, -1);
     private ShotResult shotResult = ShotResult.SUNK;
 
-    private Thread logicThread = null;
+    private final Thread logicThread;
 
     public Logic(NetworkPlayer player) {
         this.player = player;
         player.addObserver(this);
 
-        logicThread = new Thread(this::logicGameLoop);
+        logicThread = new Thread(() -> {
+            try {
+                logicGameLoop();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
         logicThread.setName("Logic Game Loop");
         logicThread.setDaemon(true);
         logicThread.start();
@@ -66,7 +72,7 @@ public class Logic implements Observer {
     /**
      * main logic thread containing the game loop
      */
-    private void logicGameLoop() {
+    private void logicGameLoop() throws InterruptedException {
         switchState(State.Start);
         // wait for both players to connect
         while (!logicThread.isInterrupted() && !player.getIsConnectionEstablished()) ;
@@ -105,7 +111,12 @@ public class Logic implements Observer {
                 case WaitForShotResponse -> {
                     // we just shot somewhere, now we wait for a response, this means
                     // we have to wait for notify() to get called
-                    while (!logicThread.isInterrupted() && shotResultStack.isEmpty());
+                    // while (!logicThread.isInterrupted() && shotResultStack.isEmpty());
+                    while (shotResultStack.isEmpty()) {
+                        synchronized (logicThread) {
+                            logicThread.wait();
+                        }
+                    }
                     shotResult = shotResultStack.pop();
                     //TODO update enemyMap with shotResponse. Get coordinate somewhere
                     player.updateMapState(shot, shotResult);
@@ -118,7 +129,12 @@ public class Logic implements Observer {
                 }
                 case EnemyTurn -> {
                     // its the enemies turn, wait until notify() tells us where the enemy shot
-                    while (!logicThread.isInterrupted() && shotStack.isEmpty());
+                    // while (!logicThread.isInterrupted() && shotStack.isEmpty());
+                    while (shotStack.isEmpty()) {
+                        synchronized (logicThread) {
+                            logicThread.wait();
+                        }
+                    }
                     shot = shotStack.pop();
                     assert shot != null;
                     ShotResult shotResult = player.receiveShot(shot);
@@ -176,8 +192,14 @@ public class Logic implements Observer {
             }
         } else if (arg instanceof ShotResult recvShotResult) {
             shotResultStack.push(recvShotResult);
+            synchronized (logicThread) {
+                logicThread.notify();
+            }
         } else if (arg instanceof Coordinate recvShot) {
             shotStack.push(recvShot);
+            synchronized (logicThread) {
+                logicThread.notify();
+            }
         }
 
     }
