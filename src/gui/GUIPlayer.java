@@ -6,15 +6,16 @@ import gui.controllers.FileController;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.application.Platform;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
-import shared.Notification;
 
 import static logic.Util.log_debug;
 
+/**
+ * @author Stefan
+ * Gui interactive player
+ */
 public class GUIPlayer extends NetworkPlayer {
     //instance
     private static GUIPlayer instance = null;
@@ -53,20 +54,20 @@ public class GUIPlayer extends NetworkPlayer {
     }
 
     /**
+     * Returning the instance of a GuiPlayer
+     * @return instance
+     */
+    public static GUIPlayer getInstance() {
+        return instance;
+    }
+
+    /**
      * Destroy Player
      */
     @Override
     public void destroy() {
         super.destroy();
         instance = null;
-    }
-
-    /**
-     * Returning the instance of a GuiPlayer
-     * @return instance
-     */
-    public static GUIPlayer getInstance() {
-        return instance;
     }
 
     /**
@@ -100,7 +101,11 @@ public class GUIPlayer extends NetworkPlayer {
         });
     }
 
-    //------------------------------------------------------
+    //-------------------methods logic calls-------------------
+
+    /**
+     * logic calls for setShips
+     */
     @Override
     protected void setShips() {
         if (!getIsConnectionEstablished())
@@ -109,11 +114,20 @@ public class GUIPlayer extends NetworkPlayer {
         ControllerLobby.getInstance().enableStartButton();
     }
 
+    /**
+     * logic calls for shot
+     * @return shot
+     */
     @Override
     public Coordinate getShot() {
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null)
                 ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
+                if(turn){
+
+                    turn = false;
+                }
+
         });
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
@@ -135,23 +149,38 @@ public class GUIPlayer extends NetworkPlayer {
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null)
                 ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
+                if(!turn){
+
+                    turn = false;
+                }
+
         });
         return shotCopy;
     }
 
+    /**
+     * update guiBoard when Map changes in logic
+     * @param c Coordinate the shot was set
+     * @param res shotResult, the result of the shot (either hit or miss, or sunk)
+     */
     @Override
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
         guiEnemyBoard.updateBoard(res, c);
     }
 
+    /**
+     * receiveShot when logic calls
+     * @param shot given shot
+     * @return shotResult from guiPlayer
+     */
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
         guiBoard.updateBoard(shotResult, shot);
         return shotResult;
     }
-    //------------------------------------------------------
+    //--------------------------------------
 
     /**
      * Create Gui Objects off GuiBoard and GuiHarbour
@@ -191,14 +220,6 @@ public class GUIPlayer extends NetworkPlayer {
     }
 
     /**
-     * Get tileSize
-     * @return tileSize
-     */
-    public int getTileSize() {
-        return tileSize;
-    }
-
-    /**
      * Get alignment
      * @return alignment
      */
@@ -222,6 +243,10 @@ public class GUIPlayer extends NetworkPlayer {
         this.isShipsPlaced = b;
     }
 
+    /**
+     * Set coordinate where guiPlayer clicked on
+     * @param shotCoordinate coordinate where guiPlayer clicked on
+     */
     public void setShotCoordinate(Coordinate shotCoordinate) {
         this.shotCoordinate = shotCoordinate;
         synchronized (lock) {
@@ -230,6 +255,18 @@ public class GUIPlayer extends NetworkPlayer {
         log_debug("shot lock notify");
     }
 
+    /**
+     * Get tileSize
+     * @return tileSize
+     */
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    /**
+     * Resize tiles by maxSemester
+     * @param tileSize TileSize in Pixel
+     */
     public void setTileSize(int tileSize) {
         switch (tileSize){
             case 1 -> this.tileSize = 29;

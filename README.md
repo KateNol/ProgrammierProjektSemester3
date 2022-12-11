@@ -19,7 +19,7 @@ Links
 
 #### gui
 - [ ] ki in gui spielen lassen (stefan, jannik, lukas) 14.
-- [ ] höhere semester start button geht nicht (stefan) 12.
+- [X] höhere semester start button geht nicht (stefan) 12.
 - [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat) (stefan)
 - [ ] design / schriftart (kat) 14.
 - [ ] (optional) Chat einbauen

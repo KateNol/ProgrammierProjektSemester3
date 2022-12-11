@@ -1,12 +1,7 @@
 package gui.objekt;
 
 import gui.tile.TileShip;
-import gui.tile.TileWater;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import logic.Alignment;
 import logic.Coordinate;
 import logic.Ship;
 
@@ -15,8 +10,7 @@ import logic.Ship;
  */
 public class GuiHBoxShip extends HBox {
 
-    private Ship ship;
-    private int tileSize;
+    private final Ship ship;
 
     /**
      * Gui object for a ship
@@ -25,7 +19,6 @@ public class GuiHBoxShip extends HBox {
      */
     public GuiHBoxShip(Ship ship, int tileSize){
         this.ship = ship;
-        this.tileSize = tileSize;
         for(int i = 0; i < ship.getSize(); i++){
             TileShip tileShip = new TileShip(new Coordinate(-1,-1), tileSize);
             this.getChildren().add(tileShip);
