@@ -88,8 +88,7 @@ public class GUIPlayer extends NetworkPlayer {
             ControllerGame.getInstance().getTurnLabel().setText("GAME OVER");
             ControllerGame.getInstance().openEndScreen();
             ControllerGame.getInstance().getWinnerLabel().setText(winner);
-            //winner.equals(getUsername())
-            if(true){
+            if(getServerMode().equals(winner)){
                 playerConfig.increaseMaxSemester();
             } else {
                 playerConfig.decreaseMaxSemester();
