@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import logic.PlayerConfig;
-import logic.Util;
 
 import java.io.IOException;
 import java.net.URL;
@@ -161,7 +160,7 @@ public class ControllerFileManager implements Initializable {
         try {
             this.playerConfig = FileController.loadFromFile(i);
         } catch (IOException | ClassNotFoundException e){
-            Util.log_debug("Could not load PlayerConfig File");
+            gui.Util.log_debug("Could not load playerConfig file from folder");
         }
         new GUIPlayer(playerConfig);
     }
@@ -193,12 +192,12 @@ public class ControllerFileManager implements Initializable {
                 try {
                     FileController.writeToFile(playerConfig, i);
                 } catch (IOException e){
-                    Util.log_debug("Could not create PlayerConfig File");
+                    gui.Util.log_debug("Could not create PlayerConfig File");
                 }
                 nameInput.clear();
                 userInput.setVisible(false);
             } else {
-                System.out.println("try again");
+                gui.Util.log_debug("Invalid user input, try again!");
             }
         });
     }
@@ -222,7 +221,7 @@ public class ControllerFileManager implements Initializable {
                 deleteUserName(0);
                 FileController.setFileOne(false);
             } else {
-                System.out.println("Nothing to delete");
+                gui.Util.log_debug("Nothing to delete on file 1");
             }
         });
     }
@@ -238,7 +237,7 @@ public class ControllerFileManager implements Initializable {
                 deleteUserName(1);
                 FileController.setFileTwo(false);
             } else {
-                System.out.println("Nothing to delete");
+                gui.Util.log_debug("Nothing to delete on file 2");
             }
         });
     }
@@ -254,7 +253,7 @@ public class ControllerFileManager implements Initializable {
                 deleteUserName(2);
                 FileController.setFileThree(false);
             } else {
-                System.out.println("Nothing to delete");
+                gui.Util.log_debug("Nothing to delete on file 3");
             }
         });
     }

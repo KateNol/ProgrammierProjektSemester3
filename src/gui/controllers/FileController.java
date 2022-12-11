@@ -1,7 +1,5 @@
 package gui.controllers;
 
-import gui.Util;
-
 import logic.PlayerConfig;
 
 import java.io.*;
@@ -136,7 +134,7 @@ public class FileController {
     public static void configDelete(int fileNumber){
         boolean delete = listOfFiles.get(fileNumber).delete();
         if(!delete){
-            Util.log_debug("delete File failed");
+            gui.Util.log_debug("delete file failed");
         }
         listOfFiles.remove(fileNumber);
     }

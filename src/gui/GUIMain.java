@@ -20,6 +20,9 @@ import java.io.IOException;
  * --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media
  */
 public class GUIMain extends Application  {
+
+    private static final String ICON_PATH = "file:src/gui/img/Icon.png";
+
     public static void main(String[] args) {
         for (String arg : args) {
             if (arg.startsWith("nosound")) {
@@ -28,8 +31,6 @@ public class GUIMain extends Application  {
         }
         launch(args);
     }
-
-    private static final String ICON_PATH = "file:src/gui/img/Icon.png";
 
     @Override
     public void start(Stage stage) throws IOException {

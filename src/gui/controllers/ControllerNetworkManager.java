@@ -1,6 +1,7 @@
 package gui.controllers;
 import gui.GUIPlayer;
 
+import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -19,11 +20,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.Util.log_debug;
 import static network.internal.Util.defaultAddress;
 import static network.internal.Util.defaultPort;
 
 /**
+ * @author Stefan
  * Controller for Network Manager
  */
 public class ControllerNetworkManager implements Initializable {
@@ -32,13 +33,13 @@ public class ControllerNetworkManager implements Initializable {
     @FXML
     private StackPane background;
 
-    //Multiplayer Connection Textfield
+    //Multiplayer Connection TextField
     @FXML
-    private VBox multiplayerConnectTextfield;
+    private VBox multiplayerConnectTextField;
     @FXML
-    private TextField addressTextfield;
+    private TextField addressTextField;
     @FXML
-    private TextField portTextfield;
+    private TextField portTextField;
     @FXML
     private ComboBox<String> comboBoxServerMode;
     @FXML
@@ -82,39 +83,47 @@ public class ControllerNetworkManager implements Initializable {
         });
     }
 
+    /**
+     * check if user input is valid
+     * @return boolean if input is valid
+     */
     public boolean setConnectionInput(){
-        log_debug("set connection");
+        Util.log_debug("set connection");
         if(serverMode.equals(ServerMode.CLIENT)){
-            if (addressTextfield.getText().isEmpty()) {
+            if (addressTextField.getText().isEmpty()) {
                 address = defaultAddress;
             } else{
-                address = addressTextfield.getText();
+                address = addressTextField.getText();
             }
-            if (portTextfield.getText().isEmpty()) {
+            if (portTextField.getText().isEmpty()) {
                 port = defaultPort;
             } else {
-                port = Integer.parseInt(portTextfield.getText());
+                port = Integer.parseInt(portTextField.getText());
             }            return true;
         } else if(serverMode.equals(ServerMode.SERVER)) {
-            if (addressTextfield.getText().isEmpty()) {
+            if (addressTextField.getText().isEmpty()) {
                 address = defaultAddress;
             } else{
-                address = addressTextfield.getText();
+                address = addressTextField.getText();
             }
-            if (portTextfield.getText().isEmpty()) {
+            if (portTextField.getText().isEmpty()) {
                 port = defaultPort;
             } else {
-                port = Integer.parseInt(portTextfield.getText());
+                port = Integer.parseInt(portTextField.getText());
             }
             return true;
         }
         return false;
     }
 
+    /**
+     * establish connection
+     * @throws IOException throws input/output Exception if failed establish connection
+     */
     public void onConnect() throws IOException {
         AudioPlayer.playSFX(Audio.Click);
-        log_debug("on connect");
-        multiplayerConnectTextfield.setVisible(false);
+        Util.log_debug("click on connect");
+        multiplayerConnectTextField.setVisible(false);
         multiplayerScene.setMouseTransparent(true);
         if(!pictureSet){
             Image image = new Image("file:src/gui/img/load.gif");
@@ -127,11 +136,10 @@ public class ControllerNetworkManager implements Initializable {
         loadBox.setVisible(true);
 
         if(setConnectionInput()) {
-            multiplayerConnectTextfield.setVisible(false);
+            multiplayerConnectTextField.setVisible(false);
             GUIPlayer.getInstance().establishConnection(serverMode, address, port);
             new Logic(GUIPlayer.getInstance());
             connectionWaitThread = new Thread(() -> {
-                log_debug("bin kurz vorm laden der scene");
                 while (!connectionWaitThread.isInterrupted() && !GUIPlayer.getInstance().getIsConnectionEstablished()) ;
                 ViewSwitcher.switchTo(View.Lobby);
             });
@@ -144,6 +152,9 @@ public class ControllerNetworkManager implements Initializable {
         }
     }
 
+    /**
+     * cancel connection when pressed
+     */
     public void onCancelConnection() {
         AudioPlayer.playSFX(Audio.Click);
         multiplayerScene.setMouseTransparent(false);
@@ -157,10 +168,10 @@ public class ControllerNetworkManager implements Initializable {
      */
     public void onReturn() {
         AudioPlayer.playSFX(Audio.Click);
-        addressTextfield.clear();
-        portTextfield.clear();
+        addressTextField.clear();
+        portTextField.clear();
         connectionFailed.setText("");
-        multiplayerConnectTextfield.setVisible(false);
+        multiplayerConnectTextField.setVisible(false);
         loadBox.setVisible(false);
         ViewSwitcher.switchTo(View.FileManager);
     }
@@ -184,8 +195,8 @@ public class ControllerNetworkManager implements Initializable {
         GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
         GUIPlayer.getInstance().loadGlobalConfig();
         new Logic(GUIPlayer.getInstance());
-        if(multiplayerConnectTextfield.isVisible()){
-            multiplayerConnectTextfield.setVisible(false);
+        if(multiplayerConnectTextField.isVisible()){
+            multiplayerConnectTextField.setVisible(false);
         }
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Lobby);
@@ -196,6 +207,6 @@ public class ControllerNetworkManager implements Initializable {
      */
     public void onMultiPlayer() {
         AudioPlayer.playSFX(Audio.Click);
-        multiplayerConnectTextfield.setVisible(true);
+        multiplayerConnectTextField.setVisible(true);
     }
 }

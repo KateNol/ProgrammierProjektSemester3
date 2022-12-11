@@ -47,7 +47,7 @@
                         </HBox>
                         <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox fx:id="multiplayerConnectTextfield" alignment="CENTER" spacing="30.0" visible="false">
+                              <VBox fx:id="multiplayerConnectTextField" alignment="CENTER" spacing="30.0" visible="false">
                                  <children>
                                     <HBox alignment="CENTER" spacing="10.0">
                                        <children>
@@ -68,7 +68,7 @@
                                                       <Font size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField fx:id="addressTextfield" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
+                                                <TextField fx:id="addressTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
@@ -82,7 +82,7 @@
                                                       <Font size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField fx:id="portTextfield" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
+                                                <TextField fx:id="portTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
