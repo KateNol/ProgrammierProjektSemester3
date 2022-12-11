@@ -85,7 +85,7 @@ public class GUIPlayer extends NetworkPlayer {
     protected void setShips() {
         if (!getIsConnectionEstablished())
             System.exit(1);
-        while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(1).size() || !shipsPlaced)) ;
+        while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(getNegotiatedSemester()).size() || !shipsPlaced)) ;
         startButton.setDisable(false);
     }
 

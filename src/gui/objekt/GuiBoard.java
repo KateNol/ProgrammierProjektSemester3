@@ -92,6 +92,7 @@ public class GuiBoard {
                     //send ship placed but not start game clicked
                     node.setDisable(true);
                 } else {
+                    gui.Util.log_debug("----------------------------Is? " + guiPlayer.getShips().size() + " equals to " + shipPlaced);
                     TileWater tileWater = (TileWater) e.getSource();
                     Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row(), tileWater.getCoordinate().col());
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
@@ -101,7 +102,7 @@ public class GuiBoard {
                         guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
                         shipPlaced++;
-                        System.out.println(shipPlaced);
+                        System.out.println(shipPlaced == guiPlayer.getShips().size());
                         if (shipPlaced == guiPlayer.getShips().size()) {
                             System.out.println(shipPlaced);
                             guiPlayer.confirmShipsPlaced(true);
