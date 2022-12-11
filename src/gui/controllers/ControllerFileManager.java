@@ -47,12 +47,14 @@ public class ControllerFileManager implements Initializable {
     private HBox background;
 
     private PlayerConfig playerConfig;
+    private static ControllerFileManager instance = null;
 
     /**
      * Initialize Names on Buttons and load if Name is available
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        instance = this;
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FileManager.jpg"));
 
         setPicture(deleteOne);
@@ -60,6 +62,10 @@ public class ControllerFileManager implements Initializable {
         setPicture(deleteThree);
 
         setFileNamesOnButton();
+    }
+
+    public static ControllerFileManager getInstance(){
+        return instance;
     }
 
     /**
@@ -105,6 +111,7 @@ public class ControllerFileManager implements Initializable {
      */
     public void onReturn(){
         if(userInput.isVisible()){
+            nameInput.clear();
             userInput.setVisible(false);
         }
         AudioPlayer.playSFX(Audio.Click);

@@ -170,6 +170,7 @@ public class GuiBoard {
                                     case W -> {
                                         TileWater tileWater = new TileWater(new Coordinate(row + 1, col + 1), tileSize);
                                         grid.add(tileWater, col + 1, row + 1, 1, 1);
+                                        this.sendShot(tileWater);
                                     }
                                     case S -> {
                                         TileShip tileShip = new TileShip(new Coordinate(row + 1, col + 1), tileSize);
@@ -376,7 +377,7 @@ public class GuiBoard {
         ObservableList<Node> children = grid.getChildren();
 
         for (Node node : children) {
-            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+            if(grid.getRowIndex(node) == row && grid.getColumnIndex(node) == column) {
                 result = node;
                 break;
             }

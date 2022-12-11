@@ -88,18 +88,20 @@ public class ControllerLobby implements Initializable {
      * Return to Screen Menu
      */
     public void onBack(){
-        guiPlayer.getGuiBoard().resetShipPlaced();
-        guiPlayer.confirmShipsPlaced(false);
+        resetBoard();
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
+    }
+
+    public void resetBoard(){
+        guiPlayer.getGuiBoard().resetShipPlaced();
+        guiPlayer.confirmShipsPlaced(false);
     }
 
     /**
      * Switch to Screen Game
      */
     public void onStartGame(){
-        guiPlayer.getGuiBoard().resetShipPlaced();
-        guiPlayer.confirmShipsPlaced(false);
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Game);
     }

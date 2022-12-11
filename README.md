@@ -57,7 +57,7 @@ Links
 ### Anforderungen an die Gruppe
 - [ ] vollständig erfasste Anwendungsfälle+gui.GUIMain-Prototyp (abgenommen durch Betreuer!)
 - [x] Schichtenarchitektur (min. 2 Schichten; gui.GUIMain und Logik getrennt!)
-- [ ] Sechs Semester (Spielstufen/Level)
+- [x] Sechs Semester (Spielstufen/Level)
 - [ ] Sound!
 - [ ] Eine „Überraschung” im Spiel
 - [x] Projektplanung

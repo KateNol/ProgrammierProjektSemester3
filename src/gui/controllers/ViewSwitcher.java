@@ -1,10 +1,10 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
+import gui.Util;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class ViewSwitcher {
             Parent root;
             if (cache.containsKey(view)) {
                 root = cache.get(view);
-                //System.out.println("Loading from cache");
+                Util.log_debug("Loading from cache");
             } else {
                 //Filer Lobby and Game Scene
                 if (view == View.Lobby || view == View.Game) {
@@ -69,7 +69,7 @@ public class ViewSwitcher {
                 } else {
                     root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
                     cache.put(view, root);
-                    //System.out.println("Loading from FXML");
+                    Util.log_debug("Loading from FXML");
                 }
             }
             scene.setRoot(root);

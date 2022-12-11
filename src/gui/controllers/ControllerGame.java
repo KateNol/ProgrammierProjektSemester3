@@ -122,6 +122,7 @@ public class ControllerGame implements Initializable {
      * to play with same player again
      */
     public void onPlayAgain(){
+        ControllerLobby.getInstance().resetBoard();
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Lobby);
     }
@@ -130,6 +131,7 @@ public class ControllerGame implements Initializable {
      * finish to player with player
      */
     public void onSwitchToMenu(){
+        ControllerFileManager.getInstance().setFileNamesOnButton();
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
     }
