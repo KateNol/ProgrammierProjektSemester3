@@ -93,7 +93,7 @@ public final class Contact extends Observable {
     }
 
     private void receiveLoop() {
-        while (!connectionTerminated || !commThread.isInterrupted()) {
+        while (!connectionTerminated && !commThread.isInterrupted()) {
             try {
                 String input = inReader.readLine();
                 if (input == null) {
@@ -199,13 +199,10 @@ public final class Contact extends Observable {
         return peerIsReady;
     }
 
-    public boolean getEnemyBegin() {
-        return peerIsBegin;
-    }
 
     public boolean getBegin() {
         synchronized (beginLock) {
-            return begin;
+            return peerIsBegin;
         }
     }
 
@@ -377,7 +374,6 @@ public final class Contact extends Observable {
                     protocolVersion = Math.min(implementedProtocolVersion, VERSION);
                     protocolVersionNegotiated = true;
                     semester = Math.min(semester, MAX_SEMESTER);
-                    semesterNegotiated = true;
                     peerUsername = USERNAME;
                     log_debug("HELLO: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
                     HELLO_ACK(SEND, protocolVersion, semester, username);
@@ -406,12 +402,15 @@ public final class Contact extends Observable {
                     protocolVersion = VERSION;
                     protocolVersionNegotiated = true;
                     semester = SEMESTER;
-                    semesterNegotiated = true;
                     peerUsername = USERNAME;
                     log_debug("HELLO_ACK: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
                     START(SEND);
                 }
             }
+        }
+        synchronized (semesterLock) {
+            semesterNegotiated = true;
+            notifyObservers(Notification.ConnectionEstablished);
         }
     }
 
@@ -437,6 +436,7 @@ public final class Contact extends Observable {
             }
         }
         start = true;
+        notifyObservers(Notification.GameStart);
     }
 
     private void READY_PING(MessageMode mode, int SHIPS_PLACED) {
@@ -475,6 +475,7 @@ public final class Contact extends Observable {
             }
             case RECEIVE -> {
                 peerIsReady = true;
+                notifyObservers(Notification.GameReady);
             }
         }
     }
@@ -486,7 +487,6 @@ public final class Contact extends Observable {
             }
             case RECEIVE -> {
                 synchronized (beginLock) {
-                    peerIsBegin = true;
                     log_debug("begin: WHO: " + WHO + " servermode: " + serverMode);
                     if (WHO.equalsIgnoreCase("host") && serverMode == ServerMode.SERVER)
                         weBeginGame = true;
@@ -509,10 +509,11 @@ public final class Contact extends Observable {
                 sendMessage("BEGIN_ACK", WHO);
             }
             case RECEIVE -> {
-                synchronized (beginLock) {
-                    peerIsBegin = true;
-                }
             }
+        }
+        synchronized (beginLock) {
+            peerIsBegin = true;
+            notifyObservers(Notification.GameBegin);
         }
     }
 

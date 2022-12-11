@@ -75,18 +75,42 @@ public class Logic implements Observer {
     private void logicGameLoop() throws InterruptedException {
         switchState(State.Start);
         // wait for both players to connect
-        while (!logicThread.isInterrupted() && !player.getIsConnectionEstablished()) ;
+        // while (!logicThread.isInterrupted() && !player.getIsConnectionEstablished()) ;
+        while (!player.getIsConnectionEstablished()) {
+            synchronized (logicThread) {
+                logicThread.wait();
+            }
+        }
+
         log_debug("both players connected");
         log_debug("the game will be played in semester " + player.getNegotiatedSemester());
         player.loadGlobalConfig();
         player.setMaxSemester(player.getNegotiatedSemester());
         switchState(State.PlayersReady);
 
-        while(!logicThread.isInterrupted() && !player.getStart());
+        // while(!logicThread.isInterrupted() && !player.getStart());
+        while (!player.getStart()) {
+            synchronized (logicThread) {
+                logicThread.wait();
+            }
+        }
+
         player.setShips();
         switchState(State.GameReady);
-        player.setReadyToBegin();
-        while (!logicThread.isInterrupted() && !player.getEnemyReadyToBegin()) ;
+        player.setReady();
+        player.setBegin();
+        // while (!logicThread.isInterrupted() && !player.getEnemyReadyToBegin()) ;
+        while (!player.getReady()) {
+            synchronized (logicThread) {
+                logicThread.wait();
+            }
+        }
+        while (!player.getBegin()) {
+            synchronized (logicThread) {
+                logicThread.wait();
+            }
+        }
+
 
         // get info on who begins
         // TODO get actual info, for now server always begins
@@ -188,6 +212,11 @@ public class Logic implements Observer {
                 case SelfDestruct -> {
                     log_debug("got notified of player self destruct, trying to end thread");
                     logicThread.interrupt();
+                }
+                case ConnectionEstablished, GameStart, GameReady, GameBegin -> {
+                    synchronized (logicThread) {
+                        logicThread.notify();
+                    }
                 }
             }
         } else if (arg instanceof ShotResult recvShotResult) {

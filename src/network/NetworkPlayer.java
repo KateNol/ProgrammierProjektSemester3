@@ -56,19 +56,19 @@ public abstract class NetworkPlayer extends Player {
             else if (getServerMode() == ServerMode.CLIENT)
                 Client.abort();
         }
-        this.contact = null;
     }
 
     @Override
     public void destroy() {
         super.destroy();
         if (contact != null) {
+
             contact.endConnection();
             contact = null;
         }
         abortEstablishConnection();
 
-        notifyObservers(Notification.PeerDisconnected);
+        notifyObservers(Notification.SelfDestruct);
     }
 
     /* getters ********************************************************************************************************/
@@ -102,9 +102,12 @@ public abstract class NetworkPlayer extends Player {
         return contact.getEnemyReady();
     }
 
-    public boolean getEnemyReadyToBegin() {
-        return contact.getBegin() && contact.getEnemyReady() && contact.getEnemyBegin();
+    public boolean getBegin() {
+        if (contact == null)
+            return false;
+        return contact.getBegin();
     }
+
 
     @Override
     public boolean getWeBegin() {
@@ -115,6 +118,14 @@ public abstract class NetworkPlayer extends Player {
 
     public void setReadyToBegin() {
         contact.setReady();
+        contact.setBegin();
+    }
+
+    public void setReady() {
+        contact.setReady();
+    }
+
+    public void setBegin() {
         contact.setBegin();
     }
 
