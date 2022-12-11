@@ -139,6 +139,7 @@ public class Logic implements Observer {
             }
         }
         player.onGameOver(winner);
+        log_debug("logic thread ending");
     }
 
     private synchronized void switchState(State newState) {
@@ -158,13 +159,20 @@ public class Logic implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Notification argNotification) {
-            if (argNotification == Notification.GameOver) {
-                log_debug("got notified of GAME OVER, we seem to have won");
-                switchState(State.GameOver);
-            } else if (argNotification == Notification.PeerDisconnected) {
-                log_debug("got notified of peer disconnect");
-                switchState(State.GameOver);
-                logicThread.interrupt();
+            switch (argNotification) {
+                case GameOver -> {
+                    log_debug("got notified of GAME OVER, we seem to have won");
+                    switchState(State.GameOver);
+                }
+                case PeerDisconnected -> {
+                    log_debug("got notified of peer disconnect, trying to end thread");
+                    switchState(State.GameOver);
+                    logicThread.interrupt();
+                }
+                case SelfDestruct -> {
+                    log_debug("got notified of player self destruct, trying to end thread");
+                    logicThread.interrupt();
+                }
             }
         } else if (arg instanceof ShotResult recvShotResult) {
             shotResultStack.push(recvShotResult);

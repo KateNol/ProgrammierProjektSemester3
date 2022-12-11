@@ -2,5 +2,6 @@ package shared;
 
 public enum Notification {
     GameOver,
-    PeerDisconnected
+    PeerDisconnected,
+    SelfDestruct
 }

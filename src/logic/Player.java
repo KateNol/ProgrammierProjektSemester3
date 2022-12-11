@@ -1,6 +1,7 @@
 package logic;
 
 import network.ServerMode;
+import shared.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public abstract class Player extends Observable {
 
     public void destroy() {
         log_debug("destroying player");
+        notifyObservers(Notification.SelfDestruct);
     }
 
     /**
