@@ -99,7 +99,7 @@ public class Logic implements Observer {
         player.setShips();
         switchState(State.GameReady);
         player.setReady();
-        player.setBegin();
+        // player.setBegin();
         // while (!logicThread.isInterrupted() && !player.getEnemyReadyToBegin()) ;
         while (!player.getReady()) {
             synchronized (logicThread) {

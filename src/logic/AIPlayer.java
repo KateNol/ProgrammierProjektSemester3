@@ -20,20 +20,11 @@ public class AIPlayer extends NetworkPlayer {
     public AIPlayer(int semester) {
         super(new PlayerConfig("ai player"));
         try {
-            HashMap<Integer, String> semesterToName = new HashMap<>();
+            ArrayList<String> nameList = new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new FileReader("src/logic/AI.txt"));
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                String[] split = line.split("::");
-                String name = split[0];
-                int readSemester = Integer.parseInt(split[1]);
-                semesterToName.put(readSemester, name);
-                line = bufferedReader.readLine();
-            }
-
-            setUsername(semesterToName.get(semester));
+            for (String line=bufferedReader.readLine(); line!=null; nameList.add(line), line=bufferedReader.readLine());
+            setUsername(nameList.get(new Random().nextInt(0, nameList.size())));
             setMaxSemester(semester);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -60,8 +51,8 @@ public class AIPlayer extends NetworkPlayer {
                     log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
                 }
             } while (!placed);
-
         }
+        setBegin();
     }
 
     /**

@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import logic.*;
 
 import java.util.ArrayList;
@@ -192,6 +193,15 @@ public class GuiBoard {
                         grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
                     }
                 }
+            }
+        });
+    }
+
+    public void setTopLeftCorner(Color color) {
+        Platform.runLater(() -> {
+            for (int i=1; i<grid.getRowCount(); i++) {
+                grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
+                grid.add(new TileBoardText(new Coordinate(0, i), tileSize, String.valueOf(i), color), 0, i);
             }
         });
     }
