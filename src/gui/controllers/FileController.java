@@ -6,7 +6,7 @@ import logic.PlayerConfig;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import static gui.Util.log_debug;
 
@@ -19,7 +19,6 @@ public class FileController {
     private static final File folder = new File("playerConfig/");
     private static final File folderPath = new File(folder.getPath());
     private static final File[] listOfFiles = new File[3];
-    //private static final ArrayList<File> listOfFiles = new ArrayList<>();
     private static boolean listInitialized = false;
 
     private static boolean fileOne = false;
@@ -37,7 +36,6 @@ public class FileController {
             int slot = Character.getNumericValue(file.getName().charAt(0));
             if(slot == i){
                 listOfFiles[i] = file;
-                //listOfFiles.add(i, file);
             }
         }
     }
@@ -74,7 +72,6 @@ public class FileController {
         for (File file : loadedFiles) {
             log_debug("loaded from folder: " + file.getName());
             int slot = Character.getNumericValue(file.getName().charAt(0));
-            listOfFiles[slot] = null;
             listOfFiles[slot] = file;
         }
 
@@ -89,7 +86,7 @@ public class FileController {
                 }
             }
         }
-        log_debug("check if file exist method end" + String.valueOf(listOfFiles));
+        log_debug("check if file exist method end" + Arrays.toString(listOfFiles));
     }
 
     /**
@@ -147,7 +144,7 @@ public class FileController {
         int slot = getSlot(playerConfig.getUsername());
         Util.log_debug("-----------------------------------------");
         log_debug("update File method started");
-        Util.log_debug("listOfFiles contains: " + String.valueOf(listOfFiles));
+        Util.log_debug("listOfFiles contains: " + Arrays.toString(listOfFiles));
         Util.log_debug("slot: " + slot);
         Util.log_debug("-----------------------------------------");
         if(slot != -1){
@@ -159,7 +156,7 @@ public class FileController {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles[slot]));
             oos.writeObject(playerConfig);
             oos.close();
-            log_debug("after new creation" + String.valueOf(listOfFiles));
+            log_debug("after new creation" + Arrays.toString(listOfFiles));
         } else {
             log_debug("update file failed");
         }
@@ -193,11 +190,9 @@ public class FileController {
         if(!delete){
             log_debug("delete file failed");
         }
-        log_debug(String.valueOf(listOfFiles));
+        log_debug(Arrays.toString(listOfFiles));
         listOfFiles[fileNumber] = null;
-        log_debug(String.valueOf(listOfFiles));
-        //listOfFiles.add(fileNumber, null);
-        log_debug(String.valueOf(listOfFiles));
+        log_debug(Arrays.toString(listOfFiles));
         log_debug("-------------done delete method-------------------");
     }
 
