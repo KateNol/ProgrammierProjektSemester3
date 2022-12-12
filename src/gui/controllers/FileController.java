@@ -1,12 +1,12 @@
 package gui.controllers;
 
+import gui.Util;
 import logic.PlayerConfig;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author Stefan
@@ -21,6 +21,22 @@ public class FileController {
     private static boolean fileOne = false;
     private static boolean fileTwo = false;
     private static boolean fileThree = false;
+
+    /**
+     * update listOfFiles when a new file is created
+     * @param i slot
+     */
+    public static void setNewFile(int i){
+        File[] loadedFiles = folderPath.listFiles();
+        assert loadedFiles != null;
+        for (File file : loadedFiles) {
+            int slot = Character.getNumericValue(file.getName().charAt(0));
+            if(slot == i){
+                listOfFiles.remove(i);
+                listOfFiles.add(i, file);
+            }
+        }
+    }
 
     /**
      * Check if playerConfig Folder exists
@@ -42,22 +58,29 @@ public class FileController {
      * Checks if configFile exists an if save in ArrayList
      */
     public static void checkIfFileExists(){
+        for (int i = 0; i < 3; i++){
+            listOfFiles.add(null);
+        }
+
         File[] loadedFiles = folderPath.listFiles();
         assert loadedFiles != null;
-        for (int i = 0; i < loadedFiles.length; i++) {
-            listOfFiles.add(loadedFiles[i]);
-            if(i == 0){
-                fileOne = true;
-            }
-            if(i == 1){
-                fileTwo = true;
-            }
-            if(i == 2){
-                fileThree = true;
-            }
-
+        for (File file : loadedFiles) {
+            int slot = Character.getNumericValue(file.getName().charAt(0));
+            listOfFiles.remove(slot);
+            listOfFiles.add(slot, file);
         }
-        Collections.sort(listOfFiles);
+
+        for (int i = 0; i < listOfFiles.size(); i++) {
+            if (listOfFiles.get(i) != null){
+                if(i == 0){
+                    fileOne = true;
+                } else if (i == 1) {
+                    fileTwo = true;
+                } else if (i == 2) {
+                    fileThree = true;
+                }
+            }
+        }
     }
 
     /**
@@ -75,15 +98,17 @@ public class FileController {
      * @param name username from player
      * @return slot saved in ControllerFileManager and null if username doesn't exist
      */
-    public static Character getSlot(String name){
+    public static int getSlot(String name){
         for (File filename: listOfFiles) {
-            String fileName = filename.getName();
-            String tempName = fileName.substring(1, fileName.length() - 4);
-            if(name.equals(tempName)){
-                return fileName.charAt(0);
+            if(filename != null){
+                String fileName = filename.getName();
+                String tempName = fileName.substring(1, fileName.length() - 4);
+                if(name.equals(tempName)){
+                    return Character.getNumericValue(fileName.charAt(0));
+                }
             }
         }
-        return null;
+        return -1;
     }
 
     /**
@@ -106,11 +131,17 @@ public class FileController {
      * @throws IOException In case there is an input/output exception
      */
     public static void updateFile(PlayerConfig playerConfig) throws IOException {
-        String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
-        listOfFiles.add(new File(absolutePath));
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
-        oos.writeObject(playerConfig);
-        oos.close();
+        if(getSlot(playerConfig.getUsername()) != -1){
+            configDelete(getSlot(playerConfig.getUsername()));
+            String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
+            listOfFiles.add(getSlot(playerConfig.getUsername()), new File(absolutePath));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
+            oos.writeObject(playerConfig);
+            oos.close();
+        } else {
+            Util.log_debug("update file failed");
+        }
+
     }
 
     /**
@@ -133,6 +164,7 @@ public class FileController {
      */
     public static void configDelete(int fileNumber){
         boolean delete = listOfFiles.get(fileNumber).delete();
+        listOfFiles.add(fileNumber, null);
         if(!delete){
             gui.Util.log_debug("delete file failed");
         }

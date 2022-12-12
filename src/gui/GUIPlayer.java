@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
 
+import java.io.IOException;
+
 import static logic.Util.log_debug;
 
 /**
@@ -93,12 +95,16 @@ public class GUIPlayer extends NetworkPlayer {
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
                 playerConfig.increaseMaxSemester();
-                //playerConfig.decreaseMaxSemester();
+                /*
+                if(playerConfig.getMaxSemester() - 1 != 0){
+                    playerConfig.decreaseMaxSemester();
+                }
+                */
             }
             try {
                 FileController.updateFile(playerConfig);
-            } catch (Exception e){
-                Util.log_debug("failed update playerConfig");
+            } catch (IOException e) {
+                Util.log_debug("failed to update playerConfig");
             }
         });
     }

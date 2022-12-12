@@ -2,6 +2,7 @@ package gui.controllers;
 
 import gui.GUIPlayer;
 
+import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -73,20 +74,28 @@ public class ControllerFileManager implements Initializable {
      */
     public void setFileNamesOnButton(){
         List<Integer> fileNumbers = new ArrayList<>();
-        if (FileController.isFileOne())
+        if (FileController.isFileOne()) {
             fileNumbers.add(0);
-        if (FileController.isFileTwo())
+        }
+        if (FileController.isFileTwo()) {
             fileNumbers.add(1);
-        if (FileController.isFileThree())
+        }
+        if (FileController.isFileThree()){
             fileNumbers.add(2);
+        }
+
 
         for (int fileNumber : fileNumbers) {
-            Button file = fileNumber == 0 ? fileOne : fileNumber == 1 ? fileTwo : fileNumber == 2 ? fileThree : null;
             try {
                 PlayerConfig player = FileController.loadFromFile(fileNumber);
                 String semester = " (" + player.getMaxSemester() + ")";
-                assert file != null;
-                file.setText(FileController.getFileName(fileNumber) + semester);
+                if(fileNumber == 0){
+                    fileOne.setText(FileController.getFileName(fileNumber) + semester);
+                } else if (fileNumber == 1) {
+                    fileTwo.setText(FileController.getFileName(fileNumber) + semester);
+                } else if (fileNumber == 2) {
+                    fileThree.setText(FileController.getFileName(fileNumber) + semester);
+                }
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -128,7 +137,6 @@ public class ControllerFileManager implements Initializable {
             ViewSwitcher.switchTo(View.NetworkManager);
         } else {
             createPlayerFile(0);
-            FileController.setFileOne(true);
         }
     }
 
@@ -142,7 +150,6 @@ public class ControllerFileManager implements Initializable {
             ViewSwitcher.switchTo(View.NetworkManager);
         } else {
             createPlayerFile(1);
-            FileController.setFileTwo(true);
         }
     }
 
@@ -156,7 +163,6 @@ public class ControllerFileManager implements Initializable {
             ViewSwitcher.switchTo(View.NetworkManager);
         } else {
             createPlayerFile(2);
-            FileController.setFileThree(true);
         }
     }
 
@@ -190,14 +196,24 @@ public class ControllerFileManager implements Initializable {
             AudioPlayer.playSFX(Audio.Click);
             if(isValidInput(nameInput.getText())){
                 switch (i) {
-                    case 0 -> fileOne.setText(nameInput.getText() + " (1)");
-                    case 1 -> fileTwo.setText(nameInput.getText() + " (1)");
-                    case 2 -> fileThree.setText(nameInput.getText() + " (1)");
+                    case 0 -> {
+                        fileOne.setText(nameInput.getText() + " (1)");
+                        FileController.setFileOne(true);
+                    }
+                    case 1 -> {
+                        fileTwo.setText(nameInput.getText() + " (1)");
+                        FileController.setFileTwo(true);
+                    }
+                    case 2 -> {
+                        fileThree.setText(nameInput.getText() + " (1)");
+                        FileController.setFileThree(true);
+                    }
                 }
                 playerConfig = new PlayerConfig(nameInput.getText());
                 new GUIPlayer(playerConfig);
                 try {
                     FileController.writeToFile(playerConfig, i);
+                    FileController.setNewFile(i);
                 } catch (IOException e){
                     gui.Util.log_debug("Could not create PlayerConfig File");
                 }
@@ -240,7 +256,7 @@ public class ControllerFileManager implements Initializable {
         AudioPlayer.playSFX(Audio.Click);
         deleteTwo.setOnMouseClicked(e -> {
             if(FileController.isFileTwo()){
-                FileController.configDelete(0);
+                FileController.configDelete(1);
                 deleteUserName(1);
                 FileController.setFileTwo(false);
             } else {
@@ -256,7 +272,7 @@ public class ControllerFileManager implements Initializable {
         AudioPlayer.playSFX(Audio.Click);
         deleteThree.setOnMouseClicked(e -> {
             if(FileController.isFileThree()){
-                FileController.configDelete(0);
+                FileController.configDelete(2);
                 deleteUserName(2);
                 FileController.setFileThree(false);
             } else {
