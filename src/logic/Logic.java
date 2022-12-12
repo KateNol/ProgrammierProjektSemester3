@@ -120,7 +120,7 @@ public class Logic implements Observer {
             switchState(State.EnemyTurn);
         }
 
-        String winner = player.getServerMode() != ServerMode.SERVER ? "host" : "client";
+        String winner = null;
 
         // begin loop
         while (!logicThread.isInterrupted() && state != State.GameOver) {
@@ -177,6 +177,10 @@ public class Logic implements Observer {
                     }
                 }
             }
+        }
+        // if winner was not set by this point, the enemy send us a win msg
+        if (winner == null) {
+            winner = player.getServerMode() == ServerMode.SERVER ? "host" : "client";
         }
         player.onGameOver(winner);
         log_debug("logic thread ending");
