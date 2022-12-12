@@ -13,19 +13,19 @@ Links
 - [ ] semester implementieren und testen (semester increase/decrease, testen) (team)
 - [ ] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
 - [ ] turn label falscher text (lukas)
-- [ ] game_over: save player state (team)
 - [ ] sounds (philip)
-- [ ] verbindungsabbruch zurueck ins menu (stefan jannik)
 - [ ] gui einige tiles unresponsive (stefan)
 - [ ] shoot schlauer machen (kat)
 - [ ] ai delay (kat)
 - [ ] ai name auswaehlen (kat)
-- [x] gui options entfernen
 - [ ] design / schriftart (kat)
 - [ ] (optional) mit begin warten bis gui go gibt
 - [ ] (optional) Chat einbauen
 - [ ] (optional) Button für Random Schiffe platzieren
 - [ ] (optional) turnLabel anpassen ohne flimmern
+- [x] gui options entfernen
+- [x] verbindungsabbruch zurueck ins menu (stefan jannik)
+- [x] game_over: save player state (team)
 - [x] mehrere spiele hintereinander spielen fixen (jannik) 12.
 - [x] game over winner message ist falsch (jannik) 12.
 - [X] höhere semester start button geht nicht (stefan) 12.
