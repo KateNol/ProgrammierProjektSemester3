@@ -103,8 +103,11 @@ public class FileController {
     public static int getSlot(String name){
         for (File filename: listOfFiles) {
             if(filename != null){
+
                 String fileName = filename.getName();
                 String tempName = fileName.substring(1, fileName.length() - 4);
+                log_debug("on file " + filename);
+                log_debug(tempName + " = " + name);
                 if(name.equals(tempName)){
                     return Character.getNumericValue(fileName.charAt(0));
                 }
