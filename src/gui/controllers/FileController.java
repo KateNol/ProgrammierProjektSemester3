@@ -18,7 +18,8 @@ public class FileController {
 
     private static final File folder = new File("playerConfig/");
     private static final File folderPath = new File(folder.getPath());
-    private static final ArrayList<File> listOfFiles = new ArrayList<>();
+    private static final File[] listOfFiles = new File[3];
+    //private static final ArrayList<File> listOfFiles = new ArrayList<>();
     private static boolean listInitialized = false;
 
     private static boolean fileOne = false;
@@ -35,8 +36,8 @@ public class FileController {
         for (File file : loadedFiles) {
             int slot = Character.getNumericValue(file.getName().charAt(0));
             if(slot == i){
-                listOfFiles.remove(i);
-                listOfFiles.add(i, file);
+                listOfFiles[i] = file;
+                //listOfFiles.add(i, file);
             }
         }
     }
@@ -63,7 +64,7 @@ public class FileController {
     public static void checkIfFileExists(){
         if(!listInitialized) {
             for (int i = 0; i < 3; i++) {
-                listOfFiles.add(null);
+                listOfFiles[i] = null;
             }
             listInitialized = true;
         }
@@ -73,12 +74,12 @@ public class FileController {
         for (File file : loadedFiles) {
             log_debug("loaded from folder: " + file.getName());
             int slot = Character.getNumericValue(file.getName().charAt(0));
-            listOfFiles.remove(slot);
-            listOfFiles.add(slot, file);
+            listOfFiles[slot] = null;
+            listOfFiles[slot] = file;
         }
 
-        for (int i = 0; i < listOfFiles.size(); i++) {
-            if (listOfFiles.get(i) != null){
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i] != null){
                 if(i == 0){
                     fileOne = true;
                 } else if (i == 1) {
@@ -88,7 +89,7 @@ public class FileController {
                 }
             }
         }
-        Util.log_debug("check if file exist method end" + String.valueOf(listOfFiles));
+        log_debug("check if file exist method end" + String.valueOf(listOfFiles));
     }
 
     /**
@@ -97,7 +98,7 @@ public class FileController {
      * @return playerName Name of the Player
      */
     public static String getFileName(int fileNumber){
-        String s = listOfFiles.get(fileNumber).getName();
+        String s = listOfFiles[fileNumber].getName();
         return s.substring(1, s.length() - 4);
     }
 
@@ -131,8 +132,8 @@ public class FileController {
      */
     public static void writeToFile(PlayerConfig playerConfig, int slot) throws IOException {
         String absolutePath = "playerConfig/" + slot + "" +playerConfig.getUsername() + ".bin";
-        listOfFiles.add(new File(absolutePath));
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
+        listOfFiles[slot] = new File(absolutePath);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles[slot]));
         oos.writeObject(playerConfig);
         oos.close();
     }
@@ -154,8 +155,8 @@ public class FileController {
             String absolutePath = "playerConfig/" + slot + "" +playerConfig.getUsername() + ".bin";
             File file = new File(absolutePath);
             log_debug("saved file to: " + file.getAbsolutePath());
-            listOfFiles.add(slot, file);
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
+            listOfFiles[slot] = file;
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles[slot]));
             oos.writeObject(playerConfig);
             oos.close();
             log_debug("after new creation" + String.valueOf(listOfFiles));
@@ -173,7 +174,7 @@ public class FileController {
      * @throws ClassNotFoundException wrong classpath given
      */
      public static PlayerConfig loadFromFile(int slot) throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(listOfFiles.get(slot)));
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(listOfFiles[slot]));
         PlayerConfig playerConfig = (PlayerConfig) ois.readObject();
         ois.close();
         return playerConfig;
@@ -187,15 +188,15 @@ public class FileController {
         log_debug("now in config delete");
         log_debug("deleted file " + fileNumber);
         log_debug("----------------------------");
-        boolean delete = listOfFiles.get(fileNumber).delete();
+        boolean delete = listOfFiles[fileNumber].delete();
         log_debug(" delete done: " + delete);
         if(!delete){
             log_debug("delete file failed");
         }
         log_debug(String.valueOf(listOfFiles));
-        listOfFiles.remove(fileNumber);
+        listOfFiles[fileNumber] = null;
         log_debug(String.valueOf(listOfFiles));
-        listOfFiles.add(fileNumber, null);
+        //listOfFiles.add(fileNumber, null);
         log_debug(String.valueOf(listOfFiles));
         log_debug("-------------done delete method-------------------");
     }
