@@ -133,6 +133,7 @@ public class FileController {
      * @throws IOException In case there is an input/output exception
      */
     public static void updateFile(PlayerConfig playerConfig) throws IOException {
+        Util.log_debug(Integer.toString(getSlot(playerConfig.getUsername())));
         if(getSlot(playerConfig.getUsername()) != -1){
             configDelete(getSlot(playerConfig.getUsername()));
             String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
