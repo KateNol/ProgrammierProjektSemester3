@@ -155,7 +155,7 @@ public class FileController {
             File file = new File(absolutePath);
             log_debug("saved file to: " + file.getAbsolutePath());
             listOfFiles.add(slot, file);
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(slot)));
             oos.writeObject(playerConfig);
             oos.close();
             log_debug("after new creation" + String.valueOf(listOfFiles));
