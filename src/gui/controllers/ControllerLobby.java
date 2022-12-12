@@ -102,6 +102,7 @@ public class ControllerLobby implements Initializable {
      * Switch to Screen Game
      */
     public void onStartGame(){
+        guiPlayer.setBegin();
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Game);
     }

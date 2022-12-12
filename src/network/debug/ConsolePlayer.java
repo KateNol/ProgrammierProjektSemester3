@@ -56,7 +56,7 @@ public final class ConsolePlayer extends NetworkPlayer {
             } while (!placed);
 
         }
-
+        setBegin();
     }
 
     /**

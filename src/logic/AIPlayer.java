@@ -51,8 +51,8 @@ public class AIPlayer extends NetworkPlayer {
                     log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
                 }
             } while (!placed);
-
         }
+        setBegin();
     }
 
     /**
