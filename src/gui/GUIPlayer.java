@@ -49,6 +49,7 @@ public class GUIPlayer extends NetworkPlayer {
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        log_debug("created gui player");
         this.playerConfig = playerConfig;
         setTileSize(playerConfig.getMaxSemester());
         instance = this;
@@ -179,6 +180,7 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
+        while (guiEnemyBoard == null);
         guiEnemyBoard.updateBoard(res, c);
     }
 

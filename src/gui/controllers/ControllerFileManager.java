@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import logic.GUIAIPlayer;
 import logic.PlayerConfig;
 
 import java.io.IOException;
@@ -175,7 +176,7 @@ public class ControllerFileManager implements Initializable {
         } catch (IOException | ClassNotFoundException e){
             gui.Util.log_debug("Could not load playerConfig file from folder");
         }
-        new GUIPlayer(playerConfig);
+        new GUIAIPlayer(playerConfig);
     }
 
     /**
