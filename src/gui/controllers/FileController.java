@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import static gui.Util.log_debug;
+
 /**
  * @author Stefan
  * This class is responsible for saving, updating, deleting or loading playerConfigs
@@ -134,12 +136,14 @@ public class FileController {
         if(getSlot(playerConfig.getUsername()) != -1){
             configDelete(getSlot(playerConfig.getUsername()));
             String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
-            listOfFiles.add(getSlot(playerConfig.getUsername()), new File(absolutePath));
+            File file = new File(absolutePath);
+            log_debug("saved file to: " + file.getAbsolutePath());
+            listOfFiles.add(getSlot(playerConfig.getUsername()), file);
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
             oos.writeObject(playerConfig);
             oos.close();
         } else {
-            Util.log_debug("update file failed");
+            log_debug("update file failed");
         }
 
     }
@@ -166,7 +170,7 @@ public class FileController {
         boolean delete = listOfFiles.get(fileNumber).delete();
         listOfFiles.add(fileNumber, null);
         if(!delete){
-            gui.Util.log_debug("delete file failed");
+            log_debug("delete file failed");
         }
         listOfFiles.remove(fileNumber);
     }
