@@ -60,11 +60,12 @@ public class Logic implements Observer {
             try {
                 logicGameLoop();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                log_debug("logic thread interrupted by exception");
+                player.onGameOver(player.getServerMode() == ServerMode.SERVER ? "host" : "client");
             }
         });
         logicThread.setName("Logic Game Loop");
-        logicThread.setDaemon(true);
+        logicThread.setDaemon(false);
         logicThread.start();
     }
 
