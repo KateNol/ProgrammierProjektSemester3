@@ -73,14 +73,6 @@
                   </VBox>
                   <VBox fx:id="menuBar" alignment="TOP_RIGHT" maxWidth="-Infinity" prefWidth="200.0" spacing="40.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <MenuButton minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Options">
-                           <font>
-                              <Font name="Rockwell" size="18.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </MenuButton>
                         <Button mnemonicParsing="false" onAction="#onSurrender" prefHeight="40.0" prefWidth="150.0" text="Surrender">
                            <font>
                               <Font name="Rockwell" size="18.0" />
