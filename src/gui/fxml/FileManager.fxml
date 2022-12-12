@@ -67,6 +67,14 @@
                               </Button>
                            </children>
                         </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="ai" mnemonicParsing="false" onAction="#onAi" prefHeight="60.0" prefWidth="250.0" text="AI">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font></Button>
+                           </children>
+                        </HBox>
                      </children>
                      <HBox.margin>
                         <Insets />

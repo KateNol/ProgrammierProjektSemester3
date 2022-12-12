@@ -2,7 +2,6 @@ package gui.controllers;
 
 import gui.GUIPlayer;
 
-import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -23,6 +22,8 @@ import java.util.ResourceBundle;
 public class ControllerFileManager implements Initializable {
 
     //File Buttons
+    @FXML
+    private Button ai;
     @FXML
     private Button fileOne;
     @FXML
@@ -167,6 +168,9 @@ public class ControllerFileManager implements Initializable {
         }
     }
 
+    public void onAi(){
+
+    }
     /**
      * Load Player File
      */
