@@ -101,7 +101,9 @@ public class GUIPlayer extends NetworkPlayer {
                 }
             }
             try {
+                Util.log_debug("ahead to update file");
                 FileController.updateFile(playerConfig);
+                Util.log_debug("finished to update file");
             } catch (IOException e) {
                 Util.log_debug("failed to update playerConfig");
             }

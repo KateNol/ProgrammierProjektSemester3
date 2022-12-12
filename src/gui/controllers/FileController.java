@@ -19,6 +19,7 @@ public class FileController {
     private static final File folder = new File("playerConfig/");
     private static final File folderPath = new File(folder.getPath());
     private static final ArrayList<File> listOfFiles = new ArrayList<>();
+    private static boolean listInitialized = false;
 
     private static boolean fileOne = false;
     private static boolean fileTwo = false;
@@ -60,13 +61,17 @@ public class FileController {
      * Checks if configFile exists an if save in ArrayList
      */
     public static void checkIfFileExists(){
-        for (int i = 0; i < 3; i++){
-            listOfFiles.add(null);
+        if(!listInitialized) {
+            for (int i = 0; i < 3; i++) {
+                listOfFiles.add(null);
+            }
+            listInitialized = true;
         }
 
         File[] loadedFiles = folderPath.listFiles();
         assert loadedFiles != null;
         for (File file : loadedFiles) {
+            log_debug("loaded from folder: " + file.getName());
             int slot = Character.getNumericValue(file.getName().charAt(0));
             listOfFiles.remove(slot);
             listOfFiles.add(slot, file);
@@ -83,6 +88,7 @@ public class FileController {
                 }
             }
         }
+        Util.log_debug("check if file exist method end" + String.valueOf(listOfFiles));
     }
 
     /**
@@ -110,6 +116,8 @@ public class FileController {
                 if(name.equals(tempName)){
                     return Character.getNumericValue(fileName.charAt(0));
                 }
+            } else {
+                log_debug("null");
             }
         }
         return -1;
@@ -123,7 +131,7 @@ public class FileController {
      */
     public static void writeToFile(PlayerConfig playerConfig, int slot) throws IOException {
         String absolutePath = "playerConfig/" + slot + "" +playerConfig.getUsername() + ".bin";
-        listOfFiles.add(slot, new File(absolutePath));
+        listOfFiles.add(new File(absolutePath));
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
         oos.writeObject(playerConfig);
         oos.close();
@@ -135,16 +143,22 @@ public class FileController {
      * @throws IOException In case there is an input/output exception
      */
     public static void updateFile(PlayerConfig playerConfig) throws IOException {
-        Util.log_debug(Integer.toString(getSlot(playerConfig.getUsername())));
-        if(getSlot(playerConfig.getUsername()) != -1){
-            configDelete(getSlot(playerConfig.getUsername()));
-            String absolutePath = "playerConfig/" + getSlot(playerConfig.getUsername()) + "" +playerConfig.getUsername() + ".bin";
+        int slot = getSlot(playerConfig.getUsername());
+        Util.log_debug("-----------------------------------------");
+        log_debug("update File method started");
+        Util.log_debug("listOfFiles contains: " + String.valueOf(listOfFiles));
+        Util.log_debug("slot: " + slot);
+        Util.log_debug("-----------------------------------------");
+        if(slot != -1){
+            configDelete(slot);
+            String absolutePath = "playerConfig/" + slot + "" +playerConfig.getUsername() + ".bin";
             File file = new File(absolutePath);
             log_debug("saved file to: " + file.getAbsolutePath());
-            listOfFiles.add(getSlot(playerConfig.getUsername()), file);
+            listOfFiles.add(slot, file);
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
             oos.writeObject(playerConfig);
             oos.close();
+            log_debug("after new creation" + String.valueOf(listOfFiles));
         } else {
             log_debug("update file failed");
         }
@@ -170,14 +184,20 @@ public class FileController {
      * @param fileNumber witch File to delete 0 to 2
      */
     public static void configDelete(int fileNumber){
+        log_debug("now in config delete");
+        log_debug("deleted file " + fileNumber);
+        log_debug("----------------------------");
         boolean delete = listOfFiles.get(fileNumber).delete();
+        log_debug(" delete done: " + delete);
         if(!delete){
             log_debug("delete file failed");
         }
-        listOfFiles.remove(fileNumber);
-        listOfFiles.add(fileNumber, null);
-        log_debug("deleted file " + fileNumber);
         log_debug(String.valueOf(listOfFiles));
+        listOfFiles.remove(fileNumber);
+        log_debug(String.valueOf(listOfFiles));
+        listOfFiles.add(fileNumber, null);
+        log_debug(String.valueOf(listOfFiles));
+        log_debug("-------------done delete method-------------------");
     }
 
     /**

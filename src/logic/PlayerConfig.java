@@ -8,7 +8,7 @@ import java.io.*;
  */
 public class PlayerConfig implements Serializable {
 
-    private final String userName;
+    private String userName;
     private int maxSemester;
 
 
