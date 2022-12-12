@@ -5,6 +5,7 @@ import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
@@ -130,6 +131,9 @@ public class GUIPlayer extends NetworkPlayer {
      */
     @Override
     public Coordinate getShot() {
+        guiBoard.setTopLeftCorner(Color.DARKRED);
+        if (guiEnemyBoard != null)
+            guiEnemyBoard.setTopLeftCorner(Color.DARKGREEN);
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null) {
                 //TODO
@@ -168,6 +172,9 @@ public class GUIPlayer extends NetworkPlayer {
             }
 
         });
+        guiBoard.setTopLeftCorner(Color.DARKGREEN);
+        if (guiEnemyBoard != null)
+            guiEnemyBoard.setTopLeftCorner(Color.DARKRED);
         return shotCopy;
     }
 

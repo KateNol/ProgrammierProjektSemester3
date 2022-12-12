@@ -17,13 +17,19 @@ public class TileBoardText extends StackPane {
      * @param s Labeling from the board
      */
     public TileBoardText(Coordinate coordinate, int tileSize, String s) {
+        this(coordinate, tileSize, s, Color.BLACK);
+    }
+
+    public TileBoardText(Coordinate coordinate, int tileSize, String s, Color color) {
         Tile tile = new Tile(coordinate, tileSize);
         tile.setFill(Color.WHITE);
 
         Text text = new Text(s);
-        text.setFill(Color.BLACK);
+        text.setFill(color);
         text.setStyle("-fx-font-size: 15");
+        text.setStyle("-fx-font-weight: bold;");
 
         this.getChildren().addAll(tile, text);
     }
+
 }

@@ -1,6 +1,7 @@
 package gui.tile;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import logic.Coordinate;
 
@@ -17,11 +18,15 @@ public class Tile extends Rectangle {
      * @param tileSize TileSize in Pixel
      */
     public Tile(Coordinate coordinate, int tileSize){
+        this(coordinate, tileSize, Color.BLACK);
+    }
+
+    public Tile(Coordinate coordinate, int tileSize, Paint paint) {
         super(tileSize - 1, tileSize - 1);
         this.tileSize = tileSize;
         this.coordinate = coordinate;
-        //Outline from Tile
         setStroke(Color.BLACK);
+        setFill(paint);
     }
 
     /**
