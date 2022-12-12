@@ -103,7 +103,6 @@ public class FileController {
     public static int getSlot(String name){
         for (File filename: listOfFiles) {
             if(filename != null){
-
                 String fileName = filename.getName();
                 String tempName = fileName.substring(1, fileName.length() - 4);
                 log_debug("on file " + filename);
@@ -124,7 +123,7 @@ public class FileController {
      */
     public static void writeToFile(PlayerConfig playerConfig, int slot) throws IOException {
         String absolutePath = "playerConfig/" + slot + "" +playerConfig.getUsername() + ".bin";
-        listOfFiles.add(new File(absolutePath));
+        listOfFiles.add(slot, new File(absolutePath));
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(listOfFiles.get(listOfFiles.size() -1)));
         oos.writeObject(playerConfig);
         oos.close();
@@ -172,11 +171,13 @@ public class FileController {
      */
     public static void configDelete(int fileNumber){
         boolean delete = listOfFiles.get(fileNumber).delete();
-        listOfFiles.add(fileNumber, null);
         if(!delete){
             log_debug("delete file failed");
         }
         listOfFiles.remove(fileNumber);
+        listOfFiles.add(fileNumber, null);
+        log_debug("deleted file " + fileNumber);
+        log_debug(String.valueOf(listOfFiles));
     }
 
     /**
