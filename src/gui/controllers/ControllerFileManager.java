@@ -21,9 +21,11 @@ import java.util.ResourceBundle;
 
 public class ControllerFileManager implements Initializable {
 
-    //File Buttons
+    //AI
     @FXML
-    private Button ai;
+    private VBox AIDifficultBox;
+
+    //File Buttons
     @FXML
     private Button fileOne;
     @FXML
@@ -121,9 +123,10 @@ public class ControllerFileManager implements Initializable {
      * Return to Screen Menu
      */
     public void onReturn(){
-        if(userInput.isVisible()){
+        if(userInput.isVisible() || AIDifficultBox.isVisible()){
             nameInput.clear();
             userInput.setVisible(false);
+            AIDifficultBox.setVisible(false);
         }
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
@@ -168,9 +171,6 @@ public class ControllerFileManager implements Initializable {
         }
     }
 
-    public void onAi(){
-
-    }
     /**
      * Load Player File
      */
@@ -180,7 +180,7 @@ public class ControllerFileManager implements Initializable {
         } catch (IOException | ClassNotFoundException e){
             gui.Util.log_debug("Could not load playerConfig file from folder");
         }
-        new GUIAIPlayer(playerConfig);
+        new GUIPlayer(playerConfig);
     }
 
     /**
@@ -296,5 +296,66 @@ public class ControllerFileManager implements Initializable {
             case 1 -> fileTwo.setText("New File 2");
             case 2 -> fileThree.setText("New File 3");
         }
+    }
+
+    public void onAi(){
+        AIDifficultBox.setVisible(!AIDifficultBox.isVisible());
+    }
+
+    public void onAIOne(){
+        PlayerConfig playerConfig = new PlayerConfig("AIOne");
+        new GUIAIPlayer(playerConfig);
+        AIDifficultBox.setVisible(false);
+        ViewSwitcher.switchTo(View.NetworkManager);
+    }
+
+    public void onAITwo(){
+        PlayerConfig playerConfig = new PlayerConfig("AITwo");
+        for(int i = 0; i < 1; i++){
+            playerConfig.increaseMaxSemester();
+        }
+        new GUIAIPlayer(playerConfig);
+        AIDifficultBox.setVisible(false);
+        ViewSwitcher.switchTo(View.NetworkManager);
+    }
+
+    public void onAIThree(){
+        PlayerConfig playerConfig = new PlayerConfig("AIThree");
+        for(int i = 0; i < 2; i++){
+            playerConfig.increaseMaxSemester();
+        }
+        new GUIAIPlayer(playerConfig);
+        AIDifficultBox.setVisible(false);
+        ViewSwitcher.switchTo(View.NetworkManager);
+    }
+
+    public void onAIFour(){
+        PlayerConfig playerConfig = new PlayerConfig("AIFour");
+        for(int i = 0; i < 3; i++){
+            playerConfig.increaseMaxSemester();
+        }
+        new GUIAIPlayer(playerConfig);
+        AIDifficultBox.setVisible(false);
+        ViewSwitcher.switchTo(View.NetworkManager);
+    }
+
+    public void onAIFive(){
+        PlayerConfig playerConfig = new PlayerConfig("AIFive");
+        for(int i = 0; i < 4; i++){
+            playerConfig.increaseMaxSemester();
+        }
+        new GUIAIPlayer(playerConfig);
+        AIDifficultBox.setVisible(false);
+        ViewSwitcher.switchTo(View.NetworkManager);
+    }
+
+    public void onAISix(){
+        PlayerConfig playerConfig = new PlayerConfig("AISix");
+        for(int i = 0; i < 5; i++){
+            playerConfig.increaseMaxSemester();
+        }
+        new GUIAIPlayer(playerConfig);
+        AIDifficultBox.setVisible(false);
+        ViewSwitcher.switchTo(View.NetworkManager);
     }
 }
