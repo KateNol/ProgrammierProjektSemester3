@@ -1,8 +1,6 @@
 package gui;
 
-import gui.controllers.ControllerGame;
-import gui.controllers.ControllerLobby;
-import gui.controllers.FileController;
+import gui.controllers.*;
 import gui.objekt.GuiBoard;
 import gui.objekt.GuiHarbour;
 import javafx.application.Platform;
@@ -86,8 +84,12 @@ public class GUIPlayer extends NetworkPlayer {
      * @param winner client or host
      */
     public void onGameOver(String winner) {
+        log_debug("gui onGameOver " + winner);
         super.onGameOver(winner);
         Platform.runLater(() -> {
+            if (ControllerGame.getInstance() == null) {
+                ViewSwitcher.switchTo(View.Game);
+            }
             ControllerGame.getInstance().getTurnLabel().setText("GAME OVER");
             ControllerGame.getInstance().openEndScreen();
             if((getServerMode() == ServerMode.SERVER && winner.equalsIgnoreCase("host"))
@@ -151,7 +153,8 @@ public class GUIPlayer extends NetworkPlayer {
                 shotCoordinate = null;
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            return new Coordinate(-1, -1);
+            // throw new RuntimeException(e);
         }
         log_debug("got shot from GUIPlayer at " + shotCopy);
 

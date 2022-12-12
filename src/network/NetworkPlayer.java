@@ -82,6 +82,8 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public int getNegotiatedSemester() {
+        if (contact == null)
+            return -1;
         return contact.getNegotiatedSemester();
     }
 
