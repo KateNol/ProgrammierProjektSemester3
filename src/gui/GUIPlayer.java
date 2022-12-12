@@ -96,12 +96,9 @@ public class GUIPlayer extends NetworkPlayer {
                 playerConfig.increaseMaxSemester();
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
-                playerConfig.increaseMaxSemester();
-                /*
                 if(playerConfig.getMaxSemester() - 1 != 0){
                     playerConfig.decreaseMaxSemester();
                 }
-                */
             }
             try {
                 FileController.updateFile(playerConfig);
