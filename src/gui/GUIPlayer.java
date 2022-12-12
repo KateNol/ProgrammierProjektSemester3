@@ -9,8 +9,11 @@ import javafx.scene.paint.Color;
 import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
+import network.internal.ChatMsg;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import static logic.Util.log_debug;
 
@@ -18,7 +21,7 @@ import static logic.Util.log_debug;
  * @author Stefan
  * Gui interactive player
  */
-public class GUIPlayer extends NetworkPlayer {
+public class GUIPlayer extends NetworkPlayer implements Observer {
     //instance
     private static GUIPlayer instance = null;
     private final PlayerConfig playerConfig;
@@ -121,7 +124,8 @@ public class GUIPlayer extends NetworkPlayer {
     protected void setShips() {
         if (!getIsConnectionEstablished())
             System.exit(1);
-        while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(getNegotiatedSemester()).size() || !isShipsPlaced)) ;
+        while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(getNegotiatedSemester()).size() || !isShipsPlaced));
+        addObserver(this);
         ControllerLobby.getInstance().enableStartButton();
     }
 
@@ -199,6 +203,14 @@ public class GUIPlayer extends NetworkPlayer {
         ShotResult shotResult = super.receiveShot(shot);
         guiBoard.updateBoard(shotResult, shot);
         return shotResult;
+    }
+
+    @Override
+    public void receiveChatMessage(String message) {
+        if (ControllerGame.getInstance() == null)
+            return;
+        log_debug("gui player received msg " + message);
+        ControllerGame.getInstance().displayChatMessage(message);
     }
     //--------------------------------------
 
@@ -295,6 +307,23 @@ public class GUIPlayer extends NetworkPlayer {
             case 4 -> this.tileSize = 24;
             case 5 -> this.tileSize = 23;
             case 6 -> this.tileSize = 22;
+        }
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an {@code Observable} object's
+     * {@code notifyObservers} method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the {@code notifyObservers}
+     *            method.
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof ChatMsg) {
+            receiveChatMessage(((ChatMsg) arg).msg);
         }
     }
 }

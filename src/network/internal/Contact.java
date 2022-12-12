@@ -1,5 +1,6 @@
 package network.internal;
 
+import javafx.util.Pair;
 import logic.Coordinate;
 import logic.ShotResult;
 import network.ServerMode;
@@ -139,8 +140,9 @@ public final class Contact extends Observable {
      * @param command
      * @param args
      */
-    private void sendMessage(String command, String... args) {
+    public void sendMessage(String command, String... args) {
         String msg = constructMessage(command, args);
+
         log_debug("sending: '" + msg + "'");
         outWriter.println(msg);
     }
@@ -354,6 +356,11 @@ public final class Contact extends Observable {
                     reason = args.get(1);
                 }
                 ERR(RECEIVE, code, reason);
+            }
+            case "CHAT_MSG" -> {
+                log_debug("eval command CHAT_MSG");
+                String msg = args.get(0);
+                CHAT_MSG(RECEIVE, msg);
             }
             default -> {
                 ERR(SEND, 0, "unknown message command");
@@ -613,6 +620,24 @@ public final class Contact extends Observable {
         }
     }
 
+    private void CHAT_MSG(MessageMode mode, String MESSAGE) {
+        switch (mode) {
+            case SEND -> {
+                if (!(protocolVersion >= 2)) {
+                    log_debug("peer does not implement protocol version 2+");
+                    notifyObservers(new Pair<>(Notification.ChatMsg, "peer does not implement protocol version 2+"));
+                } else {
+                    if (!MESSAGE.isEmpty())
+                        sendMessage("CHAT_MSG", MESSAGE);
+                }
+            }
+            case RECEIVE -> {
+                log_debug("notifying of chatmsg");
+                notifyObservers(new ChatMsg(MESSAGE));
+            }
+        }
+    }
+
     /* observable *****************************************************************************************************/
 
     @Override
@@ -622,4 +647,7 @@ public final class Contact extends Observable {
         clearChanged();
     }
 
+    public void sendChatMessage(String message) {
+        CHAT_MSG(SEND, message);
+    }
 }

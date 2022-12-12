@@ -178,4 +178,10 @@ public class AIPlayer extends NetworkPlayer {
 
         return shot;
     }
+
+    @Override
+    public void receiveChatMessage(String message) {
+        log_debug("received chat msg: " + message);
+    }
+
 }

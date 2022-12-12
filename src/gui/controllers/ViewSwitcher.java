@@ -76,6 +76,7 @@ public class ViewSwitcher {
             lastView = view;
         } catch (Exception e){
             log_debug("failed to Switch to " + view.toString());
+            log_debug(e.getMessage());
         }
     }
 

@@ -1,6 +1,8 @@
 package network;
 
+import javafx.util.Pair;
 import logic.*;
+import network.internal.ChatMsg;
 import network.internal.Client;
 import network.internal.Contact;
 import shared.Notification;
@@ -170,6 +172,12 @@ public abstract class NetworkPlayer extends Player {
         contact.endConnection();
     }
 
+    @Override
+    public void sendChatMessage(String message) {
+        contact.sendChatMessage(message);
+    }
+
+
     /* observable *****************************************************************************************************/
 
     @Override
@@ -180,11 +188,17 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public void notifyObservers(Object arg) {
-        Thread notifyThread = new Thread(() -> {
-            super.notifyObservers(arg);
+        log_debug("network notify " + arg);
+        if (arg instanceof ChatMsg argMsg) {
+            log_debug("network notify chatmsg");
+            receiveChatMessage(argMsg.msg);
+        }
+        super.notifyObservers(arg);
+
+        /*Thread notifyThread = new Thread(() -> {
         });
         notifyThread.setName("NetworkNotify");
-        notifyThread.start();
+        notifyThread.start();*/
     }
 
 }

@@ -234,7 +234,8 @@ public class Logic implements Observer {
             synchronized (logicThread) {
                 logicThread.notify();
             }
+        } else {
+            log_debug("unknown notification: " + arg);
         }
-
     }
 }
