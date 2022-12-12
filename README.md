@@ -9,37 +9,34 @@ Links
 
 ### geordnet nach prioritaet
 #### all
-- [ ] semester implementieren und testen (semester increase/decrease, testen) (lukas) 12.
-- [ ] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
-- [x] mehrere spiele hintereinander spielen fixen (jannik) 12.
-- [ ] game over winner message ist falsch (jannik) 12.
-
-#### logic/player
-- [ ] game_over: save player state (lukas) 12.
-
-#### gui
 - [ ] ki in gui spielen lassen (stefan, jannik, lukas) 14.
+- [ ] semester implementieren und testen (semester increase/decrease, testen) (team)
+- [ ] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
+- [ ] turn label falscher text (lukas)
+- [ ] game_over: save player state (team)
+- [ ] sounds (philip)
+- [ ] verbindungsabbruch zurueck ins menu (stefan jannik)
+- [ ] gui einige tiles unresponsive (stefan)
+- [ ] shoot schlauer machen (kat)
+- [ ] ai delay (kat)
+- [ ] ai name auswaehlen (kat)
+- [x] gui options entfernen
+- [ ] design / schriftart (kat)
+- [ ] (optional) mit begin warten bis gui go gibt
+- [ ] (optional) Chat einbauen
+- [ ] (optional) Button für Random Schiffe platzieren
+- [ ] (optional) turnLabel anpassen ohne flimmern
+- [x] mehrere spiele hintereinander spielen fixen (jannik) 12.
+- [x] game over winner message ist falsch (jannik) 12.
 - [X] höhere semester start button geht nicht (stefan) 12.
 - [x] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat) (stefan)
-- [ ] design / schriftart (kat) 14.
-- [ ] (optional) Chat einbauen
-- [ ] (optional) Button für Random Schiffe plazieren
-- [ ] (optional) turnLabel anpassen ohne flimmern- 
-- [x] sounds
 - [x] GameOver sceen wohin man kommt
 - [x] schiffe versenken gui
 - [x] buttons anpassen / removen
 - [x] einige tiles sind dead?
 - [x] alle tiles updaten, nicht nur shots bei versunkenem schiff
 
-
-#### network
-- [x] verbindungsabbruch was tun (stefan, jannik) 12.
-- [ ] (optional) mit begin warten bis gui go gibt
-
 #### ai
-- [ ] shoot schlauer machen (kat)
-- [ ] delay (kat)
 - [x] setships mergen
 - [x] shooten bauen
 
