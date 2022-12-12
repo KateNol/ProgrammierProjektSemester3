@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import logic.*;
 import network.NetworkPlayer;
+import network.ServerMode;
 
 import java.io.IOException;
 
@@ -89,7 +90,8 @@ public class GUIPlayer extends NetworkPlayer {
         Platform.runLater(() -> {
             ControllerGame.getInstance().getTurnLabel().setText("GAME OVER");
             ControllerGame.getInstance().openEndScreen();
-            if(getServerMode().toString().equals(winner)){
+            if((getServerMode() == ServerMode.SERVER && winner.equalsIgnoreCase("host"))
+                    || (getServerMode() == ServerMode.CLIENT && winner.equalsIgnoreCase("client"))){
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
                 playerConfig.increaseMaxSemester();
             } else {
