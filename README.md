@@ -11,7 +11,7 @@ Links
 #### all
 - [ ] semester implementieren und testen (semester increase/decrease, testen) (lukas) 12.
 - [ ] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
-- [ ] mehrere spiele hintereinander spielen fixen (jannik) 12.
+- [x] mehrere spiele hintereinander spielen fixen (jannik) 12.
 - [ ] game over winner message ist falsch (jannik) 12.
 
 #### logic/player
@@ -20,7 +20,7 @@ Links
 #### gui
 - [ ] ki in gui spielen lassen (stefan, jannik, lukas) 14.
 - [X] höhere semester start button geht nicht (stefan) 12.
-- [ ] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat) (stefan)
+- [x] shoot input buffer bug (schiesst auf tile was man frueher gedrückt hat, nicht das letzte was man gedrückt hat) (stefan)
 - [ ] design / schriftart (kat) 14.
 - [ ] (optional) Chat einbauen
 - [ ] (optional) Button für Random Schiffe plazieren
@@ -34,7 +34,7 @@ Links
 
 
 #### network
-- [ ] verbindungsabbruch was tun (stefan, jannik) 12.
+- [x] verbindungsabbruch was tun (stefan, jannik) 12.
 - [ ] (optional) mit begin warten bis gui go gibt
 
 #### ai
