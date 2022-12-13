@@ -141,10 +141,10 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null) {
                 //TODO
-                if (turn) {
+                //if (turn) {
                     ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
                     turn = false;
-                }
+                //}
             }
 
         });
@@ -169,10 +169,10 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null) {
                 //TODO
-                if (!turn) {
+                //if (!turn) {
                     ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
                     turn = false;
-                }
+                //}
             }
 
         });
