@@ -150,10 +150,11 @@ public class ControllerGame implements Initializable {
     public void onSend() {
         String message = chatInputField.getText();
         chatInputField.clear();
+        displayChatMessage("> " + message);
         guiPlayer.sendChatMessage(message);
     }
 
     public void displayChatMessage(String message) {
-        chatArea.setText(chatArea.getText() + message);
+        chatArea.setText(chatArea.getText() + message + "\n");
     }
 }

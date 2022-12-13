@@ -106,7 +106,7 @@ public final class Contact extends Observable {
                     continue;
                 }
                 log_debug("received: '" + input + "'");
-                input = input.toUpperCase();
+                input = input.startsWith("CHAT_MSG") ? input : input.toUpperCase();
 
                 ArrayList<String> args = new ArrayList<>(List.of(input.split(String.valueOf(messageDelimiter))));
                 String command = args.get(0);

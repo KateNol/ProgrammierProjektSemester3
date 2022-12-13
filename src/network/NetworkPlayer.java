@@ -188,17 +188,17 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public void notifyObservers(Object arg) {
-        log_debug("network notify " + arg);
-        if (arg instanceof ChatMsg argMsg) {
-            log_debug("network notify chatmsg");
-            receiveChatMessage(argMsg.msg);
-        }
-        super.notifyObservers(arg);
+        Thread notifyThread = new Thread(() -> {
+            log_debug("network notify " + arg);
+            if (arg instanceof ChatMsg argMsg) {
+                log_debug("network notify chatmsg");
+                receiveChatMessage(argMsg.msg);
+            }
+            super.notifyObservers(arg);
 
-        /*Thread notifyThread = new Thread(() -> {
         });
         notifyThread.setName("NetworkNotify");
-        notifyThread.start();*/
+        notifyThread.start();
     }
 
 }
