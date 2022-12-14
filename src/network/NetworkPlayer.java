@@ -3,104 +3,188 @@ package network;
 import logic.*;
 import network.internal.Client;
 import network.internal.Contact;
+import shared.Notification;
 import network.internal.Server;
 //import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Observable;
 import java.util.Observer;
 
 import static network.internal.Util.*;
 
 public abstract class NetworkPlayer extends Player {
     private Contact contact;
-    private ShotResult lastShotResult = null;
+
+    public NetworkPlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
+        contact = null;
+    }
 
     /**
-     * @param serverMode determines if we set up a Server and wait for a connection or try to connect as a client
-     * @param address    is the target address for client mode, may be null in server mode
-     * @throws IOException if an I/O error occurs when waiting for a connection.
+     *
+     * @param serverMode {Server or Client}, both modes will start a new thread and wait indefinitely for a connection
+     * @param address
+     * @param port
+     * @throws IOException
      */
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address, int port) throws IOException {
-        super(playerConfig, globalConfig);
+    public void establishConnection(ServerMode serverMode, String address, int port) throws IOException {
+        log_debug("establishing connection as " + serverMode);
+        setServerMode(serverMode);
         switch (serverMode) {
             case SERVER -> {
-                log_stdio("server");
-                this.contact = Server.getContact(port);
+                this.contact = Server.getContact(port, getUsername(), getMaxSemester());
             }
             case CLIENT -> {
-                log_stdio("client");
-                this.contact = Client.getContact(address, port);
-            }
-            default -> {
-                log_stderr("invalid network mode");
-                System.exit(1);
+                this.contact = Client.getContact(address, port, getUsername(), getMaxSemester());
             }
         }
-        System.out.println("NetworkPlayer CTOR end");
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        this(playerConfig, globalConfig, serverMode, address, defaultPort);
+    /**
+     *
+     * @param serverMode {Server or Client}, both modes will start a new thread and wait indefinitely for a connection
+     * @throws IOException
+     */
+    public void establishConnection(ServerMode serverMode) throws IOException {
+        establishConnection(serverMode, defaultAddress, defaultPort);
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, int port) throws IOException {
-        this(playerConfig, globalConfig, serverMode, defaultAddress, port);
+    public void abortEstablishConnection() {
+        if (getServerMode() != null) {
+            if (getServerMode() == ServerMode.SERVER)
+                Server.abort();
+            else if (getServerMode() == ServerMode.CLIENT)
+                Client.abort();
+        }
     }
 
-    public NetworkPlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        this(playerConfig, globalConfig, serverMode, defaultAddress, defaultPort);
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (contact != null) {
+
+            contact.endConnection();
+            contact = null;
+        }
+        abortEstablishConnection();
+
+        notifyObservers(Notification.SelfDestruct);
     }
 
+    /* getters ********************************************************************************************************/
+
+    @Override
+    public boolean getIsConnectionEstablished() {
+        if (contact == null)
+            return false;
+        return contact.getIsConnectionEstablished();
+    }
+
+    @Override
+    public int getNegotiatedSemester() {
+        if (contact == null)
+            return -1;
+        return contact.getNegotiatedSemester();
+    }
+
+    public String getEnemyUsername() {
+        return contact.getPeerUsername();
+    }
+
+    @Override
+    public boolean getStart() {
+        if (contact == null)
+            return false;
+        return contact.getStart();
+    }
+
+    public boolean getReady() {
+        if (contact == null)
+            return false;
+        return contact.getEnemyReady();
+    }
+
+    public boolean getBegin() {
+        if (contact == null)
+            return false;
+        return contact.getBegin();
+    }
+
+
+    @Override
+    public boolean getWeBegin() {
+        return contact.getWeBeginGame();
+    }
+
+    /* setters ********************************************************************************************************/
+
+    public void setReadyToBegin() {
+        contact.setReady();
+        contact.setBegin();
+    }
+
+    public void setReady() {
+        contact.setReady();
+    }
+
+    public void setBegin() {
+        contact.setBegin();
+    }
+
+    /* communication methods ******************************************************************************************/
 
     public void sendMessage(String msg) {
         contact.sendRawMessage(msg);
     }
 
     @Override
-    public boolean getIsConnected() {
-        return contact.getIsConnected();
-    }
-
-    @Override
-    public int getCommonSemester() {
-        return contact.getCommonSemester();
-    }
-
-    @Override
-    public String getUsername() {
-        return contact.getUsername();
-    }
-
-    /**
-     * @param coordinate
-     */
-    @Override
     public void sendShot(Coordinate coordinate) {
         sendMessage("FIRE;" + coordinate.row() + ";" + coordinate.col());
     }
 
-    /**
-     *
-     */
     @Override
     public void sendShotResponse(ShotResult shotResult) {
-        //super.sendShotResponse(shotResult);
-        sendMessage("FIRE_ACK;" + shotResult);
+        sendShotResponse(shotResult, false);
     }
 
-    /**
-     * Adds an observer to the set of observers for this object, provided
-     * that it is not the same as some observer already in the set.
-     * The order in which notifications will be delivered to multiple
-     * observers is not specified. See the class comment.
-     *
-     * @param o an observer to be added.
-     * @throws NullPointerException if the parameter o is null.
-     */
+    public void sendShotResponse(ShotResult shotResult, boolean gameOver) {
+        if (!gameOver)
+            sendMessage("FIRE_ACK;" + shotResult);
+        else
+            sendMessage("FIRE_ACK;" + shotResult + ";" + "true");
+    }
+
+    public void sendEnd(String winner) {
+        sendMessage("END;" + winner);
+    }
+
+    public void sendBye() {
+        sendMessage("BYE");
+    }
+
+    public void onGameOver(String winner) {
+        if (contact.getConnectionTerminated())
+            return;
+        sendEnd(winner);
+        sendBye();
+        contact.endConnection();
+    }
+
+    /* observable *****************************************************************************************************/
+
     @Override
     public void addObserver(Observer o) {
         super.addObserver(o);
         contact.addObserver(o);
     }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        Thread notifyThread = new Thread(() -> {
+            super.notifyObservers(arg);
+        });
+        notifyThread.setName("NetworkNotify");
+        notifyThread.start();
+    }
+
 }

@@ -10,6 +10,13 @@ public class Map {
     public Map(int boardSize) {
         this.boardSize = boardSize;
         map = new MapState[boardSize][boardSize];
+        fillWater();
+    }
+
+    /**
+     * Fills map with water
+     */
+    protected void fillWater() {
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
                 map[row][col] = MapState.W;
@@ -18,11 +25,22 @@ public class Map {
     }
 
     /**
-     *
      * @param c Coordinate
      * @return value of the map on this coordinate
      */
-    public MapState getState(Coordinate c) {return map[c.row()][c.col()];}
+    public MapState getState(Coordinate c) {
+        return map[c.row()][c.col()];
+    }
+
+    public MapState getState(int i, int j) {
+        return map[i][j];
+    }
+    public boolean inBounds(Coordinate c) {
+        return inBounds(c.row(), c.col());
+    }
+    public boolean inBounds(int i, int j) {
+        return i>=0 && j>=0 && i<getMapSize() && j<getMapSize();
+    }
 
     public MapState[][] getMap() {
         return map;
@@ -42,4 +60,5 @@ public class Map {
     }
 
     public int getMapSize() {return boardSize;}
+
 }

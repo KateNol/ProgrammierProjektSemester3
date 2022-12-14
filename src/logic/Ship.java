@@ -2,6 +2,8 @@ package logic;
 
 import java.io.IOException;
 
+import static logic.Util.log_stderr;
+
 /**
  * implements ships with size, exact positions and health
  */
@@ -81,8 +83,14 @@ public class Ship {
      * @return true if hit, false if not
      */
     public boolean checkIfHit(Coordinate c) {
+
         for(Coordinate p: pos) {
-            if(c.row() == p.row() && c.col() == p.col()) {
+            if (p == null) {
+                log_stderr("Pos for ship is null! " + size + " " + c);
+                return false;
+            }
+
+            if (c.row() == p.row() && c.col() == p.col()) {
                 return true;
             }
         }

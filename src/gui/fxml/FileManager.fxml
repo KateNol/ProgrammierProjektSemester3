@@ -2,81 +2,138 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="gui.controllers.ControllerFileManager">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerFileManager">
    <children>
-      <HBox layoutX="732.0" layoutY="220.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox fx:id="background" layoutX="732.0" layoutY="220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="1600.0">
+            <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="200.0" text="New File 1">
-                     <font>
-                        <Font size="24.0"/>
-                     </font>
-                     <VBox.margin>
-                        <Insets left="50.0" top="100.0"/>
-                     </VBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefWidth="200.0" text="New File 2">
-                     <font>
-                        <Font size="24.0"/>
-                     </font>
-                     <VBox.margin>
-                        <Insets left="50.0" top="50.0"/>
-                     </VBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefWidth="200.0" text="New File 3">
-                     <font>
-                        <Font size="24.0"/>
-                     </font>
-                     <VBox.margin>
-                        <Insets left="50.0" top="50.0"/>
-                     </VBox.margin>
-                  </Button>
-                  <HBox alignment="BOTTOM_LEFT" prefHeight="518.0" prefWidth="1600.0" VBox.vgrow="ALWAYS">
-                     <opaqueInsets>
-                        <Insets top="400.0"/>
-                     </opaqueInsets>
+                  <VBox minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" prefWidth="200.0" text="Delete File">
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Button fx:id="fileOne" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#onFile1" prefHeight="60.0" prefWidth="250.0" text="New File 1">
+                                 <font>
+                                    <Font name="Rockwell" size="28.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="deleteOne" mnemonicParsing="false" onAction="#onDelete1" prefHeight="60.0" prefWidth="60.0">
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Button fx:id="fileTwo" alignment="TOP_CENTER" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#onFile2" prefHeight="60.0" prefWidth="250.0" text="New File 2">
+                                 <font>
+                                    <Font name="Rockwell" size="28.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="deleteTwo" mnemonicParsing="false" onAction="#onDelete2" prefHeight="60.0" prefWidth="60.0">
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Button fx:id="fileThree" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#onFile3" prefHeight="60.0" prefWidth="250.0" text="New File 3">
+                                 <font>
+                                    <Font name="Rockwell" size="28.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="deleteThree" mnemonicParsing="false" onAction="#onDelete3" prefHeight="60.0" prefWidth="60.0">
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="ai" mnemonicParsing="false" onAction="#onAi" prefHeight="60.0" prefWidth="250.0" text="AI">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font></Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox fx:id="userInput" alignment="CENTER" prefHeight="200.0" spacing="50.0" visible="false">
+                           <children>
+                              <TextField fx:id="nameInput" minHeight="-Infinity" minWidth="-Infinity" promptText="Set Username">
+                                 <font>
+                                    <Font name="Rockwell" size="20.0" />
+                                 </font>
+                              </TextField>
+                              <Button fx:id="create" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="Create">
+                                 <font>
+                                    <Font name="Rockwell" size="22.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="50.0" right="50.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onReturn" prefHeight="60.0" prefWidth="250.0" text="Return">
                            <font>
-                              <Font size="24.0"/>
+                              <Font name="Rockwell" size="28.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets bottom="50.0" left="50.0"/>
-                           </HBox.margin>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Button>
                      </children>
-                  </HBox>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#switchToSceneMenu" prefWidth="200.0" text="Return">
-                     <font>
-                        <Font size="24.0"/>
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="850.0"/>
-                     </VBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#switchToSceneNetworkManager" prefWidth="200.0" text="Next">
-                     <font>
-                        <Font size="24.0"/>
-                     </font>
-                     <VBox.margin>
-                        <Insets/>
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>

@@ -1,19 +1,16 @@
 package network.debug;
 
-import internal.LocalEnemyMode;
-import internal.NetworkMode;
-import internal.PlayerMode;
+import shared.LocalEnemyMode;
+import shared.NetworkMode;
+import shared.PlayerMode;
 import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Scanner;
 
-import static network.internal.Util.log_debug;
-import static network.internal.Util.log_stderr;
+import static network.internal.Util.*;
 
 
 /**
@@ -31,10 +28,9 @@ public final class Driver {
     public static void main(String[] args) throws IOException {
         log_debug("this is a test class, use this only to test classes");
 
-        String mode = "";
-
         if (args.length == 0) {
             log_stderr("missing arguments");
+            log_stderr("valid args are: player=[human,ai], network=[online/offline], enemy=[human/ai], address=$address, port=$port, semester=[1..6]");
             System.exit(1);
         }
 
@@ -42,7 +38,9 @@ public final class Driver {
         NetworkMode networkMode = null;
         LocalEnemyMode localEnemyMode = null;
         ServerMode serverMode = null;
-        String addr = null;
+        String addr = defaultAddress;
+        int port = defaultPort;
+        int semester = 1;
 
         for (String arg : args) {
             arg = arg.toLowerCase();
@@ -67,22 +65,29 @@ public final class Driver {
                 }
             } else if (arg.startsWith("address=")) {
                 addr = arg.substring("address=".length());
+            } else if (arg.startsWith("port=")) {
+                port = Integer.parseInt(arg.substring("port=".length()));
             } else if (arg.startsWith("server=")) {
                 if (arg.endsWith("host")) {
                     serverMode = ServerMode.SERVER;
                 } else if (arg.endsWith("client")) {
                     serverMode = ServerMode.CLIENT;
                 }
+            } else if (arg.startsWith("semester=")) {
+                semester = Integer.parseInt(arg.substring("semester=".length()));
             }
         }
 
-        Player player = null;
-
+        NetworkPlayer player = null;
         if (playerMode == PlayerMode.HUMAN) {
-            player = new ConsolePlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
+            player = new ConsolePlayer("Console Player", semester);
+            player.establishConnection(serverMode, addr, port);
         } else if (playerMode == PlayerMode.COMPUTER) {
-            player = new AIPlayer(new PlayerConfig(), new GlobalConfig(), serverMode, addr);
+            player = new AIPlayer(semester);
+            player.establishConnection(serverMode, addr, port);
         }
+
+        assert player != null;
         Logic logic = new Logic(player);
         // if we are server and local play is enabled, spawn enemy player ourselves
         // note: if local play is disabled, e.g. networkMode==ONLINE, then the other player has to connect from another process/pc/network
@@ -103,7 +108,7 @@ public final class Driver {
                     throw new RuntimeException(e);
                 }
             });
-            enemyThread.setDaemon(false);
+            enemyThread.setDaemon(true);
             enemyThread.setName("Enemy Thread");
             enemyThread.start();
         }

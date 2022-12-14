@@ -2,55 +2,147 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="gui.controllers.ControllerNetworkManager">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerNetworkManager">
    <children>
-      <HBox layoutX="470.0" layoutY="214.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
          <children>
-            <VBox prefHeight="200.0" prefWidth="1600.0">
+            <HBox fx:id="multiplayerScene">
                <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#switchToSceneLobby" prefWidth="200.0"
-                                text="Singleplayer">
+                        <HBox alignment="BOTTOM_CENTER" spacing="200.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onSinglePlayer" prefHeight="60.0" prefWidth="250.0" text="Singleplayer">
+                                 <font>
+                                    <Font name="Rockwell" size="24.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onMultiPlayer" prefHeight="60.0" prefWidth="250.0" text="Multiplayer">
+                                 <font>
+                                    <Font name="Rockwell" size="24.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" />
+                           </padding>
+                        </HBox>
+                        <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox fx:id="multiplayerConnectTextField" alignment="CENTER" spacing="30.0" visible="false">
+                                 <children>
+                                    <HBox alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="276.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="Server Mode">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <ComboBox fx:id="comboBoxServerMode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Choose Server Mode" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="276.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="Address">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="addressTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="276.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="Port">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="portTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="connectButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onConnect" prefHeight="50.0" prefWidth="150.0" text="Connect">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="connectionFailed">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="80.0" left="50.0" top="80.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onReturn" prefHeight="60.0" prefWidth="250.0" text="Return">
                            <font>
-                              <Font size="24.0"/>
+                              <Font name="Rockwell" size="24.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets/>
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" prefWidth="200.0" text="Multiplayer">
-                           <font>
-                              <Font size="24.0"/>
-                           </font>
-                           <HBox.margin>
-                              <Insets left="200.0"/>
-                           </HBox.margin>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Button>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            </HBox>
+            <VBox fx:id="loadBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="380.0" spacing="20.0" visible="false">
                <children>
-                  <Button mnemonicParsing="false" onAction="#switchToSceneFileManager" prefWidth="200.0" text="Return">
+                  <Button mnemonicParsing="false" onAction="#onCancelConnection" text="Cancel Connection">
                      <font>
-                        <Font size="24.0"/>
+                        <Font name="Rockwell" size="24.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets top="50.0"/>
-                     </VBox.margin>
                   </Button>
                </children>
+               <StackPane.margin>
+                  <Insets bottom="50.0" left="300.0" right="500.0" top="300.0" />
+               </StackPane.margin>
             </VBox>
          </children>
-      </HBox>
+      </StackPane>
    </children>
 </AnchorPane>

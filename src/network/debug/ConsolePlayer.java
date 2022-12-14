@@ -7,7 +7,10 @@ import network.NetworkPlayer;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
+import static logic.Util.log_debug;
 import static network.debug.Driver.scanner;
 
 /**
@@ -17,12 +20,14 @@ import static network.debug.Driver.scanner;
  */
 public final class ConsolePlayer extends NetworkPlayer {
 
-    public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode) throws IOException {
-        super(playerConfig, globalConfig, serverMode);
+    public ConsolePlayer(PlayerConfig playerConfig) {
+        super(playerConfig);
     }
 
-    public ConsolePlayer(PlayerConfig playerConfig, GlobalConfig globalConfig, ServerMode serverMode, String address) throws IOException {
-        super(playerConfig, globalConfig, serverMode, address);
+    public ConsolePlayer(String name, int semester) {
+        this(new PlayerConfig(""));
+        setUsername(name);
+        setMaxSemester(semester);
     }
 
     /**
@@ -30,35 +35,28 @@ public final class ConsolePlayer extends NetworkPlayer {
      */
     @Override
     protected void setShips() {
-        /*
-        for(int size: getShipSizes()) {
-            Coordinate pivot = validInput("Enter coordinates for ship size " + size + ":");
-            boolean valid = true;
-            Alignment alignment = null;
+        Random coord = new Random();
+        ArrayList<Ship> ships = getArrayListShips();
+
+        for (Ship ship : ships) {
+            boolean placed = true;
             do {
-                System.out.println("Enter alignment, can be either hr (horizontal right), hl (horizontal left), vd (vertical down), vu (vertical up) ");
-                System.out.println("Alignment:");
-                String alignmentString = scanner.next();
-                switch (alignmentString) {
-                    case "hl" -> {alignment = Alignment.HOR_LEFT;}
-                    case "hr" -> {alignment = Alignment.HOR_RIGHT;}
-                    case "vd" -> {alignment = Alignment.VERT_DOWN;}
-                    case "vu" -> {alignment = Alignment.VERT_UP;}
-                    default -> {valid = false;}
+                int x = coord.nextInt(myMap.getMapSize() - 1);
+                int y = coord.nextInt(myMap.getMapSize() - 1);
+                Coordinate coordinate = new Coordinate(x, y);
+                Alignment alignment = coord.nextBoolean() ? Alignment.VERT_DOWN : Alignment.HOR_RIGHT;
+                try {
+                    placed = addShip(ship, coordinate, alignment);
+                } catch (IllegalArgumentException e) {
+                    placed = false;
                 }
-            } while(!valid);
-            addShip(size, pivot, alignment);
-            System.out.println("Your ship has been set to" + pivot.row() + " ," + pivot.col()
-                    + "with the alignment" + alignment);
+                if (placed) {
+                    log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
+                }
+            } while (!placed);
+
         }
-         */
-        // FIXME fixed ships for debugging
-        addShip(2, new Coordinate(0,0), Alignment.VERT_DOWN);
-        addShip(2, new Coordinate(1,1), Alignment.VERT_DOWN);
-        addShip(2, new Coordinate(2,2), Alignment.VERT_DOWN);
-        addShip(2, new Coordinate(3,4), Alignment.VERT_DOWN);
-        addShip(4, new Coordinate(5,5), Alignment.VERT_DOWN);
-        addShip(6, new Coordinate(6,6), Alignment.VERT_DOWN);
+        setBegin();
     }
 
     /**
@@ -67,25 +65,9 @@ public final class ConsolePlayer extends NetworkPlayer {
      */
     @Override
     public Coordinate getShot() {
-        System.out.println("My Map:");
-        for(int i = 0; i < myMap.getMapSize(); i++) {
-            for(int n = 0; n < myMap.getMapSize(); n++) {
-                System.out.print(myMap.getMap()[i][n]);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-        System.out.println("Enemy Map:");
-        for(int i = 0; i < enemyMap.getMapSize(); i++) {
-            for(int n = 0; n < enemyMap.getMapSize(); n++) {
-                System.out.print(enemyMap.getMap()[i][n]);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
+        printBothMaps();
         return validInput("Enter a Move: ");
     }
-
 
     /**
      * Checks if the entered Coordinate is in range of the mapsize

@@ -3,7 +3,7 @@ package network.internal;
 import logic.Coordinate;
 import logic.ShotResult;
 import network.ServerMode;
-import org.jetbrains.annotations.NotNull;
+import shared.Notification;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,33 +15,58 @@ import java.util.*;
 import static network.internal.MessageMode.RECEIVE;
 import static network.internal.MessageMode.SEND;
 import static network.internal.Util.*;
+import static shared.Util.debug;
 
 /**
- * this class communicates with the other player via a socket
- * contains a thread which is permanently listening for new messages
- * this class is not to be used by anyone outside the network package
- * player classes will use this class to send info to the other player
- * network protocol methods are named in CAPSLOCK
+ * this class communicates with the other player via a socket <br>
+ * contains a thread which is permanently listening for new messages <br>
+ * this class is not to be used by anyone outside the network package <br>
+ * player classes will use this class to send info to the other player <br>
+ * network protocol methods are named in CAPSLOCK <br>
+ * state order is : hello -> start -> ready -> begin -> (fire)* -> end
  */
 public final class Contact extends Observable {
-    private Socket socket;
+    private Socket socket = null;
     private ServerMode serverMode;
 
     private PrintWriter outWriter;
     private BufferedReader inReader;
 
+    Thread commThread = null;
+
+    private final Object semesterLock = new Object();
+    private final Object beginLock = new Object();
+
+    // general info
+    private int shipsPlaced = 0;
+    boolean connectionTerminated = false;
+
+    // state hello
     private String username;
     private String peerUsername;
-
-    private int protocolVersion;
     private boolean protocolVersionNegotiated = false;
-
-    private int semester;
+    private int protocolVersion;
     private boolean semesterNegotiated = false;
-    private final Object semesterLock = new Object();
+    private int semester;
 
+    // state start
+    boolean start = false;
 
-    Contact(Socket socket, ServerMode serverMode, String username, int semester) throws IOException {
+    // state ready
+    private boolean ready = false;
+    private boolean peerIsReady = false;
+
+    // state begin
+    private boolean begin = false;
+    private boolean peerIsBegin = false;
+    private boolean weBeginGame = false;
+
+    // state end
+    // ?
+
+    /* construction, deletion and general communication methods *******************************************************/
+
+    Contact(Socket socket, ServerMode serverMode, String username , int semester) throws IOException {
         this.serverMode = serverMode;
         this.username = username;
         this.semester = semester;
@@ -49,87 +74,33 @@ public final class Contact extends Observable {
         // fallback as per spec
         this.protocolVersion = 1;
 
-        if (socket != null) {
-            setSocket(socket);
-            init_communication();
-        } else {
-            this.socket = null;
-        }
-
-        System.out.println("Contact CTOR end");
-    }
-
-    Contact(Socket socket, ServerMode serverMode) throws IOException {
-        this(socket, serverMode, serverMode.name(), 1);
-    }
-
-    Contact(ServerMode serverMode) throws IOException {
-        this(null, serverMode);
-    }
-
-    /**
-     * send an arbitrary message to the other player
-     * use for debug purposes only
-     *
-     * @deprecated
-     */
-    public void sendRawMessage(String msg) {
-        if (outWriter == null)
-            return;
-        log_debug("sending: '" + msg + "'");
-        outWriter.println(msg);
-    }
-
-    /**
-     * constructs a command message as per protocol and sends it
-     *
-     * @param command
-     * @param args
-     */
-    private void sendMessage(String command, String... args) {
-        String msg = constructMessage(command, args);
-        log_debug("sending: '" + msg + "'");
-        outWriter.println(msg);
-    }
-
-    private void exitWithError(int error, String msg) {
-        log_stderr(msg);
-        ERR(SEND, error, msg);
-        System.exit(error);
-    }
-
-    public void setSocket(@NotNull Socket clientSocket) throws IOException {
-        if (socket != null) {
-            log_stderr("Attempting to overwrite socket");
-            System.exit(1);
-        }
-
-        this.socket = clientSocket;
-
-        this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
-        this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-
-        init_communication();
+        setSocket(socket);
     }
 
     private void init_communication() {
-        Thread comm = new Thread(this::receiveLoop);
-        comm.setName("Contact comm Thread");
-        comm.start();
+        commThread = new Thread(this::receiveLoop);
+        commThread.setName("Contact");
+        commThread.setDaemon(true);
+        commThread.start();
 
         // if hosted, send HELLO
         if (serverMode == ServerMode.SERVER) {
             HELLO(SEND, implementedProtocolVersion, semester, username);
+            if (debug) {
+                sendRawMessage("to kill and restart this bot send ERR with code 9");
+            }
         }
     }
 
     private void receiveLoop() {
-        try {
-            while (true) {
+        while (!connectionTerminated && !commThread.isInterrupted()) {
+            try {
                 String input = inReader.readLine();
                 if (input == null) {
+                    commThread.interrupt();
                     throw new IOException("Network received null input, peer seems to have disconnected");
                 }
+
                 if (input.equals("")) {
                     continue;
                 }
@@ -141,14 +112,152 @@ public final class Contact extends Observable {
                 args.remove(0);
 
                 eval(command, args);
+            } catch (IOException e) {
+                log_stderr(e.getMessage());
+                connectionTerminated = true;
+                notifyObservers(Notification.PeerDisconnected);
             }
+        }
+
+        log_debug("contact receive thread ending");
+    }
+
+    /**
+     * send an arbitrary message to the other player <br>
+     * use for debug purposes only, use sendMessage() instead
+     * @deprecated
+     */
+    public void sendRawMessage(String msg) {
+        if (outWriter == null)
+            return;
+        log_debug("sending: '" + msg + "'");
+        outWriter.println(msg);
+    }
+
+    /**
+     * constructs a command message as per protocol and sends it
+     * @param command
+     * @param args
+     */
+    private void sendMessage(String command, String... args) {
+        String msg = constructMessage(command, args);
+        log_debug("sending: '" + msg + "'");
+        outWriter.println(msg);
+    }
+
+    public void endConnection() {
+        log_debug("contact endConnection");
+        BYE(SEND, 0, "got ordered to end connection");
+        try {
+            socket.close();
         } catch (IOException e) {
-            log_stderr(e.getMessage());
-            System.exit(0);
-        } catch (IndexOutOfBoundsException e) {
-            exitWithError(1, e.getMessage());
+            throw new RuntimeException(e);
+        }
+        commThread.interrupt();
+
+        assert connectionTerminated;
+    }
+
+    private void exitWithError(int error, String msg) {
+        log_stderr(msg);
+        ERR(SEND, error, msg);
+        System.exit(error);
+    }
+
+    /* getters ********************************************************************************************************/
+
+    public boolean getIsConnectionEstablished() {
+        synchronized (semesterLock) {
+            return semesterNegotiated;
         }
     }
+
+    public boolean getIsSemesterNegotiated() {
+        synchronized (semesterLock) {
+            return semesterNegotiated;
+        }
+    }
+
+    public String getPeerUsername() {
+        return peerUsername;
+    }
+
+    public synchronized int getNegotiatedSemester() {
+        synchronized (semesterLock) {
+            if (!semesterNegotiated) {
+                log_stderr("error, trying to get negotiated semester before negotiation took place");
+            }
+        }
+        return semester;
+    }
+
+    public boolean getStart() {
+        return start;
+    }
+
+    public boolean getEnemyReady() {
+        return peerIsReady;
+    }
+
+
+    public boolean getBegin() {
+        synchronized (beginLock) {
+            return peerIsBegin;
+        }
+    }
+
+    public boolean getWeBeginGame() {
+        synchronized (beginLock) {
+            return weBeginGame;
+        }
+    }
+
+    public boolean getConnectionTerminated() {
+        return connectionTerminated;
+    }
+
+
+    /* setters ********************************************************************************************************/
+
+    public void setSocket(Socket clientSocket) throws IOException {
+        if (clientSocket == null) {
+            log_debug("Contact got null socket, not initiating comm yet");
+            return;
+        }
+        if (socket != null) {
+            log_stderr("Attempting to overwrite non-null socket, fatal error! " + serverMode);
+            System.exit(1);
+        }
+
+        this.socket = clientSocket;
+        log_debug("Set socket");
+
+        this.outWriter = new PrintWriter(this.socket.getOutputStream(), true);
+        this.inReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+        init_communication();
+    }
+
+    public void setReady() {
+        ready = true;
+        READY_CHK(SEND);
+    }
+
+    public void setBegin() {
+        begin = true;
+
+        if (serverMode == ServerMode.SERVER) {
+            Random random = new Random();
+            boolean beginnerBoolean = random.nextBoolean();
+            String beginner = beginnerBoolean ? "host" : "client";
+            synchronized (beginLock) {
+                weBeginGame = beginnerBoolean;
+            }
+            BEGIN(SEND, beginner);
+        }
+    }
+
+    /* network protocol methods ***************************************************************************************/
 
     /**
      * parses incoming messages and sends them to their according methods for handling
@@ -250,8 +359,6 @@ public final class Contact extends Observable {
                 ERR(SEND, 0, "unknown message command");
             }
         }
-
-
     }
 
     private void HELLO(MessageMode mode, int VERSION, int MAX_SEMESTER, String USERNAME) {
@@ -267,7 +374,6 @@ public final class Contact extends Observable {
                     protocolVersion = Math.min(implementedProtocolVersion, VERSION);
                     protocolVersionNegotiated = true;
                     semester = Math.min(semester, MAX_SEMESTER);
-                    semesterNegotiated = true;
                     peerUsername = USERNAME;
                     log_debug("HELLO: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
                     HELLO_ACK(SEND, protocolVersion, semester, username);
@@ -296,12 +402,15 @@ public final class Contact extends Observable {
                     protocolVersion = VERSION;
                     protocolVersionNegotiated = true;
                     semester = SEMESTER;
-                    semesterNegotiated = true;
                     peerUsername = USERNAME;
                     log_debug("HELLO_ACK: protocol version: " + protocolVersion + ", semester: " + semester + ", peerUsername: " + peerUsername);
                     START(SEND);
                 }
             }
+        }
+        synchronized (semesterLock) {
+            semesterNegotiated = true;
+            notifyObservers(Notification.ConnectionEstablished);
         }
     }
 
@@ -326,6 +435,8 @@ public final class Contact extends Observable {
             case RECEIVE -> {
             }
         }
+        start = true;
+        notifyObservers(Notification.GameStart);
     }
 
     private void READY_PING(MessageMode mode, int SHIPS_PLACED) {
@@ -335,23 +446,19 @@ public final class Contact extends Observable {
                 sendMessage("READY_PING", String.valueOf(SHIPS_PLACED));
             }
             case RECEIVE -> {
-                // TODO forward SHIPS_PLACED to logic
-                // TODO get info from logic on how many ships we have placed to be able to respond
-                int playerShipsPlaced = 0;      // dummy
+                int enemyShipsPlaced = SHIPS_PLACED;      // dummy
                 // TODO get info what maxPlacedShips for current semester is (from logic?)
                 int maxPlacedShips = 5;         // dummy
 
-                // TODO does this not cause an infinite loop / spam until all ships are placed?
-                if (playerShipsPlaced == maxPlacedShips) {
+                if (shipsPlaced == maxPlacedShips) {
                     READY_CHK(SEND);
                 } else {
-                    // FIXME maybe the api gets changed?
                     // if we received READY_PING, wait before sending response to avoid spam
                     new java.util.Timer().schedule(
                             new java.util.TimerTask() {
                                 @Override
                                 public void run() {
-                                    READY_PING(SEND, playerShipsPlaced);
+                                    READY_PING(SEND, shipsPlaced);
                                 }
                             }, 500
                     );
@@ -367,21 +474,29 @@ public final class Contact extends Observable {
                 sendMessage("READY_CHK");
             }
             case RECEIVE -> {
-                // TODO forward this info to logic
+                peerIsReady = true;
+                notifyObservers(Notification.GameReady);
             }
         }
     }
 
     private void BEGIN(MessageMode mode, String WHO) {
-        // TODO set a boolean here?
         switch (mode) {
             case SEND -> {
-                // TODO expose this to logic
-                // TODO decide who rolls the random value
                 sendMessage("BEGIN", WHO);
             }
             case RECEIVE -> {
-                // TODO forward this info to logic
+                synchronized (beginLock) {
+                    log_debug("begin: WHO: " + WHO + " servermode: " + serverMode);
+                    if (WHO.equalsIgnoreCase("host") && serverMode == ServerMode.SERVER)
+                        weBeginGame = true;
+                    else if (WHO.equalsIgnoreCase("host") && serverMode == ServerMode.CLIENT)
+                        weBeginGame = false;
+                    else if (WHO.equalsIgnoreCase("client") && serverMode == ServerMode.SERVER)
+                        weBeginGame = false;
+                    else if (WHO.equalsIgnoreCase("client") && serverMode == ServerMode.CLIENT)
+                        weBeginGame = true;
+                }
                 String whoInverse = WHO.equalsIgnoreCase("host") ? "client" : "host";
                 BEGIN_ACK(SEND, whoInverse);
             }
@@ -394,8 +509,11 @@ public final class Contact extends Observable {
                 sendMessage("BEGIN_ACK", WHO);
             }
             case RECEIVE -> {
-                // TODO do we need to do anything here?
             }
+        }
+        synchronized (beginLock) {
+            peerIsBegin = true;
+            notifyObservers(Notification.GameBegin);
         }
     }
 
@@ -427,6 +545,8 @@ public final class Contact extends Observable {
                     case "sunk" -> ShotResult.SUNK;
                     default -> null;
                 };
+                if (GAME_OVER)
+                    notifyObservers(Notification.GameOver);
                 notifyObservers(shotResult);
             }
         }
@@ -485,49 +605,21 @@ public final class Contact extends Observable {
             case RECEIVE -> {
                 // TODO how do we handle this?
                 log_stderr("ERR: " + CODE + ", " + REASON);
+                if (CODE == 9) {
+                    exitWithError(9, "received command to kill self, quitting...");
+                    System.exit(9);
+                }
             }
         }
     }
 
-    public boolean getIsConnected() {
-        synchronized (semesterLock) {
-            return semesterNegotiated;
-        }
-    }
+    /* observable *****************************************************************************************************/
 
-    public synchronized int getCommonSemester() {
-        synchronized (semesterLock) {
-            if (!semesterNegotiated) {
-                log_stderr("error, trying to get negotiated semester before negotiation took place");
-            }
-        }
-        return semester;
-    }
-
-    /**
-     * If this object has changed, as indicated by the
-     * {@code hasChanged} method, then notify all of its observers
-     * and then call the {@code clearChanged} method to indicate
-     * that this object has no longer changed.
-     * <p>
-     * Each observer has its {@code update} method called with two
-     * arguments: this observable object and the {@code arg} argument.
-     *
-     * @param arg any object.
-     * @see Observable#clearChanged()
-     * @see Observable#hasChanged()
-     * @see Observer#update(Observable, Object)
-     */
     @Override
     public void notifyObservers(Object arg) {
         setChanged();
-        log_debug("trying to notify " + countObservers());
         super.notifyObservers(arg);
         clearChanged();
-    }
-
-    public String getUsername() {
-        return username;
     }
 
 }
