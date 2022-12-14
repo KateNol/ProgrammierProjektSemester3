@@ -17,15 +17,15 @@ public class TileBoardText extends StackPane {
      * @param s Labeling from the board
      */
     public TileBoardText(Coordinate coordinate, int tileSize, String s) {
-        this(coordinate, tileSize, s, Color.BLACK);
+        this(coordinate, tileSize, s, Color.WHITE);
     }
 
     public TileBoardText(Coordinate coordinate, int tileSize, String s, Color color) {
         Tile tile = new Tile(coordinate, tileSize);
-        tile.setFill(Color.WHITE);
+        tile.setFill(color);
 
         Text text = new Text(s);
-        text.setFill(color);
+        text.setFill(color == Color.WHITE ? Color.BLACK : Color.WHITE);
         text.setStyle("-fx-font-size: 15");
         text.setStyle("-fx-font-weight: bold;");
 

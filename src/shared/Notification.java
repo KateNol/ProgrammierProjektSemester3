@@ -7,5 +7,5 @@ public enum Notification {
     ConnectionEstablished,
     GameStart,
     GameReady,
-    GameBegin,
+    GameBegin, ChatMsg,
 }

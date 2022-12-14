@@ -410,4 +410,7 @@ public abstract class Player extends Observable {
 
     public abstract boolean getStart();
 
+    public abstract void sendChatMessage(String message);
+
+    public abstract void receiveChatMessage(String message);
 }

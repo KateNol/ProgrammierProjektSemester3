@@ -3,11 +3,16 @@ package gui.controllers;
 import gui.GUIPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static gui.Util.log_debug;
 
 /**
  * @author Stefan
@@ -45,6 +50,12 @@ public class ControllerGame implements Initializable {
     @FXML
     private VBox myBoard;
 
+    @FXML
+    private TextArea chatArea;
+    @FXML
+    private TextField chatInputField;
+    @FXML
+    private Button sendButton;
 
     private static ControllerGame instance = null;
     private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
@@ -134,5 +145,16 @@ public class ControllerGame implements Initializable {
         ControllerFileManager.getInstance().setFileNamesOnButton();
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
+    }
+
+    public void onSend() {
+        String message = chatInputField.getText();
+        chatInputField.clear();
+        displayChatMessage("> " + message);
+        guiPlayer.sendChatMessage(message);
+    }
+
+    public void displayChatMessage(String message) {
+        chatArea.setText(chatArea.getText() + message + "\n");
     }
 }

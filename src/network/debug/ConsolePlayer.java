@@ -69,6 +69,11 @@ public final class ConsolePlayer extends NetworkPlayer {
         return validInput("Enter a Move: ");
     }
 
+    @Override
+    public void receiveChatMessage(String message) {
+        log_debug("received chat msg: " + message);
+    }
+
     /**
      * Checks if the entered Coordinate is in range of the mapsize
      * @param output

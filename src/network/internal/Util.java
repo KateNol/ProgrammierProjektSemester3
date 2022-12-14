@@ -9,7 +9,7 @@ public final class Util {
 
     public static final int connectionWaitInterval = 250;
 
-    public static int implementedProtocolVersion = 1;
+    public static int implementedProtocolVersion = 2;
 
     public static final String defaultAddress = "localhost";
     public static final int defaultPort = 42069;
