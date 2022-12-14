@@ -61,7 +61,7 @@ public class AIPlayer extends NetworkPlayer {
     @Override
     public Coordinate getShot() {
         try {
-            Thread.sleep(new Random().nextInt(500, 5000));
+            Thread.sleep(new Random().nextInt(500, 2000));
         } catch (Exception e) {
             e.printStackTrace();
         }
