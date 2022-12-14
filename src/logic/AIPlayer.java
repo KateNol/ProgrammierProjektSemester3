@@ -60,6 +60,11 @@ public class AIPlayer extends NetworkPlayer {
      */
     @Override
     public Coordinate getShot() {
+        try {
+            Thread.sleep(new Random().nextInt(500, 5000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("our turn! state of the game:");
         printBothMaps();
         int mapSize = myMap.getMapSize();
