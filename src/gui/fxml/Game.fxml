@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
    <children>
       <StackPane fx:id="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -72,19 +72,32 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox fx:id="menuBar" alignment="TOP_RIGHT" maxWidth="-Infinity" prefWidth="200.0" spacing="40.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="menuBar" alignment="CENTER" maxWidth="-Infinity" prefWidth="200.0" spacing="40.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onSurrender" prefHeight="40.0" prefWidth="150.0" text="Surrender">
-                           <font>
-                              <Font name="Rockwell" size="18.0" />
-                           </font>
-                        </Button>
-                        <TextArea fx:id="chatArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font size="14.0" />
-                           </font></TextArea>
-                        <TextField fx:id="chatInputField" onAction="#onSend" promptText="message" />
-                        <Button fx:id="sendButton" mnemonicParsing="false" onAction="#onSend" text="Send" />
+                        <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onSurrender" prefHeight="40.0" prefWidth="150.0" text="Surrender">
+                                 <font>
+                                    <Font name="Rockwell" size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <TextArea fx:id="chatArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextArea>
+                              <HBox>
+                                 <children>
+                                    <TextField fx:id="chatInputField" onAction="#onSend" promptText="message" />
+                                    <Button fx:id="sendButton" mnemonicParsing="false" onAction="#onSend" text="Send" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                </children>
