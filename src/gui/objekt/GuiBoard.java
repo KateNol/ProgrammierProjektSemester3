@@ -23,6 +23,7 @@ import java.util.Random;
 public class GuiBoard {
 
     private GridPane grid;
+    private Tile[][] tiles;
     private final int tileSize;
     private int shipPlaced = 0;
     private final boolean isEnemyBoard;
@@ -43,10 +44,14 @@ public class GuiBoard {
      * @param vboxMiddle container for board to fill
      */
     public void initializeBoard(VBox vboxMiddle){
+        tiles = new Tile[guiPlayer.getMapSize()][guiPlayer.getMapSize()];
+
+
         grid = new GridPane();
         //set Position on Scene
         grid.setAlignment(Pos.CENTER);
         for(int row = 0; row < guiPlayer.getMapSize() + 1; row++){
+
             for (int col = 0; col < guiPlayer.getMapSize() + 1; col++){
                 if(row == 0 && col == 0){
                     TileBoardText tbt = new TileBoardText(new Coordinate(row, col),tileSize,"");
@@ -67,6 +72,7 @@ public class GuiBoard {
                     } else {
                         TileWater tile = new TileWater(new Coordinate(row, col), tileSize);
                         grid.add(tile,col, row, 1, 1);
+                        tiles[row-1][col-1] = tile;
                     }
                 }
             }
@@ -196,6 +202,60 @@ public class GuiBoard {
             }
         });
     }
+
+    public void updateBoard() {
+        int size = guiPlayer.getMapSize();
+        for (int i=1; i<size; i++) {
+            for (int j=1; j<size; j++) {
+                Node oldnode = getNodeByRowColumnIndex(j, i);
+                Node newNode = null;
+                Map map = isEnemyBoard ? guiPlayer.getEnemyMap() : guiPlayer.getMyMap();
+                Color color = null;
+                switch (map.getMap()[i-1][j-1]) {
+                    case W -> {
+                        if (oldnode instanceof TileWater)
+                            break;
+                        newNode = new TileWater(i, j, tileSize);
+                        color = Color.BLUE;
+                        this.sendShot(newNode);
+                    }
+                    case D, H -> {
+                        if (oldnode instanceof TileHit)
+                            break;
+                        newNode = new TileHit(i, j, tileSize);
+                        color = Color.RED;
+                    }
+                    case S -> {
+                        if (oldnode instanceof TileShip)
+                            break;
+                        newNode = new TileShip(i, j, tileSize);
+                        color = Color.GRAY;
+                    }
+                    case M -> {
+                        if (oldnode instanceof TileMiss)
+                            break;
+                        newNode = new TileMiss(i, j, tileSize);
+                        color = Color.WHITE;
+                    }
+                }
+                if (newNode != null) {
+                    Node finalNewNode = newNode;
+                    int finalJ = j;
+                    int finalI = i;
+                    Color finalColor = color;
+                    Platform.runLater(() -> {
+                        synchronized (grid) {
+                            //grid.add(finalNewNode, finalJ, finalI);
+                            tiles[finalI-1][finalJ-1].setColor(finalColor);
+                        }
+                    });
+                }
+            }
+        }
+
+
+    }
+
 
     public void setTopLeftCorner(Color color) {
         Platform.runLater(() -> {
@@ -384,14 +444,17 @@ public class GuiBoard {
      */
     public Node getNodeByRowColumnIndex (final int row, final int column) {
         Node result = null;
-        ObservableList<Node> children = grid.getChildren();
+        synchronized (grid) {
+            ObservableList<Node> children = grid.getChildren();
 
-        for (Node node : children) {
-            if(grid.getRowIndex(node) == row && grid.getColumnIndex(node) == column) {
-                result = node;
-                break;
+            for (Node node : children) {
+                if(grid.getRowIndex(node) == row && grid.getColumnIndex(node) == column) {
+                    result = node;
+                    break;
+                }
             }
         }
+
         return result;
     }
 
@@ -400,7 +463,10 @@ public class GuiBoard {
      * @param myBoard container where to initialize board
      */
     public void getInitializedBoard(VBox myBoard){
-        myBoard.getChildren().add(grid);
+        Platform.runLater(() -> {
+            myBoard.getChildren().add(grid);
+
+        });
     }
 
     /**

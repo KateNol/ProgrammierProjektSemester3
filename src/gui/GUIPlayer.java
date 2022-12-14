@@ -188,7 +188,8 @@ public class GUIPlayer extends NetworkPlayer {
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
         while (guiEnemyBoard == null);
-        guiEnemyBoard.updateBoard(res, c);
+        //guiEnemyBoard.updateBoard(res, c);
+        guiEnemyBoard.updateBoard();
     }
 
     /**
@@ -199,7 +200,8 @@ public class GUIPlayer extends NetworkPlayer {
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
-        guiBoard.updateBoard(shotResult, shot);
+        //guiBoard.updateBoard(shotResult, shot);
+        guiBoard.updateBoard();
         return shotResult;
     }
     //--------------------------------------

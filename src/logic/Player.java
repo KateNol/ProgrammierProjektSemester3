@@ -410,4 +410,7 @@ public abstract class Player extends Observable {
 
     public abstract boolean getStart();
 
+    public Map getMyMap() {
+        return myMap;
+    }
 }
