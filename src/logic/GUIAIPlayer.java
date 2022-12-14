@@ -169,6 +169,7 @@ public class GUIAIPlayer extends GUIPlayer {
             } while (!placed);
         }
         ControllerLobby.getInstance().enableStartButton();
+        GUIPlayer.getInstance().setBegin();
         ViewSwitcher.switchTo(View.Game);
     }
 }
