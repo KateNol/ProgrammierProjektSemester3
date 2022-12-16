@@ -136,9 +136,9 @@ public class GuiBoard {
      */
     private void sendShot(Node node) {
         node.setOnMouseClicked(e -> {
-            TileWater tileWater = (TileWater) e.getSource();
+            Tile tile = (Tile) e.getSource();
             //Util.log_debug("GuiPlayer clicked ON " + tileWater.getCoordinate().row() + " " + tileWater.getCoordinate().col());
-            Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() - 1);
+            Coordinate coordinate = new Coordinate(tile.getCoordinate().row() - 1, tile.getCoordinate().col() - 1);
             Util.log_debug("GuiPlayer send shot: row: " + coordinate.row() + " col: " + coordinate.col());
             guiPlayer.setShotCoordinate(coordinate);
             node.setDisable(true);
@@ -204,52 +204,36 @@ public class GuiBoard {
     }
 
     public void updateBoard() {
-        int size = guiPlayer.getMapSize();
+        int size = guiPlayer.getMapSize() + 1;
         for (int i=1; i<size; i++) {
             for (int j=1; j<size; j++) {
-                Node oldnode = getNodeByRowColumnIndex(j, i);
-                Node newNode = null;
                 Map map = isEnemyBoard ? guiPlayer.getEnemyMap() : guiPlayer.getMyMap();
                 Color color = null;
                 switch (map.getMap()[i-1][j-1]) {
                     case W -> {
-                        if (oldnode instanceof TileWater)
-                            break;
-                        newNode = new TileWater(i, j, tileSize);
-                        color = Color.BLUE;
-                        this.sendShot(newNode);
+                        color = Color.CADETBLUE;
                     }
                     case D, H -> {
-                        if (oldnode instanceof TileHit)
-                            break;
-                        newNode = new TileHit(i, j, tileSize);
                         color = Color.RED;
                     }
                     case S -> {
-                        if (oldnode instanceof TileShip)
-                            break;
-                        newNode = new TileShip(i, j, tileSize);
                         color = Color.GRAY;
                     }
                     case M -> {
-                        if (oldnode instanceof TileMiss)
-                            break;
-                        newNode = new TileMiss(i, j, tileSize);
                         color = Color.WHITE;
                     }
                 }
-                if (newNode != null) {
-                    Node finalNewNode = newNode;
-                    int finalJ = j;
-                    int finalI = i;
-                    Color finalColor = color;
-                    Platform.runLater(() -> {
-                        synchronized (grid) {
-                            //grid.add(finalNewNode, finalJ, finalI);
-                            tiles[finalI-1][finalJ-1].setColor(finalColor);
-                        }
-                    });
-                }
+                int finalJ = j;
+                int finalI = i;
+                Color finalColor = color;
+                Platform.runLater(() -> {
+                    synchronized (grid) {
+                        //grid.add(finalNewNode, finalJ, finalI);
+                        tiles[finalI-1][finalJ-1].setColor(finalColor);
+                        if (finalColor == Color.BLUE)
+                            this.sendShot(tiles[finalI-1][finalJ-1]);
+                    }
+                });
             }
         }
 
