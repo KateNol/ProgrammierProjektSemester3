@@ -15,6 +15,10 @@ public class TileWater extends Tile {
      */
     public TileWater(Coordinate coordinate, int tileSize) {
         super(coordinate, tileSize);
-        setFill(Color.AQUA);
+        setFill(Color.CADETBLUE);
+    }
+
+    public TileWater(int i, int j, int tileSize) {
+        this(new Coordinate(i, j), tileSize);
     }
 }

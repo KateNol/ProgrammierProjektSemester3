@@ -17,12 +17,12 @@ Links
 - [ ] gui einige tiles unresponsive (stefan)
 - [ ] shoot schlauer machen (kat)
 - [ ] ai delay (kat)
-- [ ] ai name auswaehlen (kat)
 - [ ] design / schriftart (kat)
-- [ ] (optional) mit begin warten bis gui go gibt
 - [ ] (optional) Chat einbauen
 - [ ] (optional) Button für Random Schiffe platzieren
 - [ ] (optional) turnLabel anpassen ohne flimmern
+- [x] (optional) mit begin warten bis gui go gibt
+- [x] ai name auswaehlen (kat)
 - [x] gui options entfernen
 - [x] verbindungsabbruch zurueck ins menu (stefan jannik)
 - [x] game_over: save player state (team)

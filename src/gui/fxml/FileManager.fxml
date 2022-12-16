@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -67,11 +68,11 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox>
                            <children>
-                              <Button fx:id="ai" mnemonicParsing="false" onAction="#onAi" prefHeight="60.0" prefWidth="250.0" text="AI">
+                              <Button mnemonicParsing="false" onAction="#onAi" prefHeight="60.0" prefWidth="250.0" text="AI">
                                  <font>
-                                    <Font size="28.0" />
+                                    <Font name="Rockwell" size="28.0" />
                                  </font></Button>
                            </children>
                         </HBox>
@@ -82,29 +83,72 @@
                   </VBox>
                   <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="userInput" alignment="CENTER" prefHeight="200.0" spacing="50.0" visible="false">
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <TextField fx:id="nameInput" minHeight="-Infinity" minWidth="-Infinity" promptText="Set Username">
-                                 <font>
-                                    <Font name="Rockwell" size="20.0" />
-                                 </font>
-                              </TextField>
-                              <Button fx:id="create" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="Create">
-                                 <font>
-                                    <Font name="Rockwell" size="22.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </Button>
+                              <VBox fx:id="userInput" alignment="CENTER" spacing="50.0" visible="false">
+                                 <children>
+                                    <TextField fx:id="nameInput" minHeight="-Infinity" minWidth="-Infinity" promptText="Set Username">
+                                       <font>
+                                          <Font name="Rockwell" size="20.0" />
+                                       </font>
+                                    </TextField>
+                                    <Button fx:id="create" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="Create">
+                                       <font>
+                                          <Font name="Rockwell" size="22.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets left="50.0" right="50.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox fx:id="AIDifficultBox" alignment="CENTER" spacing="10.0" visible="false" StackPane.alignment="CENTER">
+                                 <children>
+                                    <HBox alignment="CENTER" spacing="20.0">
+                                       <children>
+                                          <Button fx:id="AIOne" mnemonicParsing="false" onAction="#onAIOne" prefHeight="60.0" prefWidth="100.0" text="1">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                          <Button fx:id="AITwo" mnemonicParsing="false" onAction="#onAITwo" prefHeight="60.0" prefWidth="100.0" text="2">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                          <Button fx:id="AIThree" mnemonicParsing="false" onAction="#onAIThree" prefHeight="60.0" prefWidth="100.0" text="3">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" spacing="20.0">
+                                       <children>
+                                          <Button fx:id="AIFour" mnemonicParsing="false" onAction="#onAIFour" prefHeight="60.0" prefWidth="100.0" text="4">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                          <Button fx:id="AIFive" mnemonicParsing="false" onAction="#onAIFive" prefHeight="60.0" prefWidth="100.0" text="5">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                          <Button fx:id="AISix" mnemonicParsing="false" onAction="#onAISix" prefHeight="60.0" prefWidth="100.0" text="6">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
                            </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets left="50.0" right="50.0" />
-                           </padding>
-                        </VBox>
+                        </StackPane>
                      </children>
                      <HBox.margin>
                         <Insets />

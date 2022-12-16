@@ -17,4 +17,7 @@ public class TileHit extends Tile {
         super(coordinate, tileSize);
         setFill(Color.RED);
     }
+    public TileHit(int i, int j, int tileSize) {
+        this(new Coordinate(i, j), tileSize);
+    }
 }

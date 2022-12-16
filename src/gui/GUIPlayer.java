@@ -53,6 +53,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
      */
     public GUIPlayer(PlayerConfig playerConfig) {
         super(playerConfig);
+        log_debug("created gui player");
         this.playerConfig = playerConfig;
         setTileSize(playerConfig.getMaxSemester());
         instance = this;
@@ -190,7 +191,9 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     @Override
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
-        guiEnemyBoard.updateBoard(res, c);
+        while (guiEnemyBoard == null);
+        //guiEnemyBoard.updateBoard(res, c);
+        guiEnemyBoard.updateBoard();
     }
 
     /**
@@ -201,7 +204,8 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
-        guiBoard.updateBoard(shotResult, shot);
+        //guiBoard.updateBoard(shotResult, shot);
+        guiBoard.updateBoard();
         return shotResult;
     }
 

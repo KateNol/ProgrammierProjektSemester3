@@ -16,4 +16,7 @@ public class TileMiss extends Tile{
         super(coordinate, tileSize);
         setFill(Color.WHITE);
     }
+    public TileMiss(int i, int j, int tileSize) {
+        this(new Coordinate(i, j), tileSize);
+    }
 }

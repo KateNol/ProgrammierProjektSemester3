@@ -29,6 +29,10 @@ public class Tile extends Rectangle {
         setFill(paint);
     }
 
+    public void setColor(Color color) {
+        setFill(color);
+    }
+
     /**
      * Get Size in Pixel from on Tile
      * @return tileSize

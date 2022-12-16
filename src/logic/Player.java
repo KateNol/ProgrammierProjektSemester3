@@ -413,4 +413,8 @@ public abstract class Player extends Observable {
     public abstract void sendChatMessage(String message);
 
     public abstract void receiveChatMessage(String message);
+
+    public Map getMyMap() {
+        return myMap;
+    }
 }

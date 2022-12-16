@@ -68,3 +68,13 @@
     -fx-background-insets: 1;
 }
 
+#AIDifficultBox {
+    -fx-border-color: Black;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
+
+    -fx-background-color: #EAEAEA;
+    -fx-background-radius: 5;
+    -fx-background-insets: 1;
+}
+
