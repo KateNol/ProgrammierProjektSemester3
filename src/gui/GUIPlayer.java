@@ -136,19 +136,17 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
      */
     @Override
     public Coordinate getShot() {
-        guiBoard.setTopLeftCorner(Color.DARKRED);
-        if (guiEnemyBoard != null)
-            guiEnemyBoard.setTopLeftCorner(Color.DARKGREEN);
-        Platform.runLater(() -> {
-            if (ControllerGame.getInstance() != null) {
-                //TODO
-                //if (turn) {
-                    ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
-                    turn = false;
-                //}
-            }
 
+        Platform.runLater(() -> {
+            guiBoard.setTopLeftCorner(Color.DARKRED);
+            if (guiEnemyBoard != null)
+                guiEnemyBoard.setTopLeftCorner(Color.DARKGREEN);
+            if (ControllerGame.getInstance() != null) {
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
+                turn = false;
+            }
         });
+
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
         try {
@@ -169,17 +167,14 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
 
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null) {
-                //TODO
-                //if (!turn) {
-                    ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
-                    turn = false;
-                //}
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
+                turn = false;
+                guiBoard.setTopLeftCorner(Color.DARKGREEN);
+                if (guiEnemyBoard != null)
+                    guiEnemyBoard.setTopLeftCorner(Color.DARKRED);
             }
-
         });
-        guiBoard.setTopLeftCorner(Color.DARKGREEN);
-        if (guiEnemyBoard != null)
-            guiEnemyBoard.setTopLeftCorner(Color.DARKRED);
+
         return shotCopy;
     }
 
@@ -192,8 +187,8 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
         while (guiEnemyBoard == null);
-        //guiEnemyBoard.updateBoard(res, c);
-        guiEnemyBoard.updateBoard();
+        guiEnemyBoard.updateBoard(res, c);
+        //guiEnemyBoard.updateBoard();
     }
 
     /**
@@ -204,8 +199,8 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
-        //guiBoard.updateBoard(shotResult, shot);
-        guiBoard.updateBoard();
+        guiBoard.updateBoard(shotResult, shot);
+        //guiBoard.updateBoard();
         return shotResult;
     }
 
