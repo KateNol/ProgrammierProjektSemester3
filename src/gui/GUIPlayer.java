@@ -101,6 +101,9 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
                     || (getServerMode() == ServerMode.CLIENT && winner.equalsIgnoreCase("client"))){
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
                 playerConfig.increaseMaxSemester();
+                if(this.getNegotiatedSemester() == 6){
+                    ControllerGame.getInstance().setEsterEgg();
+                }
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
                 if(playerConfig.getMaxSemester() - 1 != 0){
