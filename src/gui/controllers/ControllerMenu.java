@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,6 +9,9 @@ import javafx.scene.layout.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static gui.GUIMain.GITLAB_URL;
+import static gui.GUIMain.getFXHostServices;
 
 /**
  * @author Stefan
@@ -62,5 +66,10 @@ public class ControllerMenu implements Initializable {
     public void onExit(){
         AudioPlayer.playSFX(Audio.Click);
         Platform.exit();
+    }
+
+    public void onGitlab() {
+        HostServices hostServices = getFXHostServices();
+        hostServices.showDocument(GITLAB_URL);
     }
 }
