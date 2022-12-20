@@ -203,44 +203,6 @@ public class GuiBoard {
         });
     }
 
-    public void updateBoard() {
-        int size = guiPlayer.getMapSize() + 1;
-        for (int i=1; i<size; i++) {
-            for (int j=1; j<size; j++) {
-                Map map = isEnemyBoard ? guiPlayer.getEnemyMap() : guiPlayer.getMyMap();
-                Color color = null;
-                switch (map.getMap()[i-1][j-1]) {
-                    case W -> {
-                        color = Color.CADETBLUE;
-                    }
-                    case D, H -> {
-                        color = Color.RED;
-                    }
-                    case S -> {
-                        color = Color.GRAY;
-                    }
-                    case M -> {
-                        color = Color.WHITE;
-                    }
-                }
-                int finalJ = j;
-                int finalI = i;
-                Color finalColor = color;
-                Platform.runLater(() -> {
-                    synchronized (grid) {
-                        //grid.add(finalNewNode, finalJ, finalI);
-                        tiles[finalI-1][finalJ-1].setColor(finalColor);
-                        if (finalColor == Color.BLUE)
-                            this.sendShot(tiles[finalI-1][finalJ-1]);
-                    }
-                });
-            }
-        }
-
-
-    }
-
-
     public void setTopLeftCorner(Color color) {
         for (int i=1; i<grid.getRowCount(); i++) {
             grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);

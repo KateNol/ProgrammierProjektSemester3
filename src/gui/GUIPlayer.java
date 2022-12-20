@@ -177,7 +177,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         super.updateMapState(c, res);
         while (guiEnemyBoard == null);
         guiEnemyBoard.updateBoard(res, c);
-        //guiEnemyBoard.updateBoard();
     }
 
     /**
@@ -189,7 +188,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
         guiBoard.updateBoard(shotResult, shot);
-        //guiBoard.updateBoard();
         return shotResult;
     }
 
