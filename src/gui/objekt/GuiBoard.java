@@ -13,9 +13,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import logic.*;
+import logic.Map;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This class is the gui board for the gui player to play on
@@ -28,6 +28,8 @@ public class GuiBoard {
     private int shipPlaced = 0;
     private final boolean isEnemyBoard;
     private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
+
+    private Set<Ship> shipsThatHaveBeenSet = new HashSet<>();
 
     /**
      * Gui object for the board
@@ -97,9 +99,14 @@ public class GuiBoard {
                     Coordinate coordinate = new Coordinate(tileWater.getCoordinate().row(), tileWater.getCoordinate().col());
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
                     Util.log_debug("SetShipGUI = row: " + coordinate.row()  + " col: " + coordinate.col() + " " + "SetShipMapLogic = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
-                    if (guiPlayer.addShip(guiPlayer.getShips().get(shipPlaced), coordinateMap, guiPlayer.getAlignment())) {
+                    Ship selectedShip = guiPlayer.getGuiHarbour().getSelectedShip();
+                    if (!shipsThatHaveBeenSet.contains(selectedShip) && guiPlayer.addShip(selectedShip, coordinateMap, guiPlayer.getAlignment())) {
+                        shipsThatHaveBeenSet.add(selectedShip);
+                        GuiHBoxShip hBoxShip = guiPlayer.getGuiHarbour().getGuiHBoxShips().get(selectedShip);
+                        hBoxShip.changeColor(Color.GREEN);
                         AudioPlayer.playSFX(Audio.PlaceShip);
-                        guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
+                        //guiPlayer.getGuiHarbour().drawShipOnBoard(grid, shipPlaced);
+                        guiPlayer.getGuiHarbour().drawShipOnBoard(grid, guiPlayer.getShips().indexOf(guiPlayer.getGuiHarbour().getSelectedShip()));
                         setDisabledTiles(guiPlayer.getAlignment(), coordinate);
                         shipPlaced++;
                         if (shipPlaced == guiPlayer.getShips().size()) {
@@ -242,10 +249,12 @@ public class GuiBoard {
 
 
     public void setTopLeftCorner(Color color) {
-        for (int i=1; i<grid.getRowCount(); i++) {
-            grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
-            grid.add(new TileBoardText(new Coordinate(0, i), tileSize, String.valueOf(i), color), 0, i);
-        }
+        Platform.runLater(() -> {
+            for (int i=1; i<grid.getRowCount(); i++) {
+                grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
+                grid.add(new TileBoardText(new Coordinate(0, i), tileSize, String.valueOf(i), color), 0, i);
+            }
+        });
     }
 
     /**
@@ -254,7 +263,7 @@ public class GuiBoard {
      * @param coordinate coordinate where ship is placed
      */
     public void setDisabledTiles(Alignment alignment, Coordinate coordinate){
-        int shipLength = guiPlayer.getShips().get(shipPlaced).getSize();
+        int shipLength = guiPlayer.getGuiHarbour().getSelectedShip().getSize();
         int mapSize = guiPlayer.getMapSize();
         int row = coordinate.row();
         int col = coordinate.col();
@@ -456,5 +465,9 @@ public class GuiBoard {
      */
     public void resetShipPlaced() {
         this.shipPlaced = 0;
+    }
+
+    public Set<Ship> getShipsThatHaveBeenSet() {
+        return shipsThatHaveBeenSet;
     }
 }
