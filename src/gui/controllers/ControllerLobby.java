@@ -2,7 +2,6 @@ package gui.controllers;
 
 import gui.GUIPlayer;
 
-import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
