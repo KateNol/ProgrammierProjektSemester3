@@ -170,6 +170,7 @@ public class GUIAIPlayer extends GUIPlayer {
         }
         ControllerLobby.getInstance().enableStartButton();
         GUIPlayer.getInstance().setBegin();
+        getGuiBoard().updateBoard();
         ViewSwitcher.switchTo(View.Game);
     }
 }
