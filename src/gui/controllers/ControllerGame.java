@@ -3,6 +3,7 @@ package gui.controllers;
 import gui.GUIPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -33,6 +34,10 @@ public class ControllerGame implements Initializable {
     private VBox gameEnd;
     @FXML
     private Label winnerLabel;
+    @FXML
+    private StackPane videoBackground;
+    @FXML
+    private Pane pane;
 
     //names display
     @FXML
@@ -60,6 +65,10 @@ public class ControllerGame implements Initializable {
     private static ControllerGame instance = null;
     private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
 
+    public void setEsterEgg() {
+        pane.getChildren().add(Settings.setEsterEgg());
+    }
+
     /**
      * Initialize Game Screen items(Player Board, Enemy Board)
      */
@@ -69,6 +78,7 @@ public class ControllerGame implements Initializable {
 
         //background music & picture
         AudioPlayer.playMusic(Audio.BattleMusic2);
+
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/game.jpg"));
 
         //Set Boards
@@ -144,6 +154,11 @@ public class ControllerGame implements Initializable {
     public void onSwitchToMenu(){
         ControllerFileManager.getInstance().setFileNamesOnButton();
         AudioPlayer.playSFX(Audio.Click);
+        if(!pane.getChildren().isEmpty()){
+            for (Node node : pane.getChildren()) {
+                pane.getChildren().remove(node);
+            }
+        }
         ViewSwitcher.switchTo(View.Menu);
     }
 

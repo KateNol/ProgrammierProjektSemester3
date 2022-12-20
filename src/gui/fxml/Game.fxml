@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -102,32 +103,40 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox fx:id="gameEnd" alignment="CENTER" spacing="40.0" visible="false">
-               <children>
-                  <Label fx:id="winnerLabel" text="Gewonnen oder Verloren!">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER" spacing="100.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="60.0" prefWidth="250.0" text="Play again!">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#onSwitchToMenu" prefHeight="60.0" prefWidth="250.0" text="Switch to Menu">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
+            <StackPane fx:id="videoBackground">
                <StackPane.margin>
-                  <Insets bottom="200.0" left="250.0" right="250.0" top="200.0" />
+                  <Insets bottom="-50.0" left="-50.0" right="-50.0" top="-50.0" />
                </StackPane.margin>
-            </VBox>
+               <children>
+                  <Pane fx:id="pane" />
+                  <VBox fx:id="gameEnd" alignment="CENTER" spacing="40.0" visible="false">
+                     <children>
+                        <Label fx:id="winnerLabel" text="Gewonnen oder Verloren!">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" spacing="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="60.0" prefWidth="250.0" text="Play again!">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onSwitchToMenu" prefHeight="60.0" prefWidth="250.0" text="Switch to Menu">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </VBox>
+               </children>
+            </StackPane>
          </children>
          <padding>
             <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />

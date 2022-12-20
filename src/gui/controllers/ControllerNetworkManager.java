@@ -17,7 +17,9 @@ import network.ServerMode;
 import network.debug.Driver;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import static network.internal.Util.defaultAddress;
@@ -77,7 +79,15 @@ public class ControllerNetworkManager implements Initializable {
         comboBoxServerMode.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
             if(s2.equals(client)){
                 serverMode = ServerMode.CLIENT;
+                addressTextField.clear();
+                addressTextField.setEditable(true);
             } else if (s2.equals(host)) {
+                try {
+                    addressTextField.setText(Inet4Address.getLocalHost().getHostAddress());
+                    addressTextField.setEditable(false);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
                 serverMode = ServerMode.SERVER;
             }
         });
@@ -99,7 +109,8 @@ public class ControllerNetworkManager implements Initializable {
                 port = defaultPort;
             } else {
                 port = Integer.parseInt(portTextField.getText());
-            }            return true;
+            }
+            return true;
         } else if(serverMode.equals(ServerMode.SERVER)) {
             if (addressTextField.getText().isEmpty()) {
                 address = defaultAddress;
