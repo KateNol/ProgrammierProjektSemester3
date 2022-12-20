@@ -81,10 +81,8 @@ public class ControllerGame implements Initializable {
 
         if(guiPlayer.getWeBegin()){
             turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
-            guiPlayer.setTurn(true);
         } else {
             turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
-            guiPlayer.setTurn(false);
         }
     }
 

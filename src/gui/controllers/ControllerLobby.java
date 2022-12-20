@@ -52,9 +52,6 @@ public class ControllerLobby implements Initializable {
         instance = this;
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/setShip.jfif"));
 
-        //set true if the first turn is our
-        guiPlayer.setTurn(guiPlayer.getWeBegin());
-
         //disable startButton until all ships are placed
         startGame.setDisable(true);
         //create our board
