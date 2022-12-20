@@ -39,7 +39,8 @@ public class GuiHBoxShip extends HBox {
                 if (!GUIPlayer.getInstance().getGuiBoard().getShipsThatHaveBeenSet().contains(s))
                     GUIPlayer.getInstance().getGuiHarbour().getGuiHBoxShips().get(s).changeColor(Color.GRAY);
             }
-            changeColor(Color.YELLOW);
+            if (!GUIPlayer.getInstance().getGuiBoard().getShipsThatHaveBeenSet().contains(ship))
+                changeColor(Color.YELLOW);
         });
     }
 
