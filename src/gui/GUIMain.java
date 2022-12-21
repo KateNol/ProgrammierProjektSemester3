@@ -5,7 +5,6 @@ import gui.controllers.View;
 import gui.controllers.ViewSwitcher;
 
 import javafx.application.Application;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -25,7 +24,6 @@ import java.io.IOException;
  */
 public class GUIMain extends Application  {
 
-    public static final String GITLAB_URL = "https://lab.it.hs-hannover.de/f4-informatik/prgprj/programmier-projekte-ws22-23/gruppe07";
     private static final String ICON_PATH = "file:src/gui/img/Icon.png";
 
     public static void main(String[] args) {
@@ -36,8 +34,6 @@ public class GUIMain extends Application  {
         }
         launch(args);
     }
-
-    private static HostServices hostServices = null;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -69,12 +65,6 @@ public class GUIMain extends Application  {
 
         //Start application
         stage.show();
-
-        hostServices = getHostServices();
-    }
-
-    public static HostServices getFXHostServices() {
-        return hostServices;
     }
 
 }
