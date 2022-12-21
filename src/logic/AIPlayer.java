@@ -21,17 +21,13 @@ public class AIPlayer extends NetworkPlayer {
         super(new PlayerConfig("ai player"));
         try {
             ArrayList<String> nameList = new ArrayList<>();
-            /*BufferedReader bufferedReader = new BufferedReader(new FileReader("src/logic/AI.txt"));
-            for (String line=bufferedReader.readLine(); line!=null; nameList.add(line), line=bufferedReader.readLine());*/
-            InputStream in = getClass().getResourceAsStream("AI.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            for (String line=reader.readLine(); line!=null; nameList.add(line), line=reader.readLine());
-
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/logic/AI.txt"));
+            for (String line=bufferedReader.readLine(); line!=null; nameList.add(line), line=bufferedReader.readLine());
             setUsername(nameList.get(new Random().nextInt(0, nameList.size())));
+            setMaxSemester(semester);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        setMaxSemester(semester);
     }
 
     @Override
