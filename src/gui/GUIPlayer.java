@@ -93,10 +93,11 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
             if((getServerMode() == ServerMode.SERVER && winner.equalsIgnoreCase("host"))
                     || (getServerMode() == ServerMode.CLIENT && winner.equalsIgnoreCase("client"))){
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
-                AudioPlayer.playMusic(Audio.Win);
                 playerConfig.increaseMaxSemester();
                 if(getNegotiatedSemester() == 6){
                     ControllerGame.getInstance().playEsterEgg();
+                } else {
+                    AudioPlayer.playMusic(Audio.Win);
                 }
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
