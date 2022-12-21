@@ -504,7 +504,8 @@ public final class Contact extends Observable {
                     else if (WHO.equalsIgnoreCase("client") && serverMode == ServerMode.CLIENT)
                         weBeginGame = true;
                 }
-                BEGIN_ACK(SEND, WHO);
+                String whoInverse = WHO.equalsIgnoreCase("host") ? "client" : "host";
+                BEGIN_ACK(SEND, whoInverse);
             }
         }
     }
