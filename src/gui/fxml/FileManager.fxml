@@ -85,7 +85,7 @@
                      <children>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <VBox fx:id="userInput" alignment="CENTER" spacing="50.0" visible="false">
+                              <VBox fx:id="userInput" alignment="CENTER" spacing="20.0" visible="false">
                                  <children>
                                     <TextField fx:id="nameInput" minHeight="-Infinity" minWidth="-Infinity" promptText="Set Username">
                                        <font>
