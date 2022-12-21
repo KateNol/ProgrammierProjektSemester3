@@ -30,7 +30,7 @@ public final class Driver {
 
         if (args.length == 0) {
             log_stderr("missing arguments");
-            log_stderr("valid args are: player=[human,ai], server=[host,client], network=[online/offline], enemy=[human/ai], address=$address, port=$port, semester=[1..6]");
+            log_stderr("valid args are: player=[human,ai], network=[online/offline], enemy=[human/ai], address=$address, port=$port, semester=[1..6]");
             System.exit(1);
         }
 
