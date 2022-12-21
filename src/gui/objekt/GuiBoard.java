@@ -93,11 +93,6 @@ public class GuiBoard {
      */
     public void setShip(Node node){
         node.setOnMouseClicked(e -> {
-            if(!ControllerLobby.getInstance().getRandomButton().isDisable()){
-                if(!ControllerLobby.getInstance().getShipBox().isMouseTransparent()){
-                    ControllerLobby.getInstance().getRandomButton().setDisable(true);
-                }
-            }
             if(e.getSource() instanceof TileWater){
                 if (!(shipPlaced == guiPlayer.getShips().size())) {
                     TileWater tileWater = (TileWater) e.getSource();
@@ -105,6 +100,11 @@ public class GuiBoard {
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
                     Util.log_debug("SetShipGUI = row: " + coordinate.row()  + " col: " + coordinate.col() + " " + "SetShipMapLogic = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
                     Ship selectedShip = guiPlayer.getGuiHarbour().getSelectedShip();
+                    if(!ControllerLobby.getInstance().getRandomButton().isDisable() && selectedShip != null){
+                        if(!ControllerLobby.getInstance().getShipBox().isMouseTransparent()){
+                            ControllerLobby.getInstance().getRandomButton().setDisable(true);
+                        }
+                    }
                     if (!shipsThatHaveBeenSet.contains(selectedShip) && guiPlayer.addShip(selectedShip, coordinateMap, guiPlayer.getAlignment())) {
                         shipsThatHaveBeenSet.add(selectedShip);
                         GuiHBoxShip hBoxShip = guiPlayer.getGuiHarbour().getGuiHBoxShips().get(selectedShip);
