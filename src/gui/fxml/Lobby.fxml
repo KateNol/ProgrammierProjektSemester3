@@ -13,7 +13,7 @@
    <children>
       <HBox fx:id="background" layoutX="656.0" layoutY="337.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox fx:id="vboxLeft" maxWidth="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
+            <VBox fx:id="vboxLeft" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
             <VBox fx:id="vBoxMiddle" alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
                   <HBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="84.0" spacing="40.0">

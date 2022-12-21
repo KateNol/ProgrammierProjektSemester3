@@ -149,7 +149,7 @@
 
 #settingsPane {
     -fx-background-color: #EAEAEA;
-
+    -fx-background-insets: 2;
     -fx-border-color: black;
     -fx-border-width: 3;
     -fx-border-radius: 5;
@@ -203,12 +203,12 @@
     -fx-border-color: black;
     -fx-border-width: 2;
     -fx-border-radius: 4;
+    -fx-background-insets: 1;
 }
 
 #chatArea {
     -fx-border-color: black;
     -fx-border-width: 2;
     -fx-border-radius: 4;
+    -fx-background-insets: 1;
 }
-
-

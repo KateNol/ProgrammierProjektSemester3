@@ -234,6 +234,7 @@ public class ControllerFileManager implements Initializable {
                 }
                 nameInput.clear();
                 userInput.setVisible(false);
+                aiButton.setDisable(false);
             } else {
                 gui.Util.log_debug("Invalid user input, try again!");
             }

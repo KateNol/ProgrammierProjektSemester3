@@ -219,6 +219,6 @@ public class ControllerNetworkManager implements Initializable {
      */
     public void onMultiPlayer() {
         AudioPlayer.playSFX(Audio.Click);
-        multiplayerConnectTextField.setVisible(true);
+        multiplayerConnectTextField.setVisible(!multiplayerConnectTextField.isVisible());
     }
 }
