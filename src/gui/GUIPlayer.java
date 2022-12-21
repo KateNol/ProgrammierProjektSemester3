@@ -130,7 +130,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
                     placed = false;
                 }
                 if (placed) {
-                    //guiBoard.setDisabledTiles(alignment, coordinate);
                     log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
                 }
             } while (!placed);
