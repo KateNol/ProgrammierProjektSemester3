@@ -102,7 +102,7 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox fx:id="gameEnd" alignment="CENTER" maxHeight="220.0" maxWidth="700.0" spacing="40.0">
+            <VBox fx:id="gameEnd" alignment="CENTER" maxHeight="220.0" maxWidth="700.0" spacing="40.0" visible="false">
                <children>
                   <Label fx:id="winnerLabel" text="Gewonnen oder Verloren!">
                      <font>
