@@ -8,7 +8,6 @@ import logic.Ship;
 import logic.Util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Stefan
@@ -16,8 +15,6 @@ import java.util.HashMap;
 public class GuiHarbour extends VBox {
     private final int tileSize;
     private final ArrayList<Ship> ships;
-    private Ship selectedShip = null;
-    private HashMap<Ship, GuiHBoxShip> guiHBoxShips = new HashMap<>();
 
     /**
      * Gui object for a set of ships
@@ -38,7 +35,6 @@ public class GuiHarbour extends VBox {
         for (Ship ship : ships) {
             GuiHBoxShip hBoxShip = new GuiHBoxShip(ship, tileSize);
             this.getChildren().add(hBoxShip);
-            guiHBoxShips.put(ship, hBoxShip);
         }
         vBox.getChildren().add(this);
     }
@@ -65,17 +61,5 @@ public class GuiHarbour extends VBox {
      */
     public String printPlaced(Coordinate coordinate, Coordinate c){
         return "drawOnBoardLogic = row: " + coordinate.row() + " col: " + coordinate.col() + " " + "drawOnBoardGUI = row: " + c.row() + " col: " + c.col();
-    }
-
-    public Ship getSelectedShip() {
-        return selectedShip;
-    }
-
-    public void setSelectedShip(Ship s) {
-        selectedShip = s;
-    }
-
-    public HashMap<Ship, GuiHBoxShip> getGuiHBoxShips() {
-        return guiHBoxShips;
     }
 }
