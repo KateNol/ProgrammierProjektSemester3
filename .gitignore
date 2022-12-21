@@ -1,3 +1,6 @@
 .idea/
 *.class
 /out/
+/playerConfig/0S.bin
+/playerConfig/1A.bin
+/playerConfig/2R.bin
