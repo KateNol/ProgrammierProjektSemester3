@@ -1,20 +1,26 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
+import logic.GUIAIPlayer;
+import logic.Util;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
-
-import static gui.Util.log_debug;
 
 /**
  * @author Stefan
@@ -35,6 +41,9 @@ public class ControllerGame implements Initializable {
     private VBox gameEnd;
     @FXML
     private Label winnerLabel;
+    MediaPlayer mediaPlayer;
+    @FXML
+    private Pane easterEggPane;
 
     //names display
     @FXML
@@ -66,6 +75,9 @@ public class ControllerGame implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
+        if(guiPlayer.getNegotiatedSemester() == 6){
+            easterEggPane.getChildren().add(setEsterEgg());
+        }
 
         //background picture
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/game.jpg"));
@@ -78,15 +90,26 @@ public class ControllerGame implements Initializable {
         selfLabel.setText(guiPlayer.getUsername());
         enemyLabel.setText(guiPlayer.getEnemyUsername());
 
-        if(guiPlayer.getWeBegin()){
-            turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
-            guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKRED);
-            guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKGREEN);
+        if(guiPlayer instanceof GUIAIPlayer){
+            Util.log_debug("no need for turn and color update at begin");
         } else {
-            turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
-            guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKGREEN);
-            guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKRED);
+            if(guiPlayer.getWeBegin()){
+                turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
+                guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKRED);
+                guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKGREEN);
+            } else {
+                turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
+                guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKGREEN);
+                guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKRED);
+            }
         }
+
+        chatArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                chatArea.setScrollTop(Double.MAX_VALUE);
+            }
+        });
     }
 
     /**
@@ -119,6 +142,7 @@ public class ControllerGame implements Initializable {
     public void openEndScreen() {
         AudioPlayer.destroyMusic();
         gameField.setMouseTransparent(true);
+        gameEnd.setStyle("-fx-background-color: #EAEAEA");
         gameEnd.setVisible(true);
     }
 
@@ -128,6 +152,10 @@ public class ControllerGame implements Initializable {
     public void onSurrender(){
         guiPlayer.abortEstablishConnection();
         AudioPlayer.playSFX(Audio.Click);
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+        }
         ViewSwitcher.switchTo(View.Menu);
     }
 
@@ -135,9 +163,11 @@ public class ControllerGame implements Initializable {
      * to play with same player again
      */
     public void onPlayAgain(){
+        /*
         ControllerLobby.getInstance().resetBoard();
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Lobby);
+         */
     }
 
     /**
@@ -147,6 +177,12 @@ public class ControllerGame implements Initializable {
         ControllerFileManager.getInstance().setFileNamesOnButton();
         AudioPlayer.playSFX(Audio.Click);
         AudioPlayer.destroyMusic();
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+        }
+        easterEggPane.setVisible(false);
+        gameField.setMouseTransparent(false);
         ViewSwitcher.switchTo(View.Menu);
         Random rand = new Random();
         AudioPlayer.playMusic(rand.nextInt(5) + 1);
@@ -161,5 +197,31 @@ public class ControllerGame implements Initializable {
 
     public void displayChatMessage(String message) {
         chatArea.setText(chatArea.getText() + message + "\n");
+        chatArea.appendText("");
+    }
+
+    public MediaView setEsterEgg() {
+        File mediaFile = new File("src/gui/video/Video.mp4");
+        Media media = null;
+        try {
+            media = new Media(mediaFile.toURI().toURL().toString());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        mediaPlayer = new MediaPlayer(media);
+
+        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaView.fitWidthProperty().bind(ViewSwitcher.getStage().widthProperty());
+        mediaView.fitHeightProperty().bind(ViewSwitcher.getStage().heightProperty());
+
+        return mediaView;
+    }
+
+    public void playEsterEgg(){
+        gameEnd.setStyle("-fx-background-color: transparent");
+        gameEnd.setStyle("-fx-border-color: transparent");
+        easterEggPane.setVisible(true);
+        mediaPlayer.play();
     }
 }

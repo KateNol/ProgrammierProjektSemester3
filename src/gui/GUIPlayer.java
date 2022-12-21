@@ -95,13 +95,16 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
                 AudioPlayer.playMusic(Audio.Win);
                 playerConfig.increaseMaxSemester();
+                if(getNegotiatedSemester() == 6){
+                    ControllerGame.getInstance().playEsterEgg();
+                }
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
+                playerConfig.decreaseMaxSemester();
                 AudioPlayer.playMusic(Audio.Lose);
                 playerConfig.decreaseMaxSemester();
             }
             try {
-                Util.log_debug("ahead to update file");
                 FileController.updateFile(playerConfig);
                 Util.log_debug("finished to update file");
             } catch (IOException e) {
