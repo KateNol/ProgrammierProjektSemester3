@@ -198,3 +198,17 @@
     -fx-border-width: 2;
     -fx-border-radius: 2;
 }
+
+#chatInputField {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+}
+
+#chatArea {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+}
+
+

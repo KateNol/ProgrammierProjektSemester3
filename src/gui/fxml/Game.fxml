@@ -83,17 +83,16 @@
                               </Button>
                            </children>
                         </VBox>
-                        <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="chat" alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TextArea fx:id="chatArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
+                              <TextArea fx:id="chatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </TextArea>
-                              <HBox>
+                              <HBox alignment="CENTER">
                                  <children>
-                                    <TextField fx:id="chatInputField" onAction="#onSend" promptText="message" />
-                                    <Button fx:id="sendButton" mnemonicParsing="false" onAction="#onSend" text="Send" />
+                                    <TextField fx:id="chatInputField" onAction="#onSend" promptText="message" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                            </children>

@@ -55,8 +55,6 @@ public class ControllerGame implements Initializable {
     private TextArea chatArea;
     @FXML
     private TextField chatInputField;
-    @FXML
-    private Button sendButton;
 
     private static ControllerGame instance = null;
     private final GUIPlayer guiPlayer = GUIPlayer.getInstance();
@@ -153,7 +151,7 @@ public class ControllerGame implements Initializable {
     public void onSend() {
         String message = chatInputField.getText();
         chatInputField.clear();
-        displayChatMessage("> " + message);
+        displayChatMessage("> " + guiPlayer.getUsername() + ": " + message);
         guiPlayer.sendChatMessage(message);
     }
 

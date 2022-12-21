@@ -227,7 +227,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         if (ControllerGame.getInstance() == null)
             return;
         log_debug("gui player received msg " + message);
-        ControllerGame.getInstance().displayChatMessage(message);
+        ControllerGame.getInstance().displayChatMessage("> " + getEnemyUsername() + ": " +message);
     }
     //--------------------------------------
 
