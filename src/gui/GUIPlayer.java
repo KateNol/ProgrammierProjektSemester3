@@ -343,4 +343,8 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
             receiveChatMessage(((ChatMsg) arg).msg);
         }
     }
+
+    public GuiBoard getGuiEnemyBoard(){
+        return guiEnemyBoard;
+    }
 }
