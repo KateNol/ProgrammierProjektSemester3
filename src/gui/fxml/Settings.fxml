@@ -105,7 +105,7 @@
                                                    <children>
                                                       <Label fx:id="labelMaster" text="50">
                                                          <font>
-                                                            <Font size="18.0" />
+                                                            <Font name="Rockwell" size="18.0" />
                                                          </font>
                                                       </Label>
                                                    </children>
@@ -132,7 +132,7 @@
                                                    <children>
                                                       <Label fx:id="labelMusic" text="50">
                                                          <font>
-                                                            <Font size="18.0" />
+                                                            <Font name="Rockwell" size="18.0" />
                                                          </font>
                                                       </Label>
                                                    </children>
@@ -159,7 +159,7 @@
                                                    <children>
                                                       <Label fx:id="labelSFX" text="50">
                                                          <font>
-                                                            <Font size="18.0" />
+                                                            <Font name="Rockwell" size="18.0" />
                                                          </font>
                                                       </Label>
                                                    </children>
