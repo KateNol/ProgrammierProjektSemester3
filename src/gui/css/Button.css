@@ -110,7 +110,6 @@
     -fx-background-insets: 1;
 
     -fx-text-fill: white ;
-
 }
 
 .combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
@@ -197,4 +196,3 @@
     -fx-border-width: 2;
     -fx-border-radius: 2;
 }
-
