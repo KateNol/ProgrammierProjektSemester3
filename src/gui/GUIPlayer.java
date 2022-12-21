@@ -245,10 +245,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         return guiBoard;
     }
 
-    public GuiBoard getGuiEnemyBoard(){
-        return guiEnemyBoard;
-    }
-
     /**
      * Get guiHarbour
      * @return guiHarbour

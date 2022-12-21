@@ -84,7 +84,7 @@ public class ControllerNetworkManager implements Initializable {
             } else if (s2.equals(host)) {
                 try {
                     addressTextField.setText(Inet4Address.getLocalHost().getHostAddress());
-                    //addressTextField.setEditable(false);
+                    addressTextField.setEditable(false);
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
