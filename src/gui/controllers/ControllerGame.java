@@ -41,7 +41,7 @@ public class ControllerGame implements Initializable {
     private VBox gameEnd;
     @FXML
     private Label winnerLabel;
-    MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer = null;
     @FXML
     private Pane easterEggPane;
 
@@ -179,9 +179,13 @@ public class ControllerGame implements Initializable {
         if(mediaPlayer != null){
             mediaPlayer.stop();
             mediaPlayer.dispose();
-        } else {
-            AudioPlayer.destroyMusic();
         }
+        try {
+            AudioPlayer.destroyMusic();
+        } catch (Exception e){
+            gui.Util.log_debug("destroy failed");
+        }
+
         easterEggPane.setVisible(false);
         gameField.setMouseTransparent(false);
         ViewSwitcher.switchTo(View.Menu);
