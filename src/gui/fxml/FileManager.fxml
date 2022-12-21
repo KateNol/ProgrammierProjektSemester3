@@ -70,7 +70,7 @@
                         </HBox>
                         <HBox>
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onAi" prefHeight="60.0" prefWidth="250.0" text="AI">
+                              <Button fx:id="aiButton" mnemonicParsing="false" onAction="#onAi" prefHeight="60.0" prefWidth="250.0" text="AI">
                                  <font>
                                     <Font name="Rockwell" size="28.0" />
                                  </font></Button>

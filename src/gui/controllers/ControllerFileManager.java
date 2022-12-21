@@ -24,6 +24,8 @@ public class ControllerFileManager implements Initializable {
     //AI
     @FXML
     private VBox AIDifficultBox;
+    @FXML
+    private Button aiButton;
 
     //File Buttons
     @FXML
@@ -123,10 +125,12 @@ public class ControllerFileManager implements Initializable {
      * Return to Screen Menu
      */
     public void onReturn(){
-        if(userInput.isVisible() || AIDifficultBox.isVisible()){
+        if(userInput.isVisible() || AIDifficultBox.isVisible() || aiButton.isDisable()){
             nameInput.clear();
             userInput.setVisible(false);
             AIDifficultBox.setVisible(false);
+            aiButton.setDisable(false);
+            setFilesDisabled(false);
         }
         AudioPlayer.playSFX(Audio.Click);
         ViewSwitcher.switchTo(View.Menu);
@@ -188,7 +192,13 @@ public class ControllerFileManager implements Initializable {
      * @param i Witch file chosen
      */
     public void createPlayerFile(int i) {
-        userInput.setVisible(true);
+        if(!userInput.isVisible()){
+            userInput.setVisible(true);
+            aiButton.setDisable(true);
+        } else {
+            userInput.setVisible(false);
+            aiButton.setDisable(false);
+        }
         setUsername(i);
     }
 
@@ -299,13 +309,20 @@ public class ControllerFileManager implements Initializable {
     }
 
     public void onAi(){
-        AIDifficultBox.setVisible(!AIDifficultBox.isVisible());
+        if(!AIDifficultBox.isVisible()){
+            AIDifficultBox.setVisible(true);
+            setFilesDisabled(true);
+        } else {
+            AIDifficultBox.setVisible(false);
+            setFilesDisabled(false);
+        }
     }
 
     public void onAIOne(){
         PlayerConfig playerConfig = new PlayerConfig("AIOne");
         new GUIAIPlayer(playerConfig);
         AIDifficultBox.setVisible(false);
+        setFilesDisabled(false);
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
@@ -316,6 +333,7 @@ public class ControllerFileManager implements Initializable {
         }
         new GUIAIPlayer(playerConfig);
         AIDifficultBox.setVisible(false);
+        setFilesDisabled(false);
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
@@ -326,6 +344,7 @@ public class ControllerFileManager implements Initializable {
         }
         new GUIAIPlayer(playerConfig);
         AIDifficultBox.setVisible(false);
+        setFilesDisabled(false);
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
@@ -336,6 +355,7 @@ public class ControllerFileManager implements Initializable {
         }
         new GUIAIPlayer(playerConfig);
         AIDifficultBox.setVisible(false);
+        setFilesDisabled(false);
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
@@ -346,6 +366,7 @@ public class ControllerFileManager implements Initializable {
         }
         new GUIAIPlayer(playerConfig);
         AIDifficultBox.setVisible(false);
+        setFilesDisabled(false);
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
@@ -356,6 +377,13 @@ public class ControllerFileManager implements Initializable {
         }
         new GUIAIPlayer(playerConfig);
         AIDifficultBox.setVisible(false);
+        setFilesDisabled(false);
         ViewSwitcher.switchTo(View.NetworkManager);
+    }
+
+    public void setFilesDisabled(boolean b){
+        fileOne.setDisable(b);
+        fileTwo.setDisable(b);
+        fileThree.setDisable(b);
     }
 }
