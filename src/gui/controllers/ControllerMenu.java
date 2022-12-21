@@ -25,7 +25,7 @@ public class ControllerMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FakIV.jpg"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FakIV.png"));
     }
 
     /**
