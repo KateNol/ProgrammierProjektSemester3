@@ -148,6 +148,8 @@
 }
 
 #settingsPane {
+    -fx-background-color: #EAEAEA;
+
     -fx-border-color: black;
     -fx-border-width: 3;
     -fx-border-radius: 5;

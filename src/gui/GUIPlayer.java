@@ -56,7 +56,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         super(playerConfig);
         log_debug("created gui player");
         this.playerConfig = playerConfig;
-        setTileSize(playerConfig.getMaxSemester());
+        this. tileSize = Settings.setTileSize(playerConfig.getMaxSemester());
         instance = this;
     }
 
@@ -312,20 +312,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         return tileSize;
     }
 
-    /**
-     * Resize tiles by maxSemester
-     * @param tileSize TileSize in Pixel
-     */
-    public void setTileSize(int tileSize) {
-        switch (tileSize){
-            case 1 -> this.tileSize = 29;
-            case 2 -> this.tileSize = 26;
-            case 3 -> this.tileSize = 25;
-            case 4 -> this.tileSize = 24;
-            case 5 -> this.tileSize = 23;
-            case 6 -> this.tileSize = 22;
-        }
-    }
+
 
     /**
      * This method is called whenever the observed object is changed. An

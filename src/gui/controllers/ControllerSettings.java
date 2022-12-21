@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +20,9 @@ public class ControllerSettings implements Initializable {
     private final String hd = "1280 x 720";
     private final String full = "Full Screen";
     private final String window = "Window Screen";
+
+    @FXML
+    private AnchorPane background;
 
     @FXML
     private ComboBox<String> windowMode;
@@ -49,9 +53,12 @@ public class ControllerSettings implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance= this;
+
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/sunset.jpg"));
+
         String [] hdMode = {fullHd, hd};
         resolution.getItems().addAll(hdMode);
-        resolution.setPromptText("HD Mode");
+        resolution.setPromptText("Resolution");
 
 
         String [] screenMode = {full, window};
@@ -71,8 +78,12 @@ public class ControllerSettings implements Initializable {
         windowMode.getSelectionModel().selectedItemProperty().addListener((observableValue, s1, s2) -> {
             if(s2.equals(full)){
                 ViewSwitcher.getStage().setFullScreen(true);
+                if(ViewSwitcher.getStage().getWidth() >= 1920 && ViewSwitcher.getStage().getHeight() >= 1080){
+                    Settings.setMode(2);
+                }
             } else if (s2.equals(window)) {
                 ViewSwitcher.getStage().setFullScreen(false);
+                Settings.setMode(1);
             }
         });
 

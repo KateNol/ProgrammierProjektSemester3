@@ -64,6 +64,7 @@ public class GUIMain extends Application  {
         //stage Property's
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
+        stage.setResizable(false);
 
         //Start application
         stage.show();

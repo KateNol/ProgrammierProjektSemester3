@@ -1,14 +1,19 @@
 package gui.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * @author Stefan
  * Controller for Rule Scene
  */
-public class ControllerRules {
+public class ControllerRules implements Initializable {
 
     @FXML
     private VBox inGame;
@@ -16,6 +21,9 @@ public class ControllerRules {
     private VBox prepare;
     @FXML
     private Button page;
+
+    @FXML
+    private AnchorPane background;
 
     private boolean switchPage = true;
 
@@ -40,5 +48,10 @@ public class ControllerRules {
             switchPage = true;
             page.setText("Next Page");
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/battleship-bismarck.jpg"));
     }
 }
