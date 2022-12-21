@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import gui.Util;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -55,6 +56,8 @@ public class AudioPlayer {
         if(mediaPlayerMusic != null){
             mediaPlayerMusic.stop();
             mediaPlayerMusic.dispose();
+        } else {
+            Util.log_debug("mediaPLayer is null");
         }
     }
 

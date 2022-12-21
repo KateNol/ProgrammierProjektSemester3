@@ -155,19 +155,31 @@ public class GuiBoard {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
                     if(isEnemyBoard){
-                        AudioPlayer.playSFX(Audio.Hit);
+                        if(guiPlayer instanceof GUIAIPlayer){
+                            gui.Util.log_debug("no hitSound");
+                        } else {
+                            AudioPlayer.playSFX(Audio.Hit);
+                        }
                     }
                 }
                 case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
                     if(isEnemyBoard){
-                        AudioPlayer.playSFX(Audio.Miss);
+                        if(guiPlayer instanceof GUIAIPlayer){
+                            gui.Util.log_debug("no missSound");
+                        } else {
+                            AudioPlayer.playSFX(Audio.Miss);
+                        }
                     }
                 }
                 case SUNK -> {
                     if (isEnemyBoard) {
-                        AudioPlayer.playSFX(Audio.Sink);
+                        if(guiPlayer instanceof GUIAIPlayer){
+                            gui.Util.log_debug("no sunkSound");
+                        } else {
+                            AudioPlayer.playSFX(Audio.Sink);
+                        }
                         MapState[][] map = guiPlayer.getEnemyMap().getMap();
                         for (int row = 0; row < guiPlayer.getMapSize(); row++) {
                             for (int col = 0; col < guiPlayer.getMapSize(); col++) {

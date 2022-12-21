@@ -176,10 +176,11 @@ public class ControllerGame implements Initializable {
     public void onSwitchToMenu(){
         ControllerFileManager.getInstance().setFileNamesOnButton();
         AudioPlayer.playSFX(Audio.Click);
-        AudioPlayer.destroyMusic();
         if(mediaPlayer != null){
             mediaPlayer.stop();
             mediaPlayer.dispose();
+        } else {
+            AudioPlayer.destroyMusic();
         }
         easterEggPane.setVisible(false);
         gameField.setMouseTransparent(false);
