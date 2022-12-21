@@ -55,7 +55,7 @@
                                              <children>
                                                 <Label text="Server Mode">
                                                    <font>
-                                                      <Font size="18.0" />
+                                                      <Font name="Rockwell" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <ComboBox fx:id="comboBoxServerMode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Choose Server Mode" />
@@ -65,12 +65,12 @@
                                              <children>
                                                 <Label text="Address">
                                                    <font>
-                                                      <Font size="18.0" />
+                                                      <Font name="Rockwell" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <TextField fx:id="addressTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0">
                                                    <font>
-                                                      <Font size="18.0" />
+                                                      <Font name="Rockwell" size="18.0" />
                                                    </font>
                                                 </TextField>
                                              </children>
@@ -79,12 +79,12 @@
                                              <children>
                                                 <Label text="Port">
                                                    <font>
-                                                      <Font size="18.0" />
+                                                      <Font name="Rockwell" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <TextField fx:id="portTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="default port">
                                                    <font>
-                                                      <Font size="18.0" />
+                                                      <Font name="Rockwell" size="18.0" />
                                                    </font>
                                                 </TextField>
                                              </children>
@@ -93,7 +93,7 @@
                                     </HBox>
                                     <Button fx:id="connectButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onConnect" prefHeight="50.0" prefWidth="150.0" text="Connect">
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font name="Rockwell" size="18.0" />
                                        </font>
                                     </Button>
                                     <Label fx:id="connectionFailed">

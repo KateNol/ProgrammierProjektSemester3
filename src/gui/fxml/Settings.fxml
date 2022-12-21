@@ -30,13 +30,13 @@
                                 </Label>
                             </children>
                         </HBox>
-                        <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                        <TabPane fx:id="settingsPane" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                             <tabs>
-                                <Tab text="Graphic">
+                                <Tab fx:id="graphic" text="Graphic">
                                     <content>
-                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                                        <AnchorPane fx:id="anchor" minHeight="-Infinity" minWidth="-Infinity">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                              <children>
@@ -51,7 +51,7 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER">
                                                    <children>
-                                                      <ComboBox fx:id="windowMode" prefHeight="40.0" prefWidth="200.0" />
+                                                      <ComboBox fx:id="windowMode" prefHeight="40.0" prefWidth="250.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -69,7 +69,7 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER">
                                                    <children>
-                                                      <ComboBox fx:id="resolution" prefHeight="40.0" prefWidth="200.0" />
+                                                      <ComboBox fx:id="resolution" prefHeight="40.0" prefWidth="250.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -79,9 +79,9 @@
                                         </AnchorPane>
                                     </content>
                                 </Tab>
-                                <Tab text="Sound">
+                                <Tab fx:id="sound" text="Sound">
                                     <content>
-                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                                        <AnchorPane fx:id="anchor2" minHeight="-Infinity" minWidth="-Infinity">
                                  <children>
                                     <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                        <children>
