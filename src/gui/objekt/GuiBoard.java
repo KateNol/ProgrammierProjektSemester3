@@ -18,6 +18,7 @@ import logic.Map;
 import java.util.*;
 
 /**
+ * @author Stefan
  * This class is the gui board for the gui player to play on
  */
 public class GuiBoard {
@@ -213,6 +214,9 @@ public class GuiBoard {
         });
     }
 
+    /**
+     * update board from map
+     */
     public void updateBoard() {
         int size = guiPlayer.getMapSize() + 1;
         for (int i=1; i<size; i++) {
@@ -248,7 +252,10 @@ public class GuiBoard {
         }
     }
 
-
+    /**
+     * Set Color for tileBoardText
+     * @param color indicate witch turn
+     */
     public void setTopLeftCorner(Color color) {
         for (int i=1; i<grid.getRowCount(); i++) {
             grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
@@ -466,6 +473,10 @@ public class GuiBoard {
         this.shipPlaced = 0;
     }
 
+    /**
+     * Get Ships that has been set already
+     * @return shipsThatHaveBeenSet
+     */
     public Set<Ship> getShipsThatHaveBeenSet() {
         return shipsThatHaveBeenSet;
     }

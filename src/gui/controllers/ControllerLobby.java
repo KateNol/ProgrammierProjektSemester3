@@ -2,11 +2,9 @@ package gui.controllers;
 
 import gui.GUIPlayer;
 
-import gui.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import logic.Alignment;
 
@@ -84,6 +82,9 @@ public class ControllerLobby implements Initializable {
         ViewSwitcher.switchTo(View.Menu);
     }
 
+    /**
+     * Reset Ships placed
+     */
     public void resetBoard(){
         guiPlayer.getGuiBoard().resetShipPlaced();
         guiPlayer.confirmShipsPlaced(false);
@@ -120,16 +121,27 @@ public class ControllerLobby implements Initializable {
         alignmentHor.setDisable(false);
     }
 
+    /**
+     * Set random ships
+     */
     public void onRandom(){
         AudioPlayer.playSFX(Audio.Click);
         vboxLeft.setMouseTransparent(true);
         guiPlayer.setRandomShips();
     }
 
+    /**
+     * Get RandomButton for ship placement
+     * @return button
+     */
     public Button getRandomButton(){
         return random;
     }
 
+    /**
+     * Get GUIShipBox where Ships are drawn
+     * @return vboxLeft
+     */
     public VBox getShipBox(){
         return vboxLeft;
     }

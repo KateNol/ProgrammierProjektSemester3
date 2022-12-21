@@ -189,6 +189,9 @@ public class ControllerGame implements Initializable {
         AudioPlayer.playMusic(rand.nextInt(5) + 1);
     }
 
+    /**
+     * Send message in chat
+     */
     public void onSend() {
         String message = chatInputField.getText();
         chatInputField.clear();
@@ -196,11 +199,19 @@ public class ControllerGame implements Initializable {
         guiPlayer.sendChatMessage(message);
     }
 
+    /**
+     * Display ChatMessage
+     * @param message ChatMessage
+     */
     public void displayChatMessage(String message) {
         chatArea.setText(chatArea.getText() + message + "\n");
         chatArea.appendText("");
     }
 
+    /**
+     * Set EasterEgg
+     * @return mediaView
+     */
     public MediaView setEsterEgg() {
         File mediaFile = new File("src/gui/video/Video.mp4");
         Media media = null;
@@ -219,6 +230,9 @@ public class ControllerGame implements Initializable {
         return mediaView;
     }
 
+    /**
+     * Play EasterEgg
+     */
     public void playEsterEgg(){
         gameEnd.setStyle("-fx-background-color: transparent");
         gameEnd.setStyle("-fx-border-color: transparent");

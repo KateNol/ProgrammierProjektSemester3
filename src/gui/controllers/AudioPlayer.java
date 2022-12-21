@@ -6,6 +6,10 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 
+/**
+ * @author Philip
+ * This class handle Audio output for misic and sfx
+ */
 public class AudioPlayer {
 
     public static boolean disableSound = false;
@@ -20,6 +24,10 @@ public class AudioPlayer {
 
     private static ControllerSettings cs = ControllerSettings.getInstance();
 
+    /**
+     * Play SFX
+     * @param audio File
+     */
     public static void playSFX(Audio audio){
         if (disableSound)
             return;
@@ -28,6 +36,10 @@ public class AudioPlayer {
         mediaPlayerSFX.play();
     }
 
+    /**
+     * Play Music
+     * @param audio File
+     */
     public static void playMusic(Audio audio){
         if (disableSound)
             return;
@@ -36,6 +48,10 @@ public class AudioPlayer {
         mediaPlayerMusic.play();
     }
 
+    /**
+     * PLay random Music
+     * @param i slot
+     */
     public static void playMusic(int i){
         Audio audio = null;
         switch (i){
@@ -52,6 +68,9 @@ public class AudioPlayer {
         mediaPlayerMusic.play();
     }
 
+    /**
+     * Destroy MediaPlayer
+     */
     public static void destroyMusic(){
         if(mediaPlayerMusic != null){
             mediaPlayerMusic.stop();
@@ -59,17 +78,5 @@ public class AudioPlayer {
         } else {
             Util.log_debug("mediaPLayer is null");
         }
-    }
-
-    public static void setSFXVolume(double sfxVolume){
-        AudioPlayer.sfxVolume = sfxVolume;
-    }
-
-    public static void setMasterVolume(double masterVolume){
-        AudioPlayer.masterVolume = masterVolume;
-    }
-
-    public static void setMusicVolume(double musicVolume){
-        AudioPlayer.musicVolume = musicVolume;
     }
 }

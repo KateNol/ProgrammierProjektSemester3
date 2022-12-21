@@ -72,6 +72,9 @@ public class ControllerMenu implements Initializable {
         Platform.exit();
     }
 
+    /**
+     * Opens project GibLab URL
+     */
     public void onGitlab() {
         HostServices hostServices = getFXHostServices();
         hostServices.showDocument(GITLAB_URL);

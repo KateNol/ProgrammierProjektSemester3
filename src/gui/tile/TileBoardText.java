@@ -20,6 +20,13 @@ public class TileBoardText extends StackPane {
         this(coordinate, tileSize, s, Color.WHITE);
     }
 
+    /**
+     * Outer Tile for labeling the board with Color
+     * @param coordinate Coordinates where the labeling is
+     * @param tileSize TileSize in Pixel
+     * @param s Labeling from the board
+     * @param color color from Tile
+     */
     public TileBoardText(Coordinate coordinate, int tileSize, String s, Color color) {
         Tile tile = new Tile(coordinate, tileSize);
         tile.setFill(color);
@@ -31,5 +38,4 @@ public class TileBoardText extends StackPane {
 
         this.getChildren().addAll(tile, text);
     }
-
 }

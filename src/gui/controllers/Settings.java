@@ -3,10 +3,19 @@ package gui.controllers;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
+/**
+ * @author Stefan/ Philip
+ * This class is setting global changes
+ */
 public class Settings {
 
     public static int mode = 1;
 
+    /**
+     * Set Background
+     * @param path from picture
+     * @return background
+     */
     public static Background setBackgroundImage(String path) {
         BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
         BackgroundImage backgroundImage = new BackgroundImage((new Image(path)), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -60,6 +69,10 @@ public class Settings {
         return i;
     }
 
+    /**
+     * Set mode by fullHD or HD
+     * @param mode fullHD or HD
+     */
     public static void setMode(int mode) {
         Settings.mode = mode;
     }

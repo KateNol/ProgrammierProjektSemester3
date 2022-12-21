@@ -21,6 +21,12 @@ public class Tile extends Rectangle {
         this(coordinate, tileSize, Color.BLACK);
     }
 
+    /**
+     * Base Tile is a Rectangle with Color
+     * @param coordinate Coordinate row, column
+     * @param tileSize TileSize in Pixel
+     * @param paint color for the tile
+     */
     public Tile(Coordinate coordinate, int tileSize, Paint paint) {
         super(tileSize - 1, tileSize - 1);
         this.tileSize = tileSize;
@@ -29,6 +35,10 @@ public class Tile extends Rectangle {
         setFill(paint);
     }
 
+    /**
+     * Set color for a tile
+     * @param color color
+     */
     public void setColor(Color color) {
         setFill(color);
     }

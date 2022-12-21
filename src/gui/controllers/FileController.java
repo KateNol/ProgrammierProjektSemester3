@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static gui.Util.log_debug;
 
 /**
- * @author Stefan
+ * @author Stefan/ Philip
  * This class is responsible for saving, updating, deleting or loading playerConfigs
  */
 public class FileController {
