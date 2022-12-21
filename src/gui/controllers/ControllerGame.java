@@ -9,6 +9,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import logic.GUIAIPlayer;
+import logic.Util;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -80,14 +82,18 @@ public class ControllerGame implements Initializable {
         selfLabel.setText(guiPlayer.getUsername());
         enemyLabel.setText(guiPlayer.getEnemyUsername());
 
-        if(guiPlayer.getWeBegin()){
-            turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
-            guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKRED);
-            guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKGREEN);
+        if(guiPlayer instanceof GUIAIPlayer){
+            Util.log_debug("no need for turn and color update at begin");
         } else {
-            turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
-            guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKGREEN);
-            guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKRED);
+            if(guiPlayer.getWeBegin()){
+                turnLabel.setText("It's " + guiPlayer.getUsername() + "'s Turn");
+                guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKRED);
+                guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKGREEN);
+            } else {
+                turnLabel.setText("It's " + guiPlayer.getEnemyUsername() + "'s Turn");
+                guiPlayer.getGuiBoard().setTopLeftCorner(Color.DARKGREEN);
+                guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKRED);
+            }
         }
     }
 
