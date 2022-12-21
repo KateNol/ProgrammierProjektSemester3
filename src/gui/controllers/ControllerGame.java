@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import static gui.Util.log_debug;
@@ -66,8 +67,7 @@ public class ControllerGame implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
 
-        //background music & picture
-        AudioPlayer.playMusic(Audio.BattleMusic2);
+        //background picture
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/game.jpg"));
 
         //Set Boards
@@ -117,6 +117,7 @@ public class ControllerGame implements Initializable {
      * Open endScreen after game complete
      */
     public void openEndScreen() {
+        AudioPlayer.destroyMusic();
         gameField.setMouseTransparent(true);
         gameEnd.setVisible(true);
     }
@@ -145,7 +146,10 @@ public class ControllerGame implements Initializable {
     public void onSwitchToMenu(){
         ControllerFileManager.getInstance().setFileNamesOnButton();
         AudioPlayer.playSFX(Audio.Click);
+        AudioPlayer.destroyMusic();
         ViewSwitcher.switchTo(View.Menu);
+        Random rand = new Random();
+        AudioPlayer.playMusic(rand.nextInt(5) + 1);
     }
 
     public void onSend() {
