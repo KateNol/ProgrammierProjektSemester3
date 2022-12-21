@@ -105,7 +105,7 @@
                                     <Insets left="50.0" right="50.0" />
                                  </padding>
                               </VBox>
-                              <VBox fx:id="AIDifficultBox" alignment="CENTER" spacing="10.0" visible="false" StackPane.alignment="CENTER">
+                              <VBox fx:id="AIDifficultBox" alignment="CENTER" maxWidth="370.0" spacing="10.0" visible="false">
                                  <children>
                                     <HBox alignment="CENTER" spacing="20.0">
                                        <children>

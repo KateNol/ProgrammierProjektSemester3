@@ -170,14 +170,6 @@
                                  </children></AnchorPane>
                                     </content>
                                 </Tab>
-                                <Tab text="Controles">
-                                    <content>
-                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-                                 <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
-                                 </children></AnchorPane>
-                                    </content>
-                                </Tab>
                             </tabs>
                             <VBox.margin>
                                 <Insets />
