@@ -252,10 +252,12 @@ public class GuiBoard {
 
 
     public void setTopLeftCorner(Color color) {
-        for (int i=1; i<grid.getRowCount(); i++) {
-            grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
-            grid.add(new TileBoardText(new Coordinate(0, i), tileSize, String.valueOf(i), color), 0, i);
-        }
+        Platform.runLater(() -> {
+            for (int i=1; i<grid.getRowCount(); i++) {
+                grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
+                grid.add(new TileBoardText(new Coordinate(0, i), tileSize, String.valueOf(i), color), 0, i);
+            }
+        });
     }
 
     /**
