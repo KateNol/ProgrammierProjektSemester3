@@ -12,8 +12,10 @@ import network.ServerMode;
 import network.internal.ChatMsg;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import static logic.Util.log_debug;
 
@@ -39,7 +41,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
 
     //states
     private boolean isShipsPlaced;
-    private boolean turn;
 
     //shotCoordinate
     private Coordinate shotCoordinate = null;
@@ -77,14 +78,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     }
 
     /**
-     * set turn
-     * @param turn to shoot
-     */
-    public void setTurn(boolean turn){
-        this.turn = turn;
-    }
-
-    /**
      * Open end screen if game is over
      * @param winner client or host
      */
@@ -117,6 +110,35 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         });
     }
 
+    public void setRandomShips() {
+        getMyMap().fillWater();
+        guiBoard.updateBoard();
+
+        Random coord = new Random();
+        ArrayList<Ship> ships = getArrayListShips();
+
+        for (Ship ship : ships) {
+            boolean placed = true;
+            do {
+                int x = coord.nextInt(myMap.getMapSize() - 1);
+                int y = coord.nextInt(myMap.getMapSize() - 1);
+                Coordinate coordinate = new Coordinate(x, y);
+                Alignment alignment = coord.nextBoolean() ? Alignment.VERT_DOWN : Alignment.HOR_RIGHT;
+                try {
+                    placed = addShip(ship, coordinate, alignment);
+                } catch (IllegalArgumentException e) {
+                    placed = false;
+                }
+                if (placed) {
+                    //guiBoard.setDisabledTiles(alignment, coordinate);
+                    log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
+                }
+            } while (!placed);
+        }
+        guiBoard.updateBoard();
+        confirmShipsPlaced(true);
+        ControllerLobby.getInstance().enableStartButton();
+    }
     //-------------------methods logic calls-------------------
     /**
      * logic calls for setShips
@@ -136,19 +158,16 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
      */
     @Override
     public Coordinate getShot() {
-        guiBoard.setTopLeftCorner(Color.DARKRED);
-        if (guiEnemyBoard != null)
-            guiEnemyBoard.setTopLeftCorner(Color.DARKGREEN);
-        Platform.runLater(() -> {
-            if (ControllerGame.getInstance() != null) {
-                //TODO
-                //if (turn) {
-                    ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
-                    turn = false;
-                //}
-            }
 
+        Platform.runLater(() -> {
+            guiBoard.setTopLeftCorner(Color.DARKRED);
+            if (guiEnemyBoard != null)
+                guiEnemyBoard.setTopLeftCorner(Color.DARKGREEN);
+            if (ControllerGame.getInstance() != null) {
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getUsername() + "'s Turn");
+            }
         });
+
         log_debug("getting shot from GUIPlayer");
         Coordinate shotCopy;
         try {
@@ -169,17 +188,13 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
 
         Platform.runLater(() -> {
             if (ControllerGame.getInstance() != null) {
-                //TODO
-                //if (!turn) {
-                    ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
-                    turn = false;
-                //}
+                ControllerGame.getInstance().getTurnLabel().setText("It's " + getEnemyUsername() + "'s Turn");
+                guiBoard.setTopLeftCorner(Color.DARKGREEN);
+                if (guiEnemyBoard != null)
+                    guiEnemyBoard.setTopLeftCorner(Color.DARKRED);
             }
-
         });
-        guiBoard.setTopLeftCorner(Color.DARKGREEN);
-        if (guiEnemyBoard != null)
-            guiEnemyBoard.setTopLeftCorner(Color.DARKRED);
+
         return shotCopy;
     }
 
@@ -192,8 +207,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     public void updateMapState(Coordinate c, ShotResult res){
         super.updateMapState(c, res);
         while (guiEnemyBoard == null);
-        //guiEnemyBoard.updateBoard(res, c);
-        guiEnemyBoard.updateBoard();
+        guiEnemyBoard.updateBoard(res, c);
     }
 
     /**
@@ -204,8 +218,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
     @Override
     protected ShotResult receiveShot(Coordinate shot){
         ShotResult shotResult = super.receiveShot(shot);
-        //guiBoard.updateBoard(shotResult, shot);
-        guiBoard.updateBoard();
+        guiBoard.updateBoard(shotResult, shot);
         return shotResult;
     }
 
@@ -329,5 +342,9 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         if (arg instanceof ChatMsg) {
             receiveChatMessage(((ChatMsg) arg).msg);
         }
+    }
+
+    public GuiBoard getGuiEnemyBoard(){
+        return guiEnemyBoard;
     }
 }

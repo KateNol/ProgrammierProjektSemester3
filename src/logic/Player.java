@@ -122,6 +122,11 @@ public abstract class Player extends Observable {
      */
     public boolean addShip(Ship s, Coordinate pivot, Alignment alignment) {
         boolean check = false;
+        if(s == null){
+            gui.Util.log_debug("no ship selected");
+            return check;
+        }
+
         Coordinate[] position = createArray(s.getSize(), pivot, alignment);
         if (checkLegal(position)) {
             s.setPos(position);
