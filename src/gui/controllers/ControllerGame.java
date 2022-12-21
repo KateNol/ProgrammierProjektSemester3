@@ -1,6 +1,8 @@
 package gui.controllers;
 
 import gui.GUIPlayer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -95,6 +97,13 @@ public class ControllerGame implements Initializable {
                 guiPlayer.getGuiEnemyBoard().setTopLeftCorner(Color.DARKRED);
             }
         }
+
+        chatArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                chatArea.setScrollTop(Double.MAX_VALUE);
+            }
+        });
     }
 
     /**
@@ -165,5 +174,6 @@ public class ControllerGame implements Initializable {
 
     public void displayChatMessage(String message) {
         chatArea.setText(chatArea.getText() + message + "\n");
+        chatArea.appendText("");
     }
 }
