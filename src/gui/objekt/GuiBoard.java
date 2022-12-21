@@ -261,7 +261,7 @@ public class GuiBoard {
      * @param coordinate coordinate where ship is placed
      */
     public void setDisabledTiles(Alignment alignment, Coordinate coordinate){
-        int shipLength = guiPlayer.getGuiHarbour().getSelectedShip().getSize();
+        int shipLength = guiPlayer.getShips().get(shipPlaced).getSize();
         int mapSize = guiPlayer.getMapSize();
         int row = coordinate.row();
         int col = coordinate.col();
