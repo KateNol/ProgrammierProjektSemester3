@@ -24,10 +24,8 @@ public class ControllerLobby implements Initializable {
 
     //alignment
     @FXML
-    private Button alignmentVer;
-    @FXML
-    private Button alignmentHor;
-
+    private Button alignment;
+    private int alignmentCounter = 1;
 
     //ships and failLabel
     @FXML
@@ -110,25 +108,37 @@ public class ControllerLobby implements Initializable {
     }
 
     /**
-     * Choose horizontal Alignment for placing ships
+     * Choose Alignment for placing ships
      */
-    public void setMyAlignmentHor() {
-        AudioPlayer.playSFX(Audio.Click);
-        System.out.println("hor");
-        guiPlayer.setAlignment(Alignment.HOR_RIGHT);
-        alignmentHor.setDisable(true);
-        alignmentVer.setDisable(false);
+    public void setMyAlignment(){
+        alignment.setOnMouseClicked(actionEvent -> {
+            AudioPlayer.playSFX(Audio.Click);
+            switch (alignmentCounter) {
+                case 0 -> {
+                    Util.log_debug("Horizontal_Right");
+                    alignment.setText("Horizontal_Right");
+                    guiPlayer.setAlignment(Alignment.HOR_RIGHT);
+                    alignmentCounter++;
+                }
+                case 1 -> {
+                    Util.log_debug("Horizontal_Left");
+                    alignment.setText("Horizontal_Left");
+                    guiPlayer.setAlignment(Alignment.HOR_LEFT);
+                    alignmentCounter++;
+                }
+                case 2 -> {
+                    Util.log_debug("Vertical_Down");
+                    alignment.setText("Vertical_Down");
+                    guiPlayer.setAlignment(Alignment.VERT_DOWN);
+                    alignmentCounter++;
+                }
+                case 3 -> {
+                    Util.log_debug("Vertical_Up");
+                    alignment.setText("Vertical_Up");
+                    guiPlayer.setAlignment(Alignment.VERT_UP);
+                    alignmentCounter = 0;
+                }
+            }
+        });
     }
-
-    /**
-     * Choose horizontal Alignment for placing ships
-     */
-    public void setMyAlignmentVer() {
-        AudioPlayer.playSFX(Audio.Click);
-        System.out.println("ver");
-        guiPlayer.setAlignment(Alignment.VERT_DOWN);
-        alignmentVer.setDisable(true);
-        alignmentHor.setDisable(false);
-    }
-
 }
