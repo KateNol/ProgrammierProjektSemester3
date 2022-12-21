@@ -34,8 +34,6 @@ public class ControllerLobby implements Initializable {
     //ships and failLabel
     @FXML
     private VBox vboxLeft;
-    @FXML
-    private Label failedShipPlacedLabel;
 
     //board
     @FXML
@@ -75,14 +73,6 @@ public class ControllerLobby implements Initializable {
      */
     public void enableStartButton(){
         startGame.setDisable(false);
-    }
-
-    /**
-     * Get label for display failed attempted to place a ship
-     * @return failedShipPlacedLabel
-     */
-    public Label getFailedShipPlacedLabel(){
-        return failedShipPlacedLabel;
     }
 
     /**

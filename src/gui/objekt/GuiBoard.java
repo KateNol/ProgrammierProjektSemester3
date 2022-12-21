@@ -119,27 +119,13 @@ public class GuiBoard {
                             guiPlayer.confirmShipsPlaced(true);
                         }
                     } else {
-                        failShipPlaced();
+                        gui.Util.log_debug("failed placing ship");
                     }
                 } else {
                     gui.Util.log_debug("no more ships left");
                 }
             }
         });
-    }
-
-    /**
-     * notify player if ship placement failed
-     */
-    public void failShipPlaced(){
-        ArrayList<String> failPrompt = new ArrayList<>();
-        failPrompt.add("Failed Placing Ships");
-        failPrompt.add("You suck at placing Ship's");
-        failPrompt.add("Are you serious?");
-        failPrompt.add("You are still failing");
-        failPrompt.add("What is wrong with you?");
-        Random rand = new Random();
-        ControllerLobby.getInstance().getFailedShipPlacedLabel().setText(failPrompt.get(rand.nextInt(failPrompt.size())));
     }
 
     /**
