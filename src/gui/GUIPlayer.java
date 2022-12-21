@@ -94,14 +94,14 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
                     || (getServerMode() == ServerMode.CLIENT && winner.equalsIgnoreCase("client"))){
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
                 playerConfig.increaseMaxSemester();
+                if(getNegotiatedSemester() == 6){
+                    ControllerGame.getInstance().playEsterEgg();
+                }
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
-                if(playerConfig.getMaxSemester() - 1 != 0){
-                    playerConfig.decreaseMaxSemester();
-                }
+                playerConfig.decreaseMaxSemester();
             }
             try {
-                Util.log_debug("ahead to update file");
                 FileController.updateFile(playerConfig);
                 Util.log_debug("finished to update file");
             } catch (IOException e) {

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -102,6 +103,11 @@
                   </VBox>
                </children>
             </HBox>
+            <Pane fx:id="easterEggPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false">
+               <StackPane.margin>
+                  <Insets left="-50.0" top="-50.0" />
+               </StackPane.margin>
+            </Pane>
             <VBox fx:id="gameEnd" alignment="CENTER" maxHeight="220.0" maxWidth="700.0" spacing="40.0" visible="false">
                <children>
                   <Label fx:id="winnerLabel" text="Gewonnen oder Verloren!">
