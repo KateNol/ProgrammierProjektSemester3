@@ -12,8 +12,10 @@ import network.ServerMode;
 import network.internal.ChatMsg;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import static logic.Util.log_debug;
 
@@ -108,6 +110,35 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         });
     }
 
+    public void setRandomShips() {
+        getMyMap().fillWater();
+        guiBoard.updateBoard();
+
+        Random coord = new Random();
+        ArrayList<Ship> ships = getArrayListShips();
+
+        for (Ship ship : ships) {
+            boolean placed = true;
+            do {
+                int x = coord.nextInt(myMap.getMapSize() - 1);
+                int y = coord.nextInt(myMap.getMapSize() - 1);
+                Coordinate coordinate = new Coordinate(x, y);
+                Alignment alignment = coord.nextBoolean() ? Alignment.VERT_DOWN : Alignment.HOR_RIGHT;
+                try {
+                    placed = addShip(ship, coordinate, alignment);
+                } catch (IllegalArgumentException e) {
+                    placed = false;
+                }
+                if (placed) {
+                    //guiBoard.setDisabledTiles(alignment, coordinate);
+                    log_debug("successfully placed ship at " + coordinate + " aligned " + alignment);
+                }
+            } while (!placed);
+        }
+        guiBoard.updateBoard();
+        confirmShipsPlaced(true);
+        ControllerLobby.getInstance().enableStartButton();
+    }
     //-------------------methods logic calls-------------------
     /**
      * logic calls for setShips

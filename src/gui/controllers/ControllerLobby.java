@@ -27,6 +27,8 @@ public class ControllerLobby implements Initializable {
     private Button alignmentVer;
     @FXML
     private Button alignmentHor;
+    @FXML
+    private Button random;
 
 
     //ships and failLabel
@@ -128,4 +130,17 @@ public class ControllerLobby implements Initializable {
         alignmentHor.setDisable(false);
     }
 
+    public void onRandom(){
+        AudioPlayer.playSFX(Audio.Click);
+        vboxLeft.setMouseTransparent(true);
+        guiPlayer.setRandomShips();
+    }
+
+    public Button getRandomButton(){
+        return random;
+    }
+
+    public VBox getShipBox(){
+        return vboxLeft;
+    }
 }

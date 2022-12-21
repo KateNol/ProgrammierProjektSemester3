@@ -93,6 +93,11 @@ public class GuiBoard {
      */
     public void setShip(Node node){
         node.setOnMouseClicked(e -> {
+            if(!ControllerLobby.getInstance().getRandomButton().isDisable()){
+                if(!ControllerLobby.getInstance().getShipBox().isMouseTransparent()){
+                    ControllerLobby.getInstance().getRandomButton().setDisable(true);
+                }
+            }
             if(e.getSource() instanceof TileWater){
                 if (!(shipPlaced == guiPlayer.getShips().size())) {
                     TileWater tileWater = (TileWater) e.getSource();
@@ -243,8 +248,6 @@ public class GuiBoard {
                 });
             }
         }
-
-
     }
 
 

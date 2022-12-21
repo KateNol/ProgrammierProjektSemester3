@@ -16,7 +16,7 @@ public class Map {
     /**
      * Fills map with water
      */
-    protected void fillWater() {
+    public void fillWater() {
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
                 map[row][col] = MapState.W;
