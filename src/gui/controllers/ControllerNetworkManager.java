@@ -153,6 +153,7 @@ public class ControllerNetworkManager implements Initializable {
             connectionWaitThread = new Thread(() -> {
                 while (!connectionWaitThread.isInterrupted() && !GUIPlayer.getInstance().getIsConnectionEstablished()) ;
                 ViewSwitcher.switchTo(View.Lobby);
+                loadBox.setVisible(false);
             });
             connectionWaitThread.setName("GUI Conn wait");
             connectionWaitThread.setDaemon(true);
