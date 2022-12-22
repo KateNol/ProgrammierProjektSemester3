@@ -142,7 +142,7 @@
                   </Label>
                   <HBox alignment="CENTER" spacing="100.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="60.0" prefWidth="250.0" text="Play again!">
+                        <Button fx:id="playAgain" mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="60.0" prefWidth="250.0" text="Play again!">
                            <font>
                               <Font name="Rockwell" size="24.0" />
                            </font>
