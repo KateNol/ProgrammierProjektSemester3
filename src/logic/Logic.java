@@ -153,6 +153,9 @@ public class Logic implements Observer {
                     }
                 }
                 case EnemyTurn -> {
+                    if (GUIAIPlayer.getInstance() != null)
+                        Thread.sleep(25);
+
                     // its the enemies turn, wait until notify() tells us where the enemy shot
                     // while (!logicThread.isInterrupted() && shotStack.isEmpty());
                     while (shotStack.isEmpty()) {
