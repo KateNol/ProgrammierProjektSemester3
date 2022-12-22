@@ -4,6 +4,7 @@ package network.internal;
 import network.ServerMode;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.Socket;
 import java.nio.channels.ClosedByInterruptException;
 import java.nio.channels.InterruptibleChannel;
@@ -36,8 +37,12 @@ public final class Client {
 
         Contact contact = new Contact(null, ServerMode.CLIENT, username, semester);
 
+        if (address.equals(Inet4Address.getLocalHost().getHostAddress()))
+            address = "localhost";
+
         log_debug("client trying to connect to " + address + ":" + port);
 
+        String finalAddress = address;
         connectionThread = new Thread(() -> {
             Socket socket = null;
             boolean success;
@@ -45,7 +50,7 @@ public final class Client {
             do {
                 success = true;
                 try {
-                    socket = new Socket(address, port);
+                    socket = new Socket(finalAddress, port);
                     contact.setSocket(socket);
                     log_stdio("Client successfully connected");
                 } catch (IOException ignored) {
