@@ -133,6 +133,7 @@
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-font-family: 'Rockwell';
+    -fx-background-insets: 2;
 
     -fx-font-size: 18px;
 }
@@ -143,6 +144,7 @@
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-font-family: 'Rockwell';
+    -fx-background-insets: 2;
 
     -fx-font-size: 18px;
 }
@@ -166,6 +168,14 @@
     -fx-tab-max-height:40px;
     -fx-font-size: 18px;
     -fx-font-family: 'Rockwell';
+    -fx-padding: -1;
+}
+
+.tab {
+    -fx-translate-y: 5;
+    -fx-border-width: 2;
+    -fx-border-color: black;
+    -fx-border-radius: 2;
 }
 
 .tab:focused {
@@ -182,7 +192,7 @@
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
     -fx-border-width: 2, 2;
-    -fx-border-color: black;
+    -fx-border-color: transparent;
     -fx-border-insets: -4 -4 -6 -5, -2 -2 -5 -3;
     -fx-border-radius: 2, 1;
 }
@@ -211,4 +221,16 @@
     -fx-border-width: 2;
     -fx-border-radius: 4;
     -fx-background-insets: 1;
+}
+
+#sett {
+    -fx-effect: dropshadow(three-pass-box, #e4e4e4, 5, 5, 0, 0);
+}
+
+#rul {
+    -fx-effect: dropshadow(three-pass-box, #e4e4e4, 5, 5, 0, 0);
+}
+
+.text {
+    -fx-text-fill: black;
 }

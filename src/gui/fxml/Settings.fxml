@@ -20,7 +20,7 @@
                     <children>
                         <HBox maxHeight="100.0" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                             <children>
-                                <Label minHeight="-Infinity" minWidth="-Infinity" text="Settings">
+                                <Label fx:id="sett" minHeight="-Infinity" minWidth="-Infinity" text="Settings">
                                     <font>
                                         <Font name="Rockwell" size="48.0" />
                                     </font>
