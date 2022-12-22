@@ -95,7 +95,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
                 playerConfig.increaseMaxSemester();
                 if(getNegotiatedSemester() == 6){
-                    ControllerGame.getInstance().playEsterEgg();
+                  //  ControllerGame.getInstance().playEsterEgg();
                 } else {
                     AudioPlayer.playMusic(Audio.Win);
                 }

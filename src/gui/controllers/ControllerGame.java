@@ -68,7 +68,7 @@ public class ControllerGame implements Initializable {
 
         //background music & picture
         AudioPlayer.playMusic(Audio.BattleMusic2);
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/Lernnische_HsH.png"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/Hörsaal_H.001.png"));
 
         //Set Boards
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);
