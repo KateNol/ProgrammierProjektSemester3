@@ -151,17 +151,17 @@ public abstract class NetworkPlayer extends Player {
 
     public void sendShotResponse(ShotResult shotResult, boolean gameOver) {
         if (!gameOver)
-            sendMessage("FIRE_ACK;" + shotResult);
+            contact.sendMessage("FIRE_ACK", String.valueOf(shotResult));
         else
-            sendMessage("FIRE_ACK;" + shotResult + ";" + "true");
+            contact.sendMessage("FIRE_ACK", String.valueOf(shotResult), "true");
     }
 
     public void sendEnd(String winner) {
-        sendMessage("END;" + winner);
+        contact.sendMessage("END", winner);
     }
 
     public void sendBye() {
-        sendMessage("BYE");
+        contact.sendMessage("BYE");
     }
 
     public void onGameOver(String winner) {
