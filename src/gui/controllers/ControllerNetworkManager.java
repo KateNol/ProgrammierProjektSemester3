@@ -67,7 +67,7 @@ public class ControllerNetworkManager implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/multiplayerImg.jpg"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/Hörsaal_018.png"));
         setCombobox();
     }
 
