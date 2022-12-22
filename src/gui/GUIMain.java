@@ -28,8 +28,10 @@ public class GUIMain extends Application  {
 
     public static void main(String[] args) {
         for (String arg : args) {
-            if (arg.startsWith("nosound")) {
+            if (arg.contains("nosound")) {
                 AudioPlayer.disableSound = true;
+            } else if (arg.contains("debug")) {
+                shared.Util.debug = true;
             }
         }
         launch(args);

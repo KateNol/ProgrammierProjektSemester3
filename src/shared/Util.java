@@ -5,7 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Util {
 
-    public static final boolean debug = true;
+    // global debug flag, gets set in GUIMain and Driver with cli option "debug"
+    public static boolean debug = false;
 
     private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 

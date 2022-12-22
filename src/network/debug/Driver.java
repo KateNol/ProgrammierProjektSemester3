@@ -75,6 +75,8 @@ public final class Driver {
                 }
             } else if (arg.startsWith("semester=")) {
                 semester = Integer.parseInt(arg.substring("semester=".length()));
+            } else if (arg.contains("debug")) {
+                shared.Util.debug = true;
             }
         }
 
