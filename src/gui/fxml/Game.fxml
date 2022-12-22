@@ -5,11 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/Button.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerGame">
@@ -24,8 +26,15 @@
                            <children>
                               <Label fx:id="turnLabel" alignment="CENTER" contentDisplay="CENTER" text="Enemy Turn">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font name="Rockwell" size="24.0" />
                                  </font>
+                                 <effect>
+                                    <DropShadow height="8.79" radius="3.8949999999999996" spread="1.0" width="8.79">
+                                       <color>
+                                          <Color red="0.7490196228027344" green="0.7490196228027344" blue="0.7490196228027344" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
                               </Label>
                            </children>
                            <VBox.margin>
@@ -43,8 +52,15 @@
                                        <children>
                                           <Label fx:id="selfLabel" text="Your Board">
                                              <font>
-                                                <Font size="24.0" />
+                                                <Font name="Rockwell" size="24.0" />
                                              </font>
+                                             <effect>
+                                                <DropShadow height="8.79" radius="3.8949999999999996" spread="1.0" width="8.79">
+                                                   <color>
+                                                      <Color red="0.7490196228027344" green="0.7490196228027344" blue="0.7490196228027344" />
+                                                   </color>
+                                                </DropShadow>
+                                             </effect>
                                           </Label>
                                        </children>
                                        <VBox.margin>
@@ -59,8 +75,15 @@
                                        <children>
                                           <Label fx:id="enemyLabel" text="Enemy Board">
                                              <font>
-                                                <Font size="24.0" />
+                                                <Font name="Rockwell" size="24.0" />
                                              </font>
+                                             <effect>
+                                                <DropShadow height="8.79" radius="3.8949999999999996" spread="1.0" width="8.79">
+                                                   <color>
+                                                      <Color red="0.7490196228027344" green="0.7490196228027344" blue="0.7490196228027344" />
+                                                   </color>
+                                                </DropShadow>
+                                             </effect>
                                           </Label>
                                        </children>
                                        <VBox.margin>
@@ -88,12 +111,15 @@
                            <children>
                               <TextArea fx:id="chatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="Rockwell" size="14.0" />
                                  </font>
                               </TextArea>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <TextField fx:id="chatInputField" onAction="#onSend" promptText="message" HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="chatInputField" onAction="#onSend" promptText="message" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Rockwell" size="12.0" />
+                                       </font></TextField>
                                  </children>
                               </HBox>
                            </children>
