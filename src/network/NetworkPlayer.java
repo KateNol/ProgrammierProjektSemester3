@@ -141,7 +141,7 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public void sendShot(Coordinate coordinate) {
-        sendMessage("FIRE;" + coordinate.row() + ";" + coordinate.col());
+        contact.sendMessage("FIRE", String.valueOf(coordinate.row()), String.valueOf(coordinate.col()));
     }
 
     @Override
