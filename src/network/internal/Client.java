@@ -54,10 +54,11 @@ public final class Client {
                     try {
                         Thread.sleep(connectionWaitInterval);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        log_debug("connection attempt interrupted");
+                        break;
                     }
                 }
-            } while (!success && !connectionThread.isInterrupted());
+            } while (connectionThread != null && !success && !connectionThread.isInterrupted());
 
         });
         connectionThread.setName("Client connection");

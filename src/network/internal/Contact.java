@@ -141,6 +141,11 @@ public final class Contact extends Observable {
      * @param args
      */
     public void sendMessage(String command, String... args) {
+        if (outWriter == null) {
+            notifyObservers(Notification.SelfDestruct);
+            return;
+        }
+
         String msg = constructMessage(command, args);
 
         log_debug("sending: '" + msg + "'");
@@ -151,11 +156,14 @@ public final class Contact extends Observable {
         log_debug("contact endConnection");
         BYE(SEND, 0, "got ordered to end connection");
         try {
-            socket.close();
+            if (socket != null)
+                socket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        commThread.interrupt();
+
+        if (commThread != null)
+            commThread.interrupt();
 
         assert connectionTerminated;
     }
