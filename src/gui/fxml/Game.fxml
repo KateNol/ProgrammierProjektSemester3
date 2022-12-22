@@ -26,7 +26,7 @@
                            <children>
                               <Label fx:id="turnLabel" alignment="CENTER" contentDisplay="CENTER" text="Enemy Turn">
                                  <font>
-                                    <Font name="Rockwell" size="24.0" />
+                                    <Font name="Rockwell" size="25.0" />
                                  </font>
                                  <effect>
                                     <DropShadow height="8.79" radius="3.8949999999999996" spread="1.0" width="8.79">
@@ -52,7 +52,7 @@
                                        <children>
                                           <Label fx:id="selfLabel" text="Your Board">
                                              <font>
-                                                <Font name="Rockwell" size="24.0" />
+                                                <Font name="Rockwell" size="25.0" />
                                              </font>
                                              <effect>
                                                 <DropShadow height="8.79" radius="3.8949999999999996" spread="1.0" width="8.79">
@@ -75,7 +75,7 @@
                                        <children>
                                           <Label fx:id="enemyLabel" text="Enemy Board">
                                              <font>
-                                                <Font name="Rockwell" size="24.0" />
+                                                <Font name="Rockwell" size="25.0" />
                                              </font>
                                              <effect>
                                                 <DropShadow height="8.79" radius="3.8949999999999996" spread="1.0" width="8.79">
@@ -137,19 +137,19 @@
                <children>
                   <Label fx:id="winnerLabel" text="Gewonnen oder Verloren!">
                      <font>
-                        <Font size="36.0" />
+                        <Font name="Rockwell" size="36.0" />
                      </font>
                   </Label>
                   <HBox alignment="CENTER" spacing="100.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="60.0" prefWidth="250.0" text="Play again!">
+                        <Button fx:id="playAgain" mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="60.0" prefWidth="250.0" text="Play again!">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="24.0" />
                            </font>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onSwitchToMenu" prefHeight="60.0" prefWidth="250.0" text="Switch to Menu">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="Rockwell" size="24.0" />
                            </font>
                         </Button>
                      </children>

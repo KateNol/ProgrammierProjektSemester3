@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -44,6 +45,8 @@ public class ControllerGame implements Initializable {
     MediaPlayer mediaPlayer = null;
     @FXML
     private Pane easterEggPane;
+    @FXML
+    private Button playAgain;
 
     //names display
     @FXML
@@ -163,6 +166,7 @@ public class ControllerGame implements Initializable {
      * to play with same player again
      */
     public void onPlayAgain(){
+        playAgain.setText("Coming soon!");
         /*
         ControllerLobby.getInstance().resetBoard();
         AudioPlayer.playSFX(Audio.Click);
