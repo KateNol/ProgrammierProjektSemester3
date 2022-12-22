@@ -13,6 +13,7 @@ import java.util.Set;
 import static gui.Util.log_debug;
 
 /**
+ * This class is a Gui Ship
  * @author Stefan
  */
 public class GuiHBoxShip extends HBox {
@@ -44,6 +45,10 @@ public class GuiHBoxShip extends HBox {
         });
     }
 
+    /**
+     * Set Color when Ship is chosen
+     * @param color color from ship
+     */
     public void changeColor(Color color) {
         for (var t : tiles) {
             t.setColor(color);

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * This class is a VBox for a List of Gui Ships
  * @author Stefan
  */
 public class GuiHarbour extends VBox {
@@ -67,14 +68,26 @@ public class GuiHarbour extends VBox {
         return "drawOnBoardLogic = row: " + coordinate.row() + " col: " + coordinate.col() + " " + "drawOnBoardGUI = row: " + c.row() + " col: " + c.col();
     }
 
+    /**
+     * Get selectedShip
+     * @return selectedShip
+     */
     public Ship getSelectedShip() {
         return selectedShip;
     }
 
+    /**
+     * Set selectedShip
+     * @param s ship
+     */
     public void setSelectedShip(Ship s) {
         selectedShip = s;
     }
 
+    /**
+     * Get guiHBoxShips
+     * @return guiHBoxShips
+     */
     public HashMap<Ship, GuiHBoxShip> getGuiHBoxShips() {
         return guiHBoxShips;
     }

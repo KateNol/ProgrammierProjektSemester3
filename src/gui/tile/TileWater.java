@@ -18,7 +18,13 @@ public class TileWater extends Tile {
         setFill(Color.CADETBLUE);
     }
 
-    public TileWater(int i, int j, int tileSize) {
-        this(new Coordinate(i, j), tileSize);
+    /**
+     * Create Water tile
+     * @param row from given Coordinate
+     * @param col from given Coordinate
+     * @param tileSize TileSize in Pixel
+     */
+    public TileWater(int row, int col, int tileSize) {
+        this(new Coordinate(row, col), tileSize);
     }
 }

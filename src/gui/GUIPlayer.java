@@ -56,7 +56,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         super(playerConfig);
         log_debug("created gui player");
         this.playerConfig = playerConfig;
-        this. tileSize = Settings.setTileSize(playerConfig.getMaxSemester());
+        this.tileSize = Settings.setTileSize(playerConfig.getMaxSemester());
         instance = this;
     }
 
@@ -93,16 +93,19 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
             if((getServerMode() == ServerMode.SERVER && winner.equalsIgnoreCase("host"))
                     || (getServerMode() == ServerMode.CLIENT && winner.equalsIgnoreCase("client"))){
                 ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
-                AudioPlayer.playSFX(Audio.Win);
                 playerConfig.increaseMaxSemester();
+                if(getNegotiatedSemester() == 6){
+                    ControllerGame.getInstance().playEsterEgg();
+                } else {
+                    AudioPlayer.playMusic(Audio.Win);
+                }
             } else {
                 ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
-                AudioPlayer.playSFX(Audio.Lose);
                 playerConfig.decreaseMaxSemester();
-
+                AudioPlayer.playMusic(Audio.Lose);
+                playerConfig.decreaseMaxSemester();
             }
             try {
-                Util.log_debug("ahead to update file");
                 FileController.updateFile(playerConfig);
                 Util.log_debug("finished to update file");
             } catch (IOException e) {
@@ -111,20 +114,23 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         });
     }
 
+    /**
+     * place random Ships
+     */
     public void setRandomShips() {
         getMyMap().fillWater();
         guiBoard.updateBoard();
 
-        Random coord = new Random();
+        Random c = new Random();
         ArrayList<Ship> ships = getArrayListShips();
 
         for (Ship ship : ships) {
             boolean placed = true;
             do {
-                int x = coord.nextInt(myMap.getMapSize() - 1);
-                int y = coord.nextInt(myMap.getMapSize() - 1);
+                int x = c.nextInt(myMap.getMapSize() - 1);
+                int y = c.nextInt(myMap.getMapSize() - 1);
                 Coordinate coordinate = new Coordinate(x, y);
-                Alignment alignment = coord.nextBoolean() ? Alignment.VERT_DOWN : Alignment.HOR_RIGHT;
+                Alignment alignment = c.nextBoolean() ? Alignment.VERT_DOWN : Alignment.HOR_RIGHT;
                 try {
                     placed = addShip(ship, coordinate, alignment);
                 } catch (IllegalArgumentException e) {
@@ -222,6 +228,10 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         return shotResult;
     }
 
+    /**
+     * Display chat message from enemy
+     * @param message incoming message
+     */
     @Override
     public void receiveChatMessage(String message) {
         if (ControllerGame.getInstance() == null)
@@ -229,7 +239,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         log_debug("gui player received msg " + message);
         ControllerGame.getInstance().displayChatMessage("> " + getEnemyUsername() + ": " +message);
     }
-    //--------------------------------------
 
     /**
      * Create Gui Objects off GuiBoard and GuiHarbour
@@ -312,8 +321,6 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         return tileSize;
     }
 
-
-
     /**
      * This method is called whenever the observed object is changed. An
      * application calls an {@code Observable} object's
@@ -331,6 +338,10 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
         }
     }
 
+    /**
+     * Get guiEnemyBoard
+     * @return guiEnemyBoard
+     */
     public GuiBoard getGuiEnemyBoard(){
         return guiEnemyBoard;
     }

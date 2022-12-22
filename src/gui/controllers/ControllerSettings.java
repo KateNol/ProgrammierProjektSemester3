@@ -11,7 +11,10 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+/**
+ * @author Philip
+ * This class handels global setting changes
+ */
 public class ControllerSettings implements Initializable {
 
     private static ControllerSettings instance = null;
@@ -91,14 +94,12 @@ public class ControllerSettings implements Initializable {
             double d = (double) newValue;
             int volume = (int) (Math.round(d * Math.pow(10, 2)));
             labelSFX.setText(Integer.toString(volume));
-            //AudioPlayer.setSFXVolume((double) volume/100);
         });
 
         sliderMaster.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             double d = (double) newValue;
             int volume = (int) (Math.round(d * Math.pow(10, 2)));
             labelMaster.setText(Integer.toString(volume));
-            //AudioPlayer.setMasterVolume((double) volume/100);
 
         });
 
@@ -106,7 +107,6 @@ public class ControllerSettings implements Initializable {
             double d = (double) newValue;
             int volume = (int) (Math.round(d * Math.pow(10, 2)));
             labelMusic.setText(Integer.toString(volume));
-            //AudioPlayer.setMasterVolume((double) volume/100);
         });
 
 

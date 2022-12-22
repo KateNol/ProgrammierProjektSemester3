@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author Stefan
+ * Controller for managing Files safe, create and delete
+ */
 public class ControllerFileManager implements Initializable {
 
     //AI
@@ -71,6 +75,10 @@ public class ControllerFileManager implements Initializable {
         setFileNamesOnButton();
     }
 
+    /**
+     * Get instance from ControllerFileManager
+     * @return instance
+     */
     public static ControllerFileManager getInstance(){
         return instance;
     }
@@ -309,6 +317,9 @@ public class ControllerFileManager implements Initializable {
         }
     }
 
+    /**
+     * PLay as AI
+     */
     public void onAi(){
         if(!AIDifficultBox.isVisible()){
             AIDifficultBox.setVisible(true);
@@ -319,6 +330,9 @@ public class ControllerFileManager implements Initializable {
         }
     }
 
+    /**
+     * AI with difficult 1
+     */
     public void onAIOne(){
         PlayerConfig playerConfig = new PlayerConfig("AIOne");
         new GUIAIPlayer(playerConfig);
@@ -327,6 +341,9 @@ public class ControllerFileManager implements Initializable {
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * AI with difficult 2
+     */
     public void onAITwo(){
         PlayerConfig playerConfig = new PlayerConfig("AITwo");
         for(int i = 0; i < 1; i++){
@@ -338,6 +355,9 @@ public class ControllerFileManager implements Initializable {
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * AI with difficult 3
+     */
     public void onAIThree(){
         PlayerConfig playerConfig = new PlayerConfig("AIThree");
         for(int i = 0; i < 2; i++){
@@ -349,6 +369,9 @@ public class ControllerFileManager implements Initializable {
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * AI with difficult 4
+     */
     public void onAIFour(){
         PlayerConfig playerConfig = new PlayerConfig("AIFour");
         for(int i = 0; i < 3; i++){
@@ -360,6 +383,9 @@ public class ControllerFileManager implements Initializable {
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * AI with difficult 5
+     */
     public void onAIFive(){
         PlayerConfig playerConfig = new PlayerConfig("AIFive");
         for(int i = 0; i < 4; i++){
@@ -371,6 +397,9 @@ public class ControllerFileManager implements Initializable {
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * AI with difficult 6
+     */
     public void onAISix(){
         PlayerConfig playerConfig = new PlayerConfig("AISix");
         for(int i = 0; i < 5; i++){
@@ -382,6 +411,10 @@ public class ControllerFileManager implements Initializable {
         ViewSwitcher.switchTo(View.NetworkManager);
     }
 
+    /**
+     * Disable Files when Ai is chosen
+     * @param b true on AI
+     */
     public void setFilesDisabled(boolean b){
         fileOne.setDisable(b);
         fileTwo.setDisable(b);

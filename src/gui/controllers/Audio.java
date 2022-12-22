@@ -18,10 +18,19 @@ public enum Audio {
 
 
     private String pathName;
+
+    /**
+     * Manage audio handling
+     * @param pathName audio Path
+     */
     Audio(String pathName) {
         this.pathName = pathName;
     }
 
+    /**
+     * Get Path
+     * @return audio Path
+     */
     public String getPathName() {
         return pathName;
     }
