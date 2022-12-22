@@ -27,127 +27,6 @@ public class GUIAIPlayer extends GUIPlayer {
     }
 
     @Override
-    public Coordinate getShot() {
-        System.out.println("our turn! state of the game:");
-        printBothMaps();
-        int mapSize = myMap.getMapSize();
-        Coordinate shot = null;
-
-        // search for hit
-        Coordinate c = null;
-        for (int i=0; i<mapSize; i++) {
-            for (int j=0; j<mapSize; j++) {
-                if (enemyMap.getState(i, j) == MapState.H) {
-                    c = new Coordinate(i, j);
-                    break;
-                }
-            }
-        }
-
-        // if hit found
-        if (c != null) {
-            ArrayList<Coordinate> possibleShots = new ArrayList<>();
-
-            boolean horizontal = false;
-            boolean vertical = false;
-            // check if direction known
-            if (enemyMap.inBounds(c.row()+1, c.col()) && enemyMap.getState(c.row()+1, c.col()) == MapState.H) {
-                vertical = true;
-            } else if (enemyMap.inBounds(c.row()-1, c.col()) && enemyMap.getState(c.row()-1, c.col()) == MapState.H) {
-                vertical = true;
-            } else if (enemyMap.inBounds(c.row(), c.col()+1) && enemyMap.getState(c.row(), c.col()+1) == MapState.H) {
-                horizontal = true;
-            } else if (enemyMap.inBounds(c.row(), c.col()-1) && enemyMap.getState(c.row(), c.col()-1) == MapState.H) {
-                horizontal = true;
-            }
-
-            // if direction know (2 possible ways)
-            if (horizontal || vertical) {
-                if (horizontal) {
-                    int i = c.row();
-                    int j = c.col();
-                    int k = 0;
-                    while (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j + k) == MapState.H) {
-                        k++;
-                    }
-                    if (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j + k) == MapState.W) {
-                        possibleShots.add(new Coordinate(i, j + k));
-                    } else {
-                        log_debug("" + i + " " + (j+k) + " not a viable shot");
-                    }
-                    k = 0;
-                    while (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j+k) == MapState.H) {
-                        k--;
-                    }
-                    if (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j+k) == MapState.W) {
-                        possibleShots.add(new Coordinate(i, j+k));
-                    } else {
-                        log_debug("" + i + " " + (j+k) + " not a viable shot");
-                    }
-                }
-                else {
-                    int i = c.row();
-                    int j = c.col();
-                    int k = 0;
-                    while (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.H) {
-                        k++;
-                    }
-                    if (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.W) {
-                        possibleShots.add(new Coordinate(i + k, j));
-                    } else {
-                        log_debug("" + (i+k) + " " + j + " not a viable shot");
-                    }
-                    k = 0;
-                    while (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.H) {
-                        k--;
-                    }
-                    if (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.W) {
-                        possibleShots.add(new Coordinate(i+k, j));
-                    } else {
-                        log_debug("" + (i+k) + " " + j + " not a viable shot");
-                    }
-                }
-            }
-            // else (4 possible ways)
-            else {
-                int i = c.row();
-                int j = c.col();
-
-                if (enemyMap.inBounds(i+1, j) && enemyMap.getState(i+1, j) == MapState.W)
-                    possibleShots.add(new Coordinate(i+1, j));
-                if (enemyMap.inBounds(i-1, j) && enemyMap.getState(i-1, j) == MapState.W)
-                    possibleShots.add(new Coordinate(i-1, j));
-                if (enemyMap.inBounds(i, j+1) && enemyMap.getState(i, j+1) == MapState.W)
-                    possibleShots.add(new Coordinate(i, j+1));
-                if (enemyMap.inBounds(i, j-1) && enemyMap.getState(i, j-1) == MapState.W)
-                    possibleShots.add(new Coordinate(i, j-1));
-            }
-
-            if (possibleShots.size() == 0) {
-                log_stderr("could not find a shot for " + c);
-            }
-
-            log_debug("found " + possibleShots.size() + " possible locations");
-            log_debug("vert: " + vertical + ", hor: " + horizontal);
-            log_debug(String.valueOf(possibleShots));
-
-            Random random = new Random();
-            shot = possibleShots.get(random.nextInt(possibleShots.size()));
-        } else {
-            // else shoot randomly
-            Random random = new Random();
-            shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
-            while (previousShots.contains(shot)) {
-                shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
-            }
-        }
-
-        previousShots.add(shot);
-
-        return shot;
-    }
-
-    @Override
     protected void setShips() {
         Random coord = new Random();
         ArrayList<Ship> ships = getArrayListShips();
@@ -173,5 +52,169 @@ public class GUIAIPlayer extends GUIPlayer {
         ViewSwitcher.switchTo(View.Game);
 
         getGuiBoard().updateBoard();
+    }
+    /**
+     * Calculates a shot, first it shoots random and hunts ship, if hit one.
+     * @return
+     */
+    @Override
+    public Coordinate getShot() {
+        try {
+            Thread.sleep(10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("our turn! state of the game:");
+        printBothMaps();
+        int mapSize = myMap.getMapSize();
+        Coordinate shot = null;
+
+        // search for hit
+        Coordinate c = null;
+        for (int i=0; i<mapSize; i++) {
+            for (int j=0; j<mapSize; j++) {
+                if (enemyMap.getState(i, j) == MapState.H) {
+                    c = new Coordinate(i, j);
+                    break;
+                }
+            }
+        }
+
+        // if hit found
+        if (c != null) {
+            shot = huntShip(c);
+        } else {
+            // else shoot randomly
+            shot = shootRandom(shot);
+        }
+
+        previousShots.add(shot);
+
+        return shot;
+    }
+
+    /**
+     * If one random shot was a hit this algorithm seeks for the  ship
+     * @param c origin of the hunt
+     * @return next possible shot
+     */
+    private Coordinate huntShip(Coordinate c) {
+        ArrayList<Coordinate> possibleShots = new ArrayList<>();
+
+        boolean horizontal = false;
+        boolean vertical = false;
+        // check if direction known
+        if (enemyMap.inBounds(c.row()+1, c.col()) && enemyMap.getState(c.row()+1, c.col()) == MapState.H) {
+            vertical = true;
+        } else if (enemyMap.inBounds(c.row()-1, c.col()) && enemyMap.getState(c.row()-1, c.col()) == MapState.H) {
+            vertical = true;
+        } else if (enemyMap.inBounds(c.row(), c.col()+1) && enemyMap.getState(c.row(), c.col()+1) == MapState.H) {
+            horizontal = true;
+        } else if (enemyMap.inBounds(c.row(), c.col()-1) && enemyMap.getState(c.row(), c.col()-1) == MapState.H) {
+            horizontal = true;
+        }
+
+        // if direction know (2 possible ways)
+        if (horizontal || vertical) {
+            if (horizontal) {
+                int i = c.row();
+                int j = c.col();
+                int k = 0;
+                while (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j + k) == MapState.H) {
+                    k++;
+                }
+                if (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j + k) == MapState.W) {
+                    possibleShots.add(new Coordinate(i, j + k));
+                } else {
+                    log_debug("" + i + " " + (j+k) + " not a viable shot");
+                }
+                k = 0;
+                while (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j+k) == MapState.H) {
+                    k--;
+                }
+                if (enemyMap.inBounds(i, j+k) && enemyMap.getState(i, j+k) == MapState.W) {
+                    possibleShots.add(new Coordinate(i, j+k));
+                } else {
+                    log_debug("" + i + " " + (j+k) + " not a viable shot");
+                }
+            }
+            else {
+                int i = c.row();
+                int j = c.col();
+                int k = 0;
+                while (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.H) {
+                    k++;
+                }
+                if (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.W) {
+                    possibleShots.add(new Coordinate(i + k, j));
+                } else {
+                    log_debug("" + (i+k) + " " + j + " not a viable shot");
+                }
+                k = 0;
+                while (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.H) {
+                    k--;
+                }
+                if (enemyMap.inBounds(i+k, j) && enemyMap.getState(i + k, j) == MapState.W) {
+                    possibleShots.add(new Coordinate(i+k, j));
+                } else {
+                    log_debug("" + (i+k) + " " + j + " not a viable shot");
+                }
+            }
+        }
+        // else (4 possible ways)
+        else {
+            int i = c.row();
+            int j = c.col();
+
+            if (enemyMap.inBounds(i+1, j) && enemyMap.getState(i+1, j) == MapState.W)
+                possibleShots.add(new Coordinate(i+1, j));
+            if (enemyMap.inBounds(i-1, j) && enemyMap.getState(i-1, j) == MapState.W)
+                possibleShots.add(new Coordinate(i-1, j));
+            if (enemyMap.inBounds(i, j+1) && enemyMap.getState(i, j+1) == MapState.W)
+                possibleShots.add(new Coordinate(i, j+1));
+            if (enemyMap.inBounds(i, j-1) && enemyMap.getState(i, j-1) == MapState.W)
+                possibleShots.add(new Coordinate(i, j-1));
+        }
+
+        if (possibleShots.size() == 0) {
+            log_stderr("could not find a shot for " + c);
+        }
+
+        log_debug("found " + possibleShots.size() + " possible locations");
+        log_debug("vert: " + vertical + ", hor: " + horizontal);
+        log_debug(String.valueOf(possibleShots));
+
+        Random random = new Random();
+        return possibleShots.get(random.nextInt(possibleShots.size()));
+    }
+
+    /**
+     * Shoots random. From semester 3 up this method shoots with parity, meaning the coordinates have to be odd/odd or even/even to be accepted
+     * @param shot coordinate to store the result
+     * @return calculated shot coordinate
+     */
+    private Coordinate shootRandom(Coordinate shot) {
+        Random random = new Random();
+        int kill = 0;
+        shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
+        while ((previousShots.contains(shot) || calculateParity(shot)) && kill < 100) {
+            shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
+            ++kill;
+        }
+        /*if there are no shots possible with parity anymore, shoot random at the remaining coordinates*/
+        if(shot == null) {
+            while (previousShots.contains(shot)) {
+                shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
+            }
+        }
+        return shot;
+    }
+
+    /**
+     * calculates from semester 3 on parity
+     */
+    private boolean calculateParity(Coordinate shot) {
+        return getMaxSemester() > 2 && (((shot.col() % 2) == 1 && (shot.row() % 2) != 1) /*col odd, row even*/
+                || ((shot.col() % 2) != 1 && (shot.row() % 2) == 1)); /*col even, row odd*/
     }
 }
