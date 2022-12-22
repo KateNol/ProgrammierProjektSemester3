@@ -92,7 +92,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
             ControllerGame.getInstance().openEndScreen();
             if((getServerMode() == ServerMode.SERVER && winner.equalsIgnoreCase("host"))
                     || (getServerMode() == ServerMode.CLIENT && winner.equalsIgnoreCase("client"))){
-                ControllerGame.getInstance().getWinnerLabel().setText(getUsername());
+                ControllerGame.getInstance().getWinnerLabel().setText(getUsername() + "You won");
                 playerConfig.increaseMaxSemester();
                 if(getNegotiatedSemester() == 6){
                   //  ControllerGame.getInstance().playEsterEgg();
@@ -100,7 +100,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
                     AudioPlayer.playMusic(Audio.Win);
                 }
             } else {
-                ControllerGame.getInstance().getWinnerLabel().setText(getEnemyUsername());
+                ControllerGame.getInstance().getWinnerLabel().setText("You lost, your Enemy " + getEnemyUsername() + "won");
                 playerConfig.decreaseMaxSemester();
                 AudioPlayer.playMusic(Audio.Lose);
                 playerConfig.decreaseMaxSemester();

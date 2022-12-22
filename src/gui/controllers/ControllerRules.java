@@ -29,7 +29,7 @@ public class ControllerRules implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/battleship-bismarck.jpg"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FakIV.png"));
     }
 
     /**
