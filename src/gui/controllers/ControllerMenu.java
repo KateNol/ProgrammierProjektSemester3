@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import static gui.GUIMain.GITLAB_URL;
@@ -26,6 +27,9 @@ public class ControllerMenu implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FakIV.png"));
+
+        Random rand = new Random();
+        AudioPlayer.playMusic(rand.nextInt(5) + 1);
     }
 
     /**
@@ -68,6 +72,9 @@ public class ControllerMenu implements Initializable {
         Platform.exit();
     }
 
+    /**
+     * Opens project GibLab URL
+     */
     public void onGitlab() {
         HostServices hostServices = getFXHostServices();
         hostServices.showDocument(GITLAB_URL);

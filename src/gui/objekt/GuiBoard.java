@@ -18,6 +18,7 @@ import logic.Map;
 import java.util.*;
 
 /**
+ * @author Stefan
  * This class is the gui board for the gui player to play on
  */
 public class GuiBoard {
@@ -93,11 +94,6 @@ public class GuiBoard {
      */
     public void setShip(Node node){
         node.setOnMouseClicked(e -> {
-            if(!ControllerLobby.getInstance().getRandomButton().isDisable()){
-                if(!ControllerLobby.getInstance().getShipBox().isMouseTransparent()){
-                    ControllerLobby.getInstance().getRandomButton().setDisable(true);
-                }
-            }
             if(e.getSource() instanceof TileWater){
                 if (!(shipPlaced == guiPlayer.getShips().size())) {
                     TileWater tileWater = (TileWater) e.getSource();
@@ -105,6 +101,11 @@ public class GuiBoard {
                     Coordinate coordinateMap = new Coordinate(tileWater.getCoordinate().row() - 1, tileWater.getCoordinate().col() -1);
                     Util.log_debug("SetShipGUI = row: " + coordinate.row()  + " col: " + coordinate.col() + " " + "SetShipMapLogic = row: " + coordinateMap.row()  + " col: " + coordinateMap.col());
                     Ship selectedShip = guiPlayer.getGuiHarbour().getSelectedShip();
+                    if(!ControllerLobby.getInstance().getRandomButton().isDisable() && selectedShip != null){
+                        if(!ControllerLobby.getInstance().getShipBox().isMouseTransparent()){
+                            ControllerLobby.getInstance().getRandomButton().setDisable(true);
+                        }
+                    }
                     if (!shipsThatHaveBeenSet.contains(selectedShip) && guiPlayer.addShip(selectedShip, coordinateMap, guiPlayer.getAlignment())) {
                         shipsThatHaveBeenSet.add(selectedShip);
                         GuiHBoxShip hBoxShip = guiPlayer.getGuiHarbour().getGuiHBoxShips().get(selectedShip);
@@ -155,19 +156,31 @@ public class GuiBoard {
                     TileHit tileHit = new TileHit(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileHit, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
                     if(isEnemyBoard){
-                        AudioPlayer.playSFX(Audio.Hit);
+                        if(guiPlayer instanceof GUIAIPlayer){
+                            gui.Util.log_debug("no hitSound");
+                        } else {
+                            AudioPlayer.playSFX(Audio.Hit);
+                        }
                     }
                 }
                 case MISS -> {
                     TileMiss tileMiss = new TileMiss(new Coordinate(coordinate.row() + 1, coordinate.col() + 1), tileSize);
                     grid.add(tileMiss, coordinate.col() + 1, coordinate.row() + 1, 1, 1);
                     if(isEnemyBoard){
-                        AudioPlayer.playSFX(Audio.Miss);
+                        if(guiPlayer instanceof GUIAIPlayer){
+                            gui.Util.log_debug("no missSound");
+                        } else {
+                            AudioPlayer.playSFX(Audio.Miss);
+                        }
                     }
                 }
                 case SUNK -> {
                     if (isEnemyBoard) {
-                        AudioPlayer.playSFX(Audio.Sink);
+                        if(guiPlayer instanceof GUIAIPlayer){
+                            gui.Util.log_debug("no sunkSound");
+                        } else {
+                            AudioPlayer.playSFX(Audio.Sink);
+                        }
                         MapState[][] map = guiPlayer.getEnemyMap().getMap();
                         for (int row = 0; row < guiPlayer.getMapSize(); row++) {
                             for (int col = 0; col < guiPlayer.getMapSize(); col++) {
@@ -201,6 +214,9 @@ public class GuiBoard {
         });
     }
 
+    /**
+     * update board from map
+     */
     public void updateBoard() {
         int size = guiPlayer.getMapSize() + 1;
         for (int i=1; i<size; i++) {
@@ -236,7 +252,10 @@ public class GuiBoard {
         }
     }
 
-
+    /**
+     * Set Color for tileBoardText
+     * @param color indicate witch turn
+     */
     public void setTopLeftCorner(Color color) {
         for (int i=1; i<grid.getRowCount(); i++) {
             grid.add(new TileBoardText(new Coordinate(i, 0), tileSize, String.valueOf((char)('A'+i-1)), color), i, 0);
@@ -454,6 +473,10 @@ public class GuiBoard {
         this.shipPlaced = 0;
     }
 
+    /**
+     * Get Ships that has been set already
+     * @return shipsThatHaveBeenSet
+     */
     public Set<Ship> getShipsThatHaveBeenSet() {
         return shipsThatHaveBeenSet;
     }

@@ -27,6 +27,11 @@ public class ControllerRules implements Initializable {
 
     private boolean switchPage = true;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/battleship-bismarck.jpg"));
+    }
+
     /**
      * Return to Scene Menu
      */
@@ -35,6 +40,9 @@ public class ControllerRules implements Initializable {
         ViewSwitcher.switchTo(View.Menu);
     }
 
+    /**
+     * Switches rule sites
+     */
     public void changeRuleSite(){
         AudioPlayer.playSFX(Audio.Click);
         if (switchPage){
@@ -48,10 +56,5 @@ public class ControllerRules implements Initializable {
             switchPage = true;
             page.setText("Next Page");
         }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/battleship-bismarck.jpg"));
     }
 }

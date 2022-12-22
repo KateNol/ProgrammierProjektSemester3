@@ -72,6 +72,10 @@ public class GUIMain extends Application  {
         hostServices = getHostServices();
     }
 
+    /**
+     * Get FXHostServices
+     * @return hostService
+     */
     public static HostServices getFXHostServices() {
         return hostServices;
     }

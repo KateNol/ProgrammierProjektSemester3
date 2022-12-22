@@ -165,6 +165,9 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void onGameOver(String winner) {
+        if (contact == null)
+            return;
+
         if (contact.getConnectionTerminated())
             return;
         sendEnd(winner);

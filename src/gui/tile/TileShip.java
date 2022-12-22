@@ -17,7 +17,14 @@ public class TileShip extends Tile {
         super(coordinate, tileSize);
         setFill(Color.GRAY);
     }
-    public TileShip(int i, int j, int tileSize) {
-        this(new Coordinate(i, j), tileSize);
+
+    /**
+     * Create Ship tile
+     * @param row from given Coordinate
+     * @param col from given Coordinate
+     * @param tileSize TileSize in Pixel
+     */
+    public TileShip(int row, int col, int tileSize) {
+        this(new Coordinate(row, col), tileSize);
     }
 }
