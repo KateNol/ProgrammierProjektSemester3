@@ -14,7 +14,7 @@ import javafx.scene.layout.*;
 import logic.Logic;
 
 import network.ServerMode;
-import network.debug.Driver;
+import shared.CLIDriver;
 
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -195,7 +195,7 @@ public class ControllerNetworkManager implements Initializable {
         Thread enemyThread = new Thread(() -> {
             String[] new_args = new String[]{"player=ai", "server=client", "network=offline", "semester=6"};
             try {
-                Driver.main(new_args);
+                CLIDriver.main(new_args);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -2,16 +2,13 @@ package network.debug;
 
 
 import logic.*;
-import network.ServerMode;
 import network.NetworkPlayer;
 
-import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import static logic.Util.log_debug;
-import static network.debug.Driver.scanner;
+import static shared.CLIDriver.scanner;
 
 /**
  * console player class for testing purposes only

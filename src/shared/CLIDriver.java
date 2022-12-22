@@ -1,8 +1,6 @@
-package network.debug;
+package shared;
 
-import shared.LocalEnemyMode;
-import shared.NetworkMode;
-import shared.PlayerMode;
+import network.debug.ConsolePlayer;
 import logic.*;
 import network.NetworkPlayer;
 import network.ServerMode;
@@ -19,10 +17,10 @@ import static network.internal.Util.*;
  * to start as server, use args: player=human network=online server=host
  * to start as client, use args: player=human network=online server=client
  */
-public final class Driver {
+public final class CLIDriver {
     public static final Scanner scanner = new Scanner(System.in);
 
-    private Driver() {
+    private CLIDriver() {
     }
 
     public static void main(String[] args) throws IOException {
