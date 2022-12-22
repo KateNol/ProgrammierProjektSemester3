@@ -28,7 +28,7 @@ public class GUIAIPlayer extends GUIPlayer {
 
     @Override
     public Coordinate getShot() {
-        System.out.println("our turn! state of the game:");
+        log_debug("our turn! state of the game:");
         printBothMaps();
         int mapSize = myMap.getMapSize();
         Coordinate shot = null;

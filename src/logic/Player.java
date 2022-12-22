@@ -9,6 +9,7 @@ import java.util.Observable;
 
 import static logic.Util.mapStateToChar;
 import static logic.Util.log_debug;
+import static shared.Util.debug;
 
 
 public abstract class Player extends Observable {
@@ -368,6 +369,9 @@ public abstract class Player extends Observable {
 
     //FIXME delete if not needed anymore
     public void printBothMaps() {
+        if (!debug)
+            return;
+
         int mapSize = GlobalConfig.getMapSize(getNegotiatedSemester());
         System.out.print("My Map: " + mapSize);
         // right padding
