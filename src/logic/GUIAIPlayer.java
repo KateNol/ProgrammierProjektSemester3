@@ -59,13 +59,7 @@ public class GUIAIPlayer extends GUIPlayer {
      */
     @Override
     public Coordinate getShot() {
-        try {
-            Thread.sleep(10);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         System.out.println("our turn! state of the game:");
-        printBothMaps();
         int mapSize = myMap.getMapSize();
         Coordinate shot = null;
 
@@ -79,17 +73,27 @@ public class GUIAIPlayer extends GUIPlayer {
                 }
             }
         }
-
         // if hit found
         if (c != null) {
             shot = huntShip(c);
         } else {
+            int killTimer = 100;
             // else shoot randomly
-            shot = shootRandom(shot);
+            do {
+                shot = shootRandom(shot);
+                if(killTimer != 0) {
+                    --killTimer;
+                } else {
+                    break;
+                }
+
+            } while (calculateParity(shot));
+
+            if(killTimer == 0) {
+                shot = shootRandom(shot);
+            }
         }
-
         previousShots.add(shot);
-
         return shot;
     }
 
@@ -195,26 +199,18 @@ public class GUIAIPlayer extends GUIPlayer {
      */
     private Coordinate shootRandom(Coordinate shot) {
         Random random = new Random();
-        int kill = 0;
         shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
-        while ((previousShots.contains(shot) || calculateParity(shot)) && kill < 100) {
+        while (previousShots.contains(shot)) {
             shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
-            ++kill;
-        }
-        /*if there are no shots possible with parity anymore, shoot random at the remaining coordinates*/
-        if(shot == null) {
-            while (previousShots.contains(shot)) {
-                shot = new Coordinate(random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())), random.nextInt(0, GlobalConfig.getMapSize(getNegotiatedSemester())));
-            }
         }
         return shot;
     }
 
     /**
-     * calculates from semester 3 on parity
+     * true if not parity
      */
     private boolean calculateParity(Coordinate shot) {
-        return getMaxSemester() > 2 && (((shot.col() % 2) == 1 && (shot.row() % 2) != 1) /*col odd, row even*/
-                || ((shot.col() % 2) != 1 && (shot.row() % 2) == 1)); /*col even, row odd*/
+        return ((shot.col() % 2) == 1 && (shot.row() % 2) != 1) /*col odd, row even*/
+                || ((shot.col() % 2) != 1 && (shot.row() % 2) == 1); /*col even, row odd*/
     }
 }
