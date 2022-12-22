@@ -7,23 +7,29 @@ Links
 
 ## notes
 - run jar from pool-pc: /usr/lib/jvm/jdk-17.0.1/bin/java -jar --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media -Dprism.dirtyopts=false out/artifacts/gruppe07_jar/gruppe07.jar
-- javafx params: --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media
+- javafx params: --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media -Dprism.dirtyopts=false
 
 
 ### geordnet nach prioritaet
-#### all
-- [ ] ki in gui spielen lassen (stefan, jannik, lukas) 14.
-- [ ] semester implementieren und testen (semester increase/decrease, testen) (team)
-- [ ] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
-- [ ] turn label falscher text (lukas)
-- [ ] sounds (philip)
-- [ ] gui einige tiles unresponsive (stefan)
-- [ ] shoot schlauer machen (kat)
-- [ ] ai delay (kat)
-- [ ] design / schriftart (kat)
-- [ ] (optional) Chat einbauen
-- [ ] (optional) Button für Random Schiffe platzieren
-- [ ] (optional) turnLabel anpassen ohne flimmern
+#### all - 03.01 deadline
+- [ ] code kommentare aufraeumen/aktualisieren
+- [ ] poster in git
+- [ ] mainAbgabe branch finishen und zurueck in main mergen (lukas => stefan)
+- [ ] protokolle/diagramme etc in git/org einfuegen (kate/jannik)
+- [ ] spielregeln pdf dokument (alex)
+- [ ] anleitung spiel runterladen/install etc (jannik)
+- [ ] (optional) Chat einbauen / refinen
+- [x] ki in gui spielen lassen (stefan, jannik, lukas) 14.
+- [x] semester implementieren und testen (semester increase/decrease, testen) (team)
+- [x] überraschung (zb semester ueberspringen, zb stefan ueberraschung) 
+- [x] turn label falscher text (lukas)
+- [x] sounds (philip)
+- [x] gui einige tiles unresponsive (stefan)
+- [x] shoot schlauer machen (kat)
+- [x] ai delay (kat)
+- [x] design / schriftart (kat)
+- [x] (optional) Button für Random Schiffe platzieren
+- [x] (optional) turnLabel anpassen ohne flimmern
 - [x] (optional) mit begin warten bis gui go gibt
 - [x] ai name auswaehlen (kat)
 - [x] gui options entfernen
@@ -48,23 +54,23 @@ Links
 ### Anforderungen an den Einzelnen
 
 - [x] klar definierte Aufgabe im Team und absolute Ergebnisverantwortung
-- [ ] Mindestens 1000 Zeilen Code
+- [x] Mindestens 1000 Zeilen Code
 - [ ] Sorgfältige Kommentierung und Dokumentation seines Codes
-- [ ] Fehlerfreiheit des Codes
-- [ ] Regelmäßige Teilnahme an allen Projekttreffen!
+- [x] Fehlerfreiheit des Codes
+- [x] Regelmäßige Teilnahme an allen Projekttreffen!
 - [x] Vollständiges und pünktliches Einhalten von Terminen
 
 ### Anforderungen an die Gruppe
-- [ ] vollständig erfasste Anwendungsfälle+gui.GUIMain-Prototyp (abgenommen durch Betreuer!)
+- [x] vollständig erfasste Anwendungsfälle+gui.GUIMain-Prototyp (abgenommen durch Betreuer!)
 - [x] Schichtenarchitektur (min. 2 Schichten; gui.GUIMain und Logik getrennt!)
 - [x] Sechs Semester (Spielstufen/Level)
-- [ ] Sound!
-- [ ] Eine „Überraschung” im Spiel
+- [x] Sound!
+- [x] Eine „Überraschung” im Spiel
 - [x] Projektplanung
 - [ ] Sorgfältige Dokumentation
-- [ ] fehlerfrei laufendes, absturz- und anwendungssicheres Spiel!
+- [x] fehlerfrei laufendes, absturz- und anwendungssicheres Spiel!
 - [x] Lauffähig im Fenster (JFrame)
-- [ ] Das Spiel muss gegen die Spiele der anderen Projektgruppen spielbar sein
+- [x] Das Spiel muss gegen die Spiele der anderen Projektgruppen spielbar sein
 - [ ] Binaries als JAR-Datei (ggfs. mit Startskript für Linux (spiel.sh) und Windows (spiel.bat))
 
 ### Anforderungen an die zu erstellende Software
