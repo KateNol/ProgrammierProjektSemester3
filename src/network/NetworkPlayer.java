@@ -135,6 +135,7 @@ public abstract class NetworkPlayer extends Player {
 
     /* communication methods ******************************************************************************************/
 
+    @Deprecated
     public void sendMessage(String msg) {
         contact.sendRawMessage(msg);
     }
