@@ -19,7 +19,7 @@ import java.io.IOException;
  * also creates the logic/player instances
  * <p>
  * to use javafx, add jvm args
- * --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media
+ * -Dprism.dirtyopts=false --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media
  */
 public class GUIMain extends Application  {
 
