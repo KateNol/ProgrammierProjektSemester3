@@ -1,0 +1,18 @@
+things to discuss/decide on network-logic interaction
+
+the network player will implement various functionalities that the logic will need to access to communicate to the enemy player
+    - how should these functionalities be accessed? (e.g. public methods)
+    - list of functionalities as of now:
+        - ready-ping:   asks the enemy how many ships he has placed and if he is ready to start the game
+        - begin:        if we are the host, we need to flip a coin on who begins the game, does logic want to handle that or should network do this? (easy to implement for both)
+        - fire:         attack the enemy
+        - end:          tell the enemy the game has ended and who the winner is
+
+the network player will receive various information from the enemy player which needs to be forwarded to the logic
+    - how should this forwarding mechanism work? (e.g. change a property and notify logic via observer)
+    - list of information that will be received as of now:
+        - ready-ping:   int describing how many ships the enemy has placed until now
+        - begin:        if we are the client, we receive info on who begins the game
+        - fire:         where the enemy wants to fire at
+        - fire:         reponse to our fire attack
+        - end:          enemy has determined the game has ended and who the winner is

@@ -1,0 +1,5 @@
+Verhalten, wenn Schuss mehrmals die gleiche Stelle trifft: Nach mehrmaligem treffen verschwindet das Schiff. -> solved
+
+if GameOver and the logic recieves a shot it switches out of the GameOver-State and responds to the shot
+
+sometimes freezes without any reason

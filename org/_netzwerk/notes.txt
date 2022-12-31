@@ -1,0 +1,68 @@
+Wie verbinden sich 2 Spieler miteinander?
+    Wer ist Server, wer ist Client? (Auswirkung auf Logik?)
+        -> dynamisch / vor dem user verbergen?
+            wenn bei destination kein server, erstelle selber einen
+                Vorteil:    - der user bekommt nichts mit
+                Nachteil:   - komplizierter zu implementieren, was passiert wenn beide parteien einen ungünstigen zeitpunkt treffen und beide einen server erstellen
+        -> statisch / user entscheidet.
+            Host / Join buttons
+                Vorteil:    - einfach zu implementieren
+                Nachteil:   - nicht universell, man muss sich außerhalb des spiels einigen
+        -> beides. beide erstellen server+client.
+            server received only, client sendet only (nachteil: redundanz)
+                Vorteil:    - universelle lösung
+                Nachteil:   - redundant, es wird eig nur 1 server benötigt
+
+Welche Daten über das Spiel werden ausgetauscht?
+    Grundlegende Logikfrage:
+        -> 1 dedizierte Server Partei welche alle Infos (schiffe positionen von beiden spielern) verwaltet
+            Vorteil:    - zentralisierte daten, dateninkonsistenz nicht möglich
+            Nachteil    - wer ist server?
+                        - vertrauensfrage
+        -> jede Partei verwaltet nur die minimal nötigen Infos (wo sind meine Schiffe, )
+            Vorteil:    - minimales wissen prinzip, jeder weiss nur was er wissen muss
+            Nachteil    - dataninkonsistenz möglich wenn protokoll nicht gut genug
+
+
+
+    Brainstorm Messages
+        Messages Aufbau: "type; command; content"
+
+        type bestimmt ob eine antwort erwartet wird oder nicht
+        command bestimmt um was für eine information es sich handelt
+        content ist der inhalt der information
+
+
+        types:
+            request:    es wird eine antwort erwartet
+            response:   dies ist eine antwort auf ein request
+            info:       erfordert keine antwort (viele meta-infos)
+        commands:
+            shoot:
+            rdycheck:
+            forfeit:
+            status:
+            chatmsg:
+            semestercheck:
+            protocolcheck:
+
+        content enthält informationen bzl. command, z.b. koordinate bei "shoot", nachricht bei "chatmsg", yes/no bei readycheck
+
+
+        bsp:
+
+        "request; shoot; A3"            // ich will auf A3 schiessen
+        "response; shoot; A3:hit"       // du hast auf A3 geschossen und getroffen
+
+        "request; readycheck;;"         // bist du bereit das spiel zu starten?
+        "response; readycheck; yes"     // ich bin bereit das spiel zu starten
+
+        "info; ready"                   // ich bin bereit das spiel zu starten
+
+
+        "info; chatmsg; hello there"
+
+        "request; status;;"             // bist du noch da?
+
+        "info; forfeit;;"               // ich gebe auf und beende die verbindung
+

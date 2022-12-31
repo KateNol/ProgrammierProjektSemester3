@@ -1,0 +1,86 @@
+Lukas:
+    - program design
+    - UML-Diagramm
+    - one Field arround ships it's not possible to set another
+    - ship has to be in horizontal or vertical position
+    - timer interrupts turn
+    - logic has to get e.g. shotposition from player in its turn (polling)
+    - player one and two 
+    - classes:
+        player <interface>
+        logic (matrix,timer, players, e.g.)
+        
+        
+    Class Logic:
+        <Attributes>
+            - int level (1-6)
+            - int[][] boardPlayer1
+            
+    
+    <19.10.22>
+        - maybe ship-class is part of logic-class
+        - bei einem schuss iteriert die logic über alle schiffe und löst bei bedarf gotHit aus und aktualisiert dann entsprechend das gameBoard
+        - gameBoard vielleicht als globale Variable, sodass ships auch darauf zugreifen können ?
+        - add parameter maxIndex for board size
+        - every player has its own board und enemyboard
+        - enemyboard is empty, only gets information about hit/miss
+        - no timer
+player method fire
+
+player setzt schiff -> zurück kommt, ob setzen geklappt oder nicht
+    
+philip: -after every level, the game-interface must increase,for example 1.sem(14x14) 2.sem(15x15)
+        -save file
+        ship interface:
+        -startposition, 
+        -2 ship(size = 2),3ship(size 3),4 ship(size 4),6 ship(size 6), 7 ship(size 7) 
+        -coordinates:in ein array gespiechert[size of ship]
+        -spielfield(gameboard):
+        -2 dimensional array
+        -char array? liebe mit char, w= wasser, s=ship,
+        -große von array x richtung =14 y richtung 14
+        -initializieren wir mit w
+        -ship setzt; startposition, horinzontal upwards,horinzotal dowards,vertical right ,verticsl left.
+        
+        spielfield
+        -
+        
+        
+
+Meeting 13.10.22
+    - level
+        boardSize (lvl1 14x14, lvl2 15x15,...)
+        ships
+    - gameBoard
+        Array char  w - Water/nothing
+                    s - ship/healthy
+                    m - water/missed
+                    h - ship/hit
+                    d - ship/destroyed
+        initialize with 'w' everywhere
+        setShip(startPos: int, alignment, size)
+            alignment: horizontal(left/right), vertical(up/down)
+            checks if ship can be set (one field aside nothing)
+            generate ship on this position
+    - player
+    
+    https://cryptpad.fr/pad/#/2/pad/edit/5q964gmjkreNj1bjys6A9ENJ/
+    
+    
+    16.10.2022 ; Welche JDk benutzen wir?
+    
+    
+    17.10.2022
+    
+    -zufalls generator, wer fangt der spiel an.
+    - try to get a basicly working program for the commandline
+    - Lukas ships and player 
+    - Philip logic
+    
+    requirements for classes:
+        - logic needs max boardSize. e.g. getMax, where it returns an integer, because the board is a square
+        
+        
+        -von logic ist timer raus
+        
+    

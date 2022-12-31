@@ -1,0 +1,18 @@
+Meeting vom 18.10
+
+Die KI Klasse wird von der GUI mit einem Array als Spielfeld sowie einem Bool Wert, der festlegt ob Ki gegen Ki oder Spieler gegen Spieler spielen, als 
+Übergabeparameter initialisiert.
+Desweiteren wird eine Klasse "shoot" implementiert, welche ebensfalls von der GUI gecalled wird und 
+    1. Prüft, ob bereits ein getroffenes Feld vorliegt und sich für den Schuss daran orientiert, oder
+    2. eine zufällige Zahl innerhalb des Arrays generiert und diese der GUI zurückgibt.
+    
+Getroffene Felder werden in einer Liste organisiert und sequentiell abgearbeitet.
+Künstliche Pause soll implementiert werden, da die KI sonst in ein paar millisekunden mit ihrem Zug fertig ist. Besonders im Modus KI gegen KI.
+Die Möglichkeit ein Feld zweimal zu beschießen muss entsprechend behandelt werden -> noch keine Lösung
+
+Da verschiedene Schwierigkeitsgrade gefordert sind, wird eine Superklasse implementiert, welche alle Schwierigskeitsgerade enthält. Der entsprechende
+Schwierigkeitsgrad wird von der GUI Übergeben.
+
+Verschiedene Algorithmen für die Schwierigkeitsgrade sind zu implementieren.
+Beispiel: Beim hohem Schwierigkeitsgrad wird jedes zweite Feld nacheinander abgefragt, bis zum treffer. In darauffolgenden Zügen Test auf Oben/Unten, Links/Rechts.
+Über mögliche & etablierte Algorithmen bzw. Taktiken muss sich noch informiert werden. 

@@ -1,0 +1,59 @@
+Alex
+
+
+
+
+
+Jannik
+
+    wieviele Instanzen von der Klasse Game/ Spiel(Gesamt ein oder pro Spieler eine)
+    für mehrere Partein zufällige Variablen generieren (coinflip zum Spielbeginn)
+    Protkoll zwiwschen Datenaustausch zwischen den spielenden Spielern
+    alle Spieler (lokal/ KI) per socket kommunizieren?
+    
+    
+Katharina
+
+    Design der Spieloberfläche Darstellung die durch wählen eines quadrates sich verändern
+    ist ein gewollt dass jedes Spiel welches in Gruppen erstellt wird gegen ein Spiel jeder anderer Gruppe spielen kann --> gleiches Design / GUI
+    
+    gegen wen wollen wir spielen auch KI gegn KI, auch jedes spiel gegen jedes Spiel??? 
+    
+
+
+Lukas
+    <Orga>
+        (zwei) wöchentliches Treffen? auch außerhalb er Treffen mit den Betreuer check K
+        Discord als Diskussionsforum und zum Austausch?
+        Aufteilung in 2er Teams? GUI, Logik, Netzwerk
+        Das GIT Repository, welches wir verwenden sollen, existiert nicht und ist nicht aufzufinden.
+        Ansonsten ist https://lab.it.hs-hannover.de/ der Gitserver der HsH
+    <Design>
+        Sounds aus dem physischen Original der 90er  ---> vllt etwas moderner neutraler  K 
+        Farben rot/blau (klassisch)
+    <Logik>
+        Spielfeld als Matrix realisieren
+        Levelauswahl schaltet entsprechende Schiffe frei
+        Schiffe die noch zu setzten sind, werden an der Seite angezeigt (und per drag and drop gesetzt?)
+        Lokaler Multiplayer: 
+            Spielerin rot setzt Schiffe, bestätigt
+            Schiffe werden ausgebendet, Farbe wechselt auf blau
+            Spielerin blau setzt Schiffe, bestätigt
+            Schiffe werden ausgebendet, Spiel beginnt, beide "schießen" abwechselnd, Treffer werden von Logik bestätigt
+        savefile notwendig
+        Zugzeit begrenzen (max 60 sek) --> check K 
+        Chatmakros für Netzwerkspiel
+        Schnittstelle liefern, mit der dann die Player interagieren (egal ob online, physisch oder KI)
+        Befehle: Schiff setzen mit Ankerposition und Ausrichtung, Schusskoordinate
+        Return: Schiffpositionen, getroffen/daneben, verbleibende Zeit (?), Status (am Zug, wait, online (?))
+        
+
+
+Philip
+
+
+
+
+Stefan 
+    
+    
