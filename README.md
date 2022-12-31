@@ -19,9 +19,9 @@ Links
 - [ ] code kommentare aufraeumen/aktualisieren
 - [ ] poster in git
 - [ ] mainAbgabe branch finishen und zurueck in main mergen (lukas => stefan)
-- [ ] spielregeln pdf dokument (alex)
 - [ ] anleitung spiel runterladen/install etc (jannik)
 - [ ] (optional) Chat einbauen / refinen
+- [x] spielregeln pdf dokument (alex)
 - [x] protokolle/diagramme etc in git/org einfuegen (kate/jannik)
 - [x] ki in gui spielen lassen (stefan, jannik, lukas) 14.
 - [x] semester implementieren und testen (semester increase/decrease, testen) (team)
