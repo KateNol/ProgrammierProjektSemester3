@@ -6,9 +6,12 @@ Links
 - [Academic Cloud Ordner](https://sync.academiccloud.de/index.php/apps/files/?dir=/ProgProj2223)
 - [ShareLatex poster ](https://sharelatex.gwdg.de/read/kjxszbbjyjxm) 
 
+
+- [Spielregeln](org/abgaben/Spielregeln.pdf)
+
 ## notes
-- run jar from pool-pc: /usr/lib/jvm/jdk-17.0.1/bin/java -jar --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media -Dprism.dirtyopts=false out/artifacts/gruppe07_jar/gruppe07.jar
-- javafx params: --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media -Dprism.dirtyopts=false
+- run jar from pool-pc: <br>`/usr/lib/jvm/jdk-17.0.1/bin/java -jar --module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media -Dprism.dirtyopts=false out/artifacts/gruppe07_jar/gruppe07.jar`
+- javafx params: <br>`--module-path lib/lib --add-modules javafx.controls,javafx.fxml,javafx.media -Dprism.dirtyopts=false`
 
 
 ### geordnet nach prioritaet
