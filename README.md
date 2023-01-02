@@ -1,6 +1,17 @@
 # Gruppe07
 
-Links
+## Install Requirements
+1. java version >= 19 (getestet mit 19)
+2. Linux: wget unzip <br> Windows: powershell curl.exe tar.exe
+
+## Install
+1. [Releases](https://lab.it.hs-hannover.de/f4-informatik/prgprj/programmier-projekte-ws22-23/gruppe07/-/releases) aufrufen.
+2. Aktuellste Version von gruppe07.zip herunterladen.
+3. Zip Archiv entpacken
+4. run.sh/run.ps1 ausführen (läd javafx von gluonhq.com herunter und startet dann das Spiel)
+
+
+## Links
 
 - [Netzwerk Protokoll Repo](https://lab.it.hs-hannover.de/tcm-ss5-u1/progpr22-23-api)
 - [Academic Cloud Ordner](https://sync.academiccloud.de/index.php/apps/files/?dir=/ProgProj2223)
