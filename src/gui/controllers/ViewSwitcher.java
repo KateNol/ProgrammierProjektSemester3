@@ -63,11 +63,16 @@ public class ViewSwitcher {
                 root = cache.get(view);
                 Util.log_debug("Loading from cache");
             } else {
+                FXMLLoader loader = new FXMLLoader();
+                log_debug(String.valueOf(loader.getLocation()));
+                loader.setLocation(ViewSwitcher.class.getResource(view.getFileName()));
+                log_debug(String.valueOf(loader.getLocation()));
+
                 //Filer Lobby and Game Scene
                 if (view == View.Lobby || view == View.Game) {
-                    root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
+                    root = loader.load();
                 } else {
-                    root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
+                    root = loader.load();
                     cache.put(view, root);
                     Util.log_debug("Loading from FXML");
                 }
@@ -81,7 +86,12 @@ public class ViewSwitcher {
     }
 
     public static void setCache(View view) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(view.getFileName())));
+        FXMLLoader loader = new FXMLLoader();
+        log_debug(String.valueOf(loader.getLocation()));
+        loader.setLocation(ViewSwitcher.class.getResource(view.getFileName()));
+        log_debug(String.valueOf(loader.getLocation()));
+
+        Parent root = loader.load();
         cache.put(view, root);
     }
 
