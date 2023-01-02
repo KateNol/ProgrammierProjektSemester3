@@ -66,7 +66,7 @@ public class ControllerFileManager implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/FileManager.jpg"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_mensa.png"));
 
         setPicture(deleteOne);
         setPicture(deleteTwo);

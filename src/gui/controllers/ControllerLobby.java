@@ -50,7 +50,7 @@ public class ControllerLobby implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/setShip.jfif"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_lernniesche.png"));
 
         //disable startButton until all ships are placed
         startGame.setDisable(true);

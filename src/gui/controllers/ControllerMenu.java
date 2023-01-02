@@ -26,7 +26,7 @@ public class ControllerMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/Menu_Background.jpg"));
+        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_audimax_aussen.png"));
 
         Random rand = new Random();
         AudioPlayer.playMusic(rand.nextInt(5) + 1);
