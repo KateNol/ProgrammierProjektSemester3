@@ -17,4 +17,4 @@ else
   echo "lib dir found"
 fi
 
-java -Dprism.dirtyopts=false --module-path $JAVAFX_LIB_PATH --add-modules javafx.controls,javafx.fxml,javafx.media -Dfile.encoding=US-ASCII -Dsun.stdout.encoding=US-ASCII -Dsun.stderr.encoding=US-ASCII -jar gruppe07.jar "$@"
+java -Dprism.dirtyopts=false --module-path $JAVAFX_LIB_PATH --add-modules javafx.controls,javafx.fxml,javafx.media -Dfile.encoding=US-ASCII -Dsun.stdout.encoding=US-ASCII -Dsun.stderr.encoding=US-ASCII -jar gruppe07.jar "$@" nosound

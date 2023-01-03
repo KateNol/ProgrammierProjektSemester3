@@ -18,4 +18,4 @@ if not exist %JAVAFX_LIB_PATH% (
     echo lib dir found
 )
 
-java.exe -Dprism\dirtyopts=false --module-path %JAVAFX_LIB_PATH% --add-modules javafx.controls,javafx.fxml,javafx.media -jar gruppe07.jar %*
+java.exe -Dprism\dirtyopts=false --module-path %JAVAFX_LIB_PATH% --add-modules javafx.controls,javafx.fxml,javafx.media -jar gruppe07.jar %* nosound
