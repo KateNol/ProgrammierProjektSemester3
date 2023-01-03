@@ -206,6 +206,10 @@ public class Logic implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        while (logicThread == null) {
+            log_stderr("spinning on logicThread");
+        }
+
         if (arg instanceof Notification argNotification) {
             switch (argNotification) {
                 case GameOver -> {
