@@ -151,8 +151,9 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
      */
     @Override
     protected void setShips() {
-        if (!getIsConnectionEstablished())
-            System.exit(1);
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished()) {
+            gui.Util.log_stderr("gui spinning on connection");
+        }
         while (!Thread.currentThread().isInterrupted() && (getShips() == null || getShips().size() < GlobalConfig.getShips(getNegotiatedSemester()).size() || !isShipsPlaced));
         addObserver(this);
         ControllerLobby.getInstance().enableStartButton();
@@ -164,6 +165,9 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
      */
     @Override
     public Coordinate getShot() {
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished()) {
+            gui.Util.log_stderr("gui spinning on connection");
+        }
 
         Platform.runLater(() -> {
             guiBoard.setTopLeftCorner(Color.DARKRED);
@@ -266,6 +270,7 @@ public class GUIPlayer extends NetworkPlayer implements Observer {
      * @return guiBoard
      */
     public GuiBoard getGuiBoard() {
+        while (guiBoard == null);
         return guiBoard;
     }
 

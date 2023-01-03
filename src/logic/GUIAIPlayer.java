@@ -28,6 +28,10 @@ public class GUIAIPlayer extends GUIPlayer {
 
     @Override
     public Coordinate getShot() {
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished()) {
+            gui.Util.log_stderr("gui spinning on connection");
+        }
+
         log_debug("our turn! state of the game:");
         printBothMaps();
         int mapSize = myMap.getMapSize();
@@ -149,6 +153,10 @@ public class GUIAIPlayer extends GUIPlayer {
 
     @Override
     protected void setShips() {
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished()) {
+            gui.Util.log_stderr("gui spinning on connection");
+        }
+
         Random coord = new Random();
         ArrayList<Ship> ships = getArrayListShips();
         for (Ship ship : ships) {
