@@ -28,9 +28,9 @@
 ### geordnet nach prioritaet
 #### all - 03.01 deadline
 - [ ] code kommentare aufraeumen/aktualisieren
-- [ ] poster in git
+- [x] poster in git
 - [ ] mainAbgabe branch finishen und zurueck in main mergen (lukas => stefan)
-- [ ] anleitung spiel runterladen/install etc (jannik)
+- [x] anleitung spiel runterladen/install etc (jannik)
 - [ ] (optional) Chat einbauen / refinen
 - [x] spielregeln pdf dokument (alex)
 - [x] protokolle/diagramme etc in git/org einfuegen (kate/jannik)
