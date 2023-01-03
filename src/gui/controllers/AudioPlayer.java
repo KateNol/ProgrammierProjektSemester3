@@ -5,6 +5,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+
+import static gui.Util.log_stderr;
 
 /**
  * @author Philip
@@ -31,9 +35,16 @@ public class AudioPlayer {
     public static void playSFX(Audio audio){
         if (disableSound)
             return;
-        mediaPlayerSFX = new MediaPlayer(new Media(new File(audio.getPathName()).toURI().toString()));
-        mediaPlayerSFX.volumeProperty().bindBidirectional(cs.getSliderSFX().valueProperty());
-        mediaPlayerSFX.play();
+
+        try {
+            URL url = AudioPlayer.class.getResource(audio.getPathName());
+
+            mediaPlayerMusic = new MediaPlayer(new Media(url.toURI().toString()));
+            mediaPlayerMusic.volumeProperty().bindBidirectional(cs.getSliderVolume().valueProperty());
+            mediaPlayerMusic.play();
+        } catch (Exception e) {
+            log_stderr(e.getMessage());
+        }
     }
 
     /**
@@ -43,10 +54,15 @@ public class AudioPlayer {
     public static void playMusic(Audio audio){
         if (disableSound)
             return;
-        mediaPlayerMusic = new MediaPlayer(new Media(new File(audio.getPathName()).toURI().toString()));
-        mediaPlayerMusic.volumeProperty().bindBidirectional(cs.getSliderVolume().valueProperty());
-        mediaPlayerMusic.play();
-    }
+        try {
+            URL url = AudioPlayer.class.getResource(audio.getPathName());
+
+            mediaPlayerMusic = new MediaPlayer(new Media(url.toURI().toString()));
+            mediaPlayerMusic.volumeProperty().bindBidirectional(cs.getSliderVolume().valueProperty());
+            mediaPlayerMusic.play();
+        } catch (Exception e) {
+            log_stderr(e.getMessage());
+        }    }
 
     /**
      * PLay random Music
@@ -63,9 +79,16 @@ public class AudioPlayer {
         }
         if (disableSound)
             return;
-        mediaPlayerMusic = new MediaPlayer(new Media(new File(audio.getPathName()).toURI().toString()));
-        mediaPlayerMusic.volumeProperty().bindBidirectional(cs.getSliderVolume().valueProperty());
-        mediaPlayerMusic.play();
+        try {
+            //File file = new File(audio.getPathName());
+            URL url = AudioPlayer.class.getResource(audio.getPathName());
+
+            mediaPlayerMusic = new MediaPlayer(new Media(url.toURI().toString()));
+            mediaPlayerMusic.volumeProperty().bindBidirectional(cs.getSliderVolume().valueProperty());
+            mediaPlayerMusic.play();
+        } catch (Exception e) {
+            log_stderr(e.getMessage());
+        }
     }
 
     /**
