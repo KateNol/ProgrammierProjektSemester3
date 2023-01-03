@@ -84,9 +84,18 @@ public abstract class NetworkPlayer extends Player {
 
     @Override
     public int getNegotiatedSemester() {
-        if (contact == null)
+        if (contact == null) {
+            log_stderr("network player semester not yet negotiated");
             return -1;
-        return contact.getNegotiatedSemester();
+        }
+        try {
+            int semester = contact.getNegotiatedSemester();
+            return semester;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log_stderr("network player semester not yet negotiated, returning 1");
+        }
+        return 1;
     }
 
     public String getEnemyUsername() {

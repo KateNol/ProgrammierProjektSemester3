@@ -205,6 +205,7 @@ public class ControllerNetworkManager implements Initializable {
         enemyThread.start();
 
         GUIPlayer.getInstance().establishConnection(ServerMode.SERVER);
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished());
         GUIPlayer.getInstance().loadGlobalConfig();
         new Logic(GUIPlayer.getInstance());
         if(multiplayerConnectTextField.isVisible()){

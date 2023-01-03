@@ -192,10 +192,11 @@ public final class Contact extends Observable {
         return peerUsername;
     }
 
-    public synchronized int getNegotiatedSemester() {
+    public synchronized int getNegotiatedSemester() throws Exception {
         synchronized (semesterLock) {
             if (!semesterNegotiated) {
                 log_stderr("error, trying to get negotiated semester before negotiation took place");
+                throw new Exception("semester not negotiated");
             }
         }
         return semester;
