@@ -24,7 +24,7 @@ import java.io.IOException;
 public class GUIMain extends Application  {
 
     public static final String GITLAB_URL = "https://lab.it.hs-hannover.de/f4-informatik/prgprj/programmier-projekte-ws22-23/gruppe07";
-    private static final String ICON_PATH = "file:src/gui/img/Icon.png";
+    private static final String ICON_PATH = "/img/Icon.png";
 
     public static void main(String[] args) {
         for (String arg : args) {

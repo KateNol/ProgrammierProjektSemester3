@@ -57,7 +57,7 @@ public class ControllerSettings implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance= this;
 
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_audimax_aussen.png"));
+        background.setBackground(Settings.setBackgroundImage("/img/hsh_audimax_aussen.png"));
 
         String [] hdMode = {fullHd, hd};
         resolution.getItems().addAll(hdMode);

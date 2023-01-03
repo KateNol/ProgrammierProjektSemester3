@@ -89,7 +89,7 @@ public class ControllerGame implements Initializable {
         }
 
         //background picture
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_audimax_innen.png"));
+        background.setBackground(Settings.setBackgroundImage("/img/hsh_audimax_innen.png"));
 
         //Set Boards
         guiPlayer.getGuiBoard().getInitializedBoard(myBoard);

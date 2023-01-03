@@ -57,7 +57,7 @@ public class ControllerLobby implements Initializable {
         }
 
         instance = this;
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_lernniesche.png"));
+        background.setBackground(Settings.setBackgroundImage("/img/hsh_lernniesche.png"));
 
         //disable startButton until all ships are placed
         startGame.setDisable(true);

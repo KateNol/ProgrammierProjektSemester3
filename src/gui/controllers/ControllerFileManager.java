@@ -66,7 +66,7 @@ public class ControllerFileManager implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_mensa.png"));
+        background.setBackground(Settings.setBackgroundImage("/img/hsh_mensa.png"));
 
         setPicture(deleteOne);
         setPicture(deleteTwo);
@@ -121,7 +121,7 @@ public class ControllerFileManager implements Initializable {
      * @param deleteButton button where to set Picture
      */
     public void setPicture(Button deleteButton){
-        String deletePicturePath = "file:src/gui/img/RecBin.png";
+        String deletePicturePath = "/img/RecBin.png";
         ImageView view = new ImageView(new Image(deletePicturePath));
         view.setFitHeight(40);
         view.setFitWidth(40);

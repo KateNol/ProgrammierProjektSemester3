@@ -67,7 +67,7 @@ public class ControllerNetworkManager implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_018.png"));
+        background.setBackground(Settings.setBackgroundImage("/img/hsh_018.png"));
         setCombobox();
     }
 
@@ -137,7 +137,7 @@ public class ControllerNetworkManager implements Initializable {
         multiplayerConnectTextField.setVisible(false);
         multiplayerScene.setMouseTransparent(true);
         if(!pictureSet){
-            Image image = new Image("file:src/gui/img/load.gif");
+            Image image = new Image("/img/load.gif");
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(150);
             imageView.setFitWidth(150);
