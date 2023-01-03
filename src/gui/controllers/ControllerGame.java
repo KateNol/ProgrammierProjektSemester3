@@ -23,6 +23,8 @@ import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import static gui.Util.log_stderr;
+
 /**
  * @author Stefan
  * Controller for game scene
@@ -77,6 +79,10 @@ public class ControllerGame implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished()) {
+            log_stderr("gui spinning on connection");
+        }
+
         instance = this;
         if(guiPlayer.getNegotiatedSemester() == 6){
             easterEggPane.getChildren().add(setEsterEgg());

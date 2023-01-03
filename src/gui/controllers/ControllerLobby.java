@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import gui.GUIMain;
 import gui.GUIPlayer;
 
 import javafx.fxml.FXML;
@@ -10,6 +11,8 @@ import logic.Alignment;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static gui.Util.log_stderr;
 
 /**
  * @author Stefan
@@ -49,6 +52,10 @@ public class ControllerLobby implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        while (!GUIPlayer.getInstance().getIsConnectionEstablished()) {
+            log_stderr("gui spinning on connection");
+        }
+
         instance = this;
         background.setBackground(Settings.setBackgroundImage("file:src/gui/img/hsh_lernniesche.png"));
 
