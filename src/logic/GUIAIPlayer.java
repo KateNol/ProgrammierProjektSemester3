@@ -176,6 +176,8 @@ public class GUIAIPlayer extends GUIPlayer {
                 }
             } while (!placed);
         }
+
+        while (ControllerLobby.getInstance() == null);
         ControllerLobby.getInstance().enableStartButton();
         GUIPlayer.getInstance().setBegin();
         ViewSwitcher.switchTo(View.Game);
