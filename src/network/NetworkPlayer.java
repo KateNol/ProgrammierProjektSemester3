@@ -135,6 +135,9 @@ public abstract class NetworkPlayer extends Player {
     }
 
     public void setReady() {
+        while (contact == null) {
+            log_stderr("spinning on contact");
+        }
         contact.setReady();
     }
 

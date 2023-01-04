@@ -84,7 +84,7 @@ public class ControllerGame implements Initializable {
         }
 
         instance = this;
-        if(guiPlayer.getNegotiatedSemester() == 6){
+        if(guiPlayer.getNegotiatedSemester() == 7){
             easterEggPane.getChildren().add(setEsterEgg());
         }
 
@@ -227,30 +227,42 @@ public class ControllerGame implements Initializable {
      * @return mediaView
      */
     public MediaView setEsterEgg() {
-        File mediaFile = new File("src/gui/video/Video.mp4");
-        Media media = null;
         try {
-            media = new Media(mediaFile.toURI().toURL().toString());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+
+            File mediaFile = new File("/video/Video.mp4");
+
+            Media media = null;
+            try {
+                media = new Media(mediaFile.toURI().toURL().toString());
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+
+            mediaPlayer = new MediaPlayer(media);
+
+            MediaView mediaView = new MediaView(mediaPlayer);
+            mediaView.fitWidthProperty().bind(ViewSwitcher.getStage().widthProperty());
+            mediaView.fitHeightProperty().bind(ViewSwitcher.getStage().heightProperty());
+
+            return mediaView;
+        } catch (Exception e) {
+            log_stderr(e.getMessage());
+            return null;
         }
 
-        mediaPlayer = new MediaPlayer(media);
-
-        MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.fitWidthProperty().bind(ViewSwitcher.getStage().widthProperty());
-        mediaView.fitHeightProperty().bind(ViewSwitcher.getStage().heightProperty());
-
-        return mediaView;
     }
 
     /**
      * Play EasterEgg
      */
     public void playEsterEgg(){
-        gameEnd.setStyle("-fx-background-color: transparent");
-        gameEnd.setStyle("-fx-border-color: transparent");
-        easterEggPane.setVisible(true);
-        mediaPlayer.play();
+        try {
+            gameEnd.setStyle("-fx-background-color: transparent");
+            gameEnd.setStyle("-fx-border-color: transparent");
+            easterEggPane.setVisible(true);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            log_stderr(e.getMessage());
+        }
     }
 }
